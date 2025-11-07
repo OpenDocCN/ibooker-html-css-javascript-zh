@@ -1,0 +1,2151 @@
+- en: Chapter 13\. Table Layout in CSS
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第 13 章\. CSS 中的表格布局
+- en: You may have glanced at this chapter’s title and wondered, “Table layout? Isn’t
+    that *so* last millennium?” Indeed so, but this chapter is not about using tables
+    *for* layout. Instead, it’s about the ways that tables themselves are laid out
+    by CSS, which is a far more complicated affair than it might first appear.
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能已经看过本章标题，并想知道，“表格布局？这不是上个千年的东西吗？”确实如此，但本章不是关于如何使用表格来进行布局的。相反，它讲述了 CSS 如何布局表格本身，这比看起来复杂得多。
+- en: Tables are unusual, compared to the rest of document layout. Until flexbox and
+    grid came along, tables alone possessed the unique ability to associate element
+    sizes with other elements—for example, all the cells in a row have the same height,
+    no matter how much or how little content each individual cell might contain. The
+    same is true for the widths of cells that share a column. Cells that adjoin can
+    share a border, even if the two cells have very different border styles. As you’ll
+    see, these abilities are purchased at the expense of a great many behaviors and
+    rules—many of them rooted deep in the web’s past—that apply to tables, and only
+    tables.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表格与文档布局的其余部分相比较显得不寻常。直到 flexbox 和 grid 出现之前，表格是唯一能够将元素大小与其他元素关联起来的工具。例如，行中的所有单元格具有相同的高度，无论每个单元格中的内容多少。同样，共享列的单元格也具有相同的宽度。相邻的单元格可以共享边框，即使这两个单元格具有非常不同的边框样式。正如您将看到的那样，这些能力是以牺牲许多行为和规则为代价的——其中许多根源深深植根于网络的过去，这些规则只适用于表格，而不是其他元素。
+- en: Table Formatting
+  id: totrans-3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 表格格式化
+- en: 'Before we can start to worry about how cell borders are drawn and tables sized,
+    we need to delve into the fundamental ways in which tables are assembled, and
+    the ways that elements within a table are related. This is referred to as *table
+    formatting*, and it is quite distinct from table layout: the layout is possible
+    only after the formatting has been completed.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在我们开始担心如何绘制单元格边框和调整表格大小之前，我们需要深入探讨组装表格和表格中元素关联的基本方法。这被称为 *表格格式化*，它与表格布局完全不同：只有在完成格式化之后，布局才成为可能。
+- en: Visually Arranging a Table
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 视觉上安排表格
+- en: The first thing to understand is how CSS defines the arrangement of tables.
+    While this knowledge may seem basic, it’s key to understanding how best to style
+    tables.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先要理解的是 CSS 如何定义表格的布局。虽然这些知识可能看起来很基础，但它是理解如何最好地样式化表格的关键。
+- en: CSS draws a distinction between *table elements* and *internal table elements*.
+    In CSS, internal table elements generate rectangular boxes that have content,
+    padding, and borders, but not margins. Therefore, it is *not* possible to define
+    the separation between table cells by giving them margins. A CSS-conformant browser
+    will ignore any attempts to apply margins to cells, rows, or any other internal
+    table element (with the exception of captions, which are discussed in [“Using
+    Captions”](#captions)).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 区分 *表格元素* 和 *内部表格元素*。在 CSS 中，内部表格元素生成具有内容、内边距和边框的矩形框，但没有外边距。因此，无法通过给单元格、行或任何其他内部表格元素（除了标题，详情请见
+    [“使用标题”](#captions)）应用外边距来定义表格单元格之间的分隔。符合 CSS 的浏览器会忽略任何尝试为单元格、行或任何其他内部表格元素应用外边距的操作。
+- en: CSS has six basic rules for arranging tables. The basis of these rules is a
+    *grid cell*, which is one area between the grid lines on which a table is drawn.
+    Consider the two tables in [Figure 13-1](#formatting-grid-cells-basis); their
+    grid cells are indicated by the dashed lines.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 有六条基本规则来排列表格。这些规则的基础是 *网格单元格*，它是表格绘制时网格线之间的一个区域。请考虑图中两个表格，它们的网格单元格由虚线表示。
+- en: '![image](assets/css5_1301.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1301.png)'
+- en: Figure 13-1\. Grid cells form the basis of table layout
+  id: totrans-10
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-1\. 网格单元格形成表格布局的基础
+- en: In a simple 2 × 2 table, such as the lefthand table shown in [Figure 13-1](#formatting-grid-cells-basis),
+    the grid cells correspond to the actual table cells. In a more complicated table,
+    like the righthand table in [Figure 13-1](#formatting-grid-cells-basis), some
+    table cells will span multiple grid cells—but note that every table cell’s edges
+    are placed along a grid-cell edge.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在一个简单的 2 × 2 表格中，例如图中左侧的表格，网格单元格对应于实际的表格单元格。在一个更复杂的表格中，例如图中右侧的表格，一些表格单元格将跨越多个网格单元格——但请注意，每个表格单元格的边缘都位于网格单元格的边缘上。
+- en: These grid cells are largely theoretical constructs, and they cannot be styled
+    or even accessed through the DOM. They just serve as a way to describe how tables
+    are assembled for styling.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些网格单元格在很大程度上是理论构造，无法进行样式化，甚至不能通过DOM访问。它们只是一种描述表格组装样式的方式。
+- en: Table Arrangement Rules
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 表格布局规则
+- en: 'The six rules of table arrangement are as follows:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表格布局的六大规则如下：
+- en: Each *row box* encompasses a single row of grid cells. All the row boxes in
+    a table fill the table from top to bottom in the order they occur in the source
+    document (with the exception of any table-header or table-footer row boxes, which
+    come at the beginning and end of the table, respectively). Thus, a table contains
+    as many grid rows as there are row elements (e.g., `<tr>` elements).
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 每个*行框*包含一行网格单元格。表中的所有行框按照它们在源文档中出现的顺序从上到下填充表格（除了任何表头或表尾行框，它们分别出现在表格的开头和结尾）。因此，表包含与行元素（例如
+    `<tr>` 元素）数量相同的网格行。
+- en: A *row group*’s box encompasses the same grid cells as the row boxes it contains.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*行组*的框包含与其包含的行框中相同的网格单元格。'
+- en: A *column box* encompasses one or more columns of grid cells. All the column
+    boxes are placed next to one another in the order they occur. The first column
+    box is on the left for LTR languages, and on the right for RTL languages.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*列框*包含一个或多个列的网格单元格。所有列框按照它们出现的顺序放置在一起。对于LTR语言，第一个列框位于左侧，对于RTL语言则位于右侧。'
+- en: A *column group*’s box encompasses the same grid cells as the column boxes it
+    contains.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*列组*的框包含与其包含的列框中相同的网格单元格。'
+- en: Although cells may span several rows or columns, CSS does not define how this
+    happens. It is instead left to the document language to define spanning. Each
+    spanned cell is a rectangular box one or more grid cells wide and high. The top
+    row of this spanning rectangle is in the row that is the parent to the spanned
+    grid cell. The cell’s rectangle must be as far to the left as possible in LTR
+    languages, but it may not overlap any other cell box. It must also be to the right
+    of all cells in the same row that are earlier in the source document (in a LTR
+    language). In RTL languages, a spanned cell must be as far to the *right* as possible
+    without overlapping other cells, and must be to the *left* of all cells in the
+    same row that follow it in the document source.
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 尽管单元格可以跨越多行或多列，但CSS并未定义这种跨越发生的方式。这完全取决于文档语言来定义跨越。每个跨越的单元格都是一个矩形框，宽度和高度可以是一个或多个网格单元格。这个跨越矩形的顶部行位于其父网格单元格所在的行中。单元格的矩形框必须尽可能地在LTR语言中向左边，但不得重叠任何其他单元格框。它还必须位于同一行中源文档中较早出现的所有单元格的右侧（在LTR语言中）。在RTL语言中，跨越的单元格必须尽可能地在*右侧*，而不重叠其他单元格，并且必须位于源文档中其后的所有同一行中的所有单元格的*左侧*。
+- en: A cell’s box *cannot* extend beyond the last row box of a table or row group.
+    If the table structure would cause this condition, the cell must be shortened
+    until it fits within the table or row group that encloses it.
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 单元格的框*不能*超出表格或行组的最后一个行框。如果表格结构会导致这种情况，则必须缩短单元格，直到它适合包含它的表格或行组内。
+- en: Note
+  id: totrans-21
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: The CSS specification discourages, but does not prohibit, the positioning of
+    table cells and other internal table elements. Positioning a row that contains
+    row-spanning cells, for example, could dramatically alter the layout of the table
+    by removing the row from the table entirely, thus removing the spanned cells from
+    consideration in the layout of other rows. Nevertheless, it is quite possible
+    to apply positioning to table elements in current browsers.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS规范不鼓励，但也不禁止，定位表格单元格和其他内部表格元素。例如，对包含跨行单元格的行进行定位可能会通过将该行从表格中完全移除来显著改变表格的布局，从而在其他行的布局中排除跨越的单元格。尽管如此，目前的浏览器确实可以对表格元素应用定位。
+- en: By definition, grid cells are rectangular, but they do not all have to be the
+    same size. All the grid cells in a given grid column will be the same width, and
+    all the grid cells in a grid row will be the same height, but the height of one
+    grid row may be different from that of another grid row. Similarly, grid columns
+    may be of different widths.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据定义，网格单元格是矩形的，但它们不必都是相同大小的。同一网格列中的所有网格单元格将具有相同的宽度，同一网格行中的所有网格单元格将具有相同的高度，但一个网格行的高度可能与另一个网格行的高度不同。类似地，网格列的宽度可以不同。
+- en: 'With those basic rules in mind, a question may arise: how, exactly, do you
+    know which elements are cells and which are not?'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在掌握这些基本规则后，可能会有一个问题：到底如何确定哪些元素是单元格，哪些不是？
+- en: Setting Table Display Values
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置表格显示值
+- en: In HTML, it’s easy to know which elements are parts of tables because the handling
+    of elements like `<tr>` and `<td>` is built into browsers. In XML, on the other
+    hand, there is no way to intrinsically know which elements might be part of a
+    table. This is where a whole collection of values for `display` come into play.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 HTML 中，很容易知道哪些元素是表格的一部分，因为像`<tr>`和`<td>`这样的元素处理已经内置在浏览器中。另一方面，在 XML 中，没有办法从本质上知道哪些元素可能是表格的一部分。这就是`display`的整套值发挥作用的地方。
+- en: 'In this chapter, we’ll stick to the table-related values, as the others are
+    beyond the scope of tables. The table-related values can be summarized as follows:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本章中，我们将专注于与表格相关的值，其他值超出了表格的范围。与表格相关的值可以总结如下：
+- en: '`table`'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`table`'
+- en: Defines a block-level table. Thus, it defines a rectangular block that generates
+    a block box. The corresponding HTML element is, not surprisingly, `<table>`.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义块级表格。因此，它定义了一个生成块框的矩形块。对应的 HTML 元素是`<table>`。
+- en: '`inline-table`'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`inline-table`'
+- en: Defines an inline-level table. This means the element defines a rectangular
+    block that generates an inline box. The closest non-table analogue is the value
+    `inline-block`. The closest HTML element is `<table>`, although, by default, HTML
+    tables are not inline.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义内联级表格。这意味着元素定义了一个生成内联框的矩形块。最接近的非表格类比是值`inline-block`。最接近的 HTML 元素是`<table>`，尽管默认情况下
+    HTML 表格不是内联的。
+- en: '`table-row`'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`table-row`'
+- en: Specifies that an element is a row of table cells. The corresponding HTML element
+    is `<tr>`.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定元素是表格单元格行。对应的 HTML 元素是`<tr>`。
+- en: '`table-row-group`'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`table-row-group`'
+- en: Specifies that an element groups one or more table rows. The corresponding HTML
+    value is `<tbody>`.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定元素将一个或多个表格行分组。对应的 HTML 值是`<tbody>`。
+- en: '`table-header-group`'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`table-header-group`'
+- en: Very much like `table-row-group`, except that for visual formatting, the header
+    row group is always displayed before all other rows and row groups, and after
+    any top captions. In print, if a table requires multiple pages to print, a user
+    agent may repeat header rows at the top of each page (Firefox does this, for example).
+    The specification does not define what happens if you assign `table-header-group`
+    to multiple elements. A header group can contain multiple rows. The HTML equivalent
+    is `<thead>`.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`table-row-group`非常相似，只是在视觉格式化上，页眉行组始终显示在所有其他行和行组之前，并在任何顶部标题之后显示。在打印时，如果表格需要多页打印，用户代理可能会在每页顶部重复显示页眉行（例如
+    Firefox 就是这样做的）。规范没有定义如果将`table-header-group`分配给多个元素会发生什么。页眉组可以包含多行。HTML 等效元素是`<thead>`。
+- en: '`table-footer-group`'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`table-footer-group`'
+- en: Very much like `table-header-group`, except that the footer row group is always
+    displayed after all other rows and row groups, and before any bottom captions.
+    In print, if a table requires multiple pages to print, a user agent may repeat
+    footer rows at the bottom of each page. The specification does not define what
+    happens if you assign `table-footer-group` to multiple elements. This is equivalent
+    to the HTML element `<tfoot>`.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`table-header-group`非常相似，只是页脚行组始终显示在所有其他行和行组之后，并且在任何底部标题之前显示。在打印时，如果表格需要多页打印，用户代理可能会在每页底部重复显示页脚行。规范没有定义如果将`table-footer-group`分配给多个元素会发生什么。这相当于
+    HTML 元素`<tfoot>`。
+- en: '`table-column`'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`table-column`'
+- en: Describes a column of table cells. In CSS terms, elements with this `display`
+    value are not visually rendered, as if they had the value `none`. Their existence
+    is largely for helping to define the presentation of cells within the column.
+    The HTML equivalent is `<col>`.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述表格单元格的列。在 CSS 术语中，具有此`display`值的元素在视觉上不会被渲染，就像它们具有`none`值一样。它们的存在主要是为了帮助定义列内单元格的显示。HTML
+    等效元素是`<col>`。
+- en: '`table-column-group`'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`table-column-group`'
+- en: Groups one or more columns. Like `table-column` elements, `table-column-group`
+    elements are not rendered, but the value is useful for defining presentation for
+    elements within the column group. The HTML equivalent is `<colgroup>`.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分组一个或多个列。像`table-column`元素一样，`table-column-group`元素不会被渲染，但这个值对于定义列组内元素的显示方式非常有用。HTML
+    等效元素是`<colgroup>`。
+- en: '`table-cell`'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`table-cell`'
+- en: Represents a single cell in a table. The HTML elements `<th>` and `<td>` are
+    both examples of `table-cell` elements.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表示表格中的单元格。HTML 元素`<th>`和`<td>`都是`table-cell`元素的示例。
+- en: '`table-caption`'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`table-caption`'
+- en: 'Defines a table’s caption. CSS does not define what should happen if multiple
+    elements have the value `caption`, but it does explicitly warn, “Authors should
+    not put more than one element with `display: caption` inside a table or inline-table
+    element.”'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '定义表格的标题。CSS 没有定义多个元素具有 `caption` 值时应该发生什么，但明确警告，“作者不应将多个带有 `display: caption`
+    的元素放在表格或内联表元素内部。”'
+- en: 'You can get a quick summary of the general effects of these values by taking
+    an excerpt from the example HTML 4.0 stylesheet given in Appendix D of the CSS
+    2.1 specification:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以通过摘录 CSS 2.1 规范附录 D 中提供的 HTML 4.0 样式表示例来快速总结这些值的一般效果：
+- en: '[PRE0]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'In XML, where elements will not have display semantics by default, these values
+    become quite useful. Consider the following markup:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 XML 中，默认情况下元素没有显示语义，因此这些值变得非常有用。考虑以下标记：
+- en: '[PRE1]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'This could be formatted in a tabular fashion by using the following styles:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以通过以下样式以表格形式进行格式化：
+- en: '[PRE2]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The various cells could then be styled as necessary—for example, boldfacing
+    the `<label>` elements and right-aligning the `<score>`s.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后可以根据需要对各个单元格进行样式设置，例如将 `<label>` 元素设置为粗体并右对齐 `<score>`。
+- en: Row primacy
+  id: totrans-55
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 行优先
+- en: CSS defines its table model as *row primacy*. This model assumes that authors
+    will use markup languages in which rows are explicitly declared. Columns, on the
+    other hand, are derived from the layout of the rows of cells. Thus, the first
+    column is made up of the first cells in each row; the second column is made up
+    of the second cells, and so forth.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 将其表格模型定义为*行优先*。该模型假设作者将使用显式声明行的标记语言。另一方面，列是从单元格行的布局派生出来的。因此，第一列由每行的第一个单元格组成；第二列由第二个单元格组成，依此类推。
+- en: Row primacy is not a major issue in HTML, because the markup language is already
+    row-oriented. In XML, row primacy has more of an impact because it constrains
+    the way authors can define table markup. Because of the row-oriented nature of
+    the CSS table model, a markup language in which columns are the basis of table
+    layout is not really possible (assuming that the intent is to use CSS to present
+    such documents).
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 HTML 中，行优先并不是一个主要问题，因为标记语言已经是面向行的。在 XML 中，行优先影响更大，因为它限制了作者可以定义表格标记的方式。由于 CSS
+    表格模型的行向性特性，基于列布局的标记语言实际上并不可行（假设意图是使用 CSS 来呈现这些文档）。
+- en: Columns
+  id: totrans-58
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 列
+- en: 'Although the CSS table model is row oriented, columns do still play a part
+    in layout. A cell can belong to both contexts (row and column), even though it
+    is descended from row elements in the document source. In CSS, however, columns
+    and column groups can accept only four nontable properties: `border`, `background`,
+    `width`, and `visibility`.'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管 CSS 表格模型是面向行的，但列仍然在布局中发挥作用。一个单元格可以属于两个上下文（行和列），即使它是从文档源中的行元素派生而来。然而，在 CSS
+    中，列和列组只能接受四个非表属性：`border`、`background`、`width` 和 `visibility`。
+- en: 'In addition, each of these four properties has special rules that apply only
+    in the columnar context:'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，这四个属性中的每一个在列上下文中都有特殊规则：
+- en: '`border`'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`border`'
+- en: Borders can be set for columns and column groups only if the property `border-collapse`
+    has the value `collapse`. In such circumstances, column and column-group borders
+    participate in the collapsing algorithm that sets the border styles at each cell
+    edge. (See [“Collapsed Cell Borders”](#collapsing-cell-borders).)
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只有当 `border-collapse` 属性值为 `collapse` 时，才能为列和列组设置边框。在这种情况下，列和列组边框参与折叠算法，该算法在每个单元格边缘设置边框样式。（见
+    [“折叠单元格边框”](#collapsing-cell-borders)。）
+- en: '`background`'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`background`'
+- en: The background of a column or column group will be visible only in cells where
+    both the cell and its row have transparent backgrounds. (See [“Working with Table
+    Layers”](#table-layers).)
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列或列组的背景只在单元格和其行具有透明背景的情况下可见。（见 [“处理表格层”](#table-layers)。）
+- en: '`width`'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`width`'
+- en: The `width` property defines the *minimum* width of the column or column group.
+    The content of cells within the column (or group) may force the column to become
+    wider.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`width` 属性定义了列或列组的*最小*宽度。列（或组）内的单元格内容可能会强制列变宽。'
+- en: '`visibility`'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`visibility`'
+- en: If the value of `visibility` for a column or column group is `collapse`, none
+    of the cells in the column (or group) are rendered. Cells that span from the collapsed
+    column into other columns are clipped, as are cells that span from other columns
+    into the collapsed column. Furthermore, the overall width of the table is reduced
+    by the width the column would have taken up. A declaration of any `visibility`
+    value other than `collapse` is ignored for a column or column group.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果某一列或列组的`visibility`值为`collapse`，则不会渲染该列（或组）中的任何单元格。跨越折叠列到其他列的单元格会被剪切，以及跨越其他列到折叠列的单元格。此外，表格的总宽度将减少该列本应占用的宽度。对于列或列组的任何`visibility`值声明，除`collapse`外的值都会被忽略。
+- en: Inserting Anonymous Table Objects
+  id: totrans-69
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 插入匿名表对象
+- en: 'A markup language might not contain enough elements to fully represent tables
+    as they are defined in CSS, or an author could forget to include all the necessary
+    elements. For example, consider this HTML:'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 标记语言可能不包含足够的元素来完全表示CSS中定义的表格，或者作者可能会忘记包含所有必要的元素。例如，请考虑以下HTML：
+- en: '[PRE3]'
+  id: totrans-71
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: You might glance at this markup and assume that it defines a two-cell table
+    of a single row, but structurally, there is no element defining a row (because
+    the `<tr>` is missing).
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能会看一眼这个标记，认为它定义了一个单行的两个单元格表格，但在结构上，没有定义行的元素（因为缺少了`<tr>`）。
+- en: 'To cover such possibilities, CSS defines a mechanism for inserting “missing”
+    table components as anonymous objects. For a basic example of how this works,
+    let’s revisit our missing-row HTML example. In CSS terms, what effectively happens
+    is that an anonymous table-row object is inserted between the `<table>` element
+    and its descendant table cells:'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了涵盖这些可能性，CSS定义了一种机制，用于插入“缺失”的表组件作为匿名对象。以一个基本示例说明其工作原理，让我们重新看一下我们的缺失行HTML示例。从CSS角度来看，实际发生的是在`<table>`元素和其后代表格单元格之间插入了一个匿名table-row对象：
+- en: '[PRE4]'
+  id: totrans-74
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '[Figure 13-2](#anon-obj-row) shows a visual representation of this process.
+    The dotted line represents the inserted anonymous table row.'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 13-2](#anon-obj-row)显示了这一过程的视觉表现。虚线代表插入的匿名表行。'
+- en: '![image](assets/css5_1302.png)'
+  id: totrans-76
+  prefs: []
+  type: TYPE_IMG
+  zh: '![图片](assets/css5_1302.png)'
+- en: Figure 13-2\. Anonymous-object generation in table formatting
+  id: totrans-77
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-2\. 表格格式中的匿名对象生成
+- en: Seven kinds of anonymous-object insertions can occur in the CSS table model.
+    These seven rules are, like inheritance and specificity, an example of a mechanism
+    that attempts to impose intuitive sense on the way CSS behaves.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS表模型中可能会发生七种匿名对象插入。这七条规则，像继承和特异性一样，是试图在CSS行为方式上赋予直观意义的机制的一个例子。
+- en: 'The rules are as follows:'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 规则如下：
+- en: If a `table-cell` element’s parent is not a `table-row` element, an anonymous
+    `table-row` object is inserted between the `table-cell` element and its parent.
+    The inserted object will include all consecutive siblings of the `table-cell`
+    element.
+  id: totrans-80
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果一个`table-cell`元素的父元素不是`table-row`元素，则在`table-cell`元素和其父元素之间插入一个匿名`table-row`对象。插入的对象将包括`table-cell`元素的所有连续兄弟元素。
+- en: 'The same holds true even if the parent element is a `table-row-group`. For
+    example, assume that the following CSS applies to the XML after it:'
+  id: totrans-81
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 即使父元素是`table-row-group`，情况也是如此。例如，假设以下CSS应用于XML之后：
+- en: '[PRE5]'
+  id: totrans-82
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '[PRE6]'
+  id: totrans-83
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Both sets of cells will be enclosed in an anonymous `table-row` object that
+    is inserted between them and the `<planet>` elements.
+  id: totrans-84
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这两组单元格都将被封装在一个插入的匿名`table-row`对象中，该对象位于它们和`<planet>`元素之间。
+- en: 'If a `table-row` element’s parent is not a `table`, `inline-table`, or `table-row-group`
+    element, then an anonymous `table` element is inserted between the `table-row`
+    element and its parent. The inserted object will include all consecutive siblings
+    of the `table-row` element. Consider the following styles and markup:'
+  id: totrans-85
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果一个`table-row`元素的父元素不是`table`、`inline-table`或`table-row-group`元素，则在`table-row`元素和其父元素之间插入一个匿名`table`元素。插入的对象将包括`table-row`元素的所有连续兄弟元素。考虑以下样式和标记：
+- en: '[PRE7]'
+  id: totrans-86
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '[PRE8]'
+  id: totrans-87
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Because the `display` value of the `<planet>` elements’ parent is `block`, the
+    anonymous `table` object is inserted between the `<planet>` elements and the `<docbody>`
+    element. This anonymous `table` object will enclose both `<planet>` elements,
+    since they are consecutive siblings.
+  id: totrans-88
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 因为`<planet>`元素的父元素的`display`值为`block`，所以在`<planet>`元素和`<docbody>`元素之间插入了一个匿名`table`对象。这个匿名`table`对象将包裹两个连续的`<planet>`元素。
+- en: If a `table-column` element’s parent is not a `table`, `inline-table`, or `table-column-group`
+    element, then an anonymous `table` element is inserted between the `table-column`
+    element and its parent. This is much the same as the `table-row` rule just discussed,
+    except for its column-oriented nature.
+  id: totrans-89
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果`table-column`元素的父元素不是`table`、`inline-table`或`table-column-group`元素，则在`table-column`元素和其父元素之间插入一个匿名的`table`元素。这与刚讨论的`table-row`规则类似，只是针对其列导向的特性。
+- en: If the parent element of a `table-row-group`, `table-header-group`, `table-footer-group`,
+    `table-column-group`, or `table-caption` element is not a `table` element, then
+    an anonymous `table` object is inserted between the element and its parent.
+  id: totrans-90
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果`table-row-group`、`table-header-group`、`table-footer-group`、`table-column-group`或`table-caption`元素的父元素不是`table`元素，则在元素和其父元素之间插入一个匿名的`table`对象。
+- en: 'If a child element of a `table` or `inline-table` element is not a `table-row-group`,
+    `table-header-group`, `table-footer-group`, `table-row`, or `table-caption` element,
+    then an anonymous `table-row` object is inserted between the `table` element and
+    its child element. This anonymous object spans all the consecutive siblings of
+    the child element that are not `table-row-group`, `table-header-group`, `table-footer-group`,
+    `table-row`, or `table-caption` elements. Consider the following markup and styles:'
+  id: totrans-91
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果`table`或`inline-table`元素的子元素不是`table-row-group`、`table-header-group`、`table-footer-group`、`table-row`或`table-caption`元素，则在`table`元素和其子元素之间插入一个匿名的`table-row`对象。此匿名对象跨越子元素之后的所有连续兄弟元素，这些兄弟元素本身不是`table-row-group`、`table-header-group`、`table-footer-group`、`table-row`或`table-caption`元素。考虑以下标记和样式：
+- en: '[PRE9]'
+  id: totrans-92
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '[PRE10]'
+  id: totrans-93
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Here, a single anonymous `table-row` object will be inserted between the `<system>`
+    element and the second set of `<name>` and `<moons>` elements. The `<planet>`
+    element is not enclosed by the anonymous object because its `display` is `table-row`.
+  id: totrans-94
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在这里，一个单独的匿名的`table-row`对象将被插入在`<system>`元素和第二组`<name>`和`<moons>`元素之间。`<planet>`元素不被匿名对象包围，因为其`display`为`table-row`。
+- en: 'If a child element of a `table-row-group`, `table-header-group`, or `table-footer-group`
+    element is not a `table-row` element, an anonymous `table-row` object is inserted
+    between the element and its child element. This anonymous object spans all the
+    consecutive siblings of the child element that are not `table-row` objects themselves.
+    Consider the following markup and styles:'
+  id: totrans-95
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果`table-row-group`、`table-header-group`或`table-footer-group`元素的子元素不是`table-row`元素，则在元素和其子元素之间插入一个匿名的`table-row`对象。此匿名对象跨越子元素之后的所有连续兄弟元素，这些兄弟元素本身不是`table-row`对象。考虑以下标记和样式：
+- en: '[PRE11]'
+  id: totrans-96
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: '[PRE12]'
+  id: totrans-97
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: In this case, each set of `<name>` and `<moons>` elements will be enclosed in
+    an anonymous `table-row` element. For the second set, the insertion happens in
+    accord with rule 5\. For the first set, the anonymous object is inserted between
+    the `<planet>` element and its children because the `<planet>` element is a `table-row-group`
+    element.
+  id: totrans-98
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在这种情况下，每组`<name>`和`<moons>`元素将被匿名的`table-row`元素包围。对于第二组，插入遵循规则5。对于第一组，匿名对象插入在`<planet>`元素和其子元素之间，因为`<planet>`元素是一个`table-row-group`元素。
+- en: 'If a child element of a `table-row` element is not a `table-cell` element,
+    then an anonymous `table-cell` object is inserted between the element and its
+    child element. This anonymous object encloses all consecutive siblings of the
+    child element that are not `table-cell` elements themselves. Consider the following
+    markup and styles:'
+  id: totrans-99
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果`table-row`元素的子元素不是`table-cell`元素，则在元素和其子元素之间插入一个匿名的`table-cell`对象。此匿名对象包围子元素之后的所有连续兄弟元素，这些兄弟元素本身不是`table-cell`元素。考虑以下标记和样式：
+- en: '[PRE13]'
+  id: totrans-100
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: '[PRE14]'
+  id: totrans-101
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: Because the element `<num>` does not have a table-related `display` value, an
+    anonymous `table-cell` object is inserted between the `<planet>` element and the
+    `<num>` element.
+  id: totrans-102
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 因为元素`<num>`没有与表格相关的`display`值，所以在`<planet>`元素和`<num>`元素之间插入一个匿名的`table-cell`对象。
+- en: 'This behavior also extends to the encapsulation of anonymous inline boxes.
+    Suppose that the `<num>` element is not included:'
+  id: totrans-103
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此行为还适用于匿名内联框的封装。假设未包括`<num>`元素：
+- en: '[PRE15]'
+  id: totrans-104
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: 'The `0` would still be enclosed in an anonymous `table-cell` object. To further
+    illustrate this point, here is an example adapted from the CSS specification:'
+  id: totrans-105
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`0`仍将被匿名的`table-cell`对象包围。为了进一步说明这一点，这里有一个从CSS规范调整的示例：'
+- en: '[PRE16]'
+  id: totrans-106
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: '[PRE17]'
+  id: totrans-107
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: Within each `<row>` element, the text fragments and `hey` element are enclosed
+    in anonymous `table-cell` objects.
+  id: totrans-108
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在每个`<row>`元素内，文本片段和`hey`元素都被匿名的`table-cell`对象包围。
+- en: Working with Table Layers
+  id: totrans-109
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理表格层次
+- en: For the assembly of a table’s presentation, CSS defines six individual *layers*
+    on which the various aspects of a table are placed. [Figure 13-3](#layers-formatting-schematic)
+    shows these layers.
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于表格呈现的组装，CSS定义了六个单独的*层*，用于放置表格各个方面的内容。[图 13-3](#layers-formatting-schematic)展示了这些层。
+- en: '![image](assets/css5_1303.png)'
+  id: totrans-111
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1303.png)'
+- en: Figure 13-3\. The formatting layers used in table presentation
+  id: totrans-112
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-3\. 表格呈现中使用的格式化层
+- en: Basically, the styles for each aspect of the table are drawn on their individual
+    layers. Thus, if the `<table>` element has a green background and a 1-pixel black
+    border, those styles are drawn on the lowest layer. Any styles for the column
+    groups are drawn on the next layer up, the columns themselves on the layer above
+    that, and so on. The top layer, which corresponds to the table cells, is drawn
+    last.
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本上，表格的每个方面的样式都在它们各自的层上绘制。因此，如果 `<table>` 元素具有绿色背景和1像素黑色边框，这些样式将绘制在最低层上。列组的任何样式将绘制在其上一层，列本身在再上一层，依此类推。对应表格单元格的顶层最后绘制。
+- en: For the most part, this is a logical process; after all, if you declare a background
+    color for table cells, you would want that drawn over the background for the table
+    element. The most important point revealed by [Figure 13-3](#layers-formatting-schematic)
+    is that column styles come below row styles, so a row’s background will overwrite
+    a column’s background.
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数情况下，这是一个逻辑过程；毕竟，如果为表格单元格声明背景颜色，则希望它覆盖表格元素的背景。[图 13-3](#layers-formatting-schematic)揭示的最重要的一点是列样式位于行样式之下，因此行的背景将覆盖列的背景。
+- en: 'It is important to remember that by default, all elements have transparent
+    backgrounds. Thus, in the following markup, the table element’s background will
+    be visible “through” cells, rows, columns, and so forth that do not have a background
+    of their own, as illustrated in [Figure 13-4](#layers-seeing-background):'
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 需要记住，默认情况下，所有元素都具有透明背景。因此，在以下标记中，表格元素的背景将“透过”没有自己背景的单元格、行、列等可见，正如[图 13-4](#layers-seeing-background)中所示。
+- en: '[PRE18]'
+  id: totrans-116
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: '![css5 1304](assets/css5_1304.png)'
+  id: totrans-117
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1304](assets/css5_1304.png)'
+- en: Figure 13-4\. Seeing the background of table-formatting layers through other
+    layers
+  id: totrans-118
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-4\. 透过其他层看表格格式化层的背景
+- en: Using Captions
+  id: totrans-119
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用标题
+- en: 'A *table caption* is about what you’d expect: a short bit of text that describes
+    the nature of the table’s contents. A chart of stock quotes for the fourth quarter
+    of 2026, therefore, might have a caption element whose contents read “Q4 2026
+    Stock Performance.” With the property `caption-side`, you can place this element
+    either above or below the table, regardless of where the caption appears in the
+    table’s structure. (In HTML5, the `<caption>` element can appear only as the first
+    child of a `<table>` element, but other languages may have different rules.)'
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*表格标题*通常是描述表格内容性质的简短文本。例如，2026年第四季度股票行情表可能有一个标题元素，内容为“2026年Q4股票表现”。通过 `caption-side`
+    属性，您可以将此元素放置在表格上方或下方，无论标题在表格结构中的位置如何。（在HTML5中，`<caption>` 元素只能作为 `<table>` 元素的第一个子元素出现，但其他语言可能有不同的规则。）'
+- en: 'Captions are a bit odd, at least in visual terms. The CSS specification states
+    that a caption is formatted as if it were a block box placed immediately before
+    (or after) the table’s box, with one exception: the caption can still inherit
+    values from the table.'
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在视觉上，标题有点奇怪。CSS规范规定，标题的格式化方式就像是一个块级框，放置在表格框的前（或后），但有一个例外：标题仍然可以从表格中继承值。
+- en: 'A simple example should suffice to illustrate most of the important aspects
+    of caption presentation. Consider the following, illustrated in [Figure 13-5](#captions-styling):'
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个简单的例子足以说明标题展示的大部分重要方面。考虑以下示例，如[图 13-5](#captions-styling)所示：
+- en: '[PRE19]'
+  id: totrans-123
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: The text in each `<caption>` element inherits the `color` value `white` from
+    the table, while the caption gets its own background. The separation between each
+    table’s outer border edge and the caption’s outer margin edge is 1 em, as the
+    margins of the table and the caption have collapsed. Finally, the width of the
+    caption is based on the content width of the `<table>` element, which is considered
+    to be the containing block of the caption.
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个 `<caption>` 元素中的文本从表格中继承了 `color` 值 `white`，而标题则有自己的背景。每个表格的外边框与标题的外边距之间的分隔距离为
+    1 em，因为表格和标题的边距已经合并。最后，标题的宽度基于 `<table>` 元素的内容宽度，该元素被视为标题的包含块。
+- en: '![css5 1305](assets/css5_1305.png)'
+  id: totrans-125
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1305](assets/css5_1305.png)'
+- en: Figure 13-5\. Styling captions and tables
+  id: totrans-126
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-5. 样式化标题和表格
+- en: 'For the most part, captions are styled just like any block-level element: they
+    can be padded, have borders, be given backgrounds, and so on. For example, if
+    we need to change the horizontal alignment of text within the caption, we use
+    the property `text-align`. Thus, to right-align the caption in the previous example,
+    we would write this:'
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大部分情况下，标题的样式与任何块级元素一样：它们可以有内边距、边框、背景等等。例如，如果我们需要改变标题内文本的水平对齐方式，我们使用属性 `text-align`。因此，要右对齐前面示例中的标题，我们会这样写：
+- en: '[PRE20]'
+  id: totrans-128
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: Table Cell Borders
+  id: totrans-129
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 表格单元格边框
+- en: CSS has two quite distinct table-border models. The *separated border model*
+    takes effect when cells are separated from each other in layout terms. The *collapsed
+    border model* has no visual separation between cells, and cell borders merge or
+    collapse into one another. The former is the default model, but you can choose
+    between the two models with the property `border-collapse`.
+  id: totrans-130
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 有两种截然不同的表格边框模型。*分离边框模型* 在单元格在布局上相互分隔时生效。*合并边框模型* 单元格之间没有视觉上的分隔，单元格边框相互合并或合并为一个。前者是默认模型，但你可以使用属性
+    `border-collapse` 在这两种模型之间进行选择。
+- en: The whole point of this property is to offer a way to determine which border
+    model the user agent will employ. If the value `collapse` is in effect, the collapsed
+    border model is used. If the value is `separate`, the separated border model is
+    used. We’ll look at the latter model first, since it’s much easier to describe
+    and is the default.
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此属性的全部意义在于提供一种确定用户代理将采用哪种边框模型的方法。如果值为 `collapse`，则使用合并边框模型。如果值为 `separate`，则使用分离边框模型。我们首先查看后者，因为它更容易描述，也是默认的。
+- en: Separated Cell Borders
+  id: totrans-132
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 分离单元格边框
+- en: 'In the separated border model, every cell in the table is separated from the
+    other cells by some distance, and the borders of cells do not collapse into one
+    another. Thus, given the following styles and markup, you should get the result
+    shown in [Figure 13-6](#borders-separated):'
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在分离边框模型中，表格中的每个单元格都与其他单元格相隔一定距离，单元格的边框不会合并在一起。因此，给定以下样式和标记，你应该得到[图 13-6](#borders-separated)中显示的结果。
+- en: '[PRE21]'
+  id: totrans-134
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: '[PRE22]'
+  id: totrans-135
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: Note that the cell borders touch but remain distinct from one another. The three
+    lines between cells are actually the two double borders sitting right next to
+    each other; the gray border around the fourth cell helps make this more clear.
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，单元格边框接触但保持各自独立。单元格之间的三条线实际上是两个并排的双边框；第四个单元格周围的灰色边框有助于更清楚地显示这一点。
+- en: '![image](assets/css5_1306.png)'
+  id: totrans-137
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1306.png)'
+- en: Figure 13-6\. Separated (and thus separate) cell borders
+  id: totrans-138
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-6. 分离（因此是分开的）单元格边框
+- en: The HTML attribute `cellspacing` is included in the preceding example to make
+    sure the cells have no separation between them, but its presence is likely a bit
+    troubling. After all, if you can define borders as separate, there ought to be
+    a way to use CSS to alter the spacing between cells. Fortunately, there is.
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前面的示例中包含 HTML 属性 `cellspacing`，是为了确保单元格之间没有间隔，但它的存在可能会有些令人困扰。毕竟，如果你可以将边框定义为分开，应该有办法使用
+    CSS 来改变单元格之间的间距。幸运的是，有办法实现。
+- en: Applying border spacing
+  id: totrans-140
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 应用边框间距
+- en: Once you’ve separated the table cell borders, you might want those borders to
+    be separated by a certain distance. This can be easily accomplished with the property
+    `border-spacing`, which provides a more powerful replacement for the HTML attribute
+    `cellspacing`.
+  id: totrans-141
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦你将表格单元格的边框分开，你可能希望这些边框之间相隔一定的距离。这可以通过属性 `border-spacing` 来轻松实现，它为 HTML 属性
+    `cellspacing` 提供了更强大的替代方案。
+- en: 'Either one or two lengths can be given for the value of this property. If you
+    want all your cells separated by a single pixel, `border-spacing: 1px;` will suffice.
+    If, on the other hand, you want cells to be separated by 1 pixel horizontally
+    and 5 pixels vertically, write `border-spacing: 1px 5px;`. If two lengths are
+    supplied, the first is always the horizontal separation, and the second is always
+    the vertical.'
+  id: totrans-142
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '此属性的值可以给出一个或两个长度。如果你希望所有单元格之间相隔一个像素，`border-spacing: 1px;` 就足够了。另一方面，如果你希望单元格之间的水平间距为
+    1 像素，垂直间距为 5 像素，写为 `border-spacing: 1px 5px;`。如果给出两个长度，第一个始终是水平间距，第二个始终是垂直间距。'
+- en: 'The spacing values are also applied between the borders of cells along the
+    outside of a table and the padding on the `table` element itself. Given the following
+    styles, you would get a result like that shown in [Figure 13-7](#border-spacing-cells-table):'
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些间距值也适用于表格外部的单元格边框与 `table` 元素本身的填充之间。根据以下样式，您将获得类似于 [图 13-7](#border-spacing-cells-table)
+    所示的结果：
+- en: '[PRE23]'
+  id: totrans-144
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: '[Figure 13-7](#border-spacing-cells-table) displays a space 5 pixels wide between
+    the borders of any two horizontally adjacent cells, and 17 pixels of space between
+    the borders of the right- and leftmost cells and the right and left borders of
+    the `<table>` element. Similarly, the borders of vertically adjacent cells are
+    8 pixels apart, and the borders of the cells in the top and bottom rows are 20
+    pixels from the top and bottom borders of the table, respectively. The separation
+    between cell borders is constant throughout the table, regardless of the border
+    widths of the cells themselves.'
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 13-7](#border-spacing-cells-table) 显示了任意两个水平相邻单元格边框之间的 5 像素空间，以及最右和最左单元格与
+    `<table>` 元素的右边和左边边框之间的 17 像素空间。同样，垂直相邻单元格的边框相距 8 像素，顶部和底部行的单元格边框分别距离表格的顶部和底部边框
+    20 像素。无论单元格本身的边框宽度如何，表格内部单元格边框的分隔都是恒定的。'
+- en: Note also that declaring a `border-spacing` value is done on the table itself,
+    not on the individual cells. If `border-spacing` had been declared for the `<td>`
+    elements in the previous example, it would have been ignored.
+  id: totrans-146
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还要注意，`border-spacing` 的声明是在表格本身上进行的，而不是在单个单元格上。如果在前面的示例中为 `<td>` 元素声明了 `border-spacing`，则会被忽略。
+- en: '![css5 1307](assets/css5_1307.png)'
+  id: totrans-147
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1307](assets/css5_1307.png)'
+- en: Figure 13-7\. Border spacing effects between cells and their enclosing table
+  id: totrans-148
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-7. 单元格和其封闭表格之间的边框间距效果
+- en: In the separated border model, borders cannot be set for rows, row groups, columns,
+    and column groups. Any border properties declared for such elements must be ignored
+    by a CSS-conformant user agent.
+  id: totrans-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在分隔边框模型中，无法为行、行组、列和列组设置边框。对于这些元素声明的任何边框属性，必须被 CSS 兼容的用户代理忽略。
+- en: Handling empty cells
+  id: totrans-150
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 处理空单元格
+- en: Because every cell is, in a visual sense, distinct from all the other cells
+    in the table, what do you do with cells that are empty (i.e., have no content)?
+    You have two choices, which are reflected in the values of the `empty-cells` property.
+  id: totrans-151
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从视觉上讲，每个单元格在表格中都是独立的，那么对于空单元格（即没有内容的单元格）怎么处理？您有两种选择，这两种选择反映在 `empty-cells` 属性的值中。
+- en: 'If `empty-cells` is set to `show`, the borders and background of an empty cell
+    will be drawn, just as with table cells that have content. If the value is `hide`,
+    no part of the cell is drawn, as if the cell were set to `visibility: hidden`.'
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果 `empty-cells` 设置为 `show`，则空单元格的边框和背景将被绘制，就像具有内容的表格单元格一样。如果值为 `hide`，则不会绘制单元格的任何部分，就像单元格设置为
+    `visibility: hidden` 一样。'
+- en: 'If a cell contains any content, it cannot be considered empty. *Content*, in
+    this case, includes not only text, images, form elements, and so on, but also
+    the nonbreaking space entity (`&nbsp;`) and any other whitespace *except* the
+    carriage return (CR), line feed (LF), tab, and space characters. If all the cells
+    in a row are empty, and all have an `empty-cells` value of `hide`, the entire
+    row is treated as if the row element were set to `display: none`.'
+  id: totrans-153
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果单元格包含任何内容，则不能视为空单元格。在这种情况下，“内容”不仅包括文本、图像、表单元素等，还包括非断行空格实体 (`&nbsp;`) 和除回车
+    (CR)、换行 (LF)、制表符和空格字符之外的任何空白字符。如果一行中的所有单元格都为空，并且所有单元格的 `empty-cells` 值为 `hide`，则整行将被视为行元素设置为
+    `display: none`。'
+- en: Collapsed Cell Borders
+  id: totrans-154
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 折叠单元格边框
+- en: 'While the collapsed border model largely describes how HTML tables have always
+    been laid out when they don’t have any cell spacing, it is quite a bit more complicated
+    than the separated borders model. The following rules set collapsing cell borders
+    apart from the separated borders model:'
+  id: totrans-155
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当折叠边框模型大部分描述 HTML 表格没有任何单元格间距时，它比分隔边框模型要复杂得多。以下规则将折叠单元格边框与分隔边框模型区分开来：
+- en: Elements with a `display` of `table` or `inline-table` cannot have any padding
+    when `border-collapse` is `collapse`, although they can have margins. Thus, separation
+    never occurs between the border around the outside of the table and the edges
+    of its outermost cells in the collapsed border model.
+  id: totrans-156
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 元素的 `display` 属性为 `table` 或 `inline-table` 时，在 `border-collapse` 为 `collapse`
+    时不能有任何填充，尽管可以有边距。因此，在折叠边框模型中，表格外边框和其最外层单元格的边缘之间永远不会发生分隔。
+- en: Borders can be applied to cells, rows, row groups, columns, and column groups.
+    A table itself can, as always, have a border.
+  id: totrans-157
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 边框可以应用于单元格、行、行组、列和列组。表格本身像往常一样可以有一个边框。
+- en: Separation never exists between cell borders in the collapsed border model.
+    In fact, borders collapse into each other where they adjoin, so that only one
+    of the collapsing borders is actually drawn. This is somewhat akin to margin collapsing,
+    where the largest margin wins. When cell borders collapse, the “most interesting”
+    border wins.
+  id: totrans-158
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在折叠边框模型中，单元格边框之间从不存在分隔。事实上，边框会在相接处合并，只有一个折叠的边框实际上被绘制出来。这有点类似于边距合并，最大的边距会胜出。当单元格边框折叠时，“最有趣”的边框会胜出。
+- en: Once they are collapsed, the borders between cells are centered on the hypothetical
+    grid lines between the cells.
+  id: totrans-159
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一旦它们被折叠，单元格之间的边框会居中于假设的单元格之间的网格线上。
+- en: We’ll explore the last two points in more detail in the next two sections.
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将在接下来的两节中更详细地探讨最后两点。
+- en: Collapsing border layout
+  id: totrans-161
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 折叠边框布局
+- en: To better understand how the collapsed border model works, let’s look at the
+    layout of a single table row, as shown in [Figure 13-8](#border-spacing-collapsed-row-layout).
+  id: totrans-162
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了更好地理解折叠边框模型的工作原理，让我们看一下单个表行的布局，如 [图 13-8](#border-spacing-collapsed-row-layout)
+    所示。
+- en: The padding and content width of each cell is inside the borders, as expected.
+    For the borders between cells, half of the border is to one side of the grid line
+    between two cells, and the other half is to the other side. In each case, only
+    a single border is drawn along each cell edge. You might think that half of each
+    cell’s border is drawn to each side of the grid line, but that’s not what happens.
+  id: totrans-163
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个单元格的填充和内容宽度都在边框内部，如预期那样。对于单元格之间的边框，边框的一半位于两个单元格网格线的一侧，另一半位于另一侧。在每种情况下，每个单元格边缘只绘制一个边框。您可能会认为每个单元格的边框的一半会绘制在网格线的两侧，但事实并非如此。
+- en: '![image](assets/css5_1308.png)'
+  id: totrans-164
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1308.png)'
+- en: Figure 13-8\. The layout of a table row using the collapsing borders model
+  id: totrans-165
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图13-8\. 使用折叠边框模型布局的表行的布局
+- en: For example, assume that the solid borders on the middle cell are green and
+    the solid borders on the outer two cells are red. The borders on the right and
+    left sides of the middle cell (which collapse with the adjacent borders of the
+    outer cells) will be all green, or all red, depending on which border wins out.
+    We’ll discuss how to tell which one wins in the next section.
+  id: totrans-166
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设中间单元格上的实线边框是绿色的，外部两个单元格上的实线边框是红色的。中间单元格的右侧和左侧边框（与相邻单元格的边框合并）将全部是绿色的或全部是红色的，具体取决于哪个边框占优势。我们将在下一节讨论如何判断哪个边框占优势。
+- en: You may have noticed that the outer borders protrude past the table’s width.
+    This is because in this model, *half* the table’s borders are included in the
+    width. The other half stick out beyond that distance, sitting in the margin itself.
+    This might seem a bit weird, but that’s how the model is defined to work.
+  id: totrans-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能已经注意到外部边框超出了表格的宽度。这是因为在这种模型中，表格边框的一半包括在宽度内，另一半突出超出该距离，位于边距本身。这可能看起来有点奇怪，但这就是模型定义的工作方式。
+- en: 'The specification includes a layout formula reproduced here for the benefit
+    of those who enjoy such things:'
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 规范中包含了一个布局公式，这里再次重现，以供喜欢这些内容的人参考：
+- en: row width = (0.5 × border-width-0) + padding-left-1 + width-1 + padding-right-1
+    + border-width-1 + padding-left-2 +...+ padding-right-*n* + (0.5 × border-width-*n*)
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行宽度 = (0.5 × border-width-0) + padding-left-1 + width-1 + padding-right-1 +
+    border-width-1 + padding-left-2 +...+ padding-right-*n* + (0.5 × border-width-*n*)
+- en: Each `border-width`-*`n`* refers to the border between cell *n* and the next
+    cell; thus, `border-width-3` refers to the border between the third and fourth
+    cells. The value *`n`* stands for the total number of cells in the row.
+  id: totrans-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个 `border-width`-*`n`* 是指第 *n* 个单元格和下一个单元格之间的边框；因此，`border-width-3` 是指第三个和第四个单元格之间的边框。值
+    *`n`* 表示行中的总单元格数。
+- en: This mechanism has a slight exception. When beginning the layout of a collapsed-border
+    table, the user agent computes an initial left and right border for the table
+    itself. It does this by examining the left border of the first cell in the first
+    row of the table and by taking half of that border’s width as the table’s initial
+    left border width. The user agent then examines the right border of the last cell
+    in the first row and uses half that width to set the table’s initial right border
+    width. For any row after the first, if the left or right border is wider than
+    the initial border widths, it sticks out into the margin area of the table.
+  id: totrans-171
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种机制有一个小小的例外。在开始合并边框表的布局时，用户代理计算表本身的初始左右边框。它通过检查表的第一行第一个单元格的左边框，并将该边框宽度的一半作为表的初始左边框宽度来完成这一点。然后，用户代理检查表的第一行最后一个单元格的右边框，并使用该宽度的一半来设置表的初始右边框宽度。对于第一行之后的任何行，如果左边框或右边框比初始边框宽度更宽，则会突出到表的边距区域。
+- en: If a border is an odd number of display elements (pixels, printer dots, etc.)
+    wide, the user agent is left to decide what to do about centering the border on
+    the grid line. The user agent might shift the border so that it is slightly off-center,
+    round up or down to an even number of display elements, use anti-aliasing, or
+    adjust anything else that seems reasonable.
+  id: totrans-172
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果边框是奇数显示元素（像素、打印点等）宽度，则用户代理会决定如何在网格线上居中边框。用户代理可以将边框稍微偏离中心，四舍五入到偶数显示元素，使用反锯齿，或者调整任何其他合理的方法。
+- en: Border collapsing
+  id: totrans-173
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 边框合并
+- en: 'When two or more borders are adjacent, they collapse into each other. In fact,
+    they don’t collapse so much as fight it out to see which will gain supremacy over
+    the others. Strict rules govern which borders will win and which will not:'
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当两个或更多边框相邻时，它们会合并在一起。事实上，它们并不是真正合并，而是争夺谁将在其他边框上占主导地位。严格的规则决定了哪些边框将胜出，哪些不会：
+- en: If one of the collapsing borders has a `border-style` of `hidden`, it takes
+    precedence over all other collapsing borders. All borders at this location are
+    hidden.
+  id: totrans-175
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果合并的边框中有一个`border-style`为`hidden`，则它优先于所有其他合并的边框。在此位置的所有边框都将隐藏。
+- en: If all the borders are visible, wider borders take precedence over narrower
+    ones. Thus, if a 2-pixel dotted border and a 5-pixel double border collapse, the
+    border at that location will be a 5-pixel double border.
+  id: totrans-176
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果所有边框都是可见的，则更宽的边框优先于较窄的边框。因此，如果一个2像素的点状边框和一个5像素的双重边框合并，则该位置的边框将是一个5像素的双重边框。
+- en: 'If all collapsing borders have the same width but different border styles,
+    the border style is taken in the following order, from most to least preferred:
+    `double`, `solid`, `dashed`, `dotted`, `ridge`, `outset`, `groove`, `inset`, `none`.
+    Thus, if two borders with the same width are collapsing, and one is `dashed` while
+    the other is `outset`, the border at that location will be dashed.'
+  id: totrans-177
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果所有合并的边框具有相同的宽度但不同的边框样式，则按照以下顺序，从最优到最不优先：`double`，`solid`，`dashed`，`dotted`，`ridge`，`outset`，`groove`，`inset`，`none`。因此，如果两个具有相同宽度的边框合并，一个是`dashed`，另一个是`outset`，则该位置的边框将为`dashed`。
+- en: 'If collapsing borders have the same style and width, but differ in color, the
+    color used is taken from an element in the following list, from most preferred
+    to least: cell, row, row group, column, column group, table. Thus, if the borders
+    of a cell and a column (identical in every way except color) collapse, the cell’s
+    border color (and style and width) will be used. If the collapsing borders come
+    from the same type of element, such as two row borders with the same style and
+    width but different colors, the color is taken from borders that are closer to
+    the block-start and inline-start edges of the element.'
+  id: totrans-178
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果合并的边框具有相同的样式和宽度，但颜色不同，则所使用的颜色按照以下列表中元素的优先级，从最优到最不优：单元格，行，行组，列，列组，表。因此，如果单元格和列的边框（在除颜色之外完全相同的情况下）合并，则使用单元格的边框颜色（以及样式和宽度）。如果合并的边框来自于同一类型的元素，例如两个具有相同样式和宽度但颜色不同的行边框，则颜色来自于更接近元素块起始和行内起始边缘的边框。
+- en: 'The following styles and markup, presented in [Figure 13-9](#border-spacing-collapsed-unusual),
+    help illustrate each of the four rules:'
+  id: totrans-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的样式和标记，在[图 13-9](#border-spacing-collapsed-unusual)中呈现，帮助说明四条规则：
+- en: '[PRE24]'
+  id: totrans-180
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: '[PRE25]'
+  id: totrans-181
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: '![css5 1309](assets/css5_1309.png)'
+  id: totrans-182
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1309](assets/css5_1309.png)'
+- en: Figure 13-9\. Manipulating border widths, styles, and colors leads to some unusual
+    results
+  id: totrans-183
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-9\. 操纵边框宽度、样式和颜色会导致一些不寻常的结果
+- en: 'Let’s consider what happens for each of the cells, in turn:'
+  id: totrans-184
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们逐个考虑每个单元格发生的情况：
+- en: For cells 1-1 and 1-4, the 5-pixel borders are wider than any of their adjacent
+    borders, so they win out not only over adjoining cell borders, but over the border
+    of the table itself. The only exception is the bottom of cell 1-1, which is suppressed.
+  id: totrans-185
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于单元格1-1和1-4，它们的5像素边框比其相邻边框更宽，因此它们不仅胜过相邻单元格的边框，还胜过表格本身的边框。唯一的例外是单元格1-1的底部，它被抑制了。
+- en: The bottom border on cell 1-1 is suppressed because cells 2-1 and 2-2, with
+    their explicitly hidden borders, completely remove any borders from the edge of
+    the cells. Again, the table’s border loses out (on the left edge of cell 2-1)
+    to a cell’s border. The bottom border of cell 4-1 is also hidden, and so it prevents
+    any border from appearing below the cell.
+  id: totrans-186
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 单元格1-1的底部边框被抑制，因为单元格2-1和2-2明确隐藏了它们的边框，完全删除了单元格边缘的任何边框。同样，表格的边框（在单元格2-1的左边缘）输给了单元格的边框。单元格4-1的底部边框也被隐藏了，因此阻止了任何边框出现在单元格下方。
+- en: The 3-pixel double border of cell 2-4 is overridden on top by the 5-pixel solid
+    border of cell 1-4\. Cell 2-4’s border, in turn, overrides the border between
+    itself and cell 2-3 because it is both wider and “more interesting.” Cell 2-4
+    also overrides the border between itself and cell 3-4, even though both are the
+    same width, because 2-4’s double style is defined to be “more interesting” than
+    3-4’s dotted border.
+  id: totrans-187
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 单元格2-4的3像素双边框被单元格1-4的5像素实线边框覆盖。单元格2-4的边框又覆盖了它与单元格2-3之间的边框，因为它既更宽又更“有趣”。单元格2-4还覆盖了它与单元格3-4之间的边框，即使它们的宽度相同，因为2-4的双线样式被定义为比3-4的点线边框“更有趣”。
+- en: The 13-pixel bottom silver border of cell 3-3 not only overrides the top border
+    of cell 4-3, but it also affects the layout of content within both cells *and*
+    the rows that contain both cells.
+  id: totrans-188
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 单元格3-3的13像素底部银色边框不仅覆盖了单元格4-3的顶部边框，而且还影响了包含这两个单元格及其行内内容的布局。*和*表。
+- en: For cells along the outer edge of the table that aren’t specially styled, their
+    1-pixel solid borders are overridden by the 3-pixel outset border on the table
+    element itself.
+  id: totrans-189
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于沿表格外边缘的未特别样式化的单元格，它们的1像素实线边框被表格元素本身的3像素凸出边框所覆盖。
+- en: 'This is, in fact, about as complicated as it sounds, although the behaviors
+    are largely intuitive and make a little more sense with practice. It’s worth noting
+    that the basic Netscape 1.1-era table presentation can be captured with a fairly
+    simple set of rules:'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事实上，这确实和听起来的一样复杂，尽管行为大部分是直观的，并且随着实践会显得更加合理。值得注意的是，基本的Netscape 1.1时代的表格呈现可以通过一组相当简单的规则来捕捉：
+- en: '[PRE26]'
+  id: totrans-191
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: Yes, tables were made to look 3D-ish by default when they debuted. It was a
+    different time.
+  id: totrans-192
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是的，当表格首次推出时，默认情况下确实使其看起来有3D效果。那时候是一个不同的时代。
+- en: Table Sizing
+  id: totrans-193
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 表格尺寸调整
+- en: 'Now that we’ve dug into the guts of table formatting and cell border appearance,
+    you have the pieces you need to understand the sizing of tables and their internal
+    elements. When it comes to determining table width, CSS has two approaches: *fixed-width
+    layout* and *automatic-width layout*. Table heights are calculated automatically,
+    no matter what width algorithms are used.'
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们深入了解表格格式和单元格边框外观的内部构造，你已经掌握了理解表格及其内部元素尺寸的基本要素。在确定表格宽度时，CSS有两种方法：*固定宽度布局*
+    和 *自动宽度布局* 。表格高度会根据需要自动计算，无论使用何种宽度算法。
+- en: Width
+  id: totrans-195
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 宽度
+- en: Since there are two ways to figure out the width of a table, it’s only logical
+    that there is a way to declare which should be used for a given table. You can
+    use the property `table-layout` to select between the two kinds of table width
+    calculations.
+  id: totrans-196
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于有两种方法可以确定表格的宽度，因此对于给定的表格可以声明使用哪种方法。您可以使用属性`table-layout`来选择两种表格宽度计算方法之间的区别。
+- en: While the two models can have different results in laying out a given table,
+    the fundamental difference between the two is that of speed. With a fixed-width
+    table layout, the user agent can calculate the layout of the table more quickly
+    than is possible in the automatic-width model.
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管两种模型在布置给定表格时可能会有不同的结果，但两者之间根本的区别在于速度。采用固定宽度表格布局，用户代理可以比自动宽度模型更快速地计算表格的布局。
+- en: Fixed layout
+  id: totrans-198
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 固定布局
+- en: The main reason the fixed-layout model is so fast is that its layout does not
+    fully depend on the contents of table cells. Instead, it’s driven by the width
+    values of the table, its column elements, and the cells of the first row within
+    that table.
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 固定布局模型之所以如此快速的主要原因在于，其布局并不完全依赖于表格单元格的内容。相反，它由表格的宽度值、其列元素以及该表格内第一行的单元格驱动。
+- en: 'The fixed-layout model works in the following steps:'
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 固定布局模型按以下步骤工作：
+- en: Any column element whose `width` property has a value other than `auto` sets
+    the width for that entire column.
+  id: totrans-201
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 任何具有除`auto`以外的值的`width`属性的列元素都会设置该整列的宽度。
+- en: If a column has an `auto` width, but the cell in the first row of the table
+    within that column has a `width` other than `auto`, the cell sets the width for
+    that entire column. If the cell spans multiple columns, the width is divided between
+    the columns.
+  id: totrans-202
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果列具有`auto`宽度，但表格的第一行单元格在该列内具有除`auto`以外的`width`，则单元格设置该整列的宽度。如果单元格跨多列，则宽度在列之间分配。
+- en: Any columns that are still auto-sized are sized so that their widths are as
+    equal as possible.
+  id: totrans-203
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 仍然自动调整大小的任何列将被调整为宽度尽可能相等。
+- en: At that point, the width of the table is set to be either the value of `width`
+    for the table or the sum of the column widths, whichever is *greater*. If the
+    table turns out to be wider than its columns, the difference is divided by the
+    number of columns and the result is added to each of them.
+  id: totrans-204
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这一点上，表格的宽度被设置为表格的`width`值或列宽度之和中较大的值。如果表格的宽度比其列宽度大，差值将被除以列数，然后将结果添加到每一列。
+- en: This approach is fast because all of the column widths are defined by the first
+    row of the table. The cells in any rows that come after the first are sized according
+    to the column widths that were defined by the first row. The cells in those following
+    rows do not—indeed, cannot—change column widths, which means that any `width`
+    value assigned to those cells will be ignored. If a cell’s content does not fit
+    into its cell, the `overflow` value for the cell determines whether the cell contents
+    are clipped, visible, or generate a scrollbar.
+  id: totrans-205
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法很快，因为所有列宽度都是由表格的第一行定义的。在第一行之后的任何行中，根据第一行定义的列宽度来调整列的大小。在这些后续行中的单元格不会——实际上也不能——更改列宽度，这意味着对这些单元格分配的任何`width`值都将被忽略。如果单元格的内容不适合其单元格，那么单元格内容是否被裁剪、可见或生成滚动条由单元格的`overflow`值决定。
+- en: 'Let’s consider the following styles and markup, which are illustrated in [Figure 13-10](#table-layout-fixed):'
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们考虑以下样式和标记，这些在[图13-10](#table-layout-fixed)中有所说明：
+- en: '[PRE27]'
+  id: totrans-207
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: '[PRE28]'
+  id: totrans-208
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: '![image](assets/css5_1310.png)'
+  id: totrans-209
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1310.png)'
+- en: Figure 13-10\. Fixed-width table layout
+  id: totrans-210
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图13-10\. 固定宽度表格布局
+- en: The first column is 200 pixels wide, which happens to be half the 400-pixel
+    width of the table. The second column is 75 pixels wide, because the first-row
+    cell within that column has been assigned an explicit width. The third and fourth
+    columns are each 61 pixels wide. Why? Because the sum of the column widths for
+    the first and second columns (275 pixels), plus the various borders between columns
+    (3 pixels), equals 278 pixels. Then, 400 minus 278 is 122, and that divided in
+    half is 61, so that’s how many pixels wide the third and fourth columns will be.
+    What about the 500-pixel width for `#r2c3`? It’s ignored because that cell isn’t
+    in the first row of the table.
+  id: totrans-211
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一列宽度为200像素，恰好是表格宽度400像素的一半。第二列宽度为75像素，因为该列内第一行的单元格已被分配了显式宽度。第三和第四列各61像素宽。为什么？因为第一和第二列的列宽之和（275像素），加上列之间的各种边框（3像素），等于278像素。然后，400减去278等于122，将其一分为二得到61，这就是第三和第四列的宽度。`#r2c3`的500像素宽度怎么办？因为该单元格不在表格的第一行，所以被忽略。
+- en: 'Note that the table doesn’t need to have an explicit `width` value to use the
+    fixed-width layout model, although it definitely helps. For example, given the
+    following, a user agent could calculate a width for the table that is 50 pixels
+    narrower than the parent element’s width. It would then use that calculated width
+    in the fixed-layout algorithm:'
+  id: totrans-212
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，表格不需要具有显式的`width`值才能使用固定宽度布局模型，尽管这确实有所帮助。例如，给定以下情况，用户代理可以计算表格的宽度，比父元素的宽度窄50像素。然后它会在固定布局算法中使用这个计算出的宽度：
+- en: '[PRE29]'
+  id: totrans-213
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: This is not required, however. User agents are also permitted to lay out any
+    table with an `auto` value for `width` by using the automatic-width layout model.
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这并非必须。用户代理还可以使用`auto`值的`width`来布置任何表格，通过自动宽度布局模型。
+- en: Automatic layout
+  id: totrans-215
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 自动布局
+- en: The automatic-width layout model, while not as fast as fixed layout, is probably
+    much more familiar to you because it’s substantially the same model that HTML
+    tables have used since their inception. In most current browsers, use of this
+    model will be triggered by a table having a `width` of `auto`, regardless of the
+    value of `table-layout`, although this is not assured.
+  id: totrans-216
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自动宽度布局模型虽然不如固定布局快，但可能更为熟悉，因为这基本上是自HTML表格诞生以来就采用的模型。在大多数现代浏览器中，只要表格具有`width`为`auto`，无论`table-layout`的值如何，都会触发使用该模型，尽管这并不是一定的。
+- en: The reason automatic layout is slower is that the table cannot be laid out until
+    the user agent has looked at all of the content in the table. The user agent must
+    lay out the entire table in a fashion that takes the contents and styles of every
+    cell into account. This generally requires the user agent to perform some calculations
+    and then go back through the table to perform a second set of calculations (if
+    not more).
+  id: totrans-217
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自动布局较慢的原因在于，表格必须等到用户代理程序查看了表格中的所有内容后才能布局。用户代理必须以考虑每个单元格的内容和样式的方式布局整个表格。通常，这需要用户代理进行一些计算，然后再次回到表格执行第二轮计算（如果不止一轮）。
+- en: The content has to be fully examined because, as with HTML tables, the table’s
+    layout is dependent on the content in all the cells. If a 400-pixel-wide image
+    is in a cell in the last row, that content will force all of the cells above it
+    (those in the same column) to be at least 400 pixels wide. Thus, the width of
+    every cell has to be calculated, and adjustments must be made (possibly triggering
+    another round of content-width calculations) before the table can be laid out.
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为与HTML表格类似，表格的布局依赖于所有单元格中的内容，所以必须完全检查内容。如果最后一行中的一个400像素宽的图像放在一个单元格中，那么该内容将迫使该列中所有上方的单元格（即同一列中的单元格）至少有400像素宽。因此，必须计算每个单元格的宽度，并进行调整（可能触发另一轮内容宽度计算）之后，才能布局表格。
+- en: 'The details of the model can be expressed in the following steps:'
+  id: totrans-219
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 模型的详细信息可以用以下步骤表示：
+- en: For each cell in a column, calculate both the minimum and maximum cell width.
+  id: totrans-220
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于列中的每个单元格，计算最小和最大单元格宽度。
+- en: Determine the minimum width required to display the content. In determining
+    this minimum content width, the content can flow to any number of lines, but it
+    may not stick out of the cell’s box. If the cell has a `width` value that is larger
+    than the minimum possible width, the minimum cell width is set to the value of
+    `width`. If the cell’s `width` value is `auto`, the minimum cell width is set
+    to the minimum content width.
+  id: totrans-221
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 确定显示内容所需的最小宽度。在确定这种最小内容宽度时，内容可以流动到任意数量的行，但不得突出单元格框。如果单元格具有大于最小可能宽度的`width`值，则最小单元格宽度设为`width`的值。如果单元格的`width`值为`auto`，则最小单元格宽度设为最小内容宽度。
+- en: For the maximum width, determine the width required to display the content without
+    any line breaking other than that forced by explicit line breaking (e.g., the
+    `<br>` element). That value is the maximum cell width.
+  id: totrans-222
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于最大宽度，确定显示内容所需的宽度，除了由显式换行（例如`<br>`元素）强制的换行外，不应有任何其他换行。该值即为最大单元格宽度。
+- en: For each column, calculate both the minimum and maximum column width.
+  id: totrans-223
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于每一列，计算最小和最大列宽度。
+- en: The column’s minimum width is determined by the largest minimum cell width of
+    the cells within the column. If the column has been given an explicit `width`
+    value that is larger than any of the minimum cell widths within the column, the
+    minimum column width is set to the value of `width`.
+  id: totrans-224
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 列的最小宽度由列中的单元格的最大最小宽度确定。如果列已经被给定一个明确的`width`值，且该值大于列内任何最小单元格宽度，则最小列宽度设为`width`的值。
+- en: For the maximum width, take the largest maximum cell width of the cells within
+    the column. If the column has been given an explicit `width` value that is larger
+    than any of the maximum cell widths within the column, the maximum column width
+    is set to the value of `width`. These two behaviors re-create the traditional
+    HTML table behavior of forcibly expanding any column to be as wide as its widest
+    cell.
+  id: totrans-225
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于最大宽度，取列中单元格的最大最大宽度。如果列已经给定一个明确的`width`值，且该值大于列内任何最大单元格宽度，则最大列宽度设为`width`的值。这两种行为重新创建了强制将任何列扩展为其最宽单元格的传统HTML表格行为。
+- en: If a cell spans more than one column, the sum of the minimum column widths must
+    be equal to the minimum cell width for the spanning cell. Similarly, the sum of
+    the maximum column widths has to equal the spanning cell’s maximum width. User
+    agents should divide any changes in column widths equally among the spanned columns.
+  id: totrans-226
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果一个单元格跨越多列，那么最小列宽度的总和必须等于跨列单元格的最小宽度。同样地，最大列宽度的总和必须等于跨列单元格的最大宽度。用户代理应当将列宽度的任何变化均匀分配到跨度的各列中。
+- en: In addition, the user agent must take into account that when a column has a
+    percentage value for its width, the percentage is calculated in relation to the
+    width of the table—even though the user agent doesn’t yet know what that will
+    be! It instead has to hang on to the percentage value and use it in the next part
+    of the algorithm.
+  id: totrans-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，用户代理必须考虑到，当列的宽度设定为百分比值时，这个百分比是相对于表格的宽度来计算的——即使用户代理此时还不知道表格的实际宽度！它必须暂存这个百分比值，并在算法的下一部分中使用它。
+- en: 'At this point, the user agent will have figured how wide or narrow each column
+    *can* be. With that information in hand, it can then proceed to actually figuring
+    out the width of the table. This happens as follows:'
+  id: totrans-228
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此时，用户代理已经计算出每列的宽度范围。有了这些信息，它接下来可以真正地计算表格的宽度。具体过程如下：
+- en: If the computed width of the table is not `auto`, the computed table width is
+    compared to the sum of all the column widths *plus* any borders and cell spacing.
+    (Columns with percentage widths are likely calculated at this time.) The larger
+    of the two is the final width of the table. If the table’s computed width is *larger*
+    than the sum of the column widths, borders, and cell spacing, then the difference
+    is divided by the number of columns and the result is added to each of them.
+  id: totrans-229
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果表格的计算宽度不是`auto`，则将计算表格宽度与所有列宽度的总和以及任何边框和单元格间距进行比较。（百分比宽度的列可能在此时计算。）两者中较大的值将成为表格的最终宽度。如果表格的计算宽度*大于*列宽度、边框和单元格间距的总和，则差值将被除以列数，结果将添加到每一列中。
+- en: If the computed width of the table is `auto`, the final width of the table is
+    determined by adding up the column widths, borders, and cell spacing. This means
+    that the table will be only as wide as needed to display its content, just as
+    with traditional HTML tables. Any columns with percentage widths use that percentage
+    as a constraint—but one that a user agent does not have to satisfy.
+  id: totrans-230
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果表格的计算宽度是`auto`，则表格的最终宽度由列宽度、边框和单元格间距的总和决定。这意味着表格的宽度将仅适合显示其内容，就像传统的HTML表格一样。任何百分比宽度的列将使用该百分比作为约束条件——但用户代理不必满足这一约束。
+- en: Once the last step is completed, then—and only then—can the user agent actually
+    lay out the table.
+  id: totrans-231
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只有完成了最后一步，用户代理才能实际布局表格。
+- en: 'The following styles and markup, presented in [Figure 13-11](#table-layout-automatic),
+    help illustrate how this process works:'
+  id: totrans-232
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的样式和标记，如图 [13-11](#table-layout-automatic) 所示，有助于说明这一过程的工作原理：
+- en: '[PRE30]'
+  id: totrans-233
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: '[PRE31]'
+  id: totrans-234
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: '![image](assets/css5_1311.png)'
+  id: totrans-235
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1311.png)'
+- en: Figure 13-11\. Automatic table layout
+  id: totrans-236
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图13-11\. 自动表格布局
+- en: 'Let’s consider what happens for each of the columns, in turn:'
+  id: totrans-237
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们依次考虑每一列发生的情况：
+- en: For the first column, the only explicit cell or column width is that of cell
+    4-1, which is given a width of `100px`. Because the content is so short, both
+    the minimum and maximum column widths are set to `100px`. (If a cell in the column
+    had several sentences of text, it would have increased the maximum column width
+    to whatever width necessary to display all of the text without line breaking.)
+  id: totrans-238
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于第一列，唯一显式设置的单元格或列宽度是4-1单元格，宽度为`100px`。由于内容较短，最小和最大列宽度均设置为`100px`。（如果列中的单元格包含多个句子的文本，则最大列宽度将增加到足以显示所有文本而不换行的宽度。）
+- en: 'For the second column, two `width`s are declared: cell 1-2 is given a width
+    of `40%`, and cell 2-2 is given a width of `50px`. The minimum width of this column
+    is `50px`, and the maximum width is `40%` of the final table width.'
+  id: totrans-239
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于第二列，声明了两个`width`：单元格1-2的宽度为`40%`，而单元格2-2的宽度为`50px`。这一列的最小宽度为`50px`，最大宽度为最终表格宽度的`40%`。
+- en: For the third column, only cell 3-3 has an explicit width (`35px`), but the
+    column itself is given a `width` of `25%`. Therefore, the minimum column width
+    is 35 pixels, and the maximum width is 25% of the final table width.
+  id: totrans-240
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于第三列，只有第3-3单元格有明确的宽度（`35px`），但是列本身被赋予了`width`为`25%`。因此，最小列宽度为35像素，最大宽度为最终表格宽度的25%。
+- en: For the fourth column, only cell 4-4 is given an explicit width (`1px`). This
+    is smaller than the minimum content width, so both the minimum and maximum column
+    widths are equal to the minimum content width of the cells. This turns out to
+    be a computed 22 pixels, so the minimum and maximum widths are both 22 pixels.
+  id: totrans-241
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于第四列，只有单元格 4-4 给定了显式宽度（`1px`）。这小于最小内容宽度，因此最小和最大列宽度均等于单元格的最小内容宽度。这结果为计算的 22
+    像素，因此最小和最大宽度都是 22 像素。
+- en: 'The user agent now knows that the four columns have minimum and maximum widths
+    as follows, in order:'
+  id: totrans-242
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在用户代理知道四列的最小和最大宽度如下：
+- en: Minimum 100 pixels, maximum 100 pixels
+  id: totrans-243
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 最小值为 100 像素，最大值为 100 像素。
+- en: Minimum 50 pixels, maximum 40%
+  id: totrans-244
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 最小值为 50 像素，最大值为 40%。
+- en: Minimum 35 pixels, maximum 25%
+  id: totrans-245
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 最小值为 35 像素，最大值为 25%。
+- en: Minimum 22 pixels, maximum 22 pixels
+  id: totrans-246
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 最小值为 22 像素，最大值为 22 像素。
+- en: The table’s minimum width is the sum of all the column minimums, plus the borders
+    collapsed between the columns, which totals 215 pixels. The table’s maximum width
+    is `123px + 65%`, where the `123px` comes from the first and last columns and
+    their shares of the collapsed borders. This maximum works out to be 351.42857142857143
+    pixels (given that `123px` represents 35% of the overall table width). With this
+    number in hand, the second column will be 140.5 pixels wide, and the third column
+    will be 87.8 pixels wide. These may be rounded by the user agent to whole numbers
+    such as `141px` and `88px`, or not, depending on the exact rendering method used.
+    (These are the numbers used in [Figure 13-11](#table-layout-automatic).)
+  id: totrans-247
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表格的最小宽度是所有列最小宽度的总和，加上列之间折叠的边框，总共为 215 像素。表格的最大宽度是`123px + 65%`，其中`123px`来自第一列和最后一列及其折叠边框的份额。这个最大值计算结果为
+    351.42857142857143 像素（给定`123px`代表总表格宽度的 35%）。有了这个数值，第二列将宽度为 140.5 像素，第三列将宽度为 87.8
+    像素。这些可能会被用户代理四舍五入为整数，如`141px`和`88px`，也可能根据精确的渲染方法而定（这些是 [Figure 13-11](#table-layout-automatic)
+    中使用的数字）。
+- en: Note that user agents are not required to actually use the maximum value; they
+    may choose another course of action.
+  id: totrans-248
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户代理不需要实际使用最大值；它们可以选择其他操作。
+- en: 'This is (although it may not seem like it) a comparatively simple and straightforward
+    example: all of the content is basically the same width, and most of the declared
+    widths are pixel lengths. If a table contains images, paragraphs of text, form
+    elements, and so forth, the process of figuring out the table’s layout is likely
+    to be a great deal more complicated.'
+  id: totrans-249
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这（尽管可能不像是）是一个相对简单和直接的例子：所有内容基本上是相同宽度，大部分声明的宽度都是像素长度。如果表格包含图像、文字段落、表单元素等内容，那么确定表格布局的过程可能会复杂得多。
+- en: Height
+  id: totrans-250
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 高度
+- en: After all of the effort expended in figuring out the width of the table, you
+    might well wonder how much more complicated height calculation will be. Actually,
+    in CSS terms, it’s pretty simple, although browser developers probably don’t think
+    so.
+  id: totrans-251
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在计算表格宽度的所有努力之后，你可能会想知道高度计算会更加复杂。在 CSS 方面，实际上很简单，尽管浏览器开发者可能不这么认为。
+- en: The easiest situation to describe is one in which the table height is explicitly
+    set via the `height` property. In such cases, the height of the table is defined
+    by the value of `height`. This means that a table may be taller or shorter than
+    the sum of its row heights. Note that `height` is treated much more like `min-height`
+    for tables, so if you define a `height` value that’s smaller than the sum total
+    of the row heights, it may appear to be ignored.
+  id: totrans-252
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最容易描述的情况是通过`height`属性明确设置表格高度。在这种情况下，表格的高度由`height`的值定义。这意味着表格的高度可能比其行高的总和要高或者低。请注意，对于表格，`height`更像是`min-height`，因此如果定义的`height`值小于行高的总和，它可能被忽略。
+- en: By contrast, if the `height` value of a table is greater than the total of its
+    row heights, the specification explicitly refuses to define what should happen,
+    instead noting that the issue may be resolved in future versions of CSS. A user
+    agent could expand the table’s rows to fill out its height, or leave blank space
+    inside the table’s box, or something completely different. It’s up to each user
+    agent to decide.
+  id: totrans-253
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相比之下，如果表格的`height`值大于其行高的总和，则规范明确拒绝定义应发生的情况，而是指出此问题可能会在 CSS 的未来版本中解决。用户代理可以展开表格的行以填充其高度，或在表格框中留白，或完全不同的其他操作。这取决于每个用户代理的决定。
+- en: Note
+  id: totrans-254
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: As of mid-2022, the most common behavior of user agents is to increase the heights
+    of the rows in a table to fill out its overall height. This is accomplished by
+    taking the difference between the table height and the sum of the row heights,
+    dividing it by the number of rows, and applying the resulting amount to each row.
+  id: totrans-255
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2022年中，用户代理的最常见行为是增加表格行的高度，以填充其整体高度。这是通过取表格高度与行高总和的差异，除以行数，并将结果应用到每一行来实现的。
+- en: 'If the `height` of the table is `auto`, its height is the sum of the heights
+    of all the rows within the table, plus any borders and cell spacing. To determine
+    the height of each row, the user agent goes through a process similar to that
+    used to find the widths of columns: it calculates a minimum and maximum height
+    for the contents of each cell and then uses these to derive a minimum and maximum
+    height for the row. After having done this for all the rows, the user agent figures
+    out what each row’s height should be, stacks them all on top of one another, and
+    uses the total to determine the table’s height.'
+  id: totrans-256
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果表格的`height`为`auto`，其高度是表格内所有行的高度总和，加上任何边框和单元格间距。为了确定每行的高度，用户代理通过类似于确定列宽度的过程进行：它计算每个单元格内容的最小和最大高度，然后用这些值来推导出每行的最小和最大高度。在为所有行完成这一过程后，用户代理确定每行的高度，将它们依次堆叠，并使用总和来确定表格的高度。
+- en: 'In addition to what to do about tables with explicit heights and how to treat
+    row heights within them, you can add the following to the list of things CSS does
+    not define:'
+  id: totrans-257
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了如何处理具有显式高度的表格及其内部的行高之外，您还可以将以下内容添加到CSS未定义的事物列表中：
+- en: The effect of a percentage height for table cells
+  id: totrans-258
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 百分比高度对表格单元格的影响
+- en: The effect of a percentage height for table rows and row groups
+  id: totrans-259
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 百分比高度对表格行和行组的影响
+- en: How a row-spanning cell affects the heights of the rows that are spanned, except
+    that the rows have to contain the spanning cell
+  id: totrans-260
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 跨行单元格如何影响跨越的行的高度，除非行必须包含跨越的单元格
+- en: As you can see, height calculations in tables are largely left up to user agents
+    to figure out. Historical evidence would suggest that this will lead to each user
+    agent doing something different, so you should probably avoid setting table heights
+    as much as possible.
+  id: totrans-261
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，在表格中的高度计算很大程度上取决于用户代理的处理方式。历史证据表明，这将导致每个用户代理采取不同的方法，因此您应尽可能避免设置表格高度。
+- en: Alignment
+  id: totrans-262
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 对齐
+- en: In a rather interesting turn of events, alignment of content within cells is
+    a lot better defined than cell and row heights. This is true even for vertical
+    alignment, which can quite easily affect the height of a row.
+  id: totrans-263
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有趣的是，与单元格和行高相比，单元格内内容的对齐更加明确定义。即使对于垂直对齐，这也很容易影响行的高度。
+- en: Horizontal alignment is the simplest. To align content within a cell, you use
+    the `text-align` property. In effect, the cell is treated as a block-level box,
+    and all of the content within it is aligned as per the `text-align` value.
+  id: totrans-264
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 水平对齐是最简单的。要在单元格中对齐内容，您可以使用`text-align`属性。实际上，该单元格被视为块级框，并且其中的所有内容都根据`text-align`值对齐。
+- en: 'To vertically align content in a table cell, `vertical-align` is the relevant
+    property. It uses many of the same values that are used for vertically aligning
+    inline content, but the meanings of those values change when applied to a table
+    cell. To summarize the three simplest cases:'
+  id: totrans-265
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在表格单元格中垂直对齐内容，`vertical-align`是相关属性。它使用许多用于垂直对齐内联内容的相同值，但是当应用于表格单元格时，这些值的含义会发生变化。简要总结三种最简单的情况：
+- en: '`top`'
+  id: totrans-266
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`top`'
+- en: The top of the cell’s content is aligned with the top of its row; in the case
+    of row-spanning cells, the top of the cell’s content is aligned with the top of
+    the first row it spans.
+  id: totrans-267
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单元格内容的顶部与其行的顶部对齐；在跨行单元格的情况下，单元格内容的顶部与其跨越的第一行的顶部对齐。
+- en: '`bottom`'
+  id: totrans-268
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`bottom`'
+- en: The bottom of the cell’s content is aligned with the bottom of its row; in the
+    case of row-spanning cells, the bottom of the cell’s content is aligned with the
+    bottom of the last row it spans.
+  id: totrans-269
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单元格内容的底部与其行的底部对齐；在跨行单元格的情况下，单元格内容的底部与其跨越的最后一行的底部对齐。
+- en: '`middle`'
+  id: totrans-270
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`middle`'
+- en: The middle of the cell’s content is aligned with the middle of its row; in the
+    case of row-spanning cells, the middle of the cell’s content is aligned with the
+    middle of all the rows it spans.
+  id: totrans-271
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单元格内容的中部与其行的中部对齐；在跨行单元格的情况下，单元格内容的中部与其跨越的所有行的中部对齐。
+- en: 'These are illustrated in [Figure 13-12](#alignment-vertical), which uses the
+    following styles and markup:'
+  id: totrans-272
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些都在[图 13-12](#alignment-vertical)中进行了说明，该图使用以下样式和标记：
+- en: '[PRE32]'
+  id: totrans-273
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: '[PRE33]'
+  id: totrans-274
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: '![css5 1312](assets/css5_1312.png)'
+  id: totrans-275
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1312](assets/css5_1312.png)'
+- en: Figure 13-12\. Vertical alignment of cell contents
+  id: totrans-276
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-12\. 单元格内容的垂直对齐
+- en: In each case, the alignment is carried out by automatically increasing the padding
+    of the cell itself to achieve the desired effect. In the first cell in [Figure 13-12](#alignment-vertical),
+    the bottom padding of the cell has been changed to equal the difference between
+    the height of the cell’s box and the height of the content within the cell. For
+    the second cell, the top and bottom padding of the cell have been reset to be
+    equal, thus vertically centering the content of the cell. In the last cell, the
+    cell’s top padding has been altered.
+  id: totrans-277
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在每种情况下，通过自动增加单元格本身的填充来实现所需的对齐效果。在[图 13-12](#alignment-vertical)的第一个单元格中，单元格的底部填充已经更改为等于单元格框的高度与单元格内内容高度之间的差异。对于第二个单元格，单元格的顶部和底部填充已被重置为相等，从而垂直居中单元格内容。在最后一个单元格中，单元格的顶部填充已被修改。
+- en: 'The fourth possible alignment value is `baseline`, and it’s a little more complicated
+    than the first three:'
+  id: totrans-278
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第四种可能的对齐值是 `baseline`，比前三种稍微复杂一些：
+- en: '`baseline`'
+  id: totrans-279
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`baseline`'
+- en: The baseline of the cell is aligned with the baseline of its row; in the case
+    of row-spanning cells, the baseline of the cell is aligned with the baseline of
+    the first row it spans.
+  id: totrans-280
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单元格的基线与其行的基线对齐；对于跨行的单元格，单元格的基线与其跨越的第一行的基线对齐。
+- en: It’s easiest to provide an illustration ([Figure 13-13](#alignment-baseline))
+    and then discuss what’s happening.
+  id: totrans-281
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最好提供一个插图([图 13-13](#alignment-baseline))，然后讨论发生的情况。
+- en: '![image](assets/css5_1313.png)'
+  id: totrans-282
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1313.png)'
+- en: Figure 13-13\. Baseline alignment of cell contents
+  id: totrans-283
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 13-13\. 单元格内容的基线对齐
+- en: A row’s baseline is defined by the lowest initial cell baseline (that is, the
+    baseline of the first line of text) out of all its cells. Thus, in [Figure 13-13](#alignment-baseline),
+    the row’s baseline is defined by the third cell, which has the lowest initial
+    baseline. The first two cells then have the baseline of their first line of text
+    aligned with the row’s baseline.
+  id: totrans-284
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行的基线由其所有单元格中初始单元格基线（即第一行文本的基线）中最低的定义。因此，在[图 13-13](#alignment-baseline)中，行的基线由第三个单元格定义，该单元格具有最低的初始基线。然后，前两个单元格的第一行文本的基线与行的基线对齐。
+- en: As with top, middle, and bottom alignment, the placement of baseline-aligned
+    cell content is accomplished by altering the top and bottom padding of the cells.
+    If none of the cells in a row are baseline-aligned, the row does not even have
+    a baseline—it doesn’t really need one.
+  id: totrans-285
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与顶部、中部和底部对齐一样，基线对齐单元格内容的放置是通过修改单元格的顶部和底部填充来完成的。如果一行中没有任何单元格是基线对齐的，则该行甚至没有基线
+    —— 它实际上不需要基线。
+- en: 'The detailed process for aligning cell contents within a row is as follows:'
+  id: totrans-286
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在行内对齐单元格内容的详细过程如下：
+- en: If any of the cells are baseline-aligned, the row’s baseline is determined and
+    the content of the baseline-aligned cells is placed.
+  id: totrans-287
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果任何单元格是基线对齐的，则确定行的基线并放置基线对齐的单元格的内容。
+- en: Any top-aligned cell has its content placed. The row now has a provisional height,
+    which is defined by the lowest cell bottom of the cells that have already had
+    their content placed.
+  id: totrans-288
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 任何顶部对齐的单元格都会放置其内容。现在，行有一个临时高度，由已经放置其内容的单元格中底部最低的单元格定义。
+- en: If any remaining cells are middle- or bottom-aligned, and the content height
+    is taller than the provisional row height, the height of the row is increased
+    to enclose the tallest of those cells.
+  id: totrans-289
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果有任何剩余的中部或底部对齐的单元格，并且内容高度高于临时行高度，则行的高度将增加以包含其中最高的单元格之一。
+- en: All remaining cells have their content placed. In any cell whose contents are
+    shorter than the row height, the cell’s padding is increased in order to match
+    the height of the row.
+  id: totrans-290
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有剩余的单元格都放置其内容。在任何内容短于行高度的单元格中，将增加单元格的填充以匹配行的高度。
+- en: The `vertical-align` values `sub`, `super`, `text-top`, and `text-bottom` are
+    supposed to be ignored when applied to table cells. Instead, they seem to be treated
+    as if they are `baseline`, or possibly `top`.
+  id: totrans-291
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`vertical-align` 值 `sub`、`super`、`text-top` 和 `text-bottom` 在应用于表单元格时应被忽略。相反，它们似乎被视为
+    `baseline` 或可能是 `top`。'
+- en: Summary
+  id: totrans-292
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 摘要
+- en: Even if you’re quite familiar with table layout from years of table-and-spacer
+    design, it turns out that the mechanisms driving such layout are rather complicated.
+    Thanks to the legacy of HTML table construction, the CSS table model is row-centric,
+    but it does, thankfully, accommodate columns and limited column styling. Thanks
+    to new abilities to affect cell alignment and table width, you now have even more
+    tools for presenting tables in a pleasing way.
+  id: totrans-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使你对表格布局非常熟悉，可能已经从多年的表格和空格设计中积累了经验，但事实证明，驱动这种布局的机制相当复杂。感谢HTML表格构建的遗产，CSS表格模型以行为中心，但幸运的是，它确实支持列和有限的列样式。由于新的能力可以影响单元格对齐和表格宽度，现在你有更多的工具来以令人愉悦的方式呈现表格。
+- en: The ability to apply table-related display values to arbitrary elements opens
+    the door to creating table-like layouts by using HTML elements such as `<div>`
+    and `<section>`, or by using XML languages that allow you to use any element to
+    describe table components.
+  id: totrans-294
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将表格相关的显示值应用于任意元素的能力，打开了通过使用HTML元素如`<div>`和`<section>`或使用允许您使用任何元素描述表格组件的XML语言来创建类似表格的布局的大门。

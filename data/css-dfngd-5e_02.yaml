@@ -1,0 +1,2423 @@
+- en: Chapter 2\. Selectors
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第2章。选择器
+- en: 'One of the primary advantages of CSS is its ability to easily apply a set of
+    styles to all elements of the same type. Unimpressed? Consider this: by editing
+    a single line of CSS, you can change the colors of all your headings. Don’t like
+    the blue you’re using? Change that one line of code, and they can all be purple,
+    yellow, maroon, or any other color you desire.'
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS的主要优势之一是能够轻松地将一组样式应用于文档中所有相同类型的元素。不感兴趣？考虑一下：通过编辑一行CSS，您可以更改所有标题的颜色。不喜欢目前使用的蓝色？更改一行代码，它们可以是紫色、黄色、褐色或您想要的任何其他颜色。
+- en: This capability lets you, the author, focus on design and user experience rather
+    than tedious find-and-replace operations. The next time you’re in a meeting and
+    someone wants to see headings with a different shade of green, just edit your
+    style and hit Reload. Voilà! The results are accomplished in seconds and there
+    for everyone to see.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种能力使您作为作者可以专注于设计和用户体验，而不是繁琐的查找和替换操作。下次开会时，有人想要看到不同颜色的标题，只需编辑您的样式并重新加载。Voilà！几秒钟内就能看到结果，让所有人都能看到。
+- en: Basic Style Rules
+  id: totrans-3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 基本样式规则
+- en: 'As stated, a central feature of CSS is its ability to apply certain rules to
+    an entire set of element types in a document. For example, let’s say that you
+    want to make the text of all `<h2>` elements appear gray. Before we had CSS, you’d
+    have to do this by inserting `<font color="gray">...</font>` tags inside all your
+    `<h2>` elements. Applying inline styles using the `style` attribute, which is
+    also bad practice, would require you to include `style="color: gray;"` in all
+    your `<h2>` elements, like this:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如前所述，CSS的一个核心特性是其能够将某些规则应用于文档中一整组元素类型。例如，假设您想使所有`<h2>`元素的文本显示为灰色。在有CSS之前，您必须在所有`<h2>`元素中插入`<font
+    color="gray">...</font>`标签来实现此目的。使用`style`属性应用内联样式，这也是不良实践，需要您在所有`<h2>`元素中包含`style="color:
+    gray;"`，如下所示：'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This will be a tedious process if your document contains a lot of `<h2>` elements.
+    Worse, if you later decide that you want all those `<h2>`s to be green instead
+    of gray, you’d have to start the manual tagging all over again. (Yes, this is
+    really how it used to be done!)
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您的文档包含大量`<h2>`元素，则这将是一个繁琐的过程。更糟糕的是，如果稍后决定要将所有这些`<h2>`改为绿色而不是灰色，您将不得不重新开始手动标记（是的，这确实是以前的做法！）
+- en: 'CSS allows you to create rules that are simple to change, edit, and apply to
+    all the text elements you define (the next section explains how these rules work).
+    For example, you can write this rule once to make all your `<h2>` elements gray:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS允许您创建简单易变、易编辑和适用于您定义的所有文本元素的规则（下一节将解释这些规则的工作原理）。例如，您可以编写此规则，使所有`<h2>`元素变为灰色：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Type Selectors
+  id: totrans-9
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 类型选择器
+- en: 'A *type selector*, previously known as an *element selector*, is most often
+    an HTML element, but not always. For example, if a CSS file contains styles for
+    an XML document, the type selectors might look something like this:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*类型选择器*，以前称为*元素选择器*，最常见的是HTML元素，但并非总是如此。例如，如果CSS文件包含XML文档的样式，则类型选择器可能如下所示：'
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'In other words, the elements of the document are the node types being selected.
+    In XML, a selector could be anything because XML allows for the creation of new
+    markup languages that can have just about anything as an element name. If you’re
+    styling an HTML document, the selector will generally be one of the many defined
+    HTML elements such as `<p>`, `<h3>`, `<em>`, `<a>`, or even `<html>` itself. For
+    example:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 换句话说，文档的元素是被选择的节点类型。在XML中，选择器可以是任何东西，因为XML允许创建可以具有几乎任何元素名称的新标记语言。如果您正在为HTML文档添加样式，则选择器通常将是HTML定义的许多元素之一，例如`<p>`、`<h3>`、`<em>`、`<a>`或甚至`<html>`本身。例如：
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '[Figure 2-1](#simple_styling_of_a_simple_document) shows the results of this
+    stylesheet.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 2-1](#simple_styling_of_a_simple_document)显示了此样式表的结果。'
+- en: '![css5 0201](assets/css5_0201.png)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0201](assets/css5_0201.png)'
+- en: Figure 2-1\. Simple styling of a simple document
+  id: totrans-16
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-1。简单文档的简单样式
+- en: 'Once you’ve globally applied styles directly to elements, you can shift those
+    styles from one element to another. Let’s say you decide that the paragraph text,
+    not the `<h1>` elements, in [Figure 2-1](#simple_styling_of_a_simple_document)
+    should be gray. No problem. Just change the `h1` selector to `p`:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦您直接将样式全局应用于元素，您可以将这些样式从一个元素转移到另一个元素。假设您决定段落文本而不是`<h1>`元素在[图 2-1](#simple_styling_of_a_simple_document)中应为灰色。没问题。只需将`h1`选择器更改为`p`：
+- en: '[PRE4]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '[Figure 2-2](#moving_a_style_from_one_element_to_anoth) shows the results.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 2-2](#moving_a_style_from_one_element_to_anoth)显示了结果。'
+- en: '![css5 0202](assets/css5_0202.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0202](assets/css5_0202.png)'
+- en: Figure 2-2\. Moving a style from one element to another
+  id: totrans-21
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图2-2。将样式从一个元素移动到另一个元素
+- en: Grouping
+  id: totrans-22
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 分组
+- en: So far, you’ve seen fairly simple techniques for applying a single style to
+    a single selector. But what if you want the same style to apply to multiple elements?
+    *Grouping* allows an author to drastically compact certain types of style assignments,
+    which makes for a shorter stylesheet.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，您已经看到了将单个样式应用于单个选择器的相当简单的技术。但是如果您希望相同的样式应用于多个元素怎么办？*组合* 允许作者大幅压缩某些类型的样式分配，使样式表更短。
+- en: Grouping Selectors
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 组合选择器
+- en: 'Let’s say you want both `<h2>` elements and paragraphs to have gray text. The
+    easiest way to accomplish this is to use the following declaration:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您想要 `<h2>` 元素和段落都显示灰色文本。实现这一目标的最简单方法是使用以下声明：
+- en: '[PRE5]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'By placing the `h2` and `p` selectors at the beginning of the rule, before
+    the opening curly brace, and separating them with a comma, you’ve defined a rule
+    indicating that the style inside the curly braces (`color: gray;`) applies to
+    the elements referenced by both selectors. The comma tells the browser that two
+    different selectors are involved in the rule. Leaving out the comma would give
+    the rule a completely different meaning, which we’ll explore in [“Defining Descendant
+    Selectors”](#descendant_selectors).'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '通过将 `h2` 和 `p` 选择器放在规则的开头，即在开放的大括号之前，并用逗号分隔它们，您定义了一个规则，表明大括号内的样式（`color: gray;`）适用于两个选择器引用的元素。逗号告诉浏览器该规则涉及两个不同的选择器。如果省略逗号，规则将具有完全不同的含义，我们将在[“定义后代选择器”](#descendant_selectors)中探讨这一点。'
+- en: 'These alternatives produce exactly the same result, but one is a lot easier
+    to type:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些选择产生完全相同的结果，但一种输入起来更容易：
+- en: '[PRE6]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The second alternative, with one grouped selector, is also a lot easier to maintain
+    over time.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二种选择，使用一个分组选择器，随着时间的推移也更容易维护。
+- en: The universal selector
+  id: totrans-31
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 通用选择器
+- en: 'The *universal selector*, displayed as an asterisk (`*`), matches any element
+    at all, much like a wildcard. For example, to make every single element in a document
+    bold, you would write this:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*通用选择器*，显示为星号（`*`），匹配任何元素，就像通配符一样。例如，要使文档中的每个元素都加粗，您可以这样写：'
+- en: '[PRE7]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'This declaration is equivalent to a grouped selector that lists every element
+    contained within the document. The universal selector lets you assign the `font-weight`
+    value `bold` to every element in the document in one efficient stroke. Beware,
+    however: although the universal selector is convenient because it targets everything
+    within its declaration scope, it can have unintended consequences, which are discussed
+    in [“Zeroed Selector Specificity”](ch04.html#zeroed_selector_specificity).'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此声明相当于一个列出文档中所有元素的分组选择器，使您能够一次性将 `font-weight` 值 `bold` 分配给文档中的每个元素。但请注意：虽然通用选择器很方便，因为它针对声明范围内的所有内容，但它可能会产生意想不到的后果，这在[“零选择器特异性”](ch04.html#zeroed_selector_specificity)中有讨论。
+- en: Grouping Declarations
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 组合声明
+- en: 'Just as you can group selectors into a single rule, you can also group declarations.
+    Assuming that you want all `<h1>` elements to appear in purple, 18-pixel-high
+    Helvetica text on an aqua background (and you don’t mind blinding your readers),
+    you could write your styles like this:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您可以将选择器组合成单个规则一样，您也可以组合声明。假设您希望所有 `<h1>` 元素显示为紫色、18像素高的Helvetica文本，并带有水绿色背景（如果不介意让读者眼花缭乱的话），您可以这样写您的样式：
+- en: '[PRE8]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'But this method is inefficient—imagine creating such a list for an element
+    that will carry 10 or 15 styles! Instead, you can group your declarations together:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是这种方法效率低下——想象一下为将承载10或15种样式的元素创建这样的列表！相反，您可以将声明分组在一起：
+- en: '[PRE9]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: This will have exactly the same effect as the three-line stylesheet just shown.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将与刚刚显示的三行样式表具有完全相同的效果。
+- en: 'Note that using semicolons at the end of each declaration is crucial when you’re
+    grouping them. Browsers ignore whitespace in stylesheets, so the user agent must
+    rely on correct syntax to parse the stylesheet. You can fearlessly format styles
+    like the following:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，在分组它们时，每个声明末尾使用分号至关重要。浏览器会忽略样式表中的空白，因此用户代理必须依赖正确的语法来解析样式表。您可以毫不犹豫地格式化以下样式：
+- en: '[PRE10]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'You can also minimize your CSS, removing all unrequired spaces:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以最小化您的CSS，删除所有不必要的空格：
+- en: '[PRE11]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: The last three examples are treated equally by the server, but the second one
+    is generally regarded as the most human-readable, and is the recommended method
+    of writing your CSS during development. You might choose to minimize your CSS
+    for network-performance reasons, but this is usually automatically handled by
+    a build tool, server-side script, caching network, or other service, so you’re
+    usually better off writing your CSS in a human-readable fashion.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 服务器同样对最后三个示例进行处理，但第二个通常被认为是最易读的，并且是开发过程中推荐的编写 CSS 的方法。你可能会选择为网络性能原因最小化你的 CSS，但这通常会被构建工具、服务器端脚本、缓存网络或其他服务自动处理，因此通常最好以人类可读的方式编写你的
+    CSS。
+- en: 'If the semicolon is omitted on the second statement, the user agent will interpret
+    the stylesheet as follows:'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在第二个语句中省略了分号，用户代理将按以下方式解释样式表：
+- en: '[PRE12]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'Because `background:` is not a valid value for `color`, a user agent will ignore
+    the `color` declaration entirely (including the `background: aqua` part). You
+    might think the browser would at least render `<h1>`s as purple text without an
+    aqua background, but not so. Instead, they will be the inherited color with a
+    transparent background. The declaration `font: 18px Helvetica` will still take
+    effect since it was correctly terminated with a semicolon.'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '因为`background:`不是`color`的有效值，用户代理将完全忽略`color`声明（包括`background: aqua`部分）。你可能认为浏览器至少会将`<h1>`渲染为紫色文本而没有水绿色背景，但事实并非如此。相反，它们将是继承的颜色，具有透明的背景。声明`font:
+    18px Helvetica`仍将生效，因为它正确地用分号终止了。'
+- en: Tip
+  id: totrans-49
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 提示
+- en: Although following the last declaration of a rule with a semicolon is not technically
+    necessary in CSS, doing so is generally good practice. First, it will keep you
+    in the habit of terminating your declarations with semicolons, the lack of which
+    is one of the most common causes of rendering errors. Second, if you decide to
+    add another declaration to a rule, you won’t have to worry about forgetting to
+    insert an extra semicolon.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然在 CSS 中在规则的最后声明后面跟分号在技术上不是必需的，但这样做通常是个好习惯。首先，它将使你保持习惯，用分号终止你的声明，缺少分号是导致渲染错误最常见的原因之一。其次，如果你决定向规则添加另一个声明，你就不必担心忘记插入额外的分号了。
+- en: As with selector grouping, declaration grouping is a convenient way to keep
+    your stylesheets short, expressive, and easy to maintain.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与选择器分组类似，声明分组是保持你的样式表简短、表达力强和易于维护的便捷方式。
+- en: Grouping Everything
+  id: totrans-52
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 全部分组
+- en: 'You now know that you can group selectors and you can group declarations. By
+    combining both kinds of grouping in single rules, you can define very complex
+    styles using only a few statements. Now, what if you want to assign some complex
+    styles to all the headings in a document, and you want the same styles to be applied
+    to all of them? Here’s how:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你知道你可以分组选择器和声明。通过将这两种分组结合在单个规则中，你可以只用几个语句就定义非常复杂的样式。现在，如果你想为文档中的所有标题分配一些复杂的样式，并且希望相同的样式应用于它们所有，那么应该这样做：
+- en: '[PRE13]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Here we’ve grouped the selectors, so the styles inside the curly braces will
+    be applied to all the headings listed; grouping the declarations means that all
+    of the listed styles will be applied to the selectors on the left side of the
+    rule. [Figure 2-3](#grouping_both_selectors_and_rules) shows the result of this
+    rule.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们在这里分组了选择器，所以大括号内的样式将应用于所有列出的标题；分组声明意味着所有列出的样式将应用于规则左侧的选择器。[图 2-3](#grouping_both_selectors_and_rules)
+    展示了此规则的结果。
+- en: '![css5 0203](assets/css5_0203.png)'
+  id: totrans-56
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0203](assets/css5_0203.png)'
+- en: Figure 2-3\. Grouping both selectors and rules
+  id: totrans-57
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-3\. 分组选择器和规则
+- en: 'This approach is preferable to the drawn-out alternative, which would begin
+    with something like this:'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法优于冗长的替代方法，其开头可能是这样的：
+- en: '[PRE14]'
+  id: totrans-59
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: …​and continue for many lines. You *can* write out your styles the long way,
+    but we don’t recommend it—editing them would be about as tedious as using `style`
+    attributes everywhere!
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ……并继续多行。你*可以*用长篇方式编写你的样式，但我们不推荐这样做——编辑它们将会像在每个地方使用`style`属性一样繁琐！
+- en: 'Grouping allows for some interesting choices. For example, all the groups of
+    rules in the following example are equivalent—each merely shows a different way
+    of grouping both selectors and declarations:'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分组允许一些有趣的选择。例如，以下示例中所有规则组都是等效的——每个仅展示了一种不同的分组选择器和声明的方式：
+- en: '[PRE15]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: Any of these three approaches to grouping selectors and declarations will yield
+    the result shown in [Figure 2-4](#the_result_of_equivalent_style_sheets).
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何这三种选择器和声明分组方法都将产生[图 2-4](#the_result_of_equivalent_style_sheets)中显示的结果。
+- en: '![css5 0204](assets/css5_0204.png)'
+  id: totrans-64
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0204](assets/css5_0204.png)'
+- en: Figure 2-4\. The result of equivalent stylesheets
+  id: totrans-65
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-4. 等效样式表的结果
+- en: Class and ID Selectors
+  id: totrans-66
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 类和 ID 选择器
+- en: So far, we’ve been grouping selectors and declarations together in a variety
+    of ways, but the selectors we’ve been using are very simple ones that refer only
+    to document elements. Type selectors are fine up to a point, but oftentimes you
+    need something a little more focused.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们已经以各种方式将选择器和声明分组在一起，但是我们使用的选择器非常简单，只引用文档元素。类型选择器在某种程度上是可以的，但通常情况下，您需要更加专注的内容。
+- en: In addition to type selectors, CSS has *class selectors* and *ID selectors*,
+    which let you assign styles based on HTML attributes but independent of element
+    type. These selectors can be used on their own or in conjunction with type selectors.
+    However, they work only if you’ve marked up your document appropriately, so using
+    them generally involves a little forethought and planning.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了类型选择器之外，CSS 还有*类选择器*和*ID 选择器*，这些选择器允许您根据 HTML 属性而不是元素类型分配样式。这些选择器可以单独使用或与类型选择器结合使用。然而，它们仅在您适当地标记文档时才有效，因此通常需要一些事先考虑和规划。
+- en: 'For example, say a document contains multiple warnings. You want each warning
+    to appear in boldfaced text so that it will stand out. However, you don’t know
+    which element types contain this warning content. Some warnings could be entire
+    paragraphs, while others could be a single item within a lengthy list or a few
+    words in a section of text. So, you can’t define a rule using type selectors of
+    any kind. Suppose you tried this route:'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设文档包含多个警告。您希望每个警告都以粗体文本显示，以便突出显示。但是，您不知道哪些元素类型包含此警告内容。有些警告可能是整个段落，而其他可能是长列表中的单个项目或文本部分中的几个单词。因此，您无法使用任何类型选择器来定义规则。假设您尝试了这条路线：
+- en: '[PRE16]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: '*All* paragraphs would be red and bold, not just those that contain warnings.
+    You need a way to select only the text that contains warnings—or, more precisely,
+    a way to select only those elements that are warnings. How do you do it? You apply
+    styles to parts of the document that have been marked in a certain way, independent
+    of the elements involved, by using class selectors.'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*所有*段落都将是红色和粗体，而不仅仅是那些包含警告的段落。您需要一种方法来仅选择包含警告文本的文本——更准确地说，是一种仅选择那些警告元素的方法。您该如何做到呢？通过使用类选择器，您可以对文档的某些部分应用样式，而与所涉及的元素无关。'
+- en: Class Selectors
+  id: totrans-72
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 类选择器
+- en: 'The most common way to apply styles without worrying about the elements involved
+    is to use *class selectors*. Before you can use them, however, you need to modify
+    your document markup so that the class selectors will work. Enter the `class`
+    attribute:'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用样式的最常见方法是使用*类选择器*，而无需担心所涉及的元素。但是，在使用它们之前，您需要修改文档标记，以使类选择器正常工作。输入`class`属性：
+- en: '[PRE17]'
+  id: totrans-74
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: 'To associate the styles of a class selector with an element, you must assign
+    a `class` attribute the appropriate value. In the previous code block, a `class`
+    value of `warning` is assigned to two elements: the first paragraph and the `<span>`
+    element in the second paragraph.'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将类选择器的样式与元素关联起来，必须为`class`属性分配适当的值。在前面的代码块中，将`class`值`warning`分配给两个元素：第一个段落和第二段落中的`<span>`元素。
+- en: 'To apply styles to these classed elements, you can use a compact notation in
+    which the name of the class is preceded by a period (`.`):'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要对这些带类的元素应用样式，可以使用一种紧凑的表示法，其中类名前面带有一个句点（`.`）：
+- en: '[PRE18]'
+  id: totrans-77
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: 'When combined with the example markup shown earlier, this simple rule has the
+    effect shown in [Figure 2-5](#using_a_class_selector). The declaration `font-weight:
+    bold` will be applied to every element that carries a `class` attribute with a
+    value of `warning`.'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '当与前面显示的示例标记结合使用时，此简单规则的效果如[图 2-5](#using_a_class_selector)所示。声明`font-weight:
+    bold`将应用于携带`class`属性值为`warning`的每个元素。'
+- en: 'As [Figure 2-5](#using_a_class_selector) illustrates, the class selector works
+    by directly referencing a value that will be found in the `class` attribute of
+    an element. This reference is *always* preceded by a period (`.`), which marks
+    it as a class selector. The period helps keep the class selector separate from
+    anything with which it might be combined, such as a type selector. For example,
+    you may want boldfaced warning text only when an entire paragraph is a warning:'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[图 2-5](#using_a_class_selector)所示，类选择器通过直接引用元素的`class`属性中的值来工作。这个引用*总是*以一个句点（`.`）开头，标志着它是一个类选择器。这个句点有助于将类选择器与可能与之组合的任何内容分开，比如类型选择器。例如，你可能只想在整个段落作为警告时使用加粗的警告文本：
+- en: '[PRE19]'
+  id: totrans-80
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: '![css5 0205](assets/css5_0205.png)'
+  id: totrans-81
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0205](assets/css5_0205.png)'
+- en: Figure 2-5\. Using a class selector
+  id: totrans-82
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-5\. 使用类选择器
+- en: The selector now matches any `<p>` elements that have a `class` attribute containing
+    the word `warning`, but no other elements of any kind, classed or otherwise. Since
+    the `<span>` element is not a paragraph, the rule’s selector doesn’t match it,
+    and it won’t be displayed using boldfaced text.
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此选择器现在匹配任何具有包含单词`warning`的`class`属性的 `<p>` 元素，但不包括其他任何类型的元素，无论其类别如何。由于 `<span>`
+    元素不是段落，规则的选择器不匹配它，因此不会使用加粗文本显示它。
+- en: 'If you wanted to assign different styles to the `<span>` element, you could
+    use the selector `span.warning`:'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想为`<span>`元素分配不同的样式，可以使用选择器 `span.warning`：
+- en: '[PRE20]'
+  id: totrans-85
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: In this case, the warning paragraph is boldfaced, while the warning `<span>`
+    is italicized. Each rule applies only to a specific type of element/class combination,
+    so it does not leak over to other elements.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，警告段落加粗，而警告的 `<span>` 斜体。每个规则只适用于特定类型的元素/类组合，因此不会泄漏到其他元素上。
+- en: 'Another option is to use a combination of a general class selector and an element-specific
+    class selector to make the styles even more useful, as in the following markup:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种选择是使用通用类选择器和元素特定类选择器的组合，使样式更加实用，如以下标记所示：
+- en: '[PRE21]'
+  id: totrans-88
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: '[Figure 2-6](#using_generic_and_specific_selectors_to) shows the results.'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 2-6](#using_generic_and_specific_selectors_to)展示了结果。'
+- en: In this situation, any warning text will be italicized, but only the text within
+    a `<span>` element with a `class` of `warning` will be both boldfaced and italicized.
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，任何警告文本都将是斜体，但只有具有`class`为`warning`的 `<span>` 元素中的文本既加粗又斜体。
+- en: '![css5 0206](assets/css5_0206.png)'
+  id: totrans-91
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0206](assets/css5_0206.png)'
+- en: Figure 2-6\. Using generic and specific selectors to combine styles
+  id: totrans-92
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-6\. 使用通用和特定选择器组合样式
+- en: Tip
+  id: totrans-93
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 小贴士
+- en: 'Notice the format of the general class selector used in the previous example:
+    it’s a class name preceded by a period, and without an element name or universal
+    selector. If you want to select all elements that share a class name, you can
+    omit the universal selector from a class selector without any ill effects. Thus,
+    `*.warning` and `.warning` will have exactly the same effect.'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意前面示例中使用的通用类选择器的格式：它是一个类名，前面加一个句点，没有元素名或通配选择器。如果你想选择所有具有相同类名的元素，你可以省略类选择器中的通配选择器而不会产生任何不良影响。因此，`*.warning`
+    和 `.warning` 的效果完全相同。
+- en: 'Another thing about class names: they should *never* begin with a number. Browsers
+    will allow you to get away with this, but CSS validators will complain, and it’s
+    a bad habit to get into. Thus, you should write `.c8675` in your CSS and `class="c8675"`
+    in your HTML, rather than `.8675` and `class="8675"`. If you must refer to classes
+    that begin with numbers, put a backslash between the period and the first number
+    in your class selector, like so: `.\8675`.'
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于类名的另一点是：它们*永远不应该*以数字开头。浏览器可能会允许你这样做，但是 CSS 验证器会抱怨，而且这是一个不好的习惯。因此，你应该在 CSS
+    中写 `.c8675`，在 HTML 中写 `class="c8675"`，而不是写 `.8675` 和 `class="8675"`。如果你必须引用以数字开头的类名，应该在类选择器的句点和第一个数字之间加一个反斜杠，像这样：`.\8675`。
+- en: Multiple Classes
+  id: totrans-96
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 多个类
+- en: 'In the previous section, we dealt with `class` values that contain a single
+    word. In HTML, it’s possible to have a space-separated list of words in a single
+    `class` value. For example, if you want to mark a particular element as being
+    both urgent and a warning, you could write this:'
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上一节中，我们处理了包含单个单词的`class`值。在 HTML 中，可以在一个`class`值中使用空格分隔的单词列表。例如，如果要将特定元素标记为既紧急又警告，可以这样写：
+- en: '[PRE22]'
+  id: totrans-98
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: The order of the words doesn’t matter; `warning urgent` would also work and
+    would yield precisely the same results no matter how your CSS is written. Unlike
+    HTML tags and type selectors, class selectors are case-sensitive.
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单词的顺序并不重要；`warning urgent`同样有效，并且无论CSS如何编写，都将产生完全相同的结果。与HTML标签和类型选择器不同，类选择器是区分大小写的。
+- en: 'Now let’s say you want all elements with a `class` of `warning` to be boldfaced,
+    those with a `class` of `urgent` to be italic, and those elements with both values
+    to have a silver background. This would be written as follows:'
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在假设你希望所有`class`为`warning`的元素为粗体，`class`为`urgent`的元素为斜体，并且同时具有这两个值的元素具有银色背景。写成如下：
+- en: '[PRE23]'
+  id: totrans-101
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: By chaining two class selectors together, you can select only those elements
+    that have both class names, in any order. As you can see, the HTML source contains
+    `class="urgent warning"`, but the CSS selector is written `.warning.urgent`. Regardless,
+    the rule will still cause the “When handling plutonium… ” paragraph to have a
+    silver background, as illustrated in [Figure 2-7](#selecting_elements_with_multiple_class_n).
+    This happens because the order in which the words are written in the source document,
+    or in the CSS, doesn’t matter. (This is not to say the order of classes is always
+    irrelevant, but we’ll get to that later in the chapter.)
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过链接两个类选择器，你可以选择只有这两个类名的元素，无论顺序如何。正如你所看到的，HTML源代码包含`class="urgent warning"`，但CSS选择器写成`.warning.urgent`。无论如何，该规则仍将导致“处理钚时……”段落具有银色背景，如[图2-7](#selecting_elements_with_multiple_class_n)所示。这是因为源文档或CSS中单词的排列顺序并不重要。（这并不是说类的顺序总是无关紧要，但我们稍后会在本章中讨论。）
+- en: '![css5 0207](assets/css5_0207.png)'
+  id: totrans-103
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0207](assets/css5_0207.png)'
+- en: Figure 2-7\. Selecting elements with multiple class names
+  id: totrans-104
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图2-7。选择具有多个类名的元素
+- en: 'If a multiple class selector contains a name that is not in the space-separated
+    list, the match will fail. Consider the following rule:'
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果多类选择器包含一个不在空格分隔列表中的名称，则匹配将失败。考虑以下规则：
+- en: '[PRE24]'
+  id: totrans-106
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: 'As you might expect, the selector will match only those `<p>` elements with
+    a `class` containing the space-separated words `warning` and `help`. Therefore,
+    it will not match a `<p>` element with just the words `warning` and `urgent` in
+    its `class` attribute. It would, however, match the following:'
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你所预料的那样，选择器只会匹配那些`<p>`元素，其`class`属性包含空格分隔的单词`warning`和`help`。因此，它不会匹配`class`属性中仅包含单词`warning`和`urgent`的`<p>`元素。然而，它会匹配以下内容：
+- en: '[PRE25]'
+  id: totrans-108
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: ID Selectors
+  id: totrans-109
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ID选择器
+- en: 'In some ways, *ID selectors* are similar to class selectors, but a few crucial
+    differences exist. First, ID selectors are preceded by a hash sign (`#`)—formally
+    called an octothorpe and also known as a pound sign (in the United States), number
+    sign, or tic-tac-toe board—instead of a period. Thus, you might see a rule like
+    this one:'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些方面，*ID选择器*与类选择器类似，但存在一些关键的区别。首先，ID选择器以井号（`#`）开头——在正式名称上称为井号，在美国也称为磅号或井字号。因此，你可能会看到像这样的规则：
+- en: '[PRE26]'
+  id: totrans-111
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: This rule produces boldfaced text in any element whose `id` attribute has a
+    value of `first-para`.
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此规则会使具有值为`first-para`的`id`属性的任何元素的文本变为粗体。
+- en: 'The second difference is that instead of referencing values of the `class`
+    attribute, ID selectors refer, sensibly enough, to values found in `id` attributes.
+    Here’s an example of an ID selector in action:'
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二个区别在于，ID选择器不是引用`class`属性的值，而是合理地引用`id`属性中的值。以下是ID选择器的示例：
+- en: '[PRE27]'
+  id: totrans-114
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: '[PRE28]'
+  id: totrans-115
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: Note that the value `lead-para` could have been assigned to any element within
+    the document. In this particular case, it is applied to the first paragraph, but
+    we could have applied it just as easily to the second or third paragraph. Or an
+    unordered list. Or anything.
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，`lead-para`的值可以分配给文档中的任何元素。在这种特定情况下，它应用于第一个段落，但我们同样可以将其轻松应用于第二个或第三个段落，或无序列表中的任何元素。
+- en: The third difference is that a document should have only one instance of a given
+    ID value. If you find yourself wanting to apply the same ID to multiple elements
+    in a document, make it a class instead.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三个区别在于文档中应该只有一个给定ID值的实例。如果你发现自己想要将同一个ID应用于文档中的多个元素，请改用类（class）。
+- en: 'As with class selectors, it is possible (and very much the norm) to omit the
+    universal selector from an ID selector. In the previous example, we could also
+    have written this with the exact same effect:'
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与类选择器一样，可以（并且通常）从ID选择器中省略通配符选择器。在上一个示例中，我们也可以这样写，并具有完全相同的效果：
+- en: '[PRE29]'
+  id: totrans-119
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: 'This is useful when you know that a certain ID value will appear in a document,
+    but you don’t know the element type on which it will appear. For example, you
+    may know that in any given document, there will be an element with an ID value
+    of `mostImportant`. You don’t know whether that most important thing will be a
+    paragraph, a short phrase, a list item, or a section heading. You know only that
+    it will exist in each document, occur in an arbitrary element, and appear no more
+    than once. In that case, you would write a rule like this:'
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您知道文档中将会出现某个特定的 ID 值，但不知道它将出现在哪种元素类型上时，这是非常有用的。例如，您可能知道在任何给定的文档中，将存在一个具有 ID
+    值为`mostImportant`的元素。您不知道这个最重要的事物是段落、短语、列表项还是章节标题。您只知道它将在每个文档中存在，在任意元素中出现，并且最多出现一次。在这种情况下，您可以编写如下规则：
+- en: '[PRE30]'
+  id: totrans-121
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: 'This rule would match any of the following elements (which, as noted before,
+    should *not* appear together in the same document because they all have the same
+    ID value):'
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这条规则将匹配以下任何一个元素（注意，这些元素不应该同时出现在同一个文档中，因为它们都具有相同的 ID 值）：
+- en: '[PRE31]'
+  id: totrans-123
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: While HTML standards say each `id` must be unique in a document, CSS doesn’t
+    care. If we had erroneously included the HTML shown just now, all three would
+    likely be red with a yellow background because all three match the `#mostImportant`
+    selector.
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然 HTML 标准规定文档中每个`id`必须唯一，但 CSS 并不关心。如果我们误将刚才显示的 HTML 包含进来，所有三个元素都很可能会因为匹配`#mostImportant`选择器而变成红色带黄色背景。
+- en: Note
+  id: totrans-125
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: As with class names, IDs should never start with numbers. If you must refer
+    to an ID that begins with a number and cannot change the ID value in the markup,
+    use a backslash before the first number, as in `#\309`.
+  id: totrans-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 class 名称一样，ID 名称不应以数字开头。如果必须引用以数字开头且无法更改标记中的 ID 值的 ID，请在第一个数字前使用反斜杠，如`#\309`。
+- en: Deciding Between Class and ID
+  id: totrans-127
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在选择 Class 和 ID 之间做出决定
+- en: You may assign classes to any number of elements, as demonstrated earlier; the
+    class name `warning` was applied to both a `<p>` and a `<span>` element, and it
+    could have been applied to many more elements. ID values, on the other hand, should
+    be used once, and only once, within an HTML document. Therefore, if you have an
+    element with an `id` value of `lead-para`, no other element in that document should
+    have an `id` value of `lead-para`.
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以将类分配给任意数量的元素，正如前面演示的那样；`warning`类名应用于`<p>`和`<span>`元素，并且还可以应用于更多元素。另一方面，ID
+    值应该在 HTML 文档中仅使用一次。因此，如果您有一个带有 ID 值为`lead-para`的元素，则该文档中不应有其他具有 ID 值为`lead-para`的元素。
+- en: 'That’s according to the HTML specification, anyway. As noted previously, CSS
+    doesn’t care if your HTML is valid or not: it should find however many elements
+    a selector can match. That means that if you sprinkle an HTML document with several
+    elements, all of which have the same value for their ID attributes, you should
+    get the same styles applied to each.'
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不过，这只是根据 HTML 规范来说的。正如前面提到的，CSS 不在乎你的 HTML 是否有效：它应该找到匹配选择器的所有元素。这意味着，如果在 HTML
+    文档中散布了几个具有相同 ID 属性值的元素，那么应该将相同的样式应用于每个元素。
+- en: Note
+  id: totrans-130
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Having more than one of the same ID value in a document makes DOM scripting
+    more difficult, since functions like `getElementById()` depend on there being
+    one, and only one, element with a given ID value.
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在文档中有多个相同的 ID 值会使 DOM 脚本编写变得更加困难，因为像`getElementById()`这样的函数依赖于具有给定 ID 值的一个且仅有一个元素。
+- en: 'Unlike class selectors, ID selectors can’t be combined with other IDs, since
+    ID attributes do not permit a space-separated list of words. An ID selector can
+    be combined with itself, though: `#warning#warning` will match the element with
+    an `id` value of `warning`. This should rarely, if ever, be done, but it is possible.'
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与类选择器不同，ID 选择器不能与其他 ID 结合使用，因为 ID 属性不允许空格分隔的单词列表。但是，ID 选择器可以与自身结合：`#warning#warning`将匹配具有
+    ID 值为`warning`的元素。虽然这几乎永远不应该这样做，但确实是可能的。
+- en: Another difference between `class` and `id` names is that IDs carry more weight
+    when you’re trying to determine which styles should be applied to a given element.
+    This is explained in greater detail in [Chapter 4](ch04.html#specificity_comma_inheritance).
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个`class`和`id`名称之间的区别在于，在确定应将哪些样式应用于给定元素时，ID 权重更大。这在[第 4 章](ch04.html#specificity_comma_inheritance)中有更详细的解释。
+- en: 'Also note that HTML defines class and ID values to be case-sensitive, so the
+    capitalization of your class and ID values must match what’s found in your documents.
+    Thus, in the following pairing of CSS and HTML, the element’s text will not be
+    boldfaced:'
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还要注意，HTML定义类和ID值为大小写敏感，因此您的类和ID值的大写必须与文档中找到的匹配。因此，在以下CSS和HTML配对中，元素的文本将不会加粗：
+- en: '[PRE32]'
+  id: totrans-135
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: '[PRE33]'
+  id: totrans-136
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: Because of the change in case for the letter *i*, the selector will not match
+    the element shown.
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为字母*i*的大小写变化，选择器将不匹配所示的元素。
+- en: On a purely syntactical level, the dot-class notation (e.g., `.warning`) is
+    not guaranteed to work for XML documents. As of this writing, the dot-class notation
+    works in HTML, Scalar Vector Graphics (SVG), and Mathematical Markup Language
+    (MathML), and it may well be permitted in future languages, but it’s up to each
+    language’s specification to decide that. The hash-ID notation (e.g., `#lead`)
+    should work in any document language that has an attribute whose value is supposed
+    to be unique within a document.
+  id: totrans-138
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 纯语法上来说，点类表示法（例如`.warning`）不保证在XML文档中有效。截至本文撰写时，点类表示法适用于HTML、可缩放矢量图形（SVG）和数学标记语言（MathML），并且可能在未来的语言规范中被允许，但这取决于每种语言的规范。
+- en: Attribute Selectors
+  id: totrans-139
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 属性选择器
+- en: With both class and ID selectors, what you’re really doing is selecting values
+    of elements’ attributes. The syntax used in the previous two sections is particular
+    to HTML, SVG, and MathML documents as of this writing. In other markup languages,
+    these class and ID selectors may not be available (as, indeed, those attributes
+    may not be present).
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于类和ID选择器，您实际上是选择元素属性的值。在本文撰写时使用的语法特定于HTML、SVG和MathML文档。在其他标记语言中，这些类和ID选择器可能不可用（事实上，这些属性可能不存在）。
+- en: 'To address this situation, CSS2 introduced *attribute selectors*, which can
+    be used to select elements based on their attributes and the values of those attributes.
+    There are four general types of attribute selectors: simple attribute selectors,
+    exact attribute value selectors, partial-match attribute value selectors, and
+    leading-value attribute selectors.'
+  id: totrans-141
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了解决这种情况，CSS2引入了*属性选择器*，可以根据其属性和属性值来选择元素。有四种常见类型的属性选择器：简单属性选择器、精确属性值选择器、部分匹配属性值选择器和前导值属性选择器。
+- en: Simple Attribute Selectors
+  id: totrans-142
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 简单属性选择器
+- en: 'If you want to select elements that have a certain attribute, regardless of
+    that attribute’s value, you can use a *simple attribute selector*. For example,
+    to select all `<h1>` elements that have a `class` attribute with any value and
+    make their text silver, write this:'
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想选择具有某个属性的元素，而不管该属性的值如何，您可以使用*简单属性选择器*。例如，要选择所有具有任何值的`class`属性的`<h1>`元素，并使它们的文本变为银色，可以写成这样：
+- en: '[PRE34]'
+  id: totrans-144
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: So, given the following markup,
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，鉴于以下标记，
+- en: '[PRE35]'
+  id: totrans-146
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: you get the result shown in [Figure 2-8](#selecting_elements_based_on_their_attrib).
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结果如[图 2-8](#selecting_elements_based_on_their_attrib)所示。
+- en: '![css5 0208](assets/css5_0208.png)'
+  id: totrans-148
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0208](assets/css5_0208.png)'
+- en: Figure 2-8\. Selecting elements based on their attributes
+  id: totrans-149
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-8\. 根据其属性选择元素
+- en: 'This strategy is very useful in XML documents, as XML languages tend to have
+    element and attribute names that are specific to their purpose. Consider an XML
+    language that is used to describe planets of the solar system (we’ll call it *PlanetML*).
+    If you want to select all `<pml-planet>` elements with a `moons` attribute and
+    make them boldface, thus calling attention to any planet that has moons, you would
+    write this:'
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种策略在XML文档中非常有用，因为XML语言往往具有特定于其目的的元素和属性名称。考虑一种用于描述太阳系行星的XML语言（我们称之为*PlanetML*）。如果要选择所有具有`moons`属性的`<pml-planet>`元素并使它们加粗，从而突出显示具有卫星的任何行星，您应该这样写：
+- en: '[PRE36]'
+  id: totrans-151
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: 'This would cause the text of the second and third elements in the following
+    markup fragment to be boldfaced, but not the first:'
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将导致以下标记片段中的第二个和第三个元素的文本加粗，但第一个元素不加粗：
+- en: '[PRE37]'
+  id: totrans-153
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: 'In HTML documents, you can use this feature in creative ways. For example,
+    you could style all images that have an `alt` attribute, thus highlighting those
+    images that are correctly formed:'
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ID哈希表示法（例如`#lead`）应在具有属性值在文档中应该是唯一的任何文档语言中有效。在HTML文档中，您可以以创造性的方式使用此功能。例如，您可以为所有具有`alt`属性的图像设置样式，从而突出显示那些正确形成的图像。
+- en: '[PRE38]'
+  id: totrans-155
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: This particular example is generally useful more for diagnostic purposes—determining
+    whether images are indeed correctly marked up—than for design purposes.
+  id: totrans-156
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个特定的示例通常更适合用于诊断目的——确定图像是否确实正确标记——而不是设计目的。
+- en: 'If you wanted to boldface any element that includes `title` information, which
+    most browsers display as a tool tip when a cursor hovers over the element, you
+    could write this:'
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想要加粗包含`title`信息的任何元素，大多数浏览器将其显示为鼠标悬停在元素上时的工具提示，你可以这样写：
+- en: '[PRE39]'
+  id: totrans-158
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: Similarly, you could style only those anchors (`<a>` elements) that have an
+    `href` attribute, thus applying the styles to any hyperlink but not to any placeholder
+    anchors.
+  id: totrans-159
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，您可以仅对具有`href`属性的锚点(`<a>`元素)进行样式设置，从而将样式应用于任何超链接，但不适用于任何占位符锚点。
+- en: 'It is also possible to select elements based on the presence of more than one
+    attribute. You do this by chaining the attribute selectors together. For example,
+    to boldface the text of any HTML hyperlink that has both an `href` and a `title`
+    attribute, you would write the following:'
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也可以基于多个属性的存在来选择元素。通过链接属性选择器来实现。例如，要加粗任何具有`href`和`title`属性的HTML超链接的文本，您将写成以下内容：
+- en: '[PRE40]'
+  id: totrans-161
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: 'This would boldface the first link in the following markup, but not the second
+    or third:'
+  id: totrans-162
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将加粗以下标记中的第一个链接，但不会影响第二个或第三个：
+- en: '[PRE41]'
+  id: totrans-163
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: Selection Based on Exact Attribute Value
+  id: totrans-164
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 根据精确属性值的选择
+- en: 'You can further narrow the selection process to encompass only those elements
+    whose attributes are a certain value. For example, let’s say you want to boldface
+    any hyperlink that points to a certain document on the web server. This would
+    look something like the following:'
+  id: totrans-165
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以进一步缩小选择范围，以仅包含其属性值为特定值的元素。例如，假设您想要加粗指向Web服务器上特定文档的任何超链接。这将看起来像以下内容：
+- en: '[PRE42]'
+  id: totrans-166
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: This will boldface the text of any `a` element that has an `href` attribute
+    with *exactly* the value `http://www.css-discuss.org/about.html`. Any change at
+    all, even dropping the `www.` part or changing to a secure protocol with `https`,
+    will prevent a match.
+  id: totrans-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将加粗任何`a`元素的文本，该元素具有`href`属性，其值*恰好*为`http://www.css-discuss.org/about.html`。任何变动，即使是省略`www.`部分或更改为安全协议`https`，都将阻止匹配。
+- en: 'Any attribute and value combination can be specified for any element. However,
+    if that exact combination does not appear in the document, the selector won’t
+    match anything. Again, XML languages can benefit from this approach to styling.
+    Let’s return to our PlanetML example. Suppose you want to select only those `planet`
+    elements that have a value of `1` for the attribute `moons`:'
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何元素都可以指定任何属性和值组合。但是，如果该确切组合在文档中不存在，选择器将不匹配任何内容。同样，XML语言可以从这种样式方法中受益。让我们回到我们的PlanetML示例。假设您只想选择那些具有属性`moons`为`1`值的`planet`元素：
+- en: '[PRE43]'
+  id: totrans-169
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: 'This would boldface the text of the second element in the following markup
+    fragment, but not the first or third:'
+  id: totrans-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将加粗以下标记片段中的第二个元素的文本，但不会影响第一个或第三个：
+- en: '[PRE44]'
+  id: totrans-171
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: 'As with attribute selection, you can chain together multiple attribute value
+    selectors to select a single document. For example, to double the size of the
+    text of any HTML hyperlink that has both an `href` with a value of `https://www.w3.org/`
+    and a `title` attribute with a value of `W3C Home`, you would write this:'
+  id: totrans-172
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与属性选择类似，您可以将多个属性值选择器链接在一起以选择单个文档。例如，要加倍于`https://www.w3.org/`具有`href`值和`title`值为`W3C
+    Home`的任何HTML超链接的文本大小，您将写成这样：
+- en: '[PRE45]'
+  id: totrans-173
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: 'This would double the text size of the first link in the following markup,
+    but not the second or third:'
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将加倍以下标记中的第一个链接的文本大小，但不会影响第二个或第三个：
+- en: '[PRE46]'
+  id: totrans-175
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: '[Figure 2-9](#selecting_elements_based_on_attributes_a) shows the results.'
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 2-9](#selecting_elements_based_on_attributes_a)显示了结果。'
+- en: '![css5 0209](assets/css5_0209.png)'
+  id: totrans-177
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0209](assets/css5_0209.png)'
+- en: Figure 2-9\. Selecting elements based on attributes and their values
+  id: totrans-178
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图2-9\. 根据属性及其值选择元素
+- en: 'Again, this format requires an *exact* match for the attribute’s value. Matching
+    becomes an issue when an attribute selector encounters values that can, in turn,
+    contain a space-separated list of values (e.g., the HTML attribute `class`). For
+    example, consider the following markup fragment:'
+  id: totrans-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次强调，此格式需要属性值的*精确*匹配。当属性选择器遇到可以包含空格分隔值列表的值时（例如HTML属性`class`），匹配就会成为一个问题。例如，考虑以下标记片段：
+- en: '[PRE47]'
+  id: totrans-180
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: 'The only way to match this element based on its exact attribute value is to
+    write this:'
+  id: totrans-181
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 唯一匹配该元素基于其精确属性值的方法是写成这样：
+- en: '[PRE48]'
+  id: totrans-182
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: 'If you were to write `planet[type="barren"]`, the rule would not match the
+    example markup and thus would fail. This is true even for the `class` attribute
+    in HTML. Consider the following:'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您写成`planet[type="barren"]`，该规则将不会匹配示例标记，因此会失败。即使对于HTML中的`class`属性也是如此。考虑以下示例：
+- en: '[PRE49]'
+  id: totrans-184
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: 'To select this element based on its exact attribute value, you would have to
+    write this:'
+  id: totrans-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要基于其精确的属性值选择此元素，您必须编写如下内容：
+- en: '[PRE50]'
+  id: totrans-186
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: This is *not* equivalent to the dot-class notation covered earlier, as you will
+    see in the next section. Instead, it selects any `p` element whose `class` attribute
+    has *exactly* the value `urgent warning`, with the words in that order and a single
+    space between them. It’s effectively an exact string match, whereas when using
+    a `class` selector, the class order doesn’t matter.
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这与之前介绍的点类记法不等同，如下一节所示。它实际上选择任何 `class` 属性值 *完全* 为 `urgent warning` 的 `p` 元素，其中单词顺序不变，单词之间有一个空格。这实际上是一个精确的字符串匹配，而在使用
+    `class` 选择器时，类的顺序并不重要。
+- en: Also, be aware that ID selectors and attribute selectors that target the `id`
+    attribute are not precisely the same. In other words, a subtle but crucial difference
+    exists between `h1#page-title` and `h1[id="page-title"]`. This difference is explained
+    in [Chapter 4](ch04.html#specificity_comma_inheritance).
+  id: totrans-188
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另外，请注意 ID 选择器和目标 `id` 属性的属性选择器并不完全相同。换句话说，`h1#page-title` 和 `h1[id="page-title"]`
+    之间存在微妙但关键的差别。这一差异在 [第 4 章](ch04.html#specificity_comma_inheritance) 中有解释。
+- en: Selection Based on Partial Attribute Values
+  id: totrans-189
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 基于部分属性值的选择
+- en: Odds are that you’ll sometimes want to select elements based on portions of
+    their attribute values, rather than the full value. For such situations, CSS offers
+    a variety of options for matching substrings in an attribute’s value. These are
+    summarized in [Table 2-1](#substring_matching_with_attribute_select).
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时你可能希望基于其属性值的部分匹配选择元素，而不是完整值。对于这种情况，CSS 提供了多种选项用于匹配属性值中的子串。这些总结在 [表 2-1](#substring_matching_with_attribute_select)
+    中。
+- en: Table 2-1\. Substring matching with attribute selectors
+  id: totrans-191
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 2-1\. 属性选择器的子串匹配
+- en: '| Type | Description |'
+  id: totrans-192
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类型 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-193
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `[foo~="bar"]` | Selects any element with an attribute `foo` whose value
+    contains the word `bar` in a space-separated list of words |'
+  id: totrans-194
+  prefs: []
+  type: TYPE_TB
+  zh: '| `[foo~="bar"]` | 选择具有属性 `foo` 并且其值在空格分隔的单词列表中包含单词 `bar` 的任何元素 |'
+- en: '| `[foo*="bar"]` | Selects any element with an attribute `foo` whose value
+    *contains* the substring `bar` |'
+  id: totrans-195
+  prefs: []
+  type: TYPE_TB
+  zh: '| `[foo*="bar"]` | 选择具有属性 `foo` 并且其值*包含*子串 `bar` 的任何元素 |'
+- en: '| `[foo^="bar"]` | Selects any element with an attribute `foo` whose value
+    *begins* with `bar` |'
+  id: totrans-196
+  prefs: []
+  type: TYPE_TB
+  zh: '| `[foo^="bar"]` | 选择具有属性 `foo` 并且其值*以* `bar` 开头的任何元素 |'
+- en: '| `[foo$="bar"]` | Selects any element with an attribute `foo` whose value
+    *ends* with `bar` |'
+  id: totrans-197
+  prefs: []
+  type: TYPE_TB
+  zh: '| `[foo$="bar"]` | 选择具有属性 `foo` 并且其值*以* `bar` 结尾的任何元素 |'
+- en: '| `[foo&#124;="bar"]` | Selects any element with an attribute `foo` whose value
+    *starts* with `bar` followed by a hyphen (U+002D) or whose value is exactly equal
+    to `bar` |'
+  id: totrans-198
+  prefs: []
+  type: TYPE_TB
+  zh: '| `[foo&#124;="bar"]` | 选择具有属性 `foo` 并且其值*以* `bar` 开头，并紧跟一个连字符（U+002D），或其值正好等于
+    `bar` 的任何元素 |'
+- en: 'The last of these attribute selectors that match on a partial subset of an
+    element’s attribute value is easier to show than it is to describe. Consider the
+    following rule:'
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一个匹配元素属性值部分子集的属性选择器比描述起来更容易显示。考虑以下规则：
+- en: '[PRE51]'
+  id: totrans-200
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: 'This rule will select any element whose `lang` attribute is equal to `en` or
+    begins with `en-`. Therefore, the first three elements in the following example
+    markup would be selected, but the last two would not:'
+  id: totrans-201
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此规则将选择任何 `lang` 属性等于 `en` 或以 `en-` 开头的元素。因此，下面示例标记中的前三个元素将被选择，而后两个则不会：
+- en: '[PRE52]'
+  id: totrans-202
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: 'In general, the form `[att|="val"]` can be used for any attribute and its values.
+    Let’s say you have a series of figures in an HTML document, each of which has
+    a filename like *figure-1.gif* or *figure-3.jpg*. You can match all of these images
+    by using the following selector:'
+  id: totrans-203
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，形式 `[att|="val"]` 可以用于任何属性及其值。假设在 HTML 文档中有一系列文件名类似于 *figure-1.gif* 或
+    *figure-3.jpg* 的图像。你可以通过以下选择器匹配所有这些图像：
+- en: '[PRE53]'
+  id: totrans-204
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: 'Or, if you’re creating a CSS framework or pattern library, instead of creating
+    redundant classes like `"btn btn-small btn-arrow btn-active"`, you can declare
+    `"btn-small-arrow-active"`, and target the class of elements with the following:'
+  id: totrans-205
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，如果你正在创建一个 CSS 框架或模式库，而不是创建冗余的类如 `"btn btn-small btn-arrow btn-active"`，你可以声明
+    `"btn-small-arrow-active"`，并且通过以下方式定位元素的类：
+- en: '[PRE54]'
+  id: totrans-206
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: The most common use for this type of attribute selector is to match language
+    values, as demonstrated in [“The :lang() and :dir() Pseudo-Classes”](ch03.html#the_colon_lang_pseudo-class).
+  id: totrans-207
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种类型的属性选择器最常见的用途是匹配语言值，如 [“The :lang() and :dir() Pseudo-Classes”](ch03.html#the_colon_lang_pseudo-class)
+    中演示的那样。
+- en: Matching one word in a space-separated list
+  id: totrans-208
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 匹配空格分隔列表中的一个单词
+- en: 'For any attribute that accepts a space-separated list of words, you can select
+    elements based on the presence of any one of those words. The classic example
+    in HTML is the `class` attribute, which can accept one or more words as its value.
+    Consider our usual example text:'
+  id: totrans-209
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于接受空格分隔单词列表的任何属性，你可以根据任何一个单词的存在选择元素。HTML中的经典示例是`class`属性，它可以接受一个或多个单词作为其值。考虑我们通常的示例文本：
+- en: '[PRE55]'
+  id: totrans-210
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE55]'
+- en: 'Let’s say you want to select elements whose `class` attribute contains the
+    word `warning`. You can do this with an attribute selector:'
+  id: totrans-211
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想选择`class`属性包含单词`warning`的元素。你可以使用属性选择器来实现这一点：
+- en: '[PRE56]'
+  id: totrans-212
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE56]'
+- en: Note the presence of the tilde (`~`) in the selector. It is the key to selection
+    based on the presence of a space-separated word within the attribute’s value.
+    If you omit the tilde, you would have an exact value-matching attribute selector,
+    as discussed in the previous section.
+  id: totrans-213
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意选择器中的波浪号（`~`）的存在。这是基于属性值中存在空格分隔单词进行选择的关键。如果省略波浪号，你将得到一个精确值匹配的属性选择器，正如前一节中讨论的那样。
+- en: 'This selector construct is equivalent to the dot-class notation discussed in
+    [“Deciding Between Class and ID”](#deciding_between_class_and_id). Thus, `p.warning`
+    and `p[class~="warning"]` are equivalent when applied to HTML documents. Here’s
+    an example that is an HTML version of the PlanetML markup seen earlier:'
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种选择器构造等效于“在类和ID之间做出决定”中讨论的点类记法。因此，`p.warning`和`p[class~="warning"]`在应用于HTML文档时是等效的。以下是早期看到的PlanetML标记的HTML版本示例：
+- en: '[PRE57]'
+  id: totrans-215
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE57]'
+- en: 'To italicize all elements with the word `barren` in their `class` attribute,
+    you write this:'
+  id: totrans-216
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使所有`class`属性中含有单词`barren`的元素变为斜体，你可以这样写：
+- en: '[PRE58]'
+  id: totrans-217
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE58]'
+- en: 'This rule’s selector will match the first two elements in the example markup
+    and thus italicize their text, as shown in [Figure 2-10](#selecting_elements_based_on_portions_of).
+    This is the same result we would expect from writing `span.barren {font-style:
+    italic;}`.'
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '此规则的选择器将匹配示例标记中的前两个元素，从而使它们的文本变为斜体，如[Figure 2-10](#selecting_elements_based_on_portions_of)所示。这与编写`span.barren
+    {font-style: italic;}`得到的结果相同。'
+- en: '![css5 0210](assets/css5_0210.png)'
+  id: totrans-219
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0210](assets/css5_0210.png)'
+- en: Figure 2-10\. Selecting elements based on portions of attribute values
+  id: totrans-220
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-10. 基于属性值部分选择元素
+- en: 'So why bother with the tilde-equals attribute selector in HTML? Because it
+    can be used for any attribute, not just `class`. For example, you might have a
+    document that contains numerous images, only some of which are figures. You can
+    use a partial-match value attribute selector aimed at the `title` text to select
+    only those figures:'
+  id: totrans-221
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么为什么在HTML中要使用波浪号等号属性选择器呢？因为它可以用于任何属性，而不仅仅是`class`。例如，你可能有一个包含大量图像的文档，其中只有一些是图表。你可以使用针对`title`文本的部分匹配值属性选择器，仅选择那些图表：
+- en: '[PRE59]'
+  id: totrans-222
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE59]'
+- en: This rule selects any image whose `title` text contains the word `Figure` (but
+    not `figure`, as title attributes are case-sensitive). Therefore, as long as all
+    your figures have `title` text that looks something like “Figure 4\. A bald-headed
+    elder statesman,” this rule will match those images. For that matter, the selector
+    `img[title~="Figure"]` will also match a title attribute with the value “How to
+    Figure Out Who’s in Charge.” Any image that does not have a `title` attribute,
+    or whose `title` value doesn’t contain the word `Figure`, won’t be matched.
+  id: totrans-223
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此规则选择任何标题文本包含单词`Figure`（但不包含`figure`，因为标题属性区分大小写）的图像。因此，只要你的所有图像的标题文本看起来像“Figure
+    4. 一位秃头长者”，这条规则就会匹配这些图像。此外，选择器`img[title~="Figure"]`也会匹配值为“How to Figure Out Who’s
+    in Charge.”的标题属性。任何没有`title`属性或其`title`值不包含单词`Figure`的图像都不会被匹配。
+- en: Matching a substring within an attribute value
+  id: totrans-224
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 在属性值中匹配子字符串
+- en: 'Sometimes you want to select elements based on a portion of their attribute
+    values, but the values in question aren’t space-separated lists of words. In these
+    cases, you can use the asterisk-equals substring matching form `[attr*="val"]`
+    to match substrings that appear anywhere inside the attribute values. For example,
+    the following CSS matches any `<span>` element whose `class` attribute contains
+    the substring `cloud`, so both “cloudy” planets are matched, as shown in [Figure 2-11](#selecting_elements_based_on_substrings_w):'
+  id: totrans-225
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时候你想基于其属性值的一部分选择元素，但是相关的值并不是空格分隔的单词列表。在这些情况下，你可以使用星号等号子字符串匹配形式`[attr*="val"]`来匹配出现在属性值的任何地方的子字符串。例如，以下CSS匹配任何`<span>`元素，其`class`属性包含子字符串`cloud`，因此两个“cloudy”行星都会被匹配，如[Figure
+    2-11](#selecting_elements_based_on_substrings_w)所示：
+- en: '[PRE60]'
+  id: totrans-226
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE60]'
+- en: '[PRE61]'
+  id: totrans-227
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE61]'
+- en: '![css5 0211](assets/css5_0211.png)'
+  id: totrans-228
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0211](assets/css5_0211.png)'
+- en: Figure 2-11\. Selecting elements based on substrings within attribute values
+  id: totrans-229
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图表 2-11。选择基于属性值中子字符串的元素
+- en: Note the presence of the asterisk (`*`) in the selector. It’s the key to selecting
+    elements based on the presence of a substring within an attribute’s value. To
+    be clear, it is *not* related to the universal selector, other than it uses the
+    same character.
+  id: totrans-230
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意选择器中星号(`*`)的存在。它是基于属性值中存在子字符串的元素选择的关键。需要明确的是，它与通用选择器没有关系，只是使用了相同的字符。
+- en: 'As you can imagine, this particular capability has many useful applications.
+    For example, suppose you want to specially style any links to the W3C’s website.
+    Instead of classing them all and writing styles based on that class, you could
+    instead write the following rule:'
+  id: totrans-231
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以想象，这种特定功能有许多有用的应用。例如，假设您希望特别样式化任何链接到W3C网站的链接。您可以不用给它们全部添加类并基于该类编写样式，而是可以编写以下规则：
+- en: '[PRE62]'
+  id: totrans-232
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE62]'
+- en: 'You aren’t confined to the `class` and `href` attributes. Any attribute is
+    up for grabs here (`title`, `alt`, `src`, `id`…); if the attribute has a value,
+    you can style based on a substring within that value. The following rule draws
+    attention to any image with the string `space` in its source URL:'
+  id: totrans-233
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您不仅仅限于`class`和`href`属性。这里可以使用任何属性（`title`、`alt`、`src`、`id`…）；如果属性具有值，您可以基于该值中的子字符串进行样式设置。以下规则用于突出显示任何源URL中包含字符串`space`的图像：
+- en: '[PRE63]'
+  id: totrans-234
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE63]'
+- en: 'Similarly, the following rule draws attention to `<input>` elements that have
+    a title telling the user what to do, along with any other input whose title contains
+    the substring `format` in its title:'
+  id: totrans-235
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样地，以下规则用于突出显示具有指导用户操作的标题的`<input>`元素，以及其标题中包含子字符串`format`的任何其他输入：
+- en: '[PRE64]'
+  id: totrans-236
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE64]'
+- en: '[PRE65]'
+  id: totrans-237
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE65]'
+- en: 'A common use for the general substring attribute selector is to match a section
+    of a class in pattern library class names. Elaborating on the preceding example,
+    we can target any class name that starts with `btn` followed by a hyphen, and
+    that contains the substring `arrow` preceded by a hyphen, by using the pipe-equals
+    attribute selector:'
+  id: totrans-238
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通用子字符串属性选择器的常见用法是匹配模式库类名中的部分。在前面的例子的基础上，我们可以通过使用管道等于属性选择器来针对任何以`btn`开头并且包含以连字符前缀的`arrow`子字符串的类名进行目标定位：
+- en: '[PRE66]'
+  id: totrans-239
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE66]'
+- en: '[PRE67]'
+  id: totrans-240
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE67]'
+- en: 'The matches are exact: if you include whitespace in your selector, whitespace
+    must also be present in an attribute’s value. The attribute values are case-sensitive
+    when the underlying document language requires case sensitivity. Class names,
+    titles, URLs, and ID values are all case-sensitive, but enumerated HTML attribute
+    values, such as input type keyword values, are not:'
+  id: totrans-241
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匹配是精确的：如果您在选择器中包含空格，则属性值中也必须存在空格。当底层文档语言要求大小写敏感性时，属性值也是大小写敏感的。类名、标题、URL和ID值都是大小写敏感的，但枚举的HTML属性值，如输入类型关键字值，则不是：
+- en: '[PRE68]'
+  id: totrans-242
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE68]'
+- en: '[PRE69]'
+  id: totrans-243
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE69]'
+- en: Matching a substring at the beginning of an attribute value
+  id: totrans-244
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 匹配以属性值开始的子字符串
+- en: 'If you want to select elements based on a substring at the beginning of an
+    attribute value, the caret-equals attribute selector pattern `[att^="val"]` is
+    what you’re seeking. This can be particularly useful when you want to style types
+    of links differently, as illustrated in [Figure 2-12](#selecting_elements_based_on_substrings_t):'
+  id: totrans-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您希望基于属性值开头的子字符串选择元素，则您需要查找`caret-equals`属性选择器模式`[att^="val"]`。当您想要以不同样式显示不同类型的链接时，这种方法特别有用，如在[图表 2-12](#selecting_elements_based_on_substrings_t)中所示：
+- en: '[PRE70]'
+  id: totrans-246
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE70]'
+- en: '![css5 0212](assets/css5_0212.png)'
+  id: totrans-247
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0212](assets/css5_0212.png)'
+- en: Figure 2-12\. Selecting elements based on substrings that begin attribute values
+  id: totrans-248
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图表 2-12。选择基于以属性值开头的子字符串的元素
+- en: 'In another use case, you may want to style all images in an article that are
+    also figures, like the figures you see throughout this text. Assuming that the
+    `alt` text of each figure begins with text in the pattern “Figure 5”—which is
+    an entirely reasonable assumption in this case—you can select only those images
+    with the caret-equals attribute selector:'
+  id: totrans-249
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在另一个用例中，您可能希望为文章中所有同时也是图表的图片设置样式，就像您在本文中看到的图表一样。假设每个图表的`alt`文本都以“Figure 5”模式的文本开头——在这种情况下这是完全合理的假设——您可以使用带有`caret-equals`属性选择器来仅选择这些图片：
+- en: '[PRE71]'
+  id: totrans-250
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE71]'
+- en: The potential drawback here is that *any* `<img>` element whose `alt` starts
+    with `Figure` will be selected, whether or not it’s meant to be an illustrative
+    figure. The likeliness of that occurring depends on the document in question.
+  id: totrans-251
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里的潜在缺点是，任何`<img>`元素，其`alt`以`Figure`开头，都将被选中，无论它是否意图作为说明性图表。这种可能性取决于所讨论的文档。
+- en: Another use case is selecting all of the calendar events that occur on Mondays.
+    In this case, let’s assume all of the events have a `title` attribute containing
+    a date in the format “Monday, March 5th, 2012.” Selecting them all is just a simple
+    matter of using `[title^="Monday"]`.
+  id: totrans-252
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个用例是选择所有发生在星期一的日历事件。在这种情况下，假设所有事件都有一个包含“星期一，2012年3月5日”格式日期的`title`属性。只需使用`[title^="Monday"]`就可以选择它们全部。
+- en: Matching a substring at the end of an attribute value
+  id: totrans-253
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 匹配属性值末尾的子串
+- en: 'The mirror image of beginning-substring matching is ending-substring matching,
+    which is accomplished using the `[att$="val"]` pattern. A very common use for
+    this capability is to style links based on the kind of resource they target, such
+    as separate styles for PDF documents, as illustrated in [Figure 2-13](#selecting_elements_based_on_substring):'
+  id: totrans-254
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与开始子串匹配的镜像是结束子串匹配，这通过`[att$="val"]`模式实现。这种功能的一个非常常见的用途是根据资源类型为其目标的链接设置不同的样式，例如PDF文档，如[图2-13](#selecting_elements_based_on_substring)所示：
+- en: '[PRE72]'
+  id: totrans-255
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE72]'
+- en: '![css5 0213](assets/css5_0213.png)'
+  id: totrans-256
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0213](assets/css5_0213.png)'
+- en: Figure 2-13\. Selecting elements based on substrings that end attribute values
+  id: totrans-257
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图2-13\. 根据结束属性值子串选择元素
+- en: 'Similarly, you could (for whatever reason) select images based on their image
+    format with the dollar-equals attribute selector:'
+  id: totrans-258
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，您可以（出于任何原因）使用美元等于属性选择器选择基于其图像格式的图像：
+- en: '[PRE73]'
+  id: totrans-259
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE73]'
+- en: To continue the calendar example from the previous section, it would be possible
+    to select all of the events occurring within a given year by using a selector
+    like `[title$="2015"]`.
+  id: totrans-260
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 继续上一节中的日历示例，可以使用像`[title$="2015"]`这样的选择器选择给定年份内的所有事件。
+- en: Note
+  id: totrans-261
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: You may have noticed that we’ve quoted all the attribute values in the attribute
+    selectors. Quoting is required if the value includes any special characters, begins
+    with a hyphen or digit, or is otherwise invalid as an identifier and needs to
+    be quoted as a string. To be safe, we recommend always quoting attribute values
+    in attribute selectors, even though it is required only to make strings out of
+    invalid identifiers.
+  id: totrans-262
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能已经注意到，我们在属性选择器中引用了所有属性值。如果值包含任何特殊字符，以连字符或数字开头，或者以其他方式无效作为标识符并且需要引用为字符串，则需要引用。为了安全起见，我们建议始终在属性选择器中引用属性值，即使只有将无效标识符转换为字符串才需要。
+- en: The Case-Insensitivity Identifier
+  id: totrans-263
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 不区分大小写标识符
+- en: 'Including an `i` before the closing bracket of an attribute selector will allow
+    that selector to match attribute values case-insensitively, regardless of document
+    language rules. For example, suppose you want to select all links to PDF documents,
+    but you don’t know if they’ll end in *.pdf*, *.PDF*, or even *.Pdf*. Here’s how:'
+  id: totrans-264
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在属性选择器的结束括号之前加上`i`将允许该选择器以不区分大小写的方式匹配属性值，而不考虑文档语言规则。例如，假设您想选择所有指向PDF文档的链接，但不知道它们是否以*.pdf*，*.PDF*或*.Pdf*结尾。以下是如何操作：
+- en: '[PRE74]'
+  id: totrans-265
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE74]'
+- en: Adding that humble little `i` means the selector will match any `a` element
+    whose `href` attribute’s value ends in `.pdf`, regardless of the capitalization
+    of the letters *P*, *D*, and *F*.
+  id: totrans-266
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 添加那个简单的`i`意味着选择器将匹配所有`href`属性值以`.pdf`结尾的`a`元素，无论字母*P*，*D*和*F*的大小写如何。
+- en: 'This case-insensitivity option is available for all the attribute selectors
+    we’ve covered. Note, however, that this applies to only the *values* in the attribute
+    selectors. It does not enforce case insensitivity on the attribute names themselves.
+    Thus, in a case-sensitive language, `planet[type*="rock" i]` will match all of
+    the following:'
+  id: totrans-267
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经涵盖的所有属性选择器都提供了此不区分大小写选项。但请注意，这仅适用于属性选择器中的*值*。它不会强制在属性名称本身上不区分大小写。因此，在大小写敏感的语言中，`planet[type*="rock"
+    i]`将匹配以下所有内容：
+- en: '[PRE75]'
+  id: totrans-268
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE75]'
+- en: 'It will *not* match the following element, because the attribute `TYPE` isn’t
+    matched by `type` in XML:'
+  id: totrans-269
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 它将*不*匹配以下元素，因为XML中的属性`TYPE`与`type`不匹配：
+- en: '[PRE76]'
+  id: totrans-270
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE76]'
+- en: This is in languages that enforce case sensitivity in the element and attribute
+    syntax. In languages that are case-insensitive, like HTML, this isn’t an issue.
+  id: totrans-271
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是在强制元素和属性语法区分大小写的语言中。在像HTML这样的大小写不敏感的语言中，这不是问题。
+- en: Note
+  id: totrans-272
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: A proposed mirror identifier, `s`, enforces case sensitivity. As of early 2023,
+    it is supported by only the Firefox family of browsers.
+  id: totrans-273
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 提议的镜像标识符`s`，强制区分大小写。截至2023年初，仅Firefox系列浏览器支持该标识符。
+- en: Using Document Structure
+  id: totrans-274
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用文档结构
+- en: CSS is so capable because it uses the structure of documents to determine appropriate
+    styles and how to apply them. Let’s take a moment to discuss structure before
+    moving on to more powerful forms of selection.
+  id: totrans-275
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS如此强大，因为它利用文档的结构来确定适当的样式及其应用方式。在继续探讨更强大的选择形式之前，让我们花一点时间讨论结构。
+- en: Understanding the Parent-Child Relationship
+  id: totrans-276
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解父子关系
+- en: 'To understand the relationship between selectors and documents, we need to
+    once again examine how documents are structured. Consider this very simple HTML
+    document:'
+  id: totrans-277
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要理解选择器与文档之间的关系，我们需要再次查看文档的结构。考虑这个非常简单的HTML文档：
+- en: '[PRE77]'
+  id: totrans-278
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE77]'
+- en: Much of the power of CSS is based on the *parent-child relationship* of elements.
+    HTML documents (and most structured documents of any kind) are based on a hierarchy
+    of elements, which is visible in the “tree” view of the document (see [Figure 2-14](#a_document_tree_structure)).
+    In this hierarchy, each element fits somewhere into the overall structure of the
+    document. Every element in the document is either the *parent* or the *child*
+    of another element, and it’s often both. If a parent has more than one child,
+    those children are *siblings*.
+  id: totrans-279
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS的很大一部分功能依赖于元素之间的*父子关系*。HTML文档（以及大多数结构化文档）基于元素的层次结构，这在文档的“树状”视图中可见（见[图 2-14](#a_document_tree_structure)）。在这个层次结构中，每个元素都在文档的整体结构中占据一个位置。文档中的每个元素都是另一个元素的*父元素*或*子元素*，有时两者兼而有之。如果一个父元素有多个子元素，则这些子元素被称为*兄弟元素*。
+- en: '![css5 0214](assets/css5_0214.png)'
+  id: totrans-280
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0214](assets/css5_0214.png)'
+- en: Figure 2-14\. A document tree structure
+  id: totrans-281
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-14\. 文档树结构
+- en: An element is said to be the parent of another element if it appears directly
+    above that element in the document hierarchy. For example, in [Figure 2-14](#a_document_tree_structure),
+    the first `<p>` element from the left is parent to the `<em>` and `<strong>` elements,
+    while `<strong>` is parent to an anchor (`<a>`) element, which is itself parent
+    to another `<em>` element. Conversely, an element is the child of another element
+    if it is directly beneath the other element. Thus, the anchor element on the far
+    right side of [Figure 2-14](#a_document_tree_structure) is the child of a `<p>`
+    element, which is in turn child to the `<body>` element, and so on.
+  id: totrans-282
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个元素在文档层级结构中直接出现在另一个元素的上方，则称它是另一个元素的父元素。例如，在[图 2-14](#a_document_tree_structure)中，从左边数第一个`<p>`元素是`<em>`和`<strong>`元素的父元素，而`<strong>`是锚点(`<a>`)元素的父元素，该锚点元素本身又是另一个`<em>`元素的父元素。相反地，如果一个元素直接位于另一个元素的下方，则称它是另一个元素的子元素。因此，[图 2-14](#a_document_tree_structure)最右侧的锚点元素是`<p>`元素的子元素，而该`<p>`元素又是`<body>`元素的子元素，依此类推。
+- en: 'The terms *parent* and *child* are specific applications of the terms *ancestor*
+    and *descendant*, respectively. There is a difference between them: in the tree
+    view, if an element is exactly one level above or below another, those elements
+    have a *parent-child* relationship. If the path from one element to another is
+    traced through two or more levels, the elements have an ancestor-descendant relationship,
+    but not a parent-child relationship. (A child is also a descendant, and a parent
+    is also an ancestor.) In [Figure 2-14](#a_document_tree_structure), the uppermost
+    `<ul>` element is parent to two `<li>` elements, but the uppermost `<ul>` is also
+    the ancestor of every element descended from its `<li>` element, all the way down
+    to the most deeply nested `<li>` elements. Those `<li>` elements, children of
+    the `<ol>`, are siblings.'
+  id: totrans-283
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*父元素*和*子元素*是*祖先*和*后代*这两个术语的具体应用。它们之间有所区别：在树状视图中，如果一个元素恰好在另一个元素的一级上方或下方，则这些元素具有*父子关系*。如果从一个元素到另一个元素的路径通过两个或更多级别进行跟踪，则这些元素具有祖先后代关系，但不具有父子关系。（子元素也是后代，父元素也是祖先。）在[图 2-14](#a_document_tree_structure)中，最上层的`<ul>`元素是两个`<li>`元素的父元素，但最上层的`<ul>`元素也是从其`<li>`元素下溯到最深嵌套的`<li>`元素的每个元素的祖先。这些`<li>`元素是`<ol>`的子元素。'
+- en: Also, in [Figure 2-14](#a_document_tree_structure), there is an anchor that
+    is a child of `<strong>`, but also a descendant of the `<p>`, `<body>`, and `<html>`
+    elements. The `<body>` element is an ancestor of everything that the browser will
+    display by default, and the `<html>` element is ancestor to the entire document.
+    For this reason, in an HTML document, the `<html>` element is also called the
+    *root element*.
+  id: totrans-284
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[图 2-14](#a_document_tree_structure)中，有一个锚点，它是`<strong>`的子元素，同时也是`<p>`、`<body>`和`<html>`元素的后代。`<body>`元素是浏览器默认显示的所有内容的祖先，而`<html>`元素则是整个文档的祖先。因此，在HTML文档中，`<html>`元素也被称为*根元素*。
+- en: Defining Descendant Selectors
+  id: totrans-285
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定义后代选择器
+- en: 'The first benefit of understanding this model is the ability to define *descendant
+    selectors*. Defining descendant selectors is the act of creating rules that operate
+    in certain structural circumstances but not others. As an example, let’s say you
+    want to style only those `<em>` elements that are descended from `<h1>` elements.
+    To do so, write the following:'
+  id: totrans-286
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 理解这一模型的第一个好处是能够定义*后代选择器*。定义后代选择器是创建在特定结构情况下但不在其他情况下生效的规则。举个例子，假设你想要样式化只有从`<h1>`元素继承而来的`<em>`元素。要实现这一点，写下以下内容：
+- en: '[PRE78]'
+  id: totrans-287
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE78]'
+- en: This rule will make gray any text in an `<em>` element that is the descendant
+    of an `<h1>` element. Other `<em>` text, such as that found in a paragraph or
+    a block quote, will not be selected by this rule. [Figure 2-15](#selecting_an_element_based_on_its_contex)
+    illustrates the result.
+  id: totrans-288
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这条规则将使得属于`<h1>`元素后代的`<em>`元素中的文本变成灰色。其他地方的`<em>`文本，比如段落或者块引用中的，不会被此规则选中。[图 2-15](#selecting_an_element_based_on_its_contex)展示了结果。
+- en: '![css5 0215](assets/css5_0215.png)'
+  id: totrans-289
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0215](assets/css5_0215.png)'
+- en: Figure 2-15\. Selecting an element based on its context
+  id: totrans-290
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-15\. 根据上下文选择元素
+- en: In a descendant selector, the selector side of a rule is composed of two or
+    more space-separated selectors. The space between the selectors is an example
+    of a *combinator*. Each space combinator can be translated as “found within,”
+    “which is part of,” or “that is a descendant of,” but only if you read the selector
+    right to left. Thus, `h1 em` can be translated as, “Any `<em>` element that is
+    a descendant of an `<h1>` element.”
+  id: totrans-291
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在后代选择器中，规则的选择器部分由两个或多个用空格分隔的选择器组成。选择器之间的空格是*组合器*的一个例子。每个空格组合器可以被翻译为“在...中找到”，“是...的一部分”，或者“是...的后代”，但只有当你从右到左读选择器时才有效。因此，`h1
+    em`可以翻译为“任何`<h1>`元素的后代`<em>`元素”。
+- en: To read the selector left to right, you might phrase it like, “Any `<h1>` that
+    contains an `<em>` will have the following styles applied to the `<em>`.” That’s
+    much more verbose and confusing, and it’s why we, like the browser, read selectors
+    from right to left.
+  id: totrans-292
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从左到右读选择器，你可能会用更冗长和令人困惑的方式表达，比如，“任何`<h1>`包含一个`<em>`将对`<em>`应用以下样式”。这样说起来更啰嗦和混乱，这也是为什么我们和浏览器一样，从右到左读取选择器。
+- en: 'You aren’t limited to two selectors. For example:'
+  id: totrans-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你并不局限于两个选择器。例如：
+- en: '[PRE79]'
+  id: totrans-294
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE79]'
+- en: In this case, as [Figure 2-16](#a_very_specific_descendant_selector) shows,
+    any emphasized text that is part of an unordered list that is part of an ordered
+    list that is itself part of an unordered list (yes, this is correct) will be gray.
+    This is obviously a very specific selection criterion.
+  id: totrans-295
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，正如[图 2-16](#a_very_specific_descendant_selector)所示，任何作为无序列表一部分的有序列表一部分的无序列表一部分的强调文本（是的，这是正确的）将会是灰色的。这显然是一个非常具体的选择标准。
+- en: '![css5 0216](assets/css5_0216.png)'
+  id: totrans-296
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0216](assets/css5_0216.png)'
+- en: Figure 2-16\. A very specific descendant selector
+  id: totrans-297
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-16\. 一个非常具体的后代选择器
+- en: Descendant selectors can be extremely powerful. Let’s consider a common example.
+    Assume you have a document with a sidebar and a main area. The sidebar has a blue
+    background, the main area has a white background, and both areas include lists
+    of links. You can’t set all links to be blue because they’d be impossible to read
+    in the sidebar, and you also can’t set all links to white because they’d disappear
+    in the main part of the page.
+  id: totrans-298
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 后代选择器可以非常强大。让我们考虑一个常见的例子。假设你有一个包含侧边栏和主要区域的文档。侧边栏有蓝色背景，主要区域有白色背景，并且两个区域都包括链接列表。你不能将所有链接都设置为蓝色，因为在侧边栏中它们将无法阅读，你也不能将所有链接都设置为白色，因为它们在页面的主体部分将消失。
+- en: 'The solution: descendant selectors. In this case, you give the element that
+    contains your sidebar a class of `sidebar` and enclose the main part of the page
+    in a `<main>` element. Then, you write styles like this:'
+  id: totrans-299
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 解决方案：后代选择器。在这种情况下，给包含侧边栏的元素一个`sidebar`类，并将页面的主体部分包裹在`<main>`元素中。然后，写下这样的样式：
+- en: '[PRE80]'
+  id: totrans-300
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE80]'
+- en: '[Figure 2-17](#using_descendant_selectors_to_apply_diff) shows the result.'
+  id: totrans-301
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 2-17](#using_descendant_selectors_to_apply_diff)展示了结果。'
+- en: '![css5 0217](assets/css5_0217.png)'
+  id: totrans-302
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0217](assets/css5_0217.png)'
+- en: Figure 2-17\. Using descendant selectors to apply different styles to the same
+    type of element
+  id: totrans-303
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-17\. 使用后代选择器对相同类型的元素应用不同样式
+- en: Note
+  id: totrans-304
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: '`:any-link` refers to both visited and unvisited links. We’ll talk about it
+    in detail in [Chapter 3](ch03.html#pseudo_classes_and_elements).'
+  id: totrans-305
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:any-link`指的是已访问和未访问的链接。我们将在[第三章](ch03.html#pseudo_classes_and_elements)详细讨论它。'
+- en: 'Here’s another example: let’s say that you want gray to be the text color of
+    any `<b>` (boldfaced) element that is part of a `blockquote` and for any bold
+    text that is found in a normal paragraph:'
+  id: totrans-306
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再举一个例子：假设你希望将任何属于`blockquote`的`<b>`（加粗）元素的文本颜色设为灰色，并为普通段落中找到的任何加粗文本设置为灰色：
+- en: '[PRE81]'
+  id: totrans-307
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE81]'
+- en: The result is that the text within `<b>` elements that are descended from paragraphs
+    or block quotes will be gray.
+  id: totrans-308
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结果是段落或块引用中的`<b>`元素内的文本将变成灰色。
+- en: 'One overlooked aspect of descendant selectors is that the degree of separation
+    between two elements can be practically infinite. For example, if you write `ul
+    em`, that syntax will select any `<em>` element descended from a `<ul>` element,
+    no matter how deeply nested the `<em>` may be. Thus, `ul em` would select the
+    `<em>` element in the following markup:'
+  id: totrans-309
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 后代选择器被忽视的一个方面是两个元素之间的分离程度可以是实际上无限的。例如，如果你写`ul em`，那么这个语法将选择任何从`<ul>`元素后代到的`<em>`元素，无论`<em>`嵌套多深。因此，`ul
+    em`将选择以下标记中的`<em>`元素：
+- en: '[PRE82]'
+  id: totrans-310
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE82]'
+- en: A more subtle aspect of descendant selectors is that they have no notion of
+    element proximity. In other words, the closeness of two elements within the document
+    tree has no bearing on whether a rule applies. This is important when it comes
+    to specificity (which we’ll cover in the next chapter) and when considering rules
+    that might appear to cancel each other out.
+  id: totrans-311
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 后代选择器更微妙的一个方面是它们没有元素接近性的概念。换句话说，在文档树中两个元素的接近程度不影响规则的应用。在特异性（我们将在下一章讨论）和考虑可能互相抵消的规则时，这一点非常重要。
+- en: 'For example, consider the following (which contains `:not()`, a selector type
+    we’ll discuss in [“The negation pseudo-class”](ch03.html#the_negation_pseudo-class)):'
+  id: totrans-312
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，考虑以下内容（其中包含`:not()`，我们将在[“否定伪类”](ch03.html#the_negation_pseudo-class)中讨论）：
+- en: '[PRE83]'
+  id: totrans-313
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE83]'
+- en: '[PRE84]'
+  id: totrans-314
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE84]'
+- en: What the CSS says, in effect, is “any `<span>` inside a `<div>` that doesn’t
+    have a `class` containing the word `help` should be gray” in the first rule, and
+    “any `<span>` inside a `<div>` whose `class` contains the word `help`” in the
+    second rule. In the given markup fragment, *both* rules apply to the `<span>`
+    shown.
+  id: totrans-315
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS的效果是：“任何位于不具有包含词`help`的`class`的`<div>`内的`<span>`应该是灰色”，在第一条规则中，以及“任何位于具有包含词`help`的`class`的`<div>`内的`<span>`”在第二条规则中。在给定的标记片段中，*两条*规则都适用于显示的`<span>`。
+- en: 'Because the two rules have equal specificity weight and the `red` rule is written
+    last, it wins out, and the `<span>` is red. The fact that `div class="aside"`
+    is “closer to” `<span>` than `div class="help"` is irrelevant. Again: descendant
+    selectors have no notion of element proximity. Both rules match, only one color
+    can be applied, and because of the way CSS works, red is the winner here. (We’ll
+    discuss why that’s so in the next chapter.)'
+  id: totrans-316
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为两条规则具有相等的特异性权重，并且`red`规则写在最后，因此它胜出，`<span>`变成了红色。`div class="aside"`比`div
+    class="help"`“更接近”`<span>`这一事实无关紧要。再次强调：后代选择器没有元素接近性的概念。两条规则都匹配，只能应用一种颜色，因为CSS的工作方式，这里红色是赢家。（我们将在下一章讨论为什么如此。）
+- en: Note
+  id: totrans-317
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: As of early 2023, proposals have been made to add element-proximity awareness
+    to CSS via *selector scoping*, but the proposals are still being actively revised
+    and may not come to fruition.
+  id: totrans-318
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自2023年初以来，已经提出了通过*选择器作用域*向CSS添加元素接近性意识的提案，但这些提案仍在积极修订中，可能不会实现。
+- en: Selecting Children
+  id: totrans-319
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 选择子元素
+- en: 'In some cases, you don’t want to select an arbitrarily descended element. Rather,
+    you want to narrow your range to select an element that is specifically a child
+    of another element. You might, for example, want to select a `<strong>` element
+    only if it is a child (as opposed to any other level of descendant) of an `<h1>`
+    element. To do this, you use the *child combinator*, which is the greater-than
+    symbol (`>`):'
+  id: totrans-320
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些情况下，你不希望选择任意后代元素。相反，你希望缩小范围，只选择特定作为另一个元素的子元素的元素。例如，你可能只想选择`<h1>`元素的子元素`<strong>`元素（而不是任何其他层级的后代）。为此，你可以使用*子选择器*，即大于号（`>`）：
+- en: '[PRE85]'
+  id: totrans-321
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE85]'
+- en: 'This rule will make red the `<strong>` element shown in the first `<h1>`, but
+    not the second:'
+  id: totrans-322
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这条规则将使第一个`<h1>`中显示的`<strong>`元素变成红色，但不会影响第二个：
+- en: '[PRE86]'
+  id: totrans-323
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE86]'
+- en: Read right to left, the selector `h1 > strong` translates as, “Selects any `<strong>`
+    element that is a direct child of an `<h1>` element.” The child combinator can
+    be optionally surrounded by whitespace. Thus, `h1 > strong`, `h1> strong`, and
+    `h1>strong` are all equivalent. You can use or omit whitespace as you wish.
+  id: totrans-324
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从右向左阅读，选择器 `h1 > strong` 的翻译为：“选择任何 `<strong>` 元素，该元素是 `<h1>` 元素的直接子元素。” 子选择器可以选择是否在周围加上空白。因此，`h1
+    > strong`、`h1> strong` 和 `h1>strong` 都是等效的。你可以根据需要使用或省略空白。
+- en: When viewing the document as a tree structure, we can see that a child selector
+    restricts its matches to elements that are directly connected in the tree. [Figure 2-18](#a_document_tree_fragment)
+    shows part of a document tree.
+  id: totrans-325
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当将文档视为树结构时，我们可以看到子选择器将其匹配限制为树中直接连接的元素。[图 2-18](#a_document_tree_fragment) 展示了文档树的一部分。
+- en: '![css5 0218](assets/css5_0218.png)'
+  id: totrans-326
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0218](assets/css5_0218.png)'
+- en: Figure 2-18\. A document tree fragment
+  id: totrans-327
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-18\. 一个文档树片段
+- en: In this tree fragment, you can pick out parent-child relationships. For example,
+    the `<a>` element is a parent to `<strong>` and is also a child of the `<p>` element.
+    You could match elements in this fragment with the selectors `p > a` and `a >
+    strong`, but not `p > strong`, since `<strong>` is a descendant of `<p>` but not
+    its child.
+  id: totrans-328
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个树片段中，你可以确定父子关系。例如，`<a>` 元素是 `<p>` 元素的父元素，同时也是 `<strong>` 的子元素。你可以用选择器 `p
+    > a` 和 `a > strong` 来匹配这个片段，但不能用 `p > strong`，因为 `<strong>` 是 `<p>` 的后代而不是其子元素。
+- en: You can also combine descendant and child combinators in the same selector.
+    Thus, `table.summary td > p` will select any `<p>` element that is a *child* of
+    a `<td>` element that is itself *descended* from a `<table>` element that has
+    a `class` attribute containing the word `summary`.
+  id: totrans-329
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你也可以在同一选择器中结合后代选择器和子选择器。因此，`table.summary td > p` 将选择任何 `<p>` 元素，该元素是一个 *子*
+    元素，它的 `<td>` 元素本身是 *后代* 元素，该后代元素是一个包含单词 `summary` 的 `class` 属性的 `<table>` 元素。
+- en: Selecting Adjacent-Sibling Elements
+  id: totrans-330
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 选择相邻兄弟元素
+- en: Let’s say you want to style the paragraph immediately after a heading, or give
+    a special margin to a list that immediately follows a paragraph. To select an
+    element that immediately follows another element with the same parent, you use
+    the *adjacent-sibling combinator*, represented as a plus symbol (+). As with the
+    child combinator, the symbol can be surrounded by whitespace, or not, at your
+    discretion.
+  id: totrans-331
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想为紧跟在标题后的段落设置样式，或者为紧跟在段落后的列表设置特殊边距。要选择紧跟在另一个具有相同父级的元素后的元素，你可以使用 *相邻兄弟选择器*，表示为加号（+）。与子选择器一样，你可以自由选择是否在符号周围加上空白。
+- en: 'To remove the top margin from a paragraph immediately following an `<h1>` element,
+    write this:'
+  id: totrans-332
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要去除紧跟在 `<h1>` 元素后的段落的顶部边距，请写入这段代码：
+- en: '[PRE87]'
+  id: totrans-333
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE87]'
+- en: The selector is read as, “Select any `<p>` element that immediately follows
+    an `<h1>` element that *shares a parent* with the `<p>` element.”
+  id: totrans-334
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择器的解读是：“选择任何紧随一个与 `<p>` 元素共享父级的 `<h1>` 元素后的 `<p>` 元素。”
+- en: To visualize how this selector works, let’s once again consider a fragment of
+    a document tree, shown in [Figure 2-19](#another_document_tree_fragment).
+  id: totrans-335
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了直观地了解这个选择器的工作原理，让我们再次考虑文档树的片段，如 [图 2-19](#another_document_tree_fragment)
+    所示。
+- en: '![css5 0219](assets/css5_0219.png)'
+  id: totrans-336
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0219](assets/css5_0219.png)'
+- en: Figure 2-19\. Another document tree fragment
+  id: totrans-337
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-19\. 另一个文档树片段
+- en: In this fragment, a pair of lists descends from a `<div>` element, one ordered
+    and the other not, each containing three list items. Each list is an adjacent
+    sibling, and the list items themselves are also adjacent siblings. However, the
+    list items from the first list are *not* siblings of the second, as the two sets
+    of list items do not share the same parent element. (At best, they’re cousins,
+    and CSS has no cousin selector.)
+  id: totrans-338
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个片段中，一对列表来自于一个 `<div>` 元素，一个有序，另一个无序，每个列表都包含三个列表项。每个列表是相邻的兄弟元素，列表项本身也是相邻的兄弟元素。然而，第一个列表的列表项
+    *不* 是第二个列表的兄弟元素，因为这两组列表项没有共享相同的父元素。（充其量，它们是表兄弟，而 CSS 没有表兄弟选择器。）
+- en: 'Remember that you can select the second of two adjacent siblings only with
+    a single combinator. Thus, if you write `li + li {font-weight: bold;}`, only the
+    second and third items in each list will be boldfaced. The first list items will
+    be unaffected, as illustrated in [Figure 2-20](#selecting_adjacent_siblings).'
+  id: totrans-339
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '请记住，你只能使用单个选择器选择两个相邻兄弟元素中的第二个。因此，如果你写 `li + li {font-weight: bold;}`，每个列表中的第二和第三项将被加粗。第一项将不受影响，如
+    [图 2-20](#selecting_adjacent_siblings) 所示。'
+- en: '![css5 0220](assets/css5_0220.png)'
+  id: totrans-340
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0220](assets/css5_0220.png)'
+- en: Figure 2-20\. Selecting adjacent siblings
+  id: totrans-341
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-20\. 选择相邻兄弟
+- en: To work properly, CSS requires that the two elements appear in *source order*.
+    In our example, an `<ol>` element is followed by a `<ul>` element. This allows
+    us to select the second element with `ol + ul`, but we cannot select the first
+    by using the same syntax. For `ul + ol` to match, an ordered list must immediately
+    follow an unordered list.
+  id: totrans-342
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要正确工作，CSS 要求两个元素按*源顺序*出现。在我们的例子中，`<ol>` 元素后面是一个 `<ul>` 元素。这使我们可以使用 `ol + ul`
+    选择第二个元素，但不能使用相同的语法选择第一个元素。为了匹配 `ul + ol`，有序列表必须紧跟在无序列表后面。
+- en: 'Keep in mind that text content between two elements does *not* prevent the
+    adjacent-sibling combinator from working. Consider this markup fragment, whose
+    tree view would be the same as that shown in [Figure 2-18](#a_document_tree_fragment):'
+  id: totrans-343
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，两个元素之间的文本内容不会阻止相邻兄弟选择器的工作。考虑这个标记片段，其树视图与 [图 2-18](#a_document_tree_fragment)
+    中显示的相同。
+- en: '[PRE88]'
+  id: totrans-344
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE88]'
+- en: Even though we have text between the two lists, we can still match the second
+    list with the selector `ol + ul`. That’s because the intervening text is not contained
+    within a sibling element, but is instead part of the parent `<div>`. If we wrapped
+    that text in a paragraph element, it would then prevent `ol + ul` from matching
+    the second list. Instead, we might have to write something like `ol + p + ul`.
+  id: totrans-345
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使两个列表之间有文本，我们仍然可以使用选择器 `ol + ul` 匹配第二个列表。这是因为介于两个列表之间的文本不是兄弟元素的一部分，而是父 `<div>`
+    的一部分。如果我们将该文本包装在段落元素中，则会阻止 `ol + ul` 匹配第二个列表。相反，我们可能需要编写类似 `ol + p + ul` 的内容。
+- en: 'As the following example illustrates, the adjacent-sibling combinator can be
+    used in conjunction with other combinators:'
+  id: totrans-346
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如下例所示，相邻兄弟选择器可以与其他组合器一起使用：
+- en: '[PRE89]'
+  id: totrans-347
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE89]'
+- en: The selector translates as, “Selects any `<ul>` element that immediately follows
+    a sibling `<table>` element that is descended from a `<body>` element that is
+    itself a child of an `<html>` element.”
+  id: totrans-348
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择器的翻译是：“选择任何紧随 `<body>` 元素的 `<html>` 元素的子元素 `<table>` 的兄弟元素 `<ul>`。”
+- en: As with all combinators, you can place the adjacent-sibling combinator in a
+    more complex setting, such as `div#content h1 + div ol`. That selector is read
+    as, “Selects any `<ol>` element that is descended from a `<div>` when the `<div>`
+    is the adjacent sibling of an `<h1>` that is itself descended from a `<div>` whose
+    `id` attribute has a value of `content`.”
+  id: totrans-349
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与所有组合器一样，您可以将相邻兄弟选择器放置在更复杂的环境中，例如 `div#content h1 + div ol`。这个选择器的解释是：“选择任何
+    `<ol>` 元素，当 `<div>` 是 `<h1>` 的相邻兄弟，并且 `<div>` 自身是具有值为 `content` 的 `id` 属性的 `<div>`
+    的后代时。”
+- en: Selecting Following Siblings
+  id: totrans-350
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 选择后续兄弟元素
+- en: The *general sibling combinator* lets you select any element that follows another
+    element when both elements share the same parent, represented using the tilde
+    (`~`) combinator.
+  id: totrans-351
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*通用兄弟选择器*允许您在两个共享相同父元素的元素中选择后面的任何元素，表示为波浪符（`~`）组合器。'
+- en: 'As an example, to italicize any `<ol>` that follows an `<h2>` and also shares
+    a parent with the `<h2>`, you’d write `h2 ~ ol {font-style: italic;}`. The two
+    elements do not have to be adjacent siblings, although they can be adjacent and
+    still match this rule. The result of applying this rule to the following markup
+    is shown in [Figure 2-21](#selecting_following_siblings-id1):'
+  id: totrans-352
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '例如，要将跟在 `<h2>` 后且与 `<h2>` 共享父元素的任何 `<ol>` 斜体化，您可以编写 `h2 ~ ol {font-style: italic;}`。这两个元素不必是相邻兄弟，虽然它们可以相邻并仍然匹配此规则。将此规则应用于下面的标记的结果显示在
+    [图 2-21](#selecting_following_siblings-id1) 中：'
+- en: '[PRE90]'
+  id: totrans-353
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE90]'
+- en: As you can see, both ordered lists are italicized. That’s because both of them
+    are `<ol>` elements that follow an `<h2>` with which they share a parent (the
+    `<div>`).
+  id: totrans-354
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，两个有序列表都是斜体的。这是因为它们都是与它们共享父元素（`<div>`）的 `<h2>` 元素。
+- en: '![css5 0221](assets/css5_0221.png)'
+  id: totrans-355
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0221](assets/css5_0221.png)'
+- en: Figure 2-21\. Selecting following siblings
+  id: totrans-356
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 2-21\. 选择后续兄弟元素
+- en: Summary
+  id: totrans-357
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 总结
+- en: By using selectors based on the document’s language, you can create CSS rules
+    that apply to a large number of similar elements just as easily as you can construct
+    rules that apply in very narrow circumstances. The ability to group together both
+    selectors and rules keeps stylesheets compact and flexible, which incidentally
+    leads to smaller file sizes and faster download times.
+  id: totrans-358
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过基于文档语言的选择器，您可以创建适用于大量相似元素的 CSS 规则，就像构建适用于非常特定情况的规则一样简单。将选择器和规则组合在一起可以使样式表既紧凑又灵活，这意味着文件大小更小，下载速度更快。
+- en: Selectors are the one thing that user agents usually must get right, because
+    the inability to correctly interpret selectors pretty much prevents a user agent
+    from using CSS at all. On the flip side, it’s crucial for authors to correctly
+    write selectors because errors can prevent the user agent from applying the styles
+    as intended. An integral part of correctly understanding selectors and how they
+    can be combined is having a strong grasp of how selectors relate to document structure
+    and how mechanisms—such as inheritance and the cascade itself—come into play when
+    determining how an element will be styled.
+  id: totrans-359
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择器通常是用户代理必须正确掌握的内容，因为无法正确解释选择器几乎会完全阻止用户代理使用 CSS。另一方面，作者正确编写选择器非常关键，因为错误可能会导致用户代理无法按预期应用样式。正确理解选择器及其如何组合的一个重要部分是深入理解选择器与文档结构的关系，以及在确定元素样式时如何运用继承和级联机制。
+- en: The selectors we covered in this chapter aren’t the end of the story, though.
+    They’re not even half the story. In the next chapter, we’ll dive into the powerful
+    and ever-expanding world of pseudo-class and pseudo-element selectors.
+  id: totrans-360
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本章涵盖的选择器并非全部，甚至不到一半。在下一章中，我们将深入探讨伪类和伪元素选择器这个功能强大且不断扩展的世界。

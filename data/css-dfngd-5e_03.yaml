@@ -1,0 +1,4413 @@
+- en: Chapter 3\. Pseudo-Class and -Element Selectors
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第三章 伪类和伪元素选择器
+- en: In the previous chapter, you saw how selectors can match a single element or
+    a collection of elements, using fairly simple expressions that match HTML attributes
+    in the document. Those are great if your need is just to style based on attributes,
+    but what if you need to style part of a document based on its current state or
+    structure? Or if you want to select all the form elements that are disabled, or
+    those that are required for form submission to be allowed? For those things, and
+    a great deal more, CSS has the pseudo-class and pseudo-element selectors.
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前一章中，你看到了如何使用相对简单的表达式来匹配文档中的单个元素或元素集合，这些表达式匹配 HTML 文档中的属性。如果你的需求只是基于属性进行样式设置，这些方法非常适用。但如果你需要根据文档当前的状态或结构来设置文档的一部分样式，或者如果你想选择所有被禁用的表单元素，或者必须要求表单提交的元素，那么
+    CSS 就有了伪类和伪元素选择器，它们可以实现这些功能，以及更多。
+- en: Pseudo-Class Selectors
+  id: totrans-2
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 伪类选择器
+- en: '*Pseudo-class selectors* let you assign styles to what are, in effect, phantom
+    classes inferred by the state of certain elements, or markup patterns within the
+    document, or even by the state of the document itself.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*伪类选择器* 允许你为实际上通过某些元素的状态或文档中的标记模式，甚至文档本身的状态推断出的幻影类分配样式。'
+- en: The term *phantom classes* might seem a little odd, but it really is the best
+    way to think of how pseudo-classes work. For example, suppose you want to highlight
+    every other row of a data table. You could do that by marking up every other row
+    with something like `class="even"` and then writing CSS to highlight rows with
+    that class—or (as you’ll soon see) you could use a pseudo-class selector to achieve
+    the same effect, one that will act as if you’ve added all those classes to the
+    markup even though you haven’t.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 术语 *幻影类* 可能听起来有点奇怪，但这确实是思考伪类工作方式的最佳方式。例如，假设你想突出显示数据表的每一行。你可以通过将每一行标记为 `class="even"`，然后编写
+    CSS 来突出显示具有该类的行，或者（正如你很快会看到的）你可以使用伪类选择器来实现相同的效果，它会像你已经将所有这些类添加到标记中一样操作，尽管你实际上并没有这样做。
+- en: 'One aspect of pseudo-classes needs to be made explicit here: pseudo-classes
+    always refer to the element to which they’re attached, and to no other. Seems
+    like a weirdly obvious thing to say, right? The reason we make it explicit is
+    that for some pseudo-classes, it’s a common error to think they are descriptors
+    that refer to descendant elements.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里需要明确一个伪类的一个方面：伪类总是指它们附加到的元素，而不是其他的。听起来像是显而易见的事情，对吧？之所以明确说明这一点，是因为对于一些伪类来说，错误地认为它们是指的后代元素是一个常见的错误。
+- en: 'To illustrate this, Eric would like to share a personal anecdote:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了说明这一点，Eric 想分享一个个人轶事：
+- en: When my first child was born in 2003, I announced it online, as one does. A
+    number of people responded with congratulations and CSS jokes, chief among them
+    the selector `#ericmeyer:first-child` (we’ll get to `:first-child` in just a bit).
+    But that selector would select me, not my daughter, and only if I were the first
+    child of my own parents (which, as it happens, I am). To properly select *my*
+    first child, that selector would need to be `#ericmeyer > :first-child`.
+  id: totrans-7
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 当我2003年第一个孩子出生时，我按照惯例在网上宣布了这个消息。很多人发来祝贺的同时也开了些 CSS 的笑话，其中主要的是选择器 `#ericmeyer:first-child`（稍后我们会详细讨论
+    `:first-child`）。但是那个选择器会选择我，而不是我的女儿，只有在我自己父母的第一个孩子时（事实上，我确实是）。要正确选择*我的*第一个孩子，那个选择器应该是
+    `#ericmeyer > :first-child`。
+- en: The confusion is understandable, which is why we’re addressing it here. Reminders
+    are found throughout the following sections. Just always keep in mind that the
+    effect of pseudo-classes is to apply a sort of phantom class to the element to
+    which they’re attached, and you should be OK.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种混淆是可以理解的，这也是我们在这里讨论它的原因。在接下来的章节中会有提醒。请记住，伪类的效果是将一种幻影类应用于它们附加到的元素，只要牢记这一点，你应该没问题。
+- en: All pseudo-classes, without exception, are a word or hyphenated term preceded
+    by a single colon (`:`), and they can appear anywhere in a selector.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有的伪类，毫无例外，都是一个单冒号（`:`）前面跟着一个词或连字符的术语，并且它们可以出现在选择器的任何位置。
+- en: Combining Pseudo-Classes
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 结合伪类
+- en: 'Before we really get started, a word about chaining. CSS makes it possible
+    to combine (*chain*) pseudo-classes together. For example, you can make unvisited
+    links red when they’re hovered and visited links maroon when they are hovered:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在我们真正开始之前，关于链接的一点。CSS 允许将伪类结合（链）。例如，你可以使未访问的链接在悬停时变红色，并在悬停时访问的链接变为栗色：
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The order you specify doesn’t matter; you could also write `a:hover:link` to
+    the same effect as `a:link:hover`. It’s also possible to assign separate hover
+    styles to unvisited and visited links that are in another language—for example,
+    German:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定的顺序无关紧要；您也可以写`a:hover:link`，效果与`a:link:hover`相同。还可以为其他语言中的未访问和已访问链接分配单独的悬停样式，例如德语：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Be careful not to combine mutually exclusive pseudo-classes. For example, a
+    link cannot be both visited and unvisited, so `a:link:visited` doesn’t make any
+    sense and will never match anything.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意不要组合互斥的伪类。例如，链接不能同时是访问过和未访问过的，所以`a:link:visited`毫无意义，并且永远不会匹配任何内容。
+- en: Structural Pseudo-Classes
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 结构性伪类
+- en: The first set of pseudo-classes we’ll explore are structural in nature; that
+    is, they refer to the markup structure of the document. Most of them depend on
+    patterns within the markup, such as choosing every third paragraph, but others
+    allow you to address specific types of elements.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将首先探讨的伪类是结构性的；也就是说，它们涉及文档的标记结构。大多数伪类依赖于标记内的模式，比如选择每第三个段落，但其他伪类允许您针对特定类型的元素进行选择。
+- en: Selecting the root element
+  id: totrans-18
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 选择根元素
+- en: 'This is the quintessence of structural simplicity: the pseudo-class `:root`
+    selects the root element of the document. In HTML, this is *always* the `<html>`
+    element. The real benefit of this selector is found when writing stylesheets for
+    XML languages, as the root element may be different in every language—for example,
+    in SVG it’s the `<svg>` element, and in our earlier PlanetML examples it was the
+    `<pml>` element—or even when you have more than one possible root element within
+    a single language (though not a single document!).'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是结构简单性的精髓：伪类`:root`选择文档的根元素。在 HTML 中，这总是`<html>`元素。此选择器的真正好处在于为 XML 语言编写样式表时，根元素可能在每种语言中都不同——例如，在
+    SVG 中是`<svg>`元素，在我们之前的 PlanetML 示例中是`<pml>`元素——甚至在同一语言中可能有多个可能的根元素（尽管不是在单个文档中！）。
+- en: 'Here’s an example of styling the root element in HTML, as illustrated in [Figure 3-1](#styling_the_root_element):'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是在 HTML 中样式化根元素的示例，如[图 3-1](#styling_the_root_element)所示：
+- en: '[PRE2]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '![css5 0301](assets/css5_0301.png)'
+  id: totrans-22
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0301](assets/css5_0301.png)'
+- en: Figure 3-1\. Styling the root element
+  id: totrans-23
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-1\. 样式化根元素
+- en: In HTML documents, you can always select the `<html>` element directly, without
+    having to use the `:root` pseudo-class. The two selectors differ in terms of specificity,
+    which we’ll cover in [Chapter 4](ch04.html#specificity_comma_inheritance), but
+    otherwise they’ll have the same effect.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 HTML 文档中，您可以直接选择`<html>`元素，而不必使用`:root`伪类。这两个选择器在特异性方面有所不同，我们将在[第四章](ch04.html#specificity_comma_inheritance)中进行详细讨论，但除此之外，它们效果相同。
+- en: Selecting empty elements
+  id: totrans-25
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 选择空元素
+- en: 'With the pseudo-class `:empty`, you can select any element that has no children
+    of any kind, *including* text nodes, which covers both text and whitespace. This
+    can be useful in suppressing elements that a content management system (CMS) has
+    generated without filling in any actual content. Thus, `p:empty {display: none;}`
+    would prevent the display of any empty paragraphs.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '使用伪类`:empty`，您可以选择任何没有任何子元素（包括文本节点）的元素，这包括文本和空白。这在抑制内容管理系统（CMS）生成的未填充任何实际内容的元素时非常有用。因此，`p:empty
+    {display: none;}`将阻止显示任何空段落。'
+- en: 'Note that in order to be matched, an element must be, from a parsing perspective,
+    truly empty—no whitespace, visible content, or descendant elements. Of the following
+    elements, only the first and last would be matched by `p:empty`:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，为了匹配，元素必须从解析的角度来看确实为空——没有空白、可见内容或后代元素。以下元素中，只有第一个和最后一个会被`p:empty`匹配到：
+- en: '[PRE3]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The second and third paragraphs are not matched by `:empty` because they are
+    not empty: they contain, respectively, a single space and a single newline character.
+    Both are considered text nodes and thus prevent a state of emptiness. The last
+    paragraph matches because comments are not considered content, not even whitespace.
+    But put even one space or newline to either side of that comment, and `p:empty`
+    would fail to match.'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二和第三段落不会被`:empty`匹配，因为它们不是空的：分别包含一个空格和一个换行符。它们都被视为文本节点，因此阻止了空状态。最后一个段落匹配，因为注释不被视为内容，甚至不是空白。但是，只要在注释两侧放置一个空格或换行符，`p:empty`就无法匹配。
+- en: 'You might be tempted to just style all empty elements with something like `*:empty
+    {display: none;}`, but there’s a hidden catch: `:empty` matches HTML’s empty elements,
+    like `<img>`, `<hr>`, `<br>`, and `<input>`. It could even match `<textarea>`,
+    unless you insert some default text into the `<textarea>` element.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '你可能会被诱惑只是样式化所有空元素，比如 `*:empty {display: none;}`，但其中有一个隐蔽的陷阱：`:empty` 匹配 HTML
+    的空元素，比如 `<img>`、`<hr>`、`<br>` 和 `<input>`。甚至可以匹配 `<textarea>`，除非你在 `<textarea>`
+    元素中插入一些默认文本。'
+- en: Thus, in terms of matching elements, `img` and `img:empty` are effectively the
+    same. (They are different in terms of specificity, which we’ll cover in the next
+    chapter.)
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，在匹配元素方面，`img` 和 `img:empty` 是等效的（它们在特异性上有所不同，这将在下一章节中讨论）。
+- en: Selecting only children
+  id: totrans-32
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 选择仅为子元素
+- en: 'If you’ve ever wanted to select all the images that are wrapped by a hyperlink
+    element, the `:only-child` pseudo-class is for you. It selects elements when they
+    are the only child element of another element. So let’s say you want to add a
+    border to any image that’s the only child of another element. You’d write the
+    following:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你曾想选择所有被超链接元素包裹的图片，`:only-child` 伪类正是为你而设计的。它在元素是另一个元素的唯一子元素时进行选择。比如说你想给任何一个作为其父元素唯一子元素的图片加上边框，你可以写成以下这样：
+- en: '[PRE4]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'This would match any image that meets those criteria. Therefore, if you had
+    a paragraph that contained an image and no other child elements, the image would
+    be selected regardless of all the text surrounding it. If what you’re really after
+    is images that are sole children and found inside hyperlinks, you just modify
+    the selector like so (which is illustrated in [Figure 3-2](#selecting_images_that_are_only_children)):'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将匹配符合这些条件的任何图片。因此，如果你有一个段落包含一张图片且没有其他子元素，那么无论周围有多少文本，该图片都会被选中。如果你真正想要的是仅为唯一子元素且位于超链接内的图片，你只需修改选择器如下（如图
+    3-2 中所示）：
+- en: '[PRE5]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '[PRE6]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '![css5 0302](assets/css5_0302.png)'
+  id: totrans-38
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0302](assets/css5_0302.png)'
+- en: Figure 3-2\. Selecting images that are only children inside links
+  id: totrans-39
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-2\. 选择只作为链接内唯一子元素的图片
+- en: You should remember two things about `:only-child`. The first is that you *always*
+    apply it to the element you want to be an only child, not to the parent element,
+    as explained earlier. That brings up the second thing to remember, which is that
+    when you use `:only-child` in a descendant selector, you aren’t restricting the
+    elements listed to a parent-child relationship.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你应该记住关于 `:only-child` 的两件事。首先是你*总是*将其应用于你希望成为唯一子元素的元素，而不是父元素，正如前面所解释的那样。这带来的第二件事要记住的是，当你在后代选择器中使用
+    `:only-child` 时，你并没有将列出的元素限制为父子关系。
+- en: 'To go back to the hyperlinked-image example, `a[href] img:only-child` matches
+    any image that is an only child and is descended from an `a` element, whether
+    or not it’s a *child* of an `a` element. To match, the element image must be the
+    only child of its direct parent and also a descendant of an `a` element with an
+    `href` attribute, but that parent can itself be a descendant of the same `<a>`
+    element. Therefore, all three of the images in the following would be matched,
+    as shown in [Figure 3-3](#selecting_images_that_are_only_child):'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 回到超链接图片的例子，`a[href] img:only-child` 匹配任何作为其直接父元素的唯一子元素且是 `a` 元素后代的图片，无论它是否是
+    `a` 元素的*子元素*。要匹配，元素图片必须是其直接父元素的唯一子元素，同时也是具有 `href` 属性的 `a` 元素的后代，但该父元素本身可以是相同
+    `<a>` 元素的后代。因此，以下三个图片都会被匹配，如图 3-3 所示：
+- en: '[PRE7]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '[PRE8]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '![css5 0303](assets/css5_0303.png)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0303](assets/css5_0303.png)'
+- en: Figure 3-3\. Selecting images that are only children inside links, redux
+  id: totrans-45
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-3\. 选择只作为链接内唯一子元素的图片，再论
+- en: In each case, the image is the only child element of its parent, and it is also
+    descended from an `<a>` element. Thus, all three images are matched by the rule
+    shown. If you want to restrict the rule so that it matches images that are the
+    only children of `<a>` elements, you add the child combinator to yield `a[href]
+    > img:only-child`. With that change, only the first of the three images shown
+    in [Figure 3-3](#selecting_images_that_are_only_child) would be matched.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在每种情况下，图片都是其父元素的唯一子元素，并且也是 `<a>` 元素的后代。因此，所有三个图片都被所示规则匹配。如果你想限制规则以使其匹配作为 `<a>`
+    元素唯一子元素的图片，你可以添加子元素结合器，以得到 `a[href] > img:only-child`。通过这种修改，只有第三章中显示的第一个图片会被匹配。
+- en: Using only-of-type selection
+  id: totrans-47
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 仅使用 `:only-of-type` 选择
+- en: 'That’s all great, but what if you want to match images that are the only images
+    inside hyperlinks, but other elements may be in there with them? Consider the
+    following:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这都很好，但是如果要匹配作为超链接中唯一图像的图像，但其他元素可能也在其中，该怎么办？考虑以下情况：
+- en: '[PRE9]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'In this case, we have an `a` element that has two children: `<b>` and `<img>`.
+    That image, no longer the only child of its parent (the hyperlink), can never
+    be matched using `:only-child`. However, it *can* be matched using `:only-of-type`.
+    This is illustrated in [Figure 3-4](#selecting_images_that_are_the_only_sibli):'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，我们有一个 `a` 元素，其有两个子元素：`<b>` 和 `<img>`。该图像不再是其父级（超链接）的唯一子元素，因此永远不会使用 `:only-child`
+    进行匹配。但是，它*可以*使用 `:only-of-type` 进行匹配。这在[图3-4](#selecting_images_that_are_the_only_sibli)中有所说明：
+- en: '[PRE10]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '[PRE11]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: '![css5 0304](assets/css5_0304.png)'
+  id: totrans-53
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0304](assets/css5_0304.png)'
+- en: Figure 3-4\. Selecting images that are the only sibling of their type
+  id: totrans-54
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-4。选择作为其类型唯一同级的图像
+- en: The difference is that `:only-of-type` will match any element that is the only
+    one of its type among all its siblings, whereas `:only-child` will match only
+    if an element has no siblings at all.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不同之处在于`:only-of-type`将匹配任何元素，该元素是其同级中唯一的此类型，而`:only-child`只会在元素根本没有同级时才匹配。
+- en: 'This can be very useful in cases such as selecting images within paragraphs
+    without having to worry about the presence of hyperlinks or other inline elements:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些情况下，这可以非常有用，例如在段落中选择图像而无需担心超链接或其他内联元素的存在：
+- en: '[PRE12]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: As long as there aren’t multiple images that are children of the same paragraph,
+    the image will be floated to the right.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只要没有多个是同一段落的子图像，该图像将被浮动到右侧。
+- en: 'You can also use this pseudo-class to apply extra styles to an `<h2>` when
+    it’s the only one in a given section of a document, like this:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以使用此伪类为文档中给定部分中的 `<h2>` 应用额外样式，如下所示：
+- en: '[PRE13]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Given those rules, any `<section>` that has only one child `<h2>` will have
+    that `<h2>` appear larger than usual. If a `section` has two or more `<h2>` children,
+    neither will be larger than the other. The presence of other children—whether
+    they are other heading levels, tables, paragraphs, lists, and so on—will not interfere
+    with matching.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据这些规则，任何只有一个子 `<h2>` 的 `<section>` 将使该 `<h2>` 显示比平常大。如果 `section` 有两个或更多 `<h2>`
+    子元素，则不会有一个比另一个更大。其他子元素的存在——无论是其他标题级别、表格、段落、列表等等——都不会影响匹配。
+- en: 'One more point to make clear is that `:only-of-type` refers to elements and
+    nothing else. Consider the following:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有一点需要澄清的是`:only-of-type`只引用元素，不引用其他内容。考虑以下情况：
+- en: '[PRE14]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: '[PRE15]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: In this case, neither of the paragraphs will be selected. Why not? Because two
+    paragraphs are descendants of the `<div>`, neither can be the only one of their
+    type.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，这两个段落都不会被选中。为什么？因为两个段落都是 `<div>` 的后代，它们中的任何一个都不能是其类型的唯一一个。
+- en: The class name is irrelevant here. We can be fooled into thinking that *type*
+    is a generic description, because of the way we parse language. *Type*, in the
+    way `:only-of-type` means it, refers only to the element type, as with type selectors.
+    Thus, `p.unique:only-of-type` means, “Select any `<p>` element that is the only
+    `<p>` element among its siblings if it also has a `class` of `unique`.” It does
+    *not* mean, “Select any `<p>` element whose `class` attribute contains the word
+    `unique` when it’s the only sibling paragraph to meet that criterion.”
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里类名无关紧要。我们可能会被误导，认为*type*是一个泛泛的描述，因为我们解析语言的方式。然而，`：only-of-type` 所指的*type*只指元素类型，就像类型选择器一样。因此，`p.unique:only-of-type`
+    意味着“选择任何 `<p>` 元素，该元素在其同级中是唯一的 `<p>` 元素，如果它还具有 `class` 为 `unique`。” 它*不*意味着“当
+    `class` 属性包含单词 `unique` 时，选择任何 `<p>` 元素，它是唯一一个符合该标准的同级段落。”
+- en: Selecting first children
+  id: totrans-67
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 选择第一个子元素
+- en: It’s pretty common to want to apply special styling to the first or last child
+    of an element. A typical example is styling a bunch of navigation links in a tab
+    bar and wanting to put special visual touches on the first or last tab (or both).
+    If we didn’t have structural selectors, this could be done by applying special
+    classes to those elements. We have pseudo-classes to carry the load for us, removing
+    the need to manually figure out which elements are the first and last.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 常见的情况是想要对元素的第一个或最后一个子元素应用特殊样式。一个典型的例子是在选项卡栏中为一组导航链接应用样式，并希望在第一个或最后一个选项卡（或两者）上加上特殊的视觉效果。如果没有结构选择器，可以通过为这些元素应用特殊类来实现。我们有伪类来为我们承担这个任务，无需手动确定哪些元素是第一个和最后一个。
+- en: 'The pseudo-class `:first-child` is used to select elements that are the first
+    children of other elements. Consider the following markup:'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 伪类`:first-child`用于选择作为其他元素第一个子元素的元素。考虑以下标记：
+- en: '[PRE16]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: In this example, the elements that are first children are the first `<p>`, the
+    first `<li>`, and the `<strong>` and `<em>` elements, which are all the first
+    children of their respective parents. Given the following two rules,
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此示例中，第一个子元素是第一个`<p>`、第一个`<li>`以及`<strong>`和`<em>`元素，它们都是其各自父元素的第一个子元素。根据以下两个规则，
+- en: '[PRE17]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: we get the result shown in [Figure 3-5](#styling_first_children).
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们得到如[图3-5](#styling_first_children)所示的结果。
+- en: '![css5 0305](assets/css5_0305.png)'
+  id: totrans-74
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0305](assets/css5_0305.png)'
+- en: Figure 3-5\. Styling first children
+  id: totrans-75
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-5\. 样式化第一个子元素
+- en: The first rule boldfaces any `<p>` element that is the first child of another
+    element. The second rule uppercases any `<li>` element that is the first child
+    of another element (which, in HTML, must be either an `<ol>` or `<ul>` element).
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个规则使任何作为另一个元素的第一个子元素的`<p>`元素加粗。第二个规则将使作为另一个元素的第一个子元素的`<li>`元素大写（在HTML中，这必须是`<ol>`或`<ul>`元素）。
+- en: 'As has been mentioned, the most common error is assuming that a selector like
+    `p:first-child` will select the first child of a `<p>` element. Remember the nature
+    of pseudo-classes, which is to attach a sort of phantom class to the anchor element,
+    the element associated with the pseudo-class. If you were to add actual classes
+    to the markup, it would look like this:'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如已经提到的，最常见的错误是假设像`p:first-child`这样的选择器将选择`<p>`元素的第一个子元素。请记住伪类的本质，即将一种幻影类附加到锚点元素，即与伪类相关联的元素。如果要向标记添加实际类，它看起来会像这样：
+- en: '[PRE18]'
+  id: totrans-78
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: Therefore, if you want to select those `<em>` elements that are the first child
+    of another element, you write `em:first-child`.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，如果您想选择那些作为另一个元素的第一个子元素的`<em>`元素，则应编写`em:first-child`。
+- en: Selecting last children
+  id: totrans-80
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 选择最后的子元素
+- en: 'The mirror image of `:first-child` is `:last-child`. If we take the previous
+    example and just change the pseudo-classes, we get the result shown in [Figure 3-6](#styling_first_children-id1):'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:first-child`的镜像是`:last-child`。如果我们采用前面的示例并只更改伪类，则得到如[图3-6](#styling_first_children-id1)所示的结果：'
+- en: '[PRE19]'
+  id: totrans-82
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: '[PRE20]'
+  id: totrans-83
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: '![css5 0306](assets/css5_0306.png)'
+  id: totrans-84
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0306](assets/css5_0306.png)'
+- en: Figure 3-6\. Styling last children
+  id: totrans-85
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-6\. 样式化最后的子元素
+- en: The first rule boldfaces any `<p>` element that is the last child of another
+    element. The second rule uppercases any `<li>` element that is the last child
+    of another element. If you wanted to select the `<em>` element inside that last
+    paragraph, you could use the selector `p:last-child em`, which selects any `<em>`
+    element that descends from a `<p>` element that is itself the last child of another
+    element.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个规则使任何作为另一个元素的最后一个子元素的`<p>`元素加粗。第二个规则将使作为另一个元素的最后一个子元素的`<li>`元素大写。如果您想要选择最后一个段落中的`<em>`元素，则可以使用选择器`p:last-child
+    em`，它选择任何作为自身另一个元素的最后一个子元素的`<p>`元素中的`<em>`元素。
+- en: 'Interestingly, you can combine these two pseudo-classes to create a version
+    of `:only-child`. The following two rules will select the same elements:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有趣的是，您可以结合这两个伪类来创建一个`only-child`的版本。以下两个规则将选择相同的元素：
+- en: '[PRE21]'
+  id: totrans-88
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: Either way, we get paragraphs with red foreground and background colors (not
+    a good idea, to be clear).
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无论哪种方式，我们得到具有红色前景和背景颜色的段落（明确地说，这不是一个好主意）。
+- en: Selecting the first and last of a type
+  id: totrans-90
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 选择类型的第一个和最后一个
+- en: 'In a manner similar to selecting the first and last children of an element,
+    you can select the first or last of a type of element within another element.
+    This permits actions like selecting the first `<table>` inside a given element,
+    regardless of whatever elements come before it:'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与选择元素的第一个和最后一个子元素类似，您可以选择在另一个元素内部的特定类型的元素的第一个或最后一个。这允许执行诸如选择给定元素内的第一个`<table>`之类的操作，而不管之前有什么元素：
+- en: '[PRE22]'
+  id: totrans-92
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: Note that this does *not* apply to the entire document; the rule shown will
+    not select the first table in the document and skip all the others. It will instead
+    select the first `<table>` element within each element that contains one, and
+    skip any sibling `<table>` elements that come after the first. Thus, given the
+    document structure shown in [Figure 3-7](#selecting_first-of-type_tables), the
+    circled nodes are the ones that are selected.
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，这不适用于整个文档；所示的规则不会选择文档中的第一个表并跳过所有其他表。它将选择每个包含表的元素内的第一个`<table>`元素，并跳过任何在第一个之后的同级`<table>`元素。因此，给定[图3-7](#selecting_first-of-type_tables)中显示的文档结构，被圈出的节点是被选择的节点。
+- en: '![css5 0307](assets/css5_0307.png)'
+  id: totrans-94
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0307](assets/css5_0307.png)'
+- en: Figure 3-7\. Selecting first-of-type tables
+  id: totrans-95
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-7\. 选择第一个类型为表的表格
+- en: 'Within the context of tables, a useful way to select the first data cell within
+    a row regardless of whether a header cell comes before it in the row is as follows:'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在表的上下文中，一种有用的方式是选择行中第一个数据单元格，无论该行中是否有一个标题单元格在它之前：
+- en: '[PRE23]'
+  id: totrans-97
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: 'That would select the first data cell in each of the following table rows (that
+    is, the cells containing `7` and `R`):'
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将选择每个表行中的第一个数据单元格（即包含`7`和`R`的单元格）：
+- en: '[PRE24]'
+  id: totrans-99
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: Compare that to the effects of `td:first-child`, which would select the first
+    `<td>` element in the second row, but not in the first row.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与选择`td:first-child`的效果进行比较，它将选择第二行中的第一个`<td>`元素，但不会选择第一行中的第一个`<td>`元素。
+- en: The flip side is `:last-of-type`, which selects the last instance of a given
+    type from among its sibling elements. In a way, it’s just like `:first-of-type`,
+    except you start with the last element in a group of siblings and walk backward
+    toward the first element until you reach an instance of the type. Given the document
+    structure shown in [Figure 3-8](#selecting_last-of-type_tables), the circled nodes
+    are the ones selected by `table:last-of-type`.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一面是`:last-of-type`，它从其兄弟元素中选择给定类型的最后一个实例。在某种程度上，它就像`:first-of-type`，不同之处在于你从一组兄弟姐妹的最后一个元素开始，向后遍历直到到达该类型的第一个实例。在[图 3-8](#selecting_last-of-type_tables)中显示的文档结构中，用`table:last-of-type`选择的是圈出来的节点。
+- en: '![css5 0308](assets/css5_0308.png)'
+  id: totrans-102
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0308](assets/css5_0308.png)'
+- en: Figure 3-8\. Selecting last-of-type tables
+  id: totrans-103
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-8\. 选择最后一个类型为表的表格
+- en: As was noted with `:only-of-type`, remember that you are selecting elements
+    of a type from among their sibling elements; thus, every set of siblings is considered
+    separately. In other words, you are *not* selecting the first (or last) of all
+    the elements of a type within the entire document as a single group. Each set
+    of elements that shares a parent is its own group, and you can select the first
+    (or last) of a type within each group.
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如在`:only-of-type`中所指出的，记住你选择的是同类元素中的元素，而不是在整个文档中同一类型的所有元素的第一个（或最后一个）作为单一组。每组共享父元素的元素被视为单独的一组，你可以选择每组中类型的第一个（或最后一个）。
+- en: 'Similar to what was noted in the previous section, you can combine these two
+    pseudo-classes to create a version of `:only-of-type`. The following two rules
+    will select the same elements:'
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与前一节提到的类似，你可以结合这两个伪类创建`:only-of-type`的版本。以下两个规则将选择相同的元素：
+- en: '[PRE25]'
+  id: totrans-106
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: Selecting every nth child
+  id: totrans-107
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 选择每个第n个子元素
+- en: If you can select elements that are the first, last, or only children of other
+    elements, how about every third child? All even children? Only the ninth child?
+    Rather than try to define a literally infinite number of named pseudo-classes,
+    CSS has the `:nth-child()` pseudo-class. By filling integers or even basic algebraic
+    expressions into the parentheses, you can select any arbitrarily numbered child
+    element you like.
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你可以选择其他元素的第一个、最后一个或唯一的子元素，那么如何选择每第三个子元素？所有偶数子元素？只有第九个子元素？CSS不是试图定义无数个命名伪类，而是有`:nth-child()`伪类。通过在括号内填写整数或甚至基本的代数表达式，你可以选择任何你喜欢的任意编号子元素。
+- en: 'Let’s start with the `:nth-child()` equivalent of `:first-child`, which is
+    `:nth-child(1)`. In the following example, the selected elements will be the first
+    paragraph and the first list item:'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们从`:first-child`的`:nth-child()`等效部分`:nth-child(1)`开始。在下面的例子中，所选元素将是第一个段落和第一个列表项：
+- en: '[PRE26]'
+  id: totrans-110
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: '[PRE27]'
+  id: totrans-111
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: 'If we change the numbers from `1` to `2`, however, then no paragraphs will
+    be selected, and the middle (or second) list item will be selected, as illustrated
+    in [Figure 3-9](#styling_second_children):'
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，如果我们把数字从`1`改为`2`，则不会选择任何段落，并且将选择中间（第二个）列表项，如在[图 3-9](#styling_second_children)中所示：
+- en: '[PRE28]'
+  id: totrans-113
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: '![css5 0309](assets/css5_0309.png)'
+  id: totrans-114
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0309](assets/css5_0309.png)'
+- en: Figure 3-9\. Styling second children
+  id: totrans-115
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-9\. 设置第二个子元素样式
+- en: You can insert any integer you choose. If you have a use case for selecting
+    any ordered list that is the 93rd child element of its parent, `ol:nth-child(93)`
+    is ready to serve. This will match the 93rd child of any parent as long as that
+    child is an ordered list. (This does not mean the 93rd ordered list among its
+    siblings; see [“Selecting every nth of a type”](#selecting_every_nth_of_a_type)
+    for that.)
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以插入任何你选择的整数。如果你有一个使用案例，需要选择任何父元素的第93个有序列表子元素，`ol:nth-child(93)`可以随时为你服务。只要该子元素是有序列表，它就会匹配任何父元素的第93个子元素。（这并不意味着在其兄弟姐妹中的第93个有序列表；参见[“选择每种类型的第n个”](#selecting_every_nth_of_a_type)）
+- en: Is there a reason to use `:nth-child(1)` rather than `:first-child`? No. In
+    this case, use whichever you prefer. There is literally no difference between
+    them.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`:nth-child(1)`而不是`:first-child`有何理由？没有。在这种情况下，可以使用任何您喜欢的。它们之间实际上没有区别。
+- en: More powerfully, you can use simple algebraic expressions in the form *`a`*`n`
+    + *`b`* or *`a`*`n` `-` *`b`* to define recurring instances, where *`a`* and *`b`*
+    are integers and `n` is present as itself. Furthermore, the `+` *`b`* or `−` *`b`*
+    part is optional and thus can be dropped if it isn’t needed.
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更强大的是，您可以使用简单的代数表达式形式*`a`*`n` + *`b`*或*`a`*`n` - *`b`*来定义重复的实例，其中*`a`*和*`b`*是整数，`n`表示为其本身。此外，`+`
+    *`b`*或`−` *`b`*部分是可选的，因此如果不需要，可以省略。
+- en: 'Let’s suppose we want to select every third list item in an unordered list,
+    starting with the first. The following makes that possible, selecting the first
+    and fourth items, as shown in [Figure 3-10](#styling_every_third_list_item):'
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设我们想要选择无序列表中的每第三个列表项，从第一个开始。以下操作使其成为可能，选择第一个和第四个项目，如[图3-10](#styling_every_third_list_item)所示：
+- en: '[PRE29]'
+  id: totrans-120
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: '![css5 0310](assets/css5_0310.png)'
+  id: totrans-121
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0310](assets/css5_0310.png)'
+- en: Figure 3-10\. Styling every third list item
+  id: totrans-122
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-10。样式化每第三个列表项
+- en: The way this works is that `n` represents the series 0, 1, 2, 3, 4, and on into
+    infinity. The browser then solves for `3n + 1`, yielding 1, 4, 7, 10, 13, and
+    so on. Were we to drop the `+ 1`, thus leaving us with simply `3n`, the results
+    would be 0, 3, 6, 9, 12, and so on. Since there is no zeroth list item—all element
+    counting starts with 1, to the likely chagrin of array-slingers everywhere—the
+    first list item selected by this expression would be the third list item in the
+    list.
+  id: totrans-123
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种工作方式是`n`表示系列0、1、2、3、4等直到无限。然后浏览器解决`3n + 1`，产生1、4、7、10、13等。如果删除`+ 1`，即简单留下`3n`，结果将是0、3、6、9、12等。由于没有第0个列表项——所有元素计数从1开始，这个表达式选中的第一个列表项将是列表中的第三个列表项。
+- en: 'Given that element counting starts with 1, it is a minor trick to deduce that
+    `:nth-child(2n)` will select even-numbered children, and either `:nth-child(2n+1)`
+    or `:nth-child(2n-1)` will select odd-numbered children. You can commit that to
+    memory, or you can use the two special keywords that `:nth-child()` accepts: `even`
+    and `odd`. Want to highlight every other row of a table, starting with the first?
+    Here’s how you do it, with the results shown in [Figure 3-11](#styling_every_other_table_row):'
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 鉴于元素计数从1开始，推断`:nth-child(2n)`将选择偶数编号的子元素，而`:nth-child(2n+1)`或`:nth-child(2n-1)`将选择奇数编号的子元素是一种小技巧。您可以将其记忆下来，或者您可以使用`:nth-child()`接受的两个特殊关键字：`even`和`odd`。想要突出显示表的每一行中的其他行，从第一行开始？以下是如何实现的，结果显示在[图3-11](#styling_every_other_table_row)中：
+- en: '[PRE30]'
+  id: totrans-125
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: '![css5 0311](assets/css5_0311.png)'
+  id: totrans-126
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0311](assets/css5_0311.png)'
+- en: Figure 3-11\. Styling every other table row
+  id: totrans-127
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-11。样式化每隔一行的表行
+- en: Anything more complex than every-other-element requires an *`a`*`n` `+` *`b`*
+    expression.
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何比每隔一个元素更复杂的东西都需要*`a`*`n` + *`b`*表达式。
+- en: 'Note that when you want to use a negative number for *`b`*, you have to remove
+    the `+` sign, or else the selector will fail entirely. Of the following two rules,
+    only the first will do anything. The second will be dropped by the parser and
+    the entire declaration block will be ignored:'
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在*`b`*使用负数时，必须去掉`+`号，否则选择器将完全失败。以下两个规则中，只有第一个会起作用。解析器将丢弃第二个，并完全忽略整个声明块：
+- en: '[PRE31]'
+  id: totrans-130
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: 'You can also use a negative value for *`a`* in the expression, which will effectively
+    count backward from the term you use in *`b`*. Selecting the first five list items
+    in a list can be done like this:'
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以在表达式中使用负的*`a`*值，这将有效地从您在*`b`*中使用的术语开始向后计数。选择列表中的前五个列表项可以这样做：
+- en: '[PRE32]'
+  id: totrans-132
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: 'This works because negative `n` goes 0, –1, –2, –3, –4, and so on. Add 5 to
+    each of those, and you get 5, 4, 3, 2, 1, and so on. Put in a negative number
+    for a multiplier on `n`, and you can get every second, third, or whatever-number-you-want
+    element, like so:'
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这有效是因为负数`n`为0、–1、–2、–3、–4等。对每个数加5，您会得到5、4、3、2、1等。为`n`添加负数乘数，您可以选择每第二个、第三个或您想要的任何编号的元素，如下所示：
+- en: '[PRE33]'
+  id: totrans-134
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: That will select the 10th, 8th, 4th, and 2nd list items in a list.
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将选择列表中的第10、第8、第4和第2个列表项。
+- en: 'As you might expect, a corresponding pseudo-class is `:nth-last-child()`. This
+    lets you do the same thing as `:nth-child()`, except with `:nth-last-child()`
+    you start from the last element in a list of siblings and count backward toward
+    the beginning. If you’re intent on highlighting every other table row *and* making
+    sure the very last row is one of the rows in the highlighting pattern, either
+    one of these will work for you:'
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您可能期望的那样，对应的伪类是`nth-last-child()`。这让您可以像使用`nth-child()`一样操作，只不过`nth-last-child()`从同级元素列表的最后一个元素开始向前计数。如果您打算突出显示每隔一个表格行*并*确保最后一行是突出显示模式中的一行，则这两者都适合您：
+- en: '[PRE34]'
+  id: totrans-137
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: If the Document Object Model (DOM) is updated to add or remove table rows, there
+    is no need to add or remove classes. By using structural selectors, these selectors
+    will always match the odd rows of the updated DOM.
+  id: totrans-138
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果文档对象模型（DOM）更新以添加或删除表格行，则无需添加或删除类。通过使用结构选择器，这些选择器将始终匹配更新后的DOM的奇数行。
+- en: 'Any element can be matched using both `:nth-child()` and `:nth-last-child()`
+    if it fits the criteria. Consider these rules, the results of which are shown
+    in [Figure 3-12](#combining_patterns_of_colon_nth-child_op):'
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果符合条件，可以使用`nth-child()`和`nth-last-child()`匹配任何元素。考虑这些规则，其结果显示在[图 3-12](#combining_patterns_of_colon_nth-child_op)中。
+- en: '[PRE35]'
+  id: totrans-140
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: 'Again, using negative terms for *`a`* will essentially count backward, except
+    since this pseudo-class is already counting from the end, a negative term counts
+    forward. That is to say, you can select the last five list items in a list like
+    so:'
+  id: totrans-141
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次，对于*`a`*使用负数术语实际上是在倒数计数，但由于这个伪类已经从末尾开始计数，负数术语实际上是正向计数。也就是说，你可以这样选择列表中的最后五个列表项：
+- en: '[PRE36]'
+  id: totrans-142
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: Note
+  id: totrans-143
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: An extension of `:nth-child()` and `:nth-last-child()` allows selecting from
+    among elements matched by a simple or compound selector; for example, `:nth-child(2n
+    + 1 of p.callout)`. As of early 2023, this is supported in Safari and Chrome beta
+    releases. With it being included in Interop 2023, there are plans to have it fully
+    supported in the near future.
+  id: totrans-144
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`nth-child()`和`nth-last-child()`的扩展允许从由简单或复合选择器匹配的元素中进行选择；例如，`nth-child(2n
+    + 1 of p.callout)`。截至 2023 年初，这在 Safari 和 Chrome 的测试版中得到支持。随着其包含在 Interop 2023
+    中，计划在不久的将来完全支持它。'
+- en: '![css5 0312](assets/css5_0312.png)'
+  id: totrans-145
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0312](assets/css5_0312.png)'
+- en: Figure 3-12\. Combining patterns of `:nth-child()` and `:nth-last-child()`
+  id: totrans-146
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-12\. 结合`nth-child()`和`nth-last-child()`的模式
+- en: You also can string these two pseudo-classes together as `:nth-child(1):nth-last-child(1)`,
+    thus creating a more verbose restatement of `:only-child`. There’s no real reason
+    to do so other than to create a selector with a higher specificity (discussed
+    in [Chapter 4](ch04.html#specificity_comma_inheritance)), but the option is there.
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以将这两个伪类连接在一起，如`nth-child(1):nth-last-child(1)`，从而创建一个更详细的`only-child`的重新陈述。除了创建具有更高特异性的选择器（详见[第
+    4 章](ch04.html#specificity_comma_inheritance)）外，没有真正的理由这样做，但这是一个选项。
+- en: 'You can use CSS to determine the number of items in a list and style them accordingly:'
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用 CSS 确定列表中项目的数量，并相应地设置其样式：
+- en: '[PRE37]'
+  id: totrans-149
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: 'In these examples, if a list item is the only list item, the width is 100%.
+    If a list item is the first item as well as the second-from-the-last item, that
+    means there are two items, and the width is 50%. If an item is the first item
+    as well as the third-from-the-last item, we make it, and the two sibling list
+    items following it, 33% wide. Similarly, if a list item is the first item as well
+    as the fourth-from-the-last item, it means that there are exactly four items,
+    so we make it, and its three siblings, 25% of the width. (Note: this sort of thing
+    is a lot easier with the `:has()` pseudo-class, covered in [“The :has() Pseudo-Class”](#the_has_pseudo_class).)'
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这些示例中，如果列表项是唯一的列表项，则宽度为100%。如果列表项既是第一项又是倒数第二项，这意味着有两个项目，宽度为50%。如果一项既是第一项又是倒数第三项，我们将它及其后续的两个同级列表项设为33%的宽度。同样，如果列表项既是第一项又是倒数第四项，这意味着正好有四个项目，因此我们将它及其三个同级项设为宽度的25%。（注意：使用`:has()`伪类可以更轻松地实现这种效果，详见[“:has()
+    伪类”](#the_has_pseudo_class)。）
+- en: Selecting every nth of a type
+  id: totrans-151
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 选择每种类型的第n个
+- en: 'In what may have become a familiar pattern, the `:nth-child()` and `:nth-last-child()`
+    pseudo-classes have analogues in `:nth-of-type()` and `:nth-last-of-type()`. You
+    can, for example, select every other hyperlink that’s a child of any given paragraph,
+    starting with the second, using `p > a:nth-of-type(even)`. This will ignore all
+    other elements (`<span>`, `<strong>`, etc.) and consider only the links, as demonstrated
+    in [Figure 3-13](#selecting_the_even-numbered_links):'
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如同可能已经成为熟悉的模式一样，`:nth-child()` 和 `:nth-last-child()` 伪类在 `:nth-of-type()` 和
+    `:nth-last-of-type()` 中有类似物。例如，您可以选择给定段落的每隔一个的超链接，从第二个开始使用 `p > a:nth-of-type(even)`。这将忽略所有其他元素（`<span>`、`<strong>`
+    等），并仅考虑链接，如[图 3-13](#selecting_the_even-numbered_links)所示：
+- en: '[PRE38]'
+  id: totrans-153
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: '![css5 0313](assets/css5_0313.png)'
+  id: totrans-154
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0313](assets/css5_0313.png)'
+- en: Figure 3-13\. Selecting the even-numbered links
+  id: totrans-155
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-13\. 选择偶数链接
+- en: If you want to work from the last hyperlink backward, then you’d use `p > a:nth-last-of-type(even)`.
+  id: totrans-156
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想要从最后一个超链接向后工作，则可以使用`p > a:nth-last-of-type(even)`。
+- en: As before, these pseudo-classes select elements of a type from among their sibling
+    elements, *not* from among all the elements of a type within the entire document
+    as a single group. Each element has its own list of siblings, and selections happen
+    within each group.
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与以前一样，这些伪类从其兄弟元素中选择元素的类型，而*不是*从整个文档中同一类型的所有元素中选择。每个元素都有其自己的兄弟元素列表，并且选择发生在每个组内部。
+- en: 'The difference between `:nth-of-type()` and `nth-child()` is that `:nth-of-type()`
+    counts the instances of whatever you’re selecting, and does its counting within
+    that collection of elements. Take, for example, the following markup:'
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:nth-of-type()` 与 `nth-child()` 的区别在于，`:nth-of-type()` 计算您选择的实例数，并在该元素集合内进行计数。例如，考虑以下标记：'
+- en: '[PRE39]'
+  id: totrans-159
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: 'If you wanted to select every table cell in a row when it’s in an even-numbered
+    column, you would use `td:nth-child(even)`. But if you want to select every even-numbered
+    instance of a table cell, that would be `td:nth-of-type(even)`. You can see the
+    difference in [Figure 3-14](#nth-child_and_nth-of-type), which shows the result
+    of the following CSS:'
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想要选择行中位于偶数列中的每个表格单元格，则应使用`td:nth-child(even)`。但是，如果您想要选择表格单元格的每个偶数实例，则应使用`td:nth-of-type(even)`。您可以在[图
+    3-14](#nth-child_and_nth-of-type)中看到此差异，该图展示了以下 CSS 的结果：
+- en: '[PRE40]'
+  id: totrans-161
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: '![css5 0314](assets/css5_0314.png)'
+  id: totrans-162
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0314](assets/css5_0314.png)'
+- en: Figure 3-14\. Selecting both `nth-child` and `nth-of-type` table cells
+  id: totrans-163
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-14\. 选择`nth-child`和`nth-of-type`表格单元格
+- en: In the first row, every other table data cell (`td`) is selected, starting with
+    the first cell that comes after the table header cell (`th`). In the second row,
+    since all the cells are `td` cells, that means all the cells in that row are of
+    the same type and thus the counting starts at the first cell.
+  id: totrans-164
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一行中，选择每个偶数序号的表格数据单元格(`td`)，从表头单元格(`th`)后的第一个单元格开始。在第二行中，由于所有单元格都是`td`单元格，这意味着该行中的所有单元格都是相同类型的，因此计数从第一个单元格开始。
+- en: As you might expect, you can use `:nth-of-type(1):nth-last-of-type(1)` together
+    to restate `:only-of-type`, only with higher specificity. (We *will* explain specificity
+    in [Chapter 4](ch04.html#specificity_comma_inheritance), we promise.)
+  id: totrans-165
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您可能期望的那样，您可以一起使用`:nth-of-type(1):nth-last-of-type(1)`来重申`:only-of-type`，但具有更高的特异性。（我们*将*在[第
+    4 章](ch04.html#specificity_comma_inheritance)中解释特异性，我们保证。）
+- en: Location Pseudo-Classes
+  id: totrans-166
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 位置伪类
+- en: With the *location pseudo-classes*, we cross into the territory of selectors
+    that match pieces of a document based on something in addition to the structure
+    of the document—something that cannot be precisely deduced simply by studying
+    the document’s markup.
+  id: totrans-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用*位置伪类*，我们进入了根据文档结构以外的东西匹配文档部分的选择器领域——这些东西仅仅通过研究文档的标记是无法准确推断的。
+- en: This may sound like we’re applying styles at random, but not so. Instead, we’re
+    applying styles based on somewhat ephemeral conditions that can’t be predicted
+    in advance. Nevertheless, the circumstances under which the styles will appear
+    are, in fact, well-defined.
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这可能听起来像是随机应用样式，但并非如此。相反，我们根据一些无法预先预测的相对短暂的条件来应用样式。然而，样式将出现的具体情况确实是明确定义的。
+- en: 'Think of it this way: during a sporting event, whenever the home team scores,
+    the crowd will cheer. You don’t know exactly when during a game the team will
+    score, but when it does, the crowd will cheer, just as predicted. The fact that
+    you can’t predict the exact moment of the cheer doesn’t make it any less expected.'
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请这样想：在体育赛事中，当主队得分时，观众会欢呼。你不知道球赛中主队将何时得分，但当他们得分时，观众会像预测的那样欢呼。无法预测欢呼的确切时刻并不使其显得不可预测。
+- en: Now consider the anchor element (`<a>`), which (in HTML and related languages)
+    establishes a link from one document to another. Anchors are always anchors, but
+    some anchors refer to pages that have already been visited, while others refer
+    to pages that have yet to be visited. You can’t tell the difference by simply
+    looking at the HTML markup, because in the markup, all anchors look the same.
+  id: totrans-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在考虑锚点元素 (`<a>`)，它（在 HTML 和相关语言中）建立了从一个文档到另一个文档的链接。锚点始终是锚点，但有些锚点指向已经访问过的页面，而其他一些则指向尚未访问过的页面。通过简单查看
+    HTML 标记，你无法区分它们之间的差异，因为在标记中，所有的锚点看起来都是相同的。
+- en: 'The only way to tell which links have been visited is by comparing the links
+    in a document to the user’s browser history. So there are actually two basic types
+    of links: visited and unvisited.'
+  id: totrans-171
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 唯一可以知道哪些链接已被访问的方法是将文档中的链接与用户的浏览历史进行比较。因此，实际上有两种基本类型的链接：已访问和未访问。
+- en: Hyperlink-specific pseudo-classes
+  id: totrans-172
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 针对超链接的伪类
+- en: CSS defines a few pseudo-classes that apply only to hyperlinks. In HTML, hyperlinks
+    are any `<a>` elements with an `href` attribute; in XML languages, a hyperlink
+    is any element that acts as a link to another resource. [Table 3-1](#link_pseudo-classes)
+    describes the pseudo-classes you can apply to them.
+  id: totrans-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 定义了一些仅适用于超链接的伪类。在 HTML 中，超链接是任何带有 `href` 属性的 `<a>` 元素；在 XML 语言中，超链接是任何充当到另一个资源的链接的元素。[表 3-1](#link_pseudo-classes)
+    描述了你可以应用于它们的伪类。
+- en: Table 3-1\. Link pseudo-classes
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 3-1\. 链接伪类
+- en: '| Name | Description |'
+  id: totrans-175
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-176
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `:link` | Refers to any anchor that is a hyperlink (i.e., has an `href` attribute)
+    and points to an address that has not been visited. |'
+  id: totrans-177
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:link` | 指向任何超链接（即具有 `href` 属性）且指向未访问地址的锚点。 |'
+- en: '| `:visited` | Refers to any anchor that is a hyperlink to an already visited
+    address. For security reasons, the styles that can be applied to visited links
+    are severely limited; see [“Visited Links and Privacy”](#visited_links_and_privacy)
+    for details. |'
+  id: totrans-178
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:visited` | 指向已访问地址的超链接的锚点。出于安全原因，可应用于已访问链接的样式严格受限；详细信息请参阅[“访问链接和隐私”](#visited_links_and_privacy)。'
+- en: '| `:any-link` | Refers to any element that would be matched by either `:link`
+    or `:visited`. |'
+  id: totrans-179
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:any-link` | 指向由 `:link` 或 `:visited` 匹配的任何元素。'
+- en: '| `:local-link` | Refers to any link that points at the same URL as the page
+    being styled. One example would be skip-links within a document. *Note: not supported
+    as of early 2023.* |'
+  id: totrans-180
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:local-link` | 指向与被样式化页面相同 URL 的任何链接。例如文档内的跳转链接。*注：截至 2023 年初尚不支持*。'
+- en: 'The first of the pseudo-classes in [Table 3-1](#link_pseudo-classes) may seem
+    a bit redundant. After all, if an anchor hasn’t been visited, it must be unvisited,
+    right? If that’s the case, all we should need is the following:'
+  id: totrans-181
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[表 3-1](#link_pseudo-classes) 中的第一个伪类看起来有点多余。毕竟，如果一个锚点尚未被访问，它必然是未访问的，对吧？如果是这样，我们所需的只是以下内容：'
+- en: '[PRE41]'
+  id: totrans-182
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: 'Although this format seems reasonable, it’s not quite enough. The first of
+    the rules shown here applies not only to unvisited links, but also to any `<a>`
+    element, even those without an `href` attribute such as this one:'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管这种格式看起来很合理，但还不够。这里展示的规则中的第一个不仅适用于未访问的链接，而且适用于任何没有 `href` 属性的 `<a>` 元素，例如这个：
+- en: '[PRE42]'
+  id: totrans-184
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: 'The resulting text would be blue, because the `<a>` element will match the
+    rule `a {color`: `blue;}`. Therefore, to avoid applying your link styles to placeholder
+    links, use the `:link` and `:visited` pseudo-classes:'
+  id: totrans-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '由于 `<a>` 元素将匹配规则 `a {color`: `blue;}`，因此结果文本将是蓝色的。因此，为了避免将您的链接样式应用于占位符链接，请使用
+    `:link` 和 `:visited` 伪类：'
+- en: '[PRE43]'
+  id: totrans-186
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: 'This is a good place to revisit attribute and class selectors and show how
+    they can be combined with pseudo-classes. For example, let’s say you want to change
+    the color of links that point outside your own site. In most circumstances, we
+    can use the starts-with attribute selector. However, some CMSs set all links to
+    be absolute URLs, in which case you could assign a class to each of these anchors.
+    It’s easy:'
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个重新审视属性和类选择器，并展示它们如何与伪类结合的好地方。例如，假设你想要改变指向你自己站点外部的链接的颜色。在大多数情况下，我们可以使用以某个属性值开头的属性选择器。然而，有些内容管理系统将所有链接设置为绝对
+    URL，这种情况下你可以给每个锚点分配一个类。这很容易：
+- en: '[PRE44]'
+  id: totrans-188
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: 'To apply different styles to the external link, all you need is a rule like
+    this:'
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要为外部链接应用不同的样式，你只需像这样设置一个规则：
+- en: '[PRE45]'
+  id: totrans-190
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: This rule will make the second anchor in the preceding markup slate blue by
+    default and maroon once visited, while the first anchor will remain the default
+    color for hyperlinks (usually blue when not visited and purple once visited).
+    For improved usability and accessibility, visited links should be easily distinguished
+    from unvisited links.
+  id: totrans-191
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此规则将默认使前述标记中的第二个锚点呈钢蓝色，并且一旦被访问将变为栗色，而第一个锚点将保持超链接的默认颜色（通常未访问时为蓝色，已访问时为紫色）。为了提高可用性和无障碍性，应该清晰地区分访问过的链接和未访问的链接。
+- en: Note
+  id: totrans-192
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Styled visited links enable visitors to know where they have been and what they
+    have yet to visit. This is especially important on large websites, where it may
+    be difficult to remember which pages have been visited, especially for those with
+    cognitive disabilities. Not only is highlighting visited links one of the W3C
+    Web Content Accessibility Guidelines, but it makes searching for content faster,
+    more efficient, and less stressful for everyone.
+  id: totrans-193
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 样式化访问过的链接使访问者知道他们已经访问过的页面以及尚未访问的页面。在大型网站上，这尤为重要，因为对于那些有认知障碍的人来说，记住已访问页面可能会很困难。突出显示访问过的链接不仅是
+    W3C 网页内容无障碍指南的一部分，而且可以使搜索内容更快捷、更高效，减少压力。
+- en: 'The same general syntax is used for ID selectors as well:'
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ID 选择器使用相同的一般语法：
+- en: '[PRE46]'
+  id: totrans-195
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: 'If you want to select all links, regardless of whether they’re visited or not,
+    use `:any-link`:'
+  id: totrans-196
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想选择所有链接，不论其是否已访问，可以使用 `:any-link`：
+- en: '[PRE47]'
+  id: totrans-197
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: Nonhyperlink location pseudo-classes
+  id: totrans-198
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 非超链接位置伪类
+- en: Hyperlinks aren’t the only elements that can be related to location. CSS also
+    provides a few pseudo-classes that relate to the targets of hyperlinks, summarized
+    in [Table 3-2](#non_link_pseudo-classes).
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 超链接并不是唯一与位置相关的元素。CSS 还提供了一些与超链接目标相关的伪类，总结在 [表 3-2](#non_link_pseudo-classes)
+    中。
+- en: Table 3-2\. Nonlink location pseudo-classes
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 3-2\. 非超链接位置伪类
+- en: '| Name | Description |'
+  id: totrans-201
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-202
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `:target` | Refers to an element whose `id` attribute value matches the fragment
+    selector in the URL used to load the page—that is, the element specifically targeted
+    by the URL. |'
+  id: totrans-203
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:target` | 指的是其`id`属性值与 URL 中的片段选择器匹配的元素——即 URL 特别指定的元素。 |'
+- en: '| `:target-within` | Refers to an element that is the target of the URL, or
+    that contains an element that is so targeted. *Note: not supported as of early
+    2023.* |'
+  id: totrans-204
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:target-within` | 指的是 URL 的目标元素，或者包含被目标元素选定的元素。*注意：截至 2023 年初还不支持。* |'
+- en: '| `:scope` | Refers to elements that are a reference point for selector matching.
+    |'
+  id: totrans-205
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:scope` | 指的是作为选择器匹配参考点的元素。 |'
+- en: Let’s talk about target selection. When a URL includes a fragment identifier,
+    the piece of the document at which it points is called (in CSS) the *target*.
+    Thus, you can uniquely style any element that is the target of a URL fragment
+    identifier with the `:target` pseudo-class.
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们谈谈目标选择。当 URL 包含片段标识符时，它指向的文档部分在 CSS 中称为“目标”。因此，你可以使用 `:target` 伪类唯一地为任何片段标识符目标的元素设置样式。
+- en: 'Even if you’re unfamiliar with the term *fragment identifier*, you’ve probably
+    seen them in action. Consider this URL:'
+  id: totrans-207
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使你对“片段标识符”这个术语不熟悉，你可能已经在使用中见过它们。考虑这个 URL：
+- en: '[PRE48]'
+  id: totrans-208
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: The `target-pseudo` portion of the URL is the fragment identifier, which is
+    marked by the `#` symbol. If the referenced page (*http://www.w3.org/TR/css3-selectors/*)
+    has an element with an ID of `target-pseudo`, that element becomes the target
+    of the fragment identifier.
+  id: totrans-209
+  prefs: []
+  type: TYPE_NORMAL
+  zh: URL 的 `target-pseudo` 部分是片段标识符，由 `#` 符号标记。如果引用页面（*http://www.w3.org/TR/css3-selectors/*）具有
+    `target-pseudo` ID 的元素，则该元素成为片段标识符的目标。
+- en: 'Thanks to `:target`, you can highlight any targeted element within a document,
+    or you can devise different styles for various types of elements that might be
+    targeted—say, one style for targeted headings, another for targeted tables, and
+    so on. [Figure 3-15](#styling_a_fragment_identifier_target) shows an example of
+    `:target` in action:'
+  id: totrans-210
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 感谢`：target`，您可以突出显示文档中的任何目标元素，或者您可以为可能被定位的各种类型的元素设计不同的样式，比如为定位的标题设计一种样式，为定位的表格设计另一种样式等等。[图 3-15](#styling_a_fragment_identifier_target)展示了`：target`的示例：
+- en: '[PRE49]'
+  id: totrans-211
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: '![css5 0315](assets/css5_0315.png)'
+  id: totrans-212
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0315](assets/css5_0315.png)'
+- en: Figure 3-15\. Styling a fragment identifier target
+  id: totrans-213
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-15。样式化片段标识符目标
+- en: 'The `:target` styles will not be applied in three circumstances:'
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`：target`样式不会应用于三种情况：'
+- en: The page is accessed via a URL that does not have a fragment identifier.
+  id: totrans-215
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过不带片段标识符的URL访问页面。
+- en: The page is accessed via a URL that has a fragment identifier, but the identifier
+    does not match any elements within the document.
+  id: totrans-216
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过带有片段标识符的URL访问页面，但标识符与文档中的任何元素都不匹配。
+- en: The page’s URL is updated in such a way that a scroll state is not created,
+    which happens most often via JS shenanigans. (This isn’t a CSS rule, but it is
+    how browsers behave.)
+  id: totrans-217
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 页面的URL以不创建滚动状态的方式更新，这通常通过JS花招实现。（这不是CSS规则，但这是浏览器的行为。）
+- en: More interestingly, though, what happens if multiple elements within a document
+    can be matched by the fragment identifier—for example, if the author erroneously
+    includes three separate instances of `<div id="target-pseudo">` in the same document?
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更有趣的是，如果文档中的多个元素可以通过片段标识符匹配，例如，如果作者错误地在同一文档中包含三个单独的`<div id="target-pseudo">`实例会发生什么？
+- en: The short answer is that CSS doesn’t have or need rules to cover this case,
+    because all CSS is concerned with is styling targets. Whether the browser picks
+    just one of the three elements to be the target or designates all three as coequal
+    targets, `:target` styles should be applied to anything that is a valid target.
+  id: totrans-219
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 简而言之，CSS没有也不需要覆盖这种情况的规则，因为CSS只关注样式目标。无论浏览器选择三个元素中的一个作为目标，还是将三个元素都指定为相等的目标，`：target`样式应该应用于任何有效的目标。
+- en: 'Closely related to the `:target` pseudo-class is the `:target-within` pseudo-class.
+    The difference is that `:target-within` will match not only elements that are
+    targets, but also elements that are the ancestors of targets. Thus, the following
+    CSS would match any `<p>` element containing a target, or that was itself a target:'
+  id: totrans-220
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`：target`伪类密切相关的是`：target-within`伪类。不同之处在于`：target-within`不仅匹配目标元素，还匹配目标元素的祖先元素。因此，以下CSS将匹配包含目标的任何`<p>`元素，或者本身是目标的任何元素：
+- en: '[PRE50]'
+  id: totrans-221
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: Or it would, anyway, if any browser supported it. As of early 2023, this is
+    not the case.
+  id: totrans-222
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，如果任何浏览器支持的话。截至2023年初，情况并非如此。
+- en: 'Finally, we consider the `:scope` pseudo-class. This is quite widely supported,
+    but at present, it comes in handy only in scripting situations. Consider the following
+    JS and HTML, which we’ll explain after the code:'
+  id: totrans-223
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，我们考虑`：scope`伪类。这在很大程度上得到了支持，但目前只在脚本情况下很有用。考虑以下JS和HTML，我们将在代码后解释：
+- en: '[PRE51]'
+  id: totrans-224
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: '[PRE52]'
+  id: totrans-225
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: The JS portion says, in effect, “Find the element with an ID of `output`. Then,
+    find all the `<div>` elements that are children of the `output` element you just
+    found.” (Yes, CSS selectors can be used in JS!) The `:scope` in that bit of JS
+    refers to the scope of the thing that had been found, thus keeping the selection
+    confined to just that instead of the whole document. The result is that, in the
+    JS program’s memory, it now has a structure holding references to the two `<div>`
+    elements in the HTML.
+  id: totrans-226
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JS部分实际上是说：“找到ID为`output`的元素。然后，找到刚刚找到的`output`元素的所有`<div>`子元素。”（是的，CSS选择器可以在JS中使用！）那段JS中的`：scope`指的是已找到的事物的范围，因此将选择限制在其中而不是整个文档。结果是，在JS程序的内存中，现在有一个结构保存对HTML中两个`<div>`元素的引用。
+- en: If you use `:scope` in straight CSS, it will refer to the *scoping root*, which
+    (at present) means the `<html>` element, assuming the document is HTML. Neither
+    HTML nor CSS provides a way to set scoping roots other than the root element of
+    the document. So, outside of JS, `:scope` is essentially equivalent to `:root`.
+    That may change in the future, but for now, you should use `:scope` only in JS
+    contexts.
+  id: totrans-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您在纯CSS中使用`：scope`，它将指向*作用域根*，目前（假设文档是HTML）意味着`<html>`元素。HTML和CSS都没有提供设置作用域根的方法，除了文档的根元素。因此，在JS之外，`：scope`本质上等同于`:root`。这可能会在未来发生变化，但目前，您应该只在JS上下文中使用`：scope`。
+- en: User Action Pseudo-Classes
+  id: totrans-228
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 用户操作伪类
+- en: CSS defines a few pseudo-classes that can change a document’s appearance based
+    on actions taken by the user. These *dynamic pseudo-classes* have traditionally
+    been used to style hyperlinks, but the possibilities are much wider. Pseudo-classes
+    are described in [Table 3-3](#user_action_pseudo-classes-id1).
+  id: totrans-229
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 定义了一些伪类，可以根据用户的操作改变文档的外观。这些 *动态伪类* 传统上用于样式化超链接，但可能性更广泛。伪类在 [表 3-3](#user_action_pseudo-classes-id1)
+    中描述。
+- en: Table 3-3\. User action pseudo-classes
+  id: totrans-230
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 3-3\. 用户操作伪类
+- en: '| Name | Description |'
+  id: totrans-231
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-232
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `:hover` | Refers to any element over which the mouse pointer is placed—e.g.,
+    a hyperlink over which the mouse pointer is hovering |'
+  id: totrans-233
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:hover` | 指鼠标指针悬停在其上的任何元素，例如，鼠标指针悬停在其上的超链接 |'
+- en: '| `:active` | Refers to any element that has been activated by user input—e.g.,
+    a hyperlink on which a user clicks during the time the mouse button is held down,
+    or an element a user has tapped via touch screen |'
+  id: totrans-234
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:active` | 指任何被用户输入激活的元素，例如，用户在按住鼠标按钮的时间内单击的超链接，或者用户通过触摸屏轻拍的元素 |'
+- en: '| `:focus` | Refers to any element that currently has the input focus—i.e.,
+    can accept keyboard input or otherwise be activated in some way |'
+  id: totrans-235
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:focus` | 指当前具有输入焦点的任何元素，即可以接受键盘输入或以某种方式被激活的元素 |'
+- en: '| `:focus-within` | Refers to any element that currently has the input focus—i.e.,
+    can accept keyboard input or be activated in some way—or an element containing
+    an element that is so focused |'
+  id: totrans-236
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:focus-within` | 指当前具有输入焦点的任何元素，即可以接受键盘输入或以某种方式被激活的元素，或包含具有这种焦点的元素的元素 |'
+- en: '| `:focus-visible` | Refers to any element that currently has the input focus,
+    but only if the user agent thinks it is an element type that should have visible
+    focus |'
+  id: totrans-237
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:focus-visible` | 指当前具有输入焦点的任何元素，但仅当用户代理认为它是应该具有可见焦点的元素类型时 |'
+- en: Elements that can become `:active` or have `:focus` include links, buttons,
+    menu items, any element with a `tabindex` value, and all other interactive elements,
+    including form controls and elements containing content that can be edited (by
+    having the attribute, `contenteditable`, added to the element’s opening tag).
+  id: totrans-238
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以变为 `:active` 或具有 `:focus` 的元素包括链接、按钮、菜单项、任何具有 `tabindex` 值的元素以及所有其他交互式元素，包括表单控件和包含可编辑内容的元素（通过在元素的开放标签中添加
+    `contenteditable` 属性）。
+- en: 'As with `:link` and `:visited`, these pseudo-classes are most familiar in the
+    context of hyperlinks. Many web pages have styles that look like this:'
+  id: totrans-239
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 `:link` 和 `:visited` 一样，这些伪类在超链接的上下文中最为熟悉。许多网页的样式看起来像这样：
+- en: '[PRE53]'
+  id: totrans-240
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: Note
+  id: totrans-241
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: The order of the pseudo-classes is more important than it might seem at first.
+    The usual recommendation is `link`, `visited`, `focus`, `hover`, and `active`.
+    The next chapter explains why this particular order is important and discusses
+    several reasons you might choose to change or even ignore the recommendation.
+  id: totrans-242
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 伪类的顺序比起初看起来更为重要。通常的建议是 `link`、`visited`、`focus`、`hover` 和 `active`。下一章解释了为什么这个特定顺序很重要，并讨论了您可能选择改变甚至忽略建议的几个原因。
+- en: 'Notice that the dynamic pseudo-classes can be applied to any element, which
+    is good since it’s often useful to apply dynamic styles to elements that aren’t
+    links. Consider this example:'
+  id: totrans-243
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意动态伪类可以应用于任何元素，这很有用，因为经常需要对不是链接的元素应用动态样式。考虑这个例子：
+- en: '[PRE54]'
+  id: totrans-244
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: By using this markup, you could highlight a form element that is ready to accept
+    keyboard input, as shown in [Figure 3-16](#highlighting_a_form_element_that_has_foc).
+  id: totrans-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过使用这个标记，您可以突出显示准备接受键盘输入的表单元素，如 [图 3-16](#highlighting_a_form_element_that_has_foc)
+    所示。
+- en: '![css5 0316](assets/css5_0316.png)'
+  id: totrans-246
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0316](assets/css5_0316.png)'
+- en: Figure 3-16\. Highlighting a form element that has focus
+  id: totrans-247
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-16\. 突出显示具有焦点的表单元素
+- en: Two relatively new additions to the user-action pseudo-classes are `:focus-within`
+    and `:focus-visible`. Let’s take the second one first.
+  id: totrans-248
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户操作伪类的两个相对较新的补充是 `:focus-within` 和 `:focus-visible`。让我们先看第二个。
+- en: The :focus-visible pseudo-class
+  id: totrans-249
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: :focus-visible 伪类
+- en: 'The `:focus-visible` class is very much like `:focus` in that it applies to
+    elements that have focus, but there’s a big difference: it will match only if
+    the element that has focus is an element that the user agent thinks should be
+    given visible focus styles in a given situation.'
+  id: totrans-250
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:focus-visible` 类与 `:focus` 非常相似，它应用于具有焦点的元素，但有一个重要的区别：它仅在具有焦点的元素是用户代理认为在特定情况下应给予可见焦点样式的元素时匹配。'
+- en: For example, consider HTML buttons. When a button is clicked via a mouse, that
+    button is given focus, the same as if we had used a keyboard interface to move
+    the focus to it. As authors who care about accessibility and aesthetics, we want
+    the button to have focus when it’s focused via the keyboard or another assistive
+    technology, but we might not like it getting focus styles when it’s clicked or
+    tapped.
+  id: totrans-251
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，考虑 HTML 按钮。当通过鼠标点击按钮时，该按钮获得焦点，就像我们使用键盘界面将焦点移动到它时一样。作为关注无障碍性和美观的作者，我们希望按钮在通过键盘或其他辅助技术获得焦点时具有焦点，但在通过点击或轻触时不要应用焦点样式。
+- en: 'We can split this difference by using CSS such as the following:'
+  id: totrans-252
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以通过使用以下 CSS 来解决这个问题：
+- en: '[PRE55]'
+  id: totrans-253
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE55]'
+- en: This will put a thick dark-red outline around the button when tabbing to it
+    via keyboard, but the rule won’t be applied when the button is clicked with the
+    mouse.
+  id: totrans-254
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当通过键盘切换到按钮时，它将被描绘为带有厚重的深红色轮廓，但当通过鼠标点击按钮时，规则不会被应用。
+- en: The :focus-within pseudo-class
+  id: totrans-255
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: :focus-within 伪类
+- en: 'Building on that, `:focus-within` applies to any element that has focus, or
+    any element that has a descendant with focus. Given the following CSS and HTML,
+    we’ll get the result shown in [Figure 3-17](#selecting_with_focus_within):'
+  id: totrans-256
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此基础上，`:focus-within`适用于任何具有焦点的元素，或任何具有焦点后代的元素。根据以下的 CSS 和 HTML，我们将得到[图 3-17](#selecting_with_focus_within)中显示的结果：
+- en: '[PRE56]'
+  id: totrans-257
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE56]'
+- en: '[PRE57]'
+  id: totrans-258
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE57]'
+- en: '![css5 0317](assets/css5_0317.png)'
+  id: totrans-259
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0317](assets/css5_0317.png)'
+- en: Figure 3-17\. Selecting elements by using `:focus-within`
+  id: totrans-260
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-17\. 使用`:focus-within`选择元素
+- en: The third link currently has focus, having received it by the user tabbing to
+    that link, and is styled with a 2-pixel outline. The `<nav>` element that contains
+    it is also being given focus styling via `:focus-within`, because an element within
+    itself (that is, an element descended from it) currently has focus. This adds
+    a little more visual weight to that area of the page, which can be helpful. Be
+    careful of overdoing it, though. Too many focus styles can create visual overload,
+    potentially confusing users.
+  id: totrans-261
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当前第三个链接拥有焦点，用户通过按 Tab 键到达该链接，并以 2 像素的轮廓样式进行装饰。包含该链接的`<nav>`元素也通过`:focus-within`获得焦点样式，因为它的一个后代元素（即从它衍生的元素）当前拥有焦点。这为页面的该区域增加了一些视觉重量，这可能会有所帮助。但请注意不要过度使用焦点样式，因为过多的焦点样式可能会造成视觉过载，潜在地导致用户混淆。
+- en: Warning
+  id: totrans-262
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: While you can style elements with `:focus` any way you like, do *not* remove
+    all styling from focused elements. Differentiating which element currently has
+    focus is vital for accessibility, especially for those navigating your site or
+    application with a keyboard.
+  id: totrans-263
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管您可以按自己的喜好为元素设置`:focus`样式，但不要从焦点元素中删除所有样式。区分当前具有焦点的元素对于无障碍性至关重要，特别是对于通过键盘或其他辅助技术导航您的站点或应用程序的用户。
+- en: Real-world issues with dynamic styling
+  id: totrans-264
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 动态样式化的现实世界问题
+- en: 'Dynamic pseudo-classes present some interesting issues and peculiarities. For
+    example, you can set visited and unvisited links to one font size and make hovered
+    links a larger size, as shown in [Figure 3-18](#changing_layout_with_dynamic_pseudo-clas):'
+  id: totrans-265
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 动态伪类呈现了一些有趣的问题和特殊性。例如，您可以将访问过的和未访问过的链接设置为一种字体大小，并使悬停链接变大，正如[图 3-18](#changing_layout_with_dynamic_pseudo-clas)所示：
+- en: '[PRE58]'
+  id: totrans-266
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE58]'
+- en: '![css5 0318](assets/css5_0318.png)'
+  id: totrans-267
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0318](assets/css5_0318.png)'
+- en: Figure 3-18\. Changing layout with dynamic pseudo-classes
+  id: totrans-268
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-18\. 使用动态伪类更改布局
+- en: As you can see, the user agent increases the size of the anchor while the mouse
+    pointer hovers over it—or, thanks to the `:active` setting, when a user touches
+    it on a touch screen. Because we are changing a property that impacts line height,
+    a user agent that supports this behavior must redraw the document while an anchor
+    is in the hover state, which could force a reflow of all the content that follows
+    the link.
+  id: totrans-269
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您所看到的，当鼠标指针悬停在锚点上时，用户代理会增大锚点的大小，或者依靠`:active`设置，当用户在触摸屏上触摸它时也会增大。因为我们正在更改影响行高的属性，因此支持此行为的用户代理必须在锚点处于悬停状态时重新绘制文档，这可能会强制重新布局其后的所有内容。
+- en: UI-State Pseudo-Classes
+  id: totrans-270
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: UI 状态伪类
+- en: Closely related to the dynamic pseudo-classes are the *user-interface (UI) state
+    pseudo-classes*, which are summarized in [Table 3-4](#ui_state_pseudo-classes-id1).
+    These pseudo-classes allow for styling based on the current state of UI elements
+    such as checkboxes.
+  id: totrans-271
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与动态伪类密切相关的是*用户界面（UI）状态伪类*，这些伪类在[表 3-4](#ui_state_pseudo-classes-id1)中进行了总结。这些伪类允许根据诸如复选框之类的
+    UI 元素的当前状态进行样式设置。
+- en: Table 3-4\. UI-state pseudo-classes
+  id: totrans-272
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 3-4\. UI 状态伪类
+- en: '| Name | Description |'
+  id: totrans-273
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-274
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `:enabled` | Refers to UI elements (such as form elements) that are enabled—that
+    is, available for input |'
+  id: totrans-275
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:enabled` | 指的是已启用的 UI 元素（如表单元素），即可以进行输入 |'
+- en: '| `:disabled` | Refers to UI elements (such as form elements) that are disabled—that
+    is, not available for input |'
+  id: totrans-276
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:disabled` | 指的是已禁用的 UI 元素（如表单元素），即不能进行输入 |'
+- en: '| `:checked` | Refers to radio buttons or checkboxes that have been selected,
+    either by the user or by defaults within the document itself |'
+  id: totrans-277
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:checked` | 指的是已被选中的单选按钮或复选框，可以是用户手动选择的，也可以是文档本身的默认选择 |'
+- en: '| `:indeterminate` | Refers to radio buttons or checkboxes that are neither
+    checked nor unchecked; this state can be set only via DOM scripting, and not by
+    user input |'
+  id: totrans-278
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:indeterminate` | 指的是既未选中也未取消选中的单选按钮或复选框；此状态仅可通过 DOM 脚本设置，而不是通过用户输入 |'
+- en: '| `:default` | Refers to the radio button, checkbox, or option that was selected
+    by default |'
+  id: totrans-279
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:default` | 指的是默认选中的单选按钮、复选框或选项 |'
+- en: '| `:autofill` | Refers to a user input that has been autofilled by the browser
+    |'
+  id: totrans-280
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:autofill` | 指的是浏览器自动填充的用户输入 |'
+- en: '| `:placeholder-shown` | Refers to a user input that has placeholder (not value)
+    text prefilled |'
+  id: totrans-281
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:placeholder-shown` | 指的是具有占位符（而非实际值）文本预填充的用户输入 |'
+- en: '| `:valid` | Refers to a user input that meets all of its data validity requirements
+    |'
+  id: totrans-282
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:valid` | 指的是满足所有数据有效性要求的用户输入 |'
+- en: '| `:invalid` | Refers to a user input that does not meet all of its data validity
+    requirements |'
+  id: totrans-283
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:invalid` | 指的是未满足所有数据有效性要求的用户输入 |'
+- en: '| `:in-range` | Refers to a user input whose value is between the minimum and
+    maximum values |'
+  id: totrans-284
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:in-range` | 指的是其值在最小值和最大值之间的用户输入 |'
+- en: '| `:out-of-range` | Refers to a user input whose value is below the minimum
+    or above the maximum values allowed by the control |'
+  id: totrans-285
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:out-of-range` | 指的是其值低于控件允许的最小值或高于最大值的用户输入 |'
+- en: '| `:required` | Refers to a user input that must have a value set |'
+  id: totrans-286
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:required` | 指的是必须设置值的用户输入 |'
+- en: '| `:optional` | Refers to a user input that does not need to have a value set
+    |'
+  id: totrans-287
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:optional` | 指的是不需要设置值的用户输入 |'
+- en: '| `:read-write` | Refers to a user input that is editable by the user |'
+  id: totrans-288
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:read-write` | 指的是用户可以编辑的用户输入 |'
+- en: '| `:read-only` | Refers to a user input that is not editable by the user |'
+  id: totrans-289
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:read-only` | 指的是用户无法编辑的用户输入 |'
+- en: Although the state of a UI element can certainly be changed by user action—for
+    example, a user checking or unchecking a checkbox—UI-state pseudo-classes are
+    not classified as purely dynamic because they can also be affected by the document
+    structure or scripting.
+  id: totrans-290
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管 UI 元素的状态可以通过用户操作来改变，例如用户勾选或取消勾选复选框，但 UI 状态伪类并非纯粹动态的，因为它们也会受文档结构或脚本的影响。
+- en: Enabled and disabled UI elements
+  id: totrans-291
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 已启用和已禁用的 UI 元素
+- en: Thanks to both DOM scripting and HTML, you can mark a UI element (or group of
+    UI elements) as being disabled. A disabled element is displayed but cannot be
+    selected, activated, or otherwise interacted with by the user. Authors can set
+    an element to be disabled either through DOM scripting or by adding a `disabled`
+    attribute to the element’s markup.
+  id: totrans-292
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多亏了 DOM 脚本和 HTML，您可以将 UI 元素（或者一组 UI 元素）标记为已禁用。禁用的元素会显示出来，但用户无法选择、激活或与其交互。作者可以通过
+    DOM 脚本或者向元素的标记添加 `disabled` 属性来设置元素为禁用状态。
+- en: 'Any element that can be disabled, but hasn’t been, is by definition enabled.
+    You can style these two states by using the `:enabled` and `:disabled` pseudo-classes.
+    It’s much more common to style disabled elements and leave enabled elements alone,
+    but both have their uses, as illustrated in [Figure 3-19](#styling_enabled_and_disabled_ui_elements):'
+  id: totrans-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何可以禁用但尚未禁用的元素，从定义上来说都是启用的。您可以使用 `:enabled` 和 `:disabled` 伪类来为这两种状态设置样式。通常更常见的是为禁用元素设置样式，而保持启用元素不变，但两者都有其用途，如
+    [图 3-19](#styling_enabled_and_disabled_ui_elements) 所示：
+- en: '[PRE59]'
+  id: totrans-294
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE59]'
+- en: '![css5 0319](assets/css5_0319.png)'
+  id: totrans-295
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0319](assets/css5_0319.png)'
+- en: Figure 3-19\. Styling enabled and disabled UI elements
+  id: totrans-296
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-19\. 样式化已启用和已禁用的 UI 元素
+- en: Check states
+  id: totrans-297
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 检查状态
+- en: 'In addition to being enabled or disabled, certain UI elements can be checked
+    or unchecked—in HTML, the input types `checkbox` and `radio` fit this definition.
+    CSS offers a `:checked` pseudo-class to handle elements in that state. In addition,
+    the `:indeterminate` pseudo-class matches any checkable UI element that is neither
+    checked nor unchecked. These states are illustrated in [Figure 3-20](#styling_checked_and_indeterminate_ui_ele):'
+  id: totrans-298
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了启用或禁用，某些 UI 元素还可以被选中或未选中——在 HTML 中，输入类型`checkbox`和`radio`符合这一定义。CSS 提供了`:checked`伪类来处理处于该状态的元素。此外，`:indeterminate`伪类匹配任何既不选中也不未选中的可检查
+    UI 元素。这些状态在[图 3-20](#styling_checked_and_indeterminate_ui_ele)中有说明：
+- en: '[PRE60]'
+  id: totrans-299
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE60]'
+- en: '![css5 0320](assets/css5_0320.png)'
+  id: totrans-300
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0320](assets/css5_0320.png)'
+- en: Figure 3-20\. Styling checked and indeterminate UI elements
+  id: totrans-301
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-20\. 样式化选中和不定态 UI 元素
+- en: Although checkable elements are unchecked by default, an HTML author can toggle
+    them on by adding the `checked` attribute to an element’s markup. An author can
+    also use DOM scripting to flip an element’s checked state to checked or unchecked,
+    whichever they prefer.
+  id: totrans-302
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然可以在默认情况下将可检查元素设置为未选中状态，但 HTML 作者可以通过向元素的标记添加`checked`属性来切换它们的选中状态。作者还可以使用
+    DOM 脚本将元素的选中状态切换为选中或未选中状态，取决于他们的偏好。
+- en: 'As of early 2023, the indeterminate state can be set only through DOM scripting
+    or by the user agent itself; no markup-level method exists to set elements to
+    an indeterminate state. The purpose of styling an indeterminate state is to visually
+    indicate that the element needs to be checked (or unchecked) by the user. However,
+    this is purely a visual effect: it does not affect the underlying state of the
+    UI element, which is either checked or unchecked, depending on document markup
+    and the effects of any DOM scripting.'
+  id: totrans-303
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自2023年初以来，只能通过 DOM 脚本或用户代理自身来设置不定态；不存在标记级别的方法来将元素设置为不定态。样式化不定态的目的在于视觉上指示用户需要检查（或取消检查）元素。然而，这只是一种视觉效果：它不会影响
+    UI 元素的基础状态，该状态根据文档标记和任何 DOM 脚本的影响可能是选中或未选中。
+- en: 'Although the previous examples show styled radio buttons, remember that direct
+    styling of radio buttons and checkboxes with CSS is actually very limited. Nevertheless,
+    that shouldn’t limit your use of the selected-option pseudo-classes. As an example,
+    you can style the labels associated with your checkboxes and radio buttons by
+    using a combination of `:checked` and the adjacent sibling combinator:'
+  id: totrans-304
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管前面的例子展示了样式化的单选按钮，但要记住，直接使用 CSS 样式化单选按钮和复选框实际上非常有限。尽管如此，这不应限制您使用已选择选项伪类的方式。例如，您可以通过结合`:checked`和相邻兄弟选择器来样式化与复选框和单选按钮关联的标签：
+- en: '[PRE61]'
+  id: totrans-305
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE61]'
+- en: '[PRE62]'
+  id: totrans-306
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE62]'
+- en: 'If you need to select all checkboxes that are not checked, use the negation
+    pseudo-class (which is covered later in the chapter) like this: `input[type="checkbox"]:not(:checked)`.
+    Only radio buttons and checkboxes can be checked. Note that every element, and
+    these two when not checked, are `:not(:checked)`. This approach does not fill
+    the gap left by the absence of an `:unchecked` pseudo-class, and such a pseudo-class
+    should match only elements that should be checkable.'
+  id: totrans-307
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您需要选择所有未选中的复选框，请使用否定伪类（在本章后面有详细介绍），例如：`input[type="checkbox"]:not(:checked)`。只有单选按钮和复选框可以被选中。请注意，每个元素和这两个元素在未选中时都是`:not(:checked)`。这种方法不能填补缺失的`:unchecked`伪类的空白，应该仅匹配应该可检查的元素。
+- en: Default-value pseudo-classes
+  id: totrans-308
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 默认值伪类
+- en: 'Three pseudo-classes relate to default values and filler text: `:default`,
+    `:placeholder-shown`, and `:autofill`.'
+  id: totrans-309
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 三个伪类与默认值和填充文本有关：`:default`、`:placeholder-shown`和`:autofill`。
+- en: 'The `:default` pseudo-class matches the UI elements that are the default among
+    a set of similar elements. This typically applies to context menu items, buttons,
+    and select lists/menus. If there are several same-named radio buttons, the one
+    that was originally selected (if any) matches `:default`, even if the UI has been
+    updated by the user so that it no longer matches `:checked`. If a checkbox was
+    checked on page load, `:default` matches it. Any initially selected option(s)
+    in a `select` element will match:'
+  id: totrans-310
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:default`伪类匹配一组相似元素中的默认 UI 元素。这通常适用于上下文菜单项、按钮和选择列表/菜单。如果有几个同名的单选按钮，则最初被选中的（如果有）将匹配`:default`，即使
+    UI 已经被用户更新以不再匹配`:checked`。如果复选框在页面加载时被选中，`:default`将匹配它。在`select`元素中，任何最初选中的选项都将匹配：'
+- en: '[PRE63]'
+  id: totrans-311
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE63]'
+- en: '[PRE64]'
+  id: totrans-312
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE64]'
+- en: The `:default` pseudo-class will also match a form’s default button, which is
+    generally the first `button` element in DOM order that is a member of a given
+    form. This could be used to indicate to users which button will be activated if
+    they just hit Enter, instead of explicitly selecting a button to activate.
+  id: totrans-313
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:default` 伪类还将匹配表单的默认按钮，通常是在给定表单中作为 DOM 顺序中第一个 `button` 元素的成员。这可用于向用户指示，如果他们只是按
+    Enter 键，哪个按钮将被激活，而不是显式选择要激活的按钮。'
+- en: 'The `:placeholder-shown` pseudo-class is similar in that it will select any
+    input that has placeholder text defined at the markup level while that placeholder
+    text is visible. The placeholder is no longer shown when the input has a value.
+    For example:'
+  id: totrans-314
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:placeholder-shown` 伪类类似于它将选择具有标记级别定义的占位符文本的任何输入，只要该占位符文本可见。当输入具有值时，占位符将不再显示。例如：'
+- en: '[PRE65]'
+  id: totrans-315
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE65]'
+- en: 'By default, the value of a `placeholder` attribute will be placed into the
+    input fields in a browser, usually in a lighter color than normal text. If you
+    want to style those input elements in a consistent way, you can do something like
+    this:'
+  id: totrans-316
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，浏览器将 `placeholder` 属性的值放入输入字段中，通常比正常文本颜色浅。如果你想以一致的方式样式化这些输入元素，可以这样做：
+- en: '[PRE66]'
+  id: totrans-317
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE66]'
+- en: This selects the input as a whole, not the placeholder text. (To style the placeholder
+    text itself, see [“The Placeholder Text Pseudo-Element”](#the_placeholder_text_pseudo).)
+  id: totrans-318
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将选择整个输入元素，而不是占位符文本本身。（要样式化占位符文本本身，请参阅[“占位符文本伪元素”](#the_placeholder_text_pseudo)。）
+- en: 'The `:autofill` pseudo-class is a little bit different from the other two:
+    it matches any element that has had its value automatically filled in or auto-completed
+    by the browser. This may be familiar to you if you’ve ever filled out a form by
+    having the browser fill in stored values of your name, email, mailing address,
+    and so on. The input fields that are filled in usually get a distinct style, like
+    a yellowish background. You can add to that using `:autofill`, perhaps like this:'
+  id: totrans-319
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:autofill` 伪类与其他两者有些不同：它匹配任何由浏览器自动填充或自动完成值的元素。如果你曾经通过让浏览器填写存储的姓名、电子邮件、邮寄地址等来填写表单，这可能对你来说并不陌生。通常填充的输入字段会有一个明显的样式，如黄色背景。你可以使用
+    `:autofill` 来增强这种效果，比如这样：'
+- en: '[PRE67]'
+  id: totrans-320
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE67]'
+- en: Note
+  id: totrans-321
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: While you can add to default browser styling of autofilled text, overriding
+    the browser’s built-in styles for things such as background colors is difficult.
+    This is because the browsers’ styles for autofilled fields are set to override
+    just about anything else, largely as a way to provide users with a consistent
+    experience of autofilled content and to protect the user.
+  id: totrans-322
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管你可以增加到自动填充文本的默认浏览器样式，但是覆盖浏览器内置的背景颜色等样式是困难的。这是因为浏览器为自动填充字段设置的样式几乎会覆盖任何其他设置，主要是为了为用户提供一致的自动填充内容体验和保护用户。
+- en: Optionality pseudo-classes
+  id: totrans-323
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 可选性伪类
+- en: The `:required` pseudo-class matches any user-input element that is required,
+    as denoted by the presence of the `required` attribute. The `:optional` pseudo-class
+    matches user-input elements that do not have the `required` attribute, or whose
+    `required` attribute has a value of `false`.
+  id: totrans-324
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:required` 伪类匹配任何必填的用户输入元素，由 `required` 属性指示。`:optional` 伪类匹配没有 `required`
+    属性的用户输入元素，或其 `required` 属性的值为 `false` 的用户输入元素。'
+- en: 'A user-input element is `:required` if the user must provide a value for before
+    submitting the form to which it belongs. All other user-input elements are matched
+    by `:optional`. For example:'
+  id: totrans-325
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果用户必须在提交表单之前为用户输入元素提供值，则用户输入元素为 `:required`。所有其他用户输入元素均匹配 `:optional`。例如：
+- en: '[PRE68]'
+  id: totrans-326
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE68]'
+- en: '[PRE69]'
+  id: totrans-327
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE69]'
+- en: The first email input will match the `:required` pseudo-class because of the
+    presence of the `required` attribute. The second input is optional and therefore
+    will match the `:optional` pseudo-class. The same is true for the third input,
+    which has a `required` attribute, but the value is `false`.
+  id: totrans-328
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个电子邮件输入框将匹配 `:required` 伪类，因为存在 `required` 属性。第二个输入框是可选的，因此将匹配 `:optional`
+    伪类。第三个输入框也是如此，它有一个 `required` 属性，但值为 `false`。
+- en: Elements that are not user-input elements can be neither required nor optional.
+    Including the `required` attribute on a non-user-input element won’t lead to an
+    optionality pseudo-class match.
+  id: totrans-329
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 非用户输入元素既不可以是必填的也不可以是可选的。在非用户输入元素上包含 `required` 属性不会导致可选性伪类匹配。
+- en: Validity pseudo-classes
+  id: totrans-330
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 有效性伪类
+- en: The `:valid` pseudo-class refers to a user input that meets all of its data
+    validity requirements. The `:invalid` pseudo-class, on the other hand, refers
+    to a user input that does not meet all of its data validity requirements.
+  id: totrans-331
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:valid`伪类指的是符合其所有数据有效性要求的用户输入。另一方面，`:invalid`伪类指的是未能满足其所有数据有效性要求的用户输入。'
+- en: 'The validity pseudo-classes `:valid` and `:invalid` apply only to elements
+    having the capacity for data validity requirements: a `<div>` will never match
+    either selector, but an `<input>` could match either, depending on the current
+    state of the interface.'
+  id: totrans-332
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有效性伪类`:valid`和`:invalid`仅适用于具备数据有效性要求能力的元素：`<div>`永远不会匹配任何一个选择器，但是`<input>`可以根据界面当前状态匹配任何一个。
+- en: 'In the following example, an image is dropped into the background of any email
+    input that has focus, with one image being used when the input is invalid and
+    another used when the input is valid, as illustrated in [Figure 3-21](#styling_valid_and_invalid_inputs):'
+  id: totrans-333
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下面的示例中，当输入无效时，将一个图像放置在任何具有焦点的电子邮件输入框的背景中，当输入有效时，将使用另一张图像，如[图3-21](#styling_valid_and_invalid_inputs)所示：
+- en: '[PRE70]'
+  id: totrans-334
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE70]'
+- en: '[PRE71]'
+  id: totrans-335
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE71]'
+- en: '![css5 0321](assets/css5_0321.png)'
+  id: totrans-336
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0321](assets/css5_0321.png)'
+- en: Figure 3-21\. Styling valid and invalid UI elements
+  id: totrans-337
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-21\. 样式化有效和无效的UI元素
+- en: Keep in mind that these pseudo-class states may not act as you might expect.
+    For example, as of late 2022, any empty email input that isn’t required matches
+    `:valid`. Even though a null input is not a valid email address, failing to enter
+    an email address is a valid response for an optional input. If you try to fill
+    in a malformed address or just some random text, that will be matched by `:invalid`
+    because it isn’t a valid email address.
+  id: totrans-338
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，这些伪类状态可能不会如您所预期的那样起作用。例如，截至2022年末，任何不需要的空电子邮件输入都将匹配`:valid`。尽管空输入不是有效的电子邮件地址，但未填写电子邮件地址是对可选输入的有效响应。如果尝试填写格式错误的地址或随意文本，则会由于不是有效的电子邮件地址而匹配`:invalid`。
+- en: Range pseudo-classes
+  id: totrans-339
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 范围伪类
+- en: The range pseudo-classes include `:in-range`, which refers to a user input whose
+    value is between the minimum and maximum values set by HTML’s `min` and `max`
+    attributes, and `:out-of-range`, which refers to a user input whose value is below
+    the minimum or above the maximum values allowed by the control.
+  id: totrans-340
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 范围伪类包括`:in-range`，指的是其值在HTML的`min`和`max`属性设定的最小值和最大值之间的用户输入，以及`:out-of-range`，指的是其值低于最小值或高于控件允许的最大值的用户输入。
+- en: 'For example, consider a number input that accepts numbers in the range 0 to
+    1,000:'
+  id: totrans-341
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，考虑一个接受0到1,000之间数字的数字输入：
+- en: '[PRE72]'
+  id: totrans-342
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE72]'
+- en: '[PRE73]'
+  id: totrans-343
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE73]'
+- en: In this example, a value from 0 to 1,000, inclusive, would mean the `input`
+    element is matched by `:in-range`. Any value outside that range, whether input
+    by the user or assigned via the DOM, will cause the `input` to match `:out-of-range`
+    instead.
+  id: totrans-344
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，从0到1,000，包括这两个值，意味着`input`元素将匹配`:in-range`。任何超出此范围的值，无论是用户输入还是通过DOM分配的，都将导致`input`匹配`:out-of-range`。
+- en: The `:in-range` and `:out-of-range` pseudo-classes apply *only* to elements
+    with range limitations. User inputs that don’t have range limitations, like links
+    for inputs of type `tel`, will not be matched by either pseudo-class.
+  id: totrans-345
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:in-range`和`:out-of-range`伪类仅适用于具有范围限制的元素。不具有范围限制的用户输入，如电话类型的链接，将不会匹配任何一个伪类。'
+- en: HTML also has a `step` attribute. If a value is invalid because it does not
+    match the `step` value, but is still between or equal to the `min` and `max` values,
+    it will match `:invalid` while *also* still matching `:in-range`. A value can
+    be in range while also being invalid.
+  id: totrans-346
+  prefs: []
+  type: TYPE_NORMAL
+  zh: HTML 还具有`step`属性。如果一个值因为不匹配`step`值而无效，但仍在`min`和`max`值之间或等于这些值，它将匹配`:invalid`，同时*也*匹配`:in-range`。一个值可以在范围内，同时也是无效的。
+- en: 'Thus, in the following scenario, the input’s value will be both red and boldfaced,
+    because the value `23` is in range but is not evenly divisible by 10:'
+  id: totrans-347
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，在以下情况下，输入的值将同时显示为红色和**粗体**，因为值`23`在范围内，但不能被10整除：
+- en: '[PRE74]'
+  id: totrans-348
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE74]'
+- en: '[PRE75]'
+  id: totrans-349
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE75]'
+- en: Mutability pseudo-classes
+  id: totrans-350
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 可变性伪类
+- en: The mutability pseudo-classes include `:read-write`, which refers to a user
+    input that is editable by the user; and `:read-only`, which matches user inputs
+    that are not editable, including radio buttons and checkboxes. Only elements that
+    can have their values altered by user input can match `:read-write`.
+  id: totrans-351
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可变性伪类包括`:read-write`，指的是用户可以编辑的用户输入；和`:read-only`，匹配不可编辑的用户输入，包括单选按钮和复选框。只有用户可以通过输入改变其值的元素才能匹配`:read-write`。
+- en: For example, in HTML, a nondisabled, non-read-only `input` element is `:read-write`,
+    as is any element with the `contenteditable` attribute. Everything else matches
+    `:read-only`.
+  id: totrans-352
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，在 HTML 中，一个非禁用的、非只读的 `input` 元素是 `:read-write`，任何带有 `contenteditable` 属性的元素也是如此。其他所有元素都匹配
+    `:read-only`。
+- en: 'By default, neither of the following rules would ever match, because `<textarea>`
+    elements are read-write, and `<pre>` elements are read-only:'
+  id: totrans-353
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，以下规则中的任何一个都不会匹配，因为 `<textarea>` 元素是可读写的，而 `<pre>` 元素是只读的：
+- en: '[PRE76]'
+  id: totrans-354
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE76]'
+- en: 'However, each can be made to match as follows:'
+  id: totrans-355
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，每个可以如下匹配：
+- en: '[PRE77]'
+  id: totrans-356
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE77]'
+- en: Because `<textarea>` is given a `disabled` attribute, it becomes read-only,
+    and so will have the first rule apply. Similarly, the `<pre>` here has been made
+    editable via the `contenteditable` attribute, so now it is a read-write element.
+    This will be matched by the second rule.
+  id: totrans-357
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为 `<textarea>` 被赋予了 `disabled` 属性，所以它变成了只读元素，因此将适用第一个规则。类似地，这里的 `<pre>` 通过
+    `contenteditable` 属性被设置为可编辑，所以现在它是一个可读写的元素。这将匹配第二个规则。
+- en: The :lang() and :dir() Pseudo-Classes
+  id: totrans-358
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`:lang()` 和 `:dir()` 伪类'
+- en: 'When you want to select an element based on its language, you can use the `:lang()`
+    pseudo-class. In terms of its matching patterns, this pseudo-class is similar
+    to the `|=` attribute selector (see [“Selection Based on Partial Attribute Values”](ch02.html#selection_based_on_partial_attribute_val)).
+    For example, to italicize elements whose content is written in French, you could
+    write either of the following:'
+  id: totrans-359
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你想根据元素的语言选择元素时，可以使用 `:lang()` 伪类。在匹配模式上，这个伪类类似于 `|=` 属性选择器（参见[“基于部分属性值的选择”](ch02.html#selection_based_on_partial_attribute_val)）。例如，要将使用法语书写内容的元素设置为斜体，你可以写如下任何一个：
+- en: '[PRE78]'
+  id: totrans-360
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE78]'
+- en: 'The primary difference between the pseudo-class selector and the attribute
+    selector is that language information can be derived from multiple sources, some
+    of which are outside the element itself. For the attribute selector, the element
+    must have the attribute present to match. The `:lang()` pseudo-class, on the other
+    hand, matches descendants of an element with the language declaration. As [Selectors
+    Level 3](https://www.w3.org/TR/selectors-3/#lang-pseudo) states:'
+  id: totrans-361
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 伪类选择器和属性选择器之间的主要区别在于，语言信息可以从多个来源推断，其中一些来源于元素本身之外。对于属性选择器，元素必须具有要匹配的属性才能匹配。另一方面，`:lang()`
+    伪类匹配带有语言声明的元素的后代元素。正如[选择器级别3](https://www.w3.org/TR/selectors-3/#lang-pseudo)中所述：
+- en: In HTML, the language is determined by a combination of the `lang` attribute,
+    and possibly information from the `meta` elements and the protocol (such as HTTP
+    headers). XML uses an attribute called `xml:lang`, and there may be other document
+    language-specific methods for determining the language.
+  id: totrans-362
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 在 HTML 中，语言是通过 `lang` 属性以及可能来自 `meta` 元素和协议（例如 HTTP 标头）的信息组合确定的。XML 使用一个名为 `xml:lang`
+    的属性，可能还有其他特定于文档语言的方法来确定语言。
+- en: The pseudo-class will operate on all of that information, whereas the attribute
+    selector can work only if a `lang` attribute is present in the element’s markup.
+    Therefore, the pseudo-class is more robust than the attribute selector and is
+    probably a better choice in most cases where language-specific styling is needed.
+  id: totrans-363
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 伪类将在所有这些信息上操作，而属性选择器仅当元素的标记中存在 `lang` 属性时才能工作。因此，在大多数需要特定于语言的样式的情况下，伪类可能比属性选择器更为强大且可能是更好的选择。
+- en: 'CSS also has a `:dir()` pseudo-class, which selects elements based on the HTML
+    direction of an element. So you could, for example, select all the elements whose
+    direction is right to left like this:'
+  id: totrans-364
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 还有一个 `:dir()` 伪类，它根据元素的 HTML 方向选择元素。例如，你可以选择所有方向为从右到左的元素，如下所示：
+- en: '[PRE79]'
+  id: totrans-365
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE79]'
+- en: The thing to watch out for here is that the `:dir()` pseudo-class selects elements
+    based on their directionality in HTML, and not the value of the `direction` property
+    in CSS that may be applied to them. Thus, the only two values you can really use
+    for selection are `ltr` (left to right) and `rtl` (right to left) because those
+    are the only direction values that HTML supports.
+  id: totrans-366
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里需要注意的是，`:dir()` 伪类是基于 HTML 中元素的方向性进行选择的，而不是应用于它们的 CSS `direction` 属性的值。因此，你真正可以用于选择的仅有两个值是
+    `ltr`（从左到右）和 `rtl`（从右到左），因为这是 HTML 支持的唯一方向值。
+- en: Logical Pseudo-Classes
+  id: totrans-367
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 逻辑伪类
+- en: Beyond structure and language, some pseudo-classes are intended to bring a touch
+    of logic and flexibility to CSS selectors.
+  id: totrans-368
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了结构和语言之外，一些伪类旨在为 CSS 选择器带来一丝逻辑和灵活性。
+- en: The negation pseudo-class
+  id: totrans-369
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 否定伪类
+- en: 'Every selector we’ve covered thus far has had one thing in common: they’re
+    all positive selectors. They are used to identify the things that should be selected,
+    thus excluding by implication all the things that don’t match and are thus not
+    selected.'
+  id: totrans-370
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们到目前为止讨论过的每个选择器都有一个共同点：它们都是正向选择器。它们用于识别应选择的内容，因此默认排除所有不匹配的内容。
+- en: For those times when you want to invert this formulation and select elements
+    based on what they are *not*, CSS provides the negation pseudo-class, `:not()`.
+    It’s not quite like any other selector, fittingly enough, and it does have some
+    restrictions on its use, but let’s start with an example.
+  id: totrans-371
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时您希望反转这个公式并根据元素的*非*特性选择元素时，CSS提供了否定伪类`:not()`。恰如其名，它与任何其他选择器都不太相似，并且在使用时有一些限制，但我们从一个例子开始。
+- en: 'Let us suppose you want to apply a style to every list item that does not have
+    a `class` of `moreinfo`, as illustrated in [Figure 3-22](#styling_list_items_that_donat_have_a_cer).
+    That used to be very difficult, and in certain cases impossible, to make happen.
+    Now we can declare the following:'
+  id: totrans-372
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您想要将样式应用于每个不具有`class`为`moreinfo`的列表项，如[图 3-22](#styling_list_items_that_donat_have_a_cer)所示。过去这是非常困难的，在某些情况下甚至是不可能的。现在我们可以声明如下：
+- en: '[PRE80]'
+  id: totrans-373
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE80]'
+- en: '![css5 0322](assets/css5_0322.png)'
+  id: totrans-374
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0322](assets/css5_0322.png)'
+- en: Figure 3-22\. Styling list items that don’t have a certain class
+  id: totrans-375
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-22\. 样式化没有特定类的列表项
+- en: The way `:not()` works is that you attach it to a selector, and then in the
+    parentheses you fill in a selector or group of selectors describing what the original
+    selector cannot match.
+  id: totrans-376
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:not()`的工作方式是将其附加到选择器上，然后在括号内填入描述原始选择器无法匹配的选择器或一组选择器。'
+- en: 'Let’s flip around the previous example and select all elements with a class
+    of `moreinfo` that are not list items. This is illustrated in [Figure 3-23](#styling_elements_with_a_certain_class_th):'
+  id: totrans-377
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们反转之前的例子，并选择所有具有`moreinfo`类的元素，但不是列表项。这在[图 3-23](#styling_elements_with_a_certain_class_th)中有所说明：
+- en: '[PRE81]'
+  id: totrans-378
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE81]'
+- en: '![css5 0323](assets/css5_0323.png)'
+  id: totrans-379
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0323](assets/css5_0323.png)'
+- en: Figure 3-23\. Styling elements with a certain class that aren’t list items
+  id: totrans-380
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-23\. 样式化具有特定类的元素，但不是列表项
+- en: Translated into English, the selector would say, “Select all elements with a
+    class whose value contains the word `moreinfo` as long as they are not `<li>`
+    elements.” Similarly, the translation of `li:not(.moreinfo)` would be, “Select
+    all `<li>` elements as long as they do not have a class whose value contains the
+    word `moreinfo`.”
+  id: totrans-381
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从英语翻译过来，选择器将会说：“选择所有具有包含单词`moreinfo`的类值的元素，只要它们不是`<li>`元素。”类似地，`li:not(.moreinfo)`的翻译将是：“选择所有`<li>`元素，只要它们没有包含单词`moreinfo`的类值。”
+- en: You can also use the negation pseudo-class at any point in a more complex selector.
+    Thus, to select all tables that are not children of a `<section>` element, you
+    would write `*:not(section) > table`. Similarly, to select table header cells
+    that are not part of the table header, you’d write something like `table *:not(thead)
+    > tr > th`, with a result like that shown in [Figure 3-24](#styling_table_cells_that_arenat_in_the_t).
+  id: totrans-382
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以在更复杂的选择器中的任何位置使用否定伪类。因此，要选择所有不是`<section>`元素子代的表格，您可以编写`*:not(section) >
+    table`。同样地，要选择不属于表头的表头单元格，您可以编写类似`table *:not(thead) > tr > th`的内容，结果如[图 3-24](#styling_table_cells_that_arenat_in_the_t)所示。
+- en: '![css5 0324](assets/css5_0324.png)'
+  id: totrans-383
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0324](assets/css5_0324.png)'
+- en: Figure 3-24\. Styling header cells outside the table’s head area
+  id: totrans-384
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-24\. 样式化表头单元格不在表头区域内的情况
+- en: What you cannot do is nest negation pseudo-classes; thus, `p:not(:not(p))` is
+    not valid and will be ignored. It’s also, logically, the equivalent of just writing
+    `p`, so there’s no point anyway. Furthermore, you cannot reference pseudo-elements
+    (which we’ll cover shortly) inside the parentheses.
+  id: totrans-385
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您不能嵌套否定伪类；因此，`p:not(:not(p))`是无效的并且会被忽略。逻辑上讲，它等同于只写`p`，所以没有意义。此外，在括号内部不能引用伪元素（我们稍后将讨论）。
+- en: Technically, you can put a universal selector into the parentheses, but there’s
+    little point. After all, `p:not(*)` would mean “select any `<p>` element as long
+    as it isn’t any element,” and there’s no such thing as an element that is not
+    an element. Similarly, `p:not(p)` would also select nothing. It’s also possible
+    to write things like `p:not(div)`, which will select any `<p>` element that is
+    not a `<div>` element—in other words, all of them. Again, there is little reason
+    to do this.
+  id: totrans-386
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从技术上讲，可以将通用选择器放入括号中，但意义不大。毕竟，`p:not(*)`意味着“选择任何`<p>`元素，只要它不是任何元素”，而不存在不是元素的元素。类似地，`p:not(p)`也不会选择任何内容。也可以编写类似于`p:not(div)`的内容，这将选择任何不是`<div>`元素的`<p>`元素—换句话说，所有的`<p>`元素。再次说明，这样做的理由很少。
+- en: 'On the other hand, it’s possible to chain negations together to create a sort
+    of “and also not this” effect. For example, you might want to select all elements
+    with a class of `link` that are neither list items nor paragraphs:'
+  id: totrans-387
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，可以链接否定来创建一种“并且也不是这个”的效果。例如，您可能想选择所有具有`link`类的元素，既不是列表项也不是段落：
+- en: '[PRE82]'
+  id: totrans-388
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE82]'
+- en: 'That translates to “select all elements with a class whose value contains the
+    word `link` as long as they are neither `<li>` nor `<p>` elements.” This used
+    to be the only way to exclude a group of elements, but CSS (and browsers) support
+    selector lists in negations. That allows us to rewrite the previous example like
+    so:'
+  id: totrans-389
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着“选择所有类值包含单词`link`的元素，只要它们既不是`<li>`元素也不是`<p>`元素。”这曾经是排除一组元素的唯一方法，但CSS（和浏览器）支持否定选择器列表。这使我们可以像这样重新编写前面的例子：
+- en: '[PRE83]'
+  id: totrans-390
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE83]'
+- en: 'Along with this came the ability to use more complex selectors, such as those
+    using descendant combinators. If you need to select all elements that are descended
+    from a `<form>` element but do not immediately follow a `<p>` element, you could
+    write it as follows:'
+  id: totrans-391
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与此同时，还可以使用更复杂的选择器，例如使用后代结合器。如果您需要选择所有从`<form>`元素继承但不是立即跟在`<p>`元素后面的元素，可以这样写：
+- en: '[PRE84]'
+  id: totrans-392
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE84]'
+- en: 'Translated, that’s “select any element that is not the adjacent sibling `<p>`
+    element, and is also the descendant of a `<form>` element.” And you can put these
+    into groups, so if you also want to exclude list items and table-header cells,
+    it would go something like this:'
+  id: totrans-393
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 翻译后，这意味着“选择不是相邻同级的`<p>`元素，且也是`<form>`元素后代的任何元素。”您可以将这些内容分组，所以如果您还想排除列表项和表头单元格，可以这样写：
+- en: '[PRE85]'
+  id: totrans-394
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE85]'
+- en: Warning
+  id: totrans-395
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: The ability to use complex selectors in `:not()` came to browsers in only early
+    2021, so exercise caution when using it, especially in legacy settings.
+  id: totrans-396
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在早期的2021年，只有一些浏览器支持在`:not()`中使用复杂选择器，因此在使用时要特别谨慎，特别是在旧设置中。
+- en: 'One thing to watch out for with `:not()` is that in some situations rules can
+    combine in unexpected ways, mostly because we’re not used to thinking of selection
+    in the negative. Consider this test case:'
+  id: totrans-397
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`:not()`时需要注意的一件事是，在某些情况下，规则可能会以意想不到的方式组合，主要是因为我们不习惯于否定选择。考虑以下测试案例：
+- en: '[PRE86]'
+  id: totrans-398
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE86]'
+- en: '[PRE87]'
+  id: totrans-399
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE87]'
+- en: 'The paragraph will be boldfaced, not normal weight. This is because both rules
+    match: the `<p>` element is descended from a `<div>` whose class does not contain
+    the word `one` (`<div class="two">`), but it is *also* descended from a `<div>`
+    whose class contains the word `one`. Both rules match, so both apply. Since a
+    conflict exists, the cascade (which is explained in [Chapter 4](ch04.html#specificity_comma_inheritance))
+    is used to resolve the conflict, and the second rule wins. The structural arrangement
+    of the markup, with the `div.two` being “closer” to the paragraph than `div.one`,
+    is irrelevant.'
+  id: totrans-400
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 段落将显示为粗体，而不是普通文本。这是因为两条规则都匹配：`<p>`元素是从一个类不包含单词`one`的`<div>`（`<div class="two">`）继承的，但同时又是从一个类包含单词`one`的`<div>`继承的。两条规则都匹配，因此都适用。由于存在冲突，级联（在[第四章](ch04.html#specificity_comma_inheritance)中解释）用于解决冲突，第二条规则胜出。标记的结构排列，如`div.two`比段落更“接近”，是无关紧要的。
+- en: The :is() and :where() pseudo-classes
+  id: totrans-401
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: '`:is()`和`:where()`伪类'
+- en: CSS has two pseudo-classes that allow for group matching within a complex selector,
+    `:is()` and `:where()`. These are almost identical to each other, with just a
+    minor difference that we’ll cover once you understand how they work. Let’s start
+    with `:is()`.
+  id: totrans-402
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS有两个伪类允许在复杂选择器中进行组匹配，即`:is()`和`:where()`。它们几乎完全相同，只有一个微小的差别，等您理解它们如何工作后我们再详细讨论。让我们先从`:is()`开始。
+- en: 'Suppose you want to select all list items, whether or not they are part of
+    an ordered or an unordered list. The traditional way to do that is shown here:'
+  id: totrans-403
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您想选择所有列表项，无论它们是否属于有序列表或无序列表。传统的方法如下所示：
+- en: '[PRE88]'
+  id: totrans-404
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE88]'
+- en: 'With `:is()`, we can rewrite that like so:'
+  id: totrans-405
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `:is()`，我们可以这样重写：
+- en: '[PRE89]'
+  id: totrans-406
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE89]'
+- en: 'The matched elements will be exactly the same: all list items that are part
+    of either ordered or unordered lists.'
+  id: totrans-407
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匹配的元素将完全相同：所有作为有序或无序列表的一部分的列表项。
+- en: 'This might seem slightly pointless: the syntax is not only slightly less clear,
+    but also one character longer. And it’s true that in simple situations like that,
+    `:is()` isn’t terribly compelling. The more complex the situation, though, the
+    more likely `:is()` will really shine.'
+  id: totrans-408
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这似乎有点毫无意义：语法不仅稍微不那么清晰，而且还要多一个字符。事实上，在像这样简单的情况下，`:is()` 并不是特别引人注目。然而，情况越复杂，`:is()`
+    就越能发挥作用。
+- en: 'For example, what if we want to style all list items that are at least two
+    levels deep in nested lists, no matter what combination of ordered and unordered
+    lists are above them? Compare the following rules, both of which will have the
+    effect shown in [Figure 3-25](#using_matches_any_to_select), except one uses the
+    traditional approach and the other uses `:is()`:'
+  id: totrans-409
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果我们想要样式化所有至少在嵌套列表中深入两级的列表项，无论在它们上面有什么组合的有序和无序列表？比较下面的规则，两者都会产生与[图3-25](#using_matches_any_to_select)相同的效果，只是一个使用了传统方法，另一个使用了
+    `:is()`：
+- en: '[PRE90]'
+  id: totrans-410
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE90]'
+- en: '![css5 0325](assets/css5_0325.png)'
+  id: totrans-411
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0325](assets/css5_0325.png)'
+- en: Figure 3-25\. Using `:is()` to select elements
+  id: totrans-412
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-25\. 使用 `:is()` 选择元素
+- en: Now consider what the traditional approach would look like for three, four,
+    or even more levels deep of nested lists!
+  id: totrans-413
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在考虑一下传统方法在三、四甚至更多层嵌套列表中的情况会是什么样子！
+- en: 'The `:is()` pseudo-class can be used in all sorts of situations; selecting
+    all links inside lists that are themselves inside headers, footers, and `<nav>`
+    elements could look like this:'
+  id: totrans-414
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:is()` 伪类可用于各种情况；选择位于标题、页脚和 `<nav>` 元素内部的列表中的所有链接可能看起来像这样：'
+- en: '[PRE91]'
+  id: totrans-415
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE91]'
+- en: 'Even better: the list of selectors inside `:is()` is what’s called a *forgiving
+    selector list*. By default, if any one thing in a selector is invalid, the whole
+    rule is marked invalid. Forgiving selector lists, on the other hand, will throw
+    any part that’s invalid and honor the rest.'
+  id: totrans-416
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更好的是：`:is()` 内部的选择器列表被称为*宽容的选择器列表*。默认情况下，如果选择器中的任何一部分无效，整个规则都将被标记为无效。而宽容的选择器列表则会丢弃任何无效的部分，并继续尊重其余部分。
+- en: So, given all that, what’s the difference between `:is()` and `:where()`? The
+    sole difference is that `:is()` takes the specificity of the most-specific selector
+    in its selector list, whereas `:where()` has zero specificity. If that last sentence
+    didn’t make sense to you, don’t worry! We haven’t discussed specificity yet but
+    will in the next chapter.
+  id: totrans-417
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所以，考虑到这一切，`:is()` 和 `:where()` 有什么区别呢？唯一的区别在于，`:is()` 在其选择器列表中采用最具体选择器的特异性，而
+    `:where()` 的特异性为零。如果你对最后一句话感到困惑，别担心！我们还没有讨论特异性，但将在下一章中进行讨论。
+- en: Warning
+  id: totrans-418
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: '`:is()` and `:where()` came to browsers in only early 2021, so exercise caution
+    when using them, especially in legacy settings.'
+  id: totrans-419
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:is()` 和 `:where()` 仅在2021年初才进入浏览器，因此在使用它们时要格外小心，特别是在传统设置中。'
+- en: Selecting defined elements
+  id: totrans-420
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 选择已定义的元素
+- en: As the web has advanced, it’s added more and more capabilities. One of the more
+    recent is the ability to add custom HTML elements to your markup in a standardized
+    way. This happens a lot with pattern libraries, which often define Web Components
+    based on elements that are specific to the library.
+  id: totrans-421
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 随着网络的进步，它增加了越来越多的功能。其中较新的一项是以标准化的方式向标记添加自定义HTML元素。这在模式库中经常发生，模式库通常根据特定于库的元素定义Web组件。
+- en: 'One thing such libraries do to be more efficient is hold off on defining an
+    element until it’s needed, or it’s ready to be populated with whatever content
+    is supposed to go into it. Such a custom element might look like this in markup:'
+  id: totrans-422
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此类库为了更高效率而做的一件事是推迟定义元素直到需要它，或者准备好填充应该放入其中的任何内容。这样的自定义元素在标记中可能如下所示：
+- en: '[PRE92]'
+  id: totrans-423
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE92]'
+- en: The actual goal is to fill that combobox (a drop-down list that also allows
+    users to enter arbitrary values) with whatever options the backend CMS provides
+    for it, downloaded via a script that requests the latest data in order to build
+    the list locally, and removing the placeholder text in the process. However, what
+    happens if the server fails to respond, leaving the custom element undefined and
+    stuck with its placeholder text? Without taking steps, the text “options go here”
+    will get inserted into the page, probably with minimal styling.
+  id: totrans-424
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际目标是填充组合框（一个允许用户输入任意值的下拉列表），使用后端 CMS 提供的任何选项，通过请求最新数据的脚本在本地构建列表，并在过程中移除占位文本。然而，如果服务器未能响应，导致自定义元素未定义并陷入占位文本的状态，会发生什么？如果不采取措施，文本“options
+    go here”将被插入页面中，可能只有最少的样式。
+- en: 'That’s where `:defined` comes in. You can use it to select any defined element,
+    and combine it with `:not()` to select elements that aren’t yet defined. Here’s
+    a simple way to hide undefined comboboxes, as well as to apply styles to defined
+    comboboxes:'
+  id: totrans-425
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这就是`:defined`派上用场的地方。你可以使用它来选择任何已定义的元素，并结合使用`:not()`来选择尚未定义的元素。下面是隐藏未定义组合框的简单方法，以及应用样式到已定义组合框的方法：
+- en: '[PRE93]'
+  id: totrans-426
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE93]'
+- en: The :has() Pseudo-Class
+  id: totrans-427
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 伪类`:has()`
+- en: The `:has()` pseudo-class is a little bit tricky, because it doesn’t quite follow
+    all the rules we’ve been working under until now—but as a result, it’s also *insanely*
+    powerful.
+  id: totrans-428
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`:has()`伪类有点棘手，因为它并不完全遵循我们到目前为止所遵循的所有规则——但正因如此，它也*非常*强大。'
+- en: Imagine you want to apply special styles to any `<div>` element that contains
+    an image. In other words, if a `<div>` element *has* an `<img>` element inside
+    it, you want to apply certain styles to the `<div>`. And that’s exactly what `:has()`
+    makes possible.
+  id: totrans-429
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 想象一下，你想对任何包含图片的`<div>`元素应用特殊样式。换句话说，如果一个`<div>`元素内部*包含*一个`<img>`元素，你想对`<div>`应用某些样式。而这正是`:has()`可以实现的。
+- en: 'The previous example would be written something like this, with the result
+    illustrated in [Figure 3-26](#using_has_to_select_elements):'
+  id: totrans-430
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的示例会类似这样编写，结果如[图 3-26](#using_has_to_select_elements)所示：
+- en: '[PRE94]'
+  id: totrans-431
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE94]'
+- en: '[PRE95]'
+  id: totrans-432
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE95]'
+- en: '![css5 0326](assets/css5_0326.png)'
+  id: totrans-433
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0326](assets/css5_0326.png)'
+- en: Figure 3-26\. Using `:has()` to select elements
+  id: totrans-434
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-26\. 使用`:has()`选择元素
+- en: 'The second `<div>`, which does not have an `<img>` element as a descendant,
+    doesn’t get the border. If you wanted only the first `<div>` to get the border,
+    because you actually wanted to style only `<div>` elements that have images as
+    direct children, just modify the selector to use the child combinator, like this:
+    `div:has(> img)`. That would prevent the third `<div>` from getting the border.'
+  id: totrans-435
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二个`<div>`，其内部没有`<img>`元素作为子元素，因此不会显示边框。如果你只想让第一个`<div>`显示边框，因为你实际上只想为直接包含图片的`<div>`元素设置样式，只需修改选择器使用子元素组合器，像这样：`div:has(>
+    img)`。这样可以防止第三个`<div>`显示边框。
+- en: 'The `:has()` pseudo-class is, in one real sense, the mythical “parent selector” CSS
+    authors have wished for since the beginning of CSS itself. Except it isn’t just
+    for parent selection, because you can select based on siblings, or make the selection
+    happen as far up the ancestry chain as you like. And if all that didn’t quite
+    make sense to you, hang on: we’ll explain further.'
+  id: totrans-436
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 伪类`:has()`在某种实际意义上是神话般的“父选择器”，CSS 作者从 CSS 诞生以来一直希望拥有这样的功能。但它不仅仅是用于父级选择，因为你可以基于兄弟元素进行选择，或者在祖先链中任意深度进行选择。如果以上内容还不太明白，别急：我们会进一步解释。
+- en: 'We have two facts to note right off the bat:'
+  id: totrans-437
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们首先要注意两点：
+- en: Inside the parentheses of `:has()`, you can provide a comma-separated list of
+    selectors, and each of those selectors can be simple, compound, or complex.
+  id: totrans-438
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在`:has()`的括号内，你可以提供一个逗号分隔的选择器列表，每个选择器可以是简单、复合或复杂的。
+- en: Those selectors are considered relative to the anchor element, the element to
+    which `:has()` is attached.
+  id: totrans-439
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 这些选择器相对于锚点元素考虑。
+- en: 'Let’s take those in order. All of the following are valid `:has()` uses:'
+  id: totrans-440
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们按顺序来看。以下都是有效的`:has()`用法：
+- en: '[PRE96]'
+  id: totrans-441
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE96]'
+- en: 'That last example might be a bit overwhelming, so let’s break it down a bit
+    further. We could restate in a longer way, like this:'
+  id: totrans-442
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或许上面的例子有点令人不知所措，让我们再详细解释一下。我们可以用更详细的方式重述，如下：
+- en: '[PRE97]'
+  id: totrans-443
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE97]'
+- en: 'And here are two examples of the markup patterns that would be selected:'
+  id: totrans-444
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有两个将被选中的标记模式示例：
+- en: '[PRE98]'
+  id: totrans-445
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE98]'
+- en: In the first example, the selection isn’t based on parentage or any other ancestry;
+    instead, the `<section>` is selected because its immediate sibling (the `<h2>`)
+    has an `<em>` element as one of its descendants. In the second, the `<section>`
+    is selected because it has a descendant `<table>` that’s immediately followed
+    by another `<table>`, both of which happen in this case to be inside an `<aside>`
+    element. That makes this specific example one of grandparent selection, not parent
+    selection, because the `<section>` is a grandparent to the tables.
+  id: totrans-446
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一个示例中，选择不是基于父级或任何其他祖先关系；相反，选择了`<section>`，因为它的直接同级（`<h2>`）有一个`<em>`元素作为其后代之一。在第二个示例中，选择了`<section>`，因为它有一个后代`<table>`，紧接着另一个`<table>`，这两个`<table>`在这种情况下都在一个`<aside>`元素内。这使得这个特定的例子成为了祖父选择，而不是父选择，因为`<section>`是表格的祖父。
+- en: 'Right, so that’s the first point that we raised earlier. The second is that
+    the selectors inside the parentheses are relative to the element bearing the `:has()`.
+    That means, for example, that the following selector is never going to match anything:'
+  id: totrans-447
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对，这是我们之前提到的第一个要点。第二个是括号内的选择器是相对于带有`:has()`的元素。这意味着，例如，以下选择器永远不会匹配任何内容：
+- en: '[PRE99]'
+  id: totrans-448
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE99]'
+- en: That’s because while an `<h1>` can certainly be a descendant of a `<div>`, the
+    `<html>` and `<body>` elements cannot. What that selector means, translated into
+    English, is “select any `<div>` that has a descendant `<html>` which itself has
+    a descendant `<body>` which has a descendant `<h1>`.” The `<html>` element will
+    never be a descendant of `<div>`, so this selector can’t match.
+  id: totrans-449
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是因为虽然`<h1>`肯定可以是`<div>`的后代，但`<html>`和`<body>`元素不能。这个选择器的意思，翻译成英语，是“选择任何具有后代`<html>`的`<div>`，它本身具有后代`<body>`，后者具有后代`<h1>`。”`<html>`元素永远不会是`<div>`的后代，因此这个选择器无法匹配。
+- en: 'To pick something a little more realistic, here’s a bit of markup showing lists
+    nested inside one another, which has the document structure shown in [Figure 3-27](#a_fragment_of_a_doc):'
+  id: totrans-450
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了选择一个更现实的例子，这里有一些标记，显示了嵌套的列表，该文档结构在[图3-27](#a_fragment_of_a_doc)中显示：
+- en: '[PRE100]'
+  id: totrans-451
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE100]'
+- en: '![css5 0327](assets/css5_0327.png)'
+  id: totrans-452
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0327](assets/css5_0327.png)'
+- en: Figure 3-27\. A fragment of a document’s structure
+  id: totrans-453
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-27。文档结构的片段
+- en: 'To that structure, we’ll apply the following rules. Spoiler alert: one of them
+    will match an element, and the other will not:'
+  id: totrans-454
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于这个结构，我们将应用以下规则。剧透警告：其中一个将匹配一个元素，而另一个则不会：
+- en: '[PRE101]'
+  id: totrans-455
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE101]'
+- en: The first causes the browser to look at all the `<ul>` elements. For any `<ul>`
+    it finds, it looks at the structure of the elements that descend from that `<ul>`.
+    If it finds an `li ol` relationship in the elements that descend from the `<ul>`,
+    then the `<ul>` is matched, and in this case will be given a red border.
+  id: totrans-456
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一条导致浏览器查看所有`<ul>`元素。对于它找到的任何`<ul>`，它会查看从该`<ul>`下降的元素的结构。如果在后代元素中找到了`li ol`关系，则匹配该`<ul>`，在这种情况下会给它一个红色边框。
+- en: If we study the markup structure, either in the code or in [Figure 3-27](#a_fragment_of_a_doc),
+    we can see two `<ul>` elements. The first has `<li>` descendants but not any `<ol>`
+    descendants, so it won’t be matched. The second `<ul>` also has `<li>` descendants,
+    and one of them has an `<ol>` descendant. It’s a match! The `<ul>` will be given
+    a red border.
+  id: totrans-457
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们研究标记结构，无论是在代码中还是在[图3-27](#a_fragment_of_a_doc)中，我们可以看到两个`<ul>`元素。第一个有`<li>`后代但没有任何`<ol>`后代，因此不会被匹配。第二个`<ul>`也有`<li>`后代，其中一个有一个`<ol>`后代。它是匹配的！这个`<ul>`将被给予一个红色边框。
+- en: 'The second rule also causes the browser to look at all the `<ul>` elements.
+    In this case, for any `<ul>` it finds, the browser looks for an `ol ul ol` relationship
+    within the descendants of the `<ul>`. Elements outside the `<ul>` don’t count:
+    only those within it are considered. Of the two `<ul>` elements in the document,
+    neither has an `<ol>` inside a `<ul>` that’s inside another `<ol>` that is itself
+    descended from the `<ul>` being considered. There’s no match, so neither of the
+    `<ul>` elements will be italicized.'
+  id: totrans-458
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二条规则还会导致浏览器查看所有`<ul>`元素。在这种情况下，对于它找到的任何`<ul>`，浏览器会查找其中的`ol ul ol`关系，这些关系是在`<ul>`的后代元素中进行的。不计算`<ul>`外的元素：只有其中的元素会被考虑。在文档中的两个`<ul>`元素中，都没有一个`<ul>`内部有一个`<ol>`，后者又在另一个`<ol>`内部，并且自身是从被考虑的`<ul>`下降的。没有匹配，因此两个`<ul>`元素都不会被斜体化。
+- en: 'Even more powerfully, you’re free to mix `:has()` with other pseudo-classes.
+    You might, for example, want to select any heading level if it has an image inside.
+    You can do this in two ways: the long, clumsy way or the compact way. Both are
+    shown here:'
+  id: totrans-459
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更强大的是，你可以自由地将 `:has()` 与其他伪类混合使用。例如，如果希望选择任何包含图像的标题级别，可以通过两种方式实现：冗长而笨拙的方式或紧凑的方式。这两种方式都在这里展示了：
+- en: '[PRE102]'
+  id: totrans-460
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE102]'
+- en: 'The two selectors have the same outcome: if an element *is* one of the listed
+    heading elements, and that element *has* among its descendant elements an `<img>`
+    element, then the heading will be selected.'
+  id: totrans-461
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这两个选择器具有相同的结果：如果一个元素 *是* 所列的标题元素之一，并且该元素的后代元素中包含 `<img>` 元素，则将选择该标题。
+- en: 'For that matter, you could select any headings that *don’t* have images inside:'
+  id: totrans-462
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，你也可以选择任何 *不* 包含图像的标题：
+- en: '[PRE103]'
+  id: totrans-463
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE103]'
+- en: Here, if an element *is* one of the listed heading levels, but an `<img>` element
+    is *not* one of the descendants it has, then the heading will be selected. If
+    we bring them together and apply them to numerous headings, we get the results
+    shown in [Figure 3-28](#to_has_and_has_not).
+  id: totrans-464
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，如果一个元素 *是* 所列的标题级别之一，但 `<img>` 元素 *不* 是其后代之一，则将选择该标题。如果我们将它们组合在一起，并应用于多个标题，我们将得到
+    [图 3-28](#to_has_and_has_not) 所示的结果。
+- en: '![css5 0328](assets/css5_0328.png)'
+  id: totrans-465
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0328](assets/css5_0328.png)'
+- en: Figure 3-28\. To has and has not
+  id: totrans-466
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-28\. To has and has not
+- en: 'As you can already see, this selector has a lot of power. Dangers also exist:
+    it is entirely possible to write selectors that cause major performance hits to
+    the browser, especially in settings where scripting may be used to modify the
+    document structure. Consider the following:'
+  id: totrans-467
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你已经看到的，这个选择器具有很强的功能。也存在一些危险：完全可能编写导致浏览器性能严重受损的选择器，特别是在使用脚本修改文档结构的环境中。考虑以下情况：
+- en: '[PRE104]'
+  id: totrans-468
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE104]'
+- en: This is saying, “Apply these styles to any `<div>` that has an element with
+    a class of `popup` as a descendant.” When the page is loaded into the browser,
+    it has to check all the `<div>` elements to see if they match this selector. That
+    could mean a few trips up and down the document’s structural tree, but ideally
+    it would resolve in a few milliseconds, and the page can then be displayed.
+  id: totrans-469
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是说：“将这些样式应用于任何具有 `popup` 类作为后代元素的 `<div>`。” 当页面加载到浏览器中时，它必须检查所有 `<div>` 元素，以查看它们是否匹配此选择器。这可能意味着在文档的结构树上下几次访问，但理想情况下应在几毫秒内解决，并且页面可以显示。
+- en: But suppose we have a script that can add `.popup` to an element, or even several
+    elements, on the page. As soon as the class values change, the browser has to
+    check not only whether any styles apply to `.popup` elements and their descendants,
+    but also whether any ancestor or sibling elements are affected by this change.
+    Instead of looking only down the document tree, the browser now has to look up
+    as well. And any change triggered by this could mean changes all throughout the
+    page’s layout, both when an element is marked as `.popup` and whenever a `.popup`
+    element loses that class value, potentially affecting elements in entirely different
+    parts of the document.
+  id: totrans-470
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但假设我们有一个脚本，可以在页面上的一个元素或甚至几个元素上添加 `.popup`。一旦类值更改，浏览器不仅必须检查是否有任何样式适用于 `.popup`
+    元素及其后代，还必须检查任何祖先或同级元素是否受此更改的影响。浏览器现在不仅查看文档树下部，还必须向上查找。这种触发的任何更改都可能意味着整个页面布局的变化，无论何时元素标记为
+    `.popup`，或者当 `.popup` 元素失去该类值时，都可能影响文档完全不同部分的元素。
+- en: This sort of performance hit is why there hasn’t been a “parent selector” or
+    anything like it before. Computers are getting fast enough, and browser engines
+    smart enough, that this is much less of a worry than it was in the past—but it’s
+    still something to keep in mind and test out thoroughly.
+  id: totrans-471
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种性能影响是为什么以前没有“父选择器”或类似物。计算机速度足够快，浏览器引擎足够智能，这比过去少得多，但仍需注意并彻底测试。
+- en: Note
+  id: totrans-472
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: It is not possible to nest pseudo-elements like `::first-line` or `::selection`
+    in `has()`. (We’ll discuss pseudo-elements shortly.)
+  id: totrans-473
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `has()` 中不可能嵌套伪元素如 `::first-line` 或 `::selection`。（我们稍后会讨论伪元素。）
+- en: Other Pseudo-Classes
+  id: totrans-474
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他伪类
+- en: Even more pseudo-classes are defined in the CSS Selectors specification, but
+    they are partially supported in browsers, or in some cases not supported at all
+    as of early 2023, or else are things we’ll cover elswhere in the book. We’re listing
+    them in [Table 3-5](#other_pseudo-classes) for the sake of completeness, and to
+    point you toward pseudo-classes that might be supported between this edition of
+    the book and the next one. (Or could be replaced with an equivalent pseudo-class
+    with a different name; that happens sometimes.)
+  id: totrans-475
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS选择器规范中定义了更多伪类，但它们在浏览器中仅部分支持，或在某些情况下根本不支持，截至2023年初，或者是我们将在书中其他地方讨论的内容。我们将它们列在[表3-5](#other_pseudo-classes)中，以保证完整性，并指向可能在本书版本和下一版之间支持的伪类。
+    （或者可以用具有不同名称的等效伪类替换；有时会发生这种情况。）
+- en: Table 3-5\. Other pseudo-classes
+  id: totrans-476
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 3-5\. 其他伪类
+- en: '| Name | Description |'
+  id: totrans-477
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-478
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `:nth-col()` | Refers to table cells or grid items that are in an nth column,
+    which is found using the *an* + *b* pattern; essentially the same as `:nth-child()`,
+    but refers specifically to table or grid columns |'
+  id: totrans-479
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:nth-col()` | 指的是处于第n列的表格单元格或网格项，这是使用*an* + *b*模式找到的；基本上与`:nth-child()`相同，但专门用于表格或网格列
+    |'
+- en: '| `:nth-last-col()` | Refers to table cells or grid items that are in an nth-last
+    column, which is found using the *an* + *b* pattern; essentially the same as `:nth-last-child()`,
+    but refers specifically to table or grid columns |'
+  id: totrans-480
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:nth-last-col()` | 指的是处于第n个末列的表格单元格或网格项，这是使用*an* + *b*模式找到的；基本上与`:nth-last-child()`相同，但专门用于表格或网格列
+    |'
+- en: '| `:left` | Refers to any lefthand page in a printed document; see [Chapter 21](ch21.html#css-at-rules)
+    for more |'
+  id: totrans-481
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:left` | 指的是打印文档中的任何左手页面；更多信息请参见[第21章](ch21.html#css-at-rules) |'
+- en: '| `:right` | Refers to any righthand page in a printed document; see [Chapter 21](ch21.html#css-at-rules)
+    for more |'
+  id: totrans-482
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:right` | 指的是打印文档中的任何右手页面；更多信息请参见[第21章](ch21.html#css-at-rules) |'
+- en: '| `:fullscreen` | Refers to an element that is being displayed full-screen
+    (e.g., a video that’s in full-screen mode) |'
+  id: totrans-483
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:fullscreen` | 指的是全屏显示的元素（例如全屏模式下的视频） |'
+- en: '| `:past` | Refers to an element that appeared before (in time) an element
+    being matched by `:current` |'
+  id: totrans-484
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:past` | 指的是出现在匹配`:current`的元素之前（按时间顺序）的元素 |'
+- en: '| `:current` | Refers to an element, or the ancestor of an element, that is
+    currently being displayed in a time-based format like a video (e.g., an element
+    containing closed-caption text) |'
+  id: totrans-485
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:current` | 指的是当前以时间为基础显示的元素或元素的祖先（例如，包含闭幕字幕文本的元素） |'
+- en: '| `:future` | Refers to an element that will appear after (in time) an element
+    being matched by `:current` |'
+  id: totrans-486
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:future` | 指的是出现在匹配`:current`的元素之后（按时间顺序）的元素 |'
+- en: '| `:paused` | Refers to any element that can have the states “playing” or “paused”
+    (e.g., audio, video, etc.) when it is in the “paused” state |'
+  id: totrans-487
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:paused` | 指的是处于“播放”状态或“暂停”状态的任何元素（例如音频、视频等）当处于“暂停”状态时 |'
+- en: '| `:playing` | Refers to any element that can have the states “playing” or
+    “paused” (e.g., audio, video, etc.) when it is in the “playing” state |'
+  id: totrans-488
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:playing` | 指的是处于“播放”状态或“暂停”状态的任何元素（例如音频、视频等） |'
+- en: '| `:picture-in-picture` | Refers to an element that is used as a picture-in-picture
+    display |'
+  id: totrans-489
+  prefs: []
+  type: TYPE_TB
+  zh: '| `:picture-in-picture` | 指的是用作画中画显示的元素 |'
+- en: Pseudo-Element Selectors
+  id: totrans-490
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 伪元素选择器
+- en: Much as pseudo-classes assign phantom classes to anchors, *pseudo-elements*
+    insert fictional elements into a document in order to achieve certain effects.
+  id: totrans-491
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像伪类为锚点分配了虚拟类一样，*伪元素*插入虚构的元素到文档中以达到某些效果。
+- en: Unlike the single colon of pseudo-classes, pseudo-elements employ a double-colon
+    syntax, like `::first-line`. This is meant to distinguish pseudo-elements from
+    pseudo-classes. This was not always the case—in CSS2, both selector types used
+    a single colon—so for backward compatibility, browsers may accept some single-colon
+    pseudo-type selectors. Don’t take this as an excuse to be sloppy, though! Use
+    the proper number of colons at all times to future-proof your CSS; after all,
+    there is no way to predict when browsers will stop accepting single-colon pseudo-type
+    selectors.
+  id: totrans-492
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与伪类的单冒号不同，伪元素采用双冒号语法，例如`::first-line`。这是为了区分伪元素和伪类。在CSS2中，并非总是如此——两种选择器类型都使用单冒号，因此为了向后兼容，浏览器可能会接受某些单冒号伪类型选择器。不过，这并不是马虎的借口！始终使用正确数量的冒号来未雨绸缪你的CSS；毕竟，没有办法预测浏览器何时会停止接受单冒号伪类型选择器。
+- en: Styling the First Letter
+  id: totrans-493
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 样式化首字母
+- en: 'The `::first-letter` pseudo-element styles the first letter, or a leading punctuation
+    character and the first letter (if the text starts with punctuation), of any non-inline
+    element. This rule causes the first letter of every paragraph to be colored red:'
+  id: totrans-494
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`::first-letter`伪元素样式化任何非内联元素的第一个字母或前导标点字符和第一个字母（如果文本以标点符号开头）。此规则导致每个段落的第一个字母都变成红色：'
+- en: '[PRE105]'
+  id: totrans-495
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE105]'
+- en: 'The `::first-letter` pseudo-element is most commonly used to create an initial-cap
+    or drop-cap typographic effect. You could make the first letter of each `<p>`
+    twice as big as the rest of the heading, though you may want to apply this styling
+    to only the first letter of the first paragraph:'
+  id: totrans-496
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`::first-letter`伪元素最常用于创建大写字母开头或降字母效果的排版效果。您可以使每个`<p>`的第一个字母比其余文字大两倍，尽管您可能希望仅将此样式应用于第一个段落的第一个字母：'
+- en: '[PRE106]'
+  id: totrans-497
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE106]'
+- en: '[Figure 3-29](#the_colon_colon_first-letter_pseudo-elem) illustrates the result
+    of this rule.'
+  id: totrans-498
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 3-29](#the_colon_colon_first-letter_pseudo-elem)展示了这条规则的结果。'
+- en: '![css5 0329](assets/css5_0329.png)'
+  id: totrans-499
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0329](assets/css5_0329.png)'
+- en: Figure 3-29\. The `::first-letter` pseudo-element in action
+  id: totrans-500
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-29\. `::first-letter`伪元素的效果
+- en: 'This rule effectively causes the user agent to style a fictional, or faux,
+    element that encloses the first letter of each `<p>`. It would look something
+    like this:'
+  id: totrans-501
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这条规则有效地导致用户代理样式化一个虚构或伪造的元素，该元素围绕每个`<p>`的第一个字母。它看起来可能像这样：
+- en: '[PRE107]'
+  id: totrans-502
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE107]'
+- en: The `::first-letter` styles are applied only to the contents of the fictional
+    element shown in the example. This `<p-first-letter>` element does *not* appear
+    in the document source, nor even in the DOM tree. Instead, its existence is constructed
+    on the fly by the user agent and is used to apply the `::first-letter` style(s)
+    to the appropriate bit of text. In other words, `<p-first-letter>` is a pseudo-element.
+    Remember, you don’t have to add any new tags. The user agent styles the first
+    letter for you as if you had encased it in a styled element.
+  id: totrans-503
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`::first-letter`样式仅应用于示例中显示的虚构元素的内容。这个`<p-first-letter>`元素不会出现在文档源中，甚至不会出现在DOM树中。相反，用户代理会即时构建它的存在，并用来将`::first-letter`样式应用于适当的文本部分。换句话说，`<p-first-letter>`是一个伪元素。请记住，您不需要添加任何新标签。用户代理会为您样式化第一个字母，就好像您将其置于一个样式化元素中一样。'
+- en: The first letter is defined as the first typographic letter unit of the originating
+    element, if it is not preceded by other content, like an image. The specifications
+    use the term letter unit because some languages have letters made up of more than
+    one character, like *œ* in Old West Norse. Punctuation that precedes or follows
+    the first letter unit, even if there are several such symbols, should be included
+    in the `::first-letter` pseudo-element. The browser does this for you.
+  id: totrans-504
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个字母被定义为源元素的第一个排版字母单元，如果它没有前置其他内容，比如一个图片。规范使用术语字母单元，因为一些语言的字母由多个字符组成，例如古西诺尔斯语中的*œ*。即使有多个这样的符号，位于第一个字母单元之前或之后的标点也应包括在`::first-letter`伪元素中。浏览器会为您完成这一切。
+- en: Styling the First Line
+  id: totrans-505
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 样式化第一行
+- en: 'Similarly, `::first-line` can be used to affect the first line of text in an
+    element. For example, you could make the first line of each paragraph in a document
+    large and purple:'
+  id: totrans-506
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，`::first-line`可以用来影响元素中文本的第一行。例如，您可以使文档中每个段落的第一行变得大号和紫色：
+- en: '[PRE108]'
+  id: totrans-507
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE108]'
+- en: In [Figure 3-30](#the_colon_colon_first-line_pseudo-elemen), the style is applied
+    to the first displayed line of text in each paragraph. This is true no matter
+    how wide or narrow the display region is. If the first line contains only the
+    first five words of the paragraph, only those five words will be big and purple.
+    If the first line contains the first 30 words of the element, all 30 will be big
+    and purple.
+  id: totrans-508
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[图 3-30](#the_colon_colon_first-line_pseudo-elemen)中，该样式应用于每个段落中显示的第一行文本。这在显示区域的宽度如何，无论多宽或多窄都成立。如果第一行仅包含段落的前五个单词，只有这五个单词会变得大号和紫色。如果第一行包含元素的前30个单词，所有30个单词都会变得大号和紫色。
+- en: '![css5 0330](assets/css5_0330.png)'
+  id: totrans-509
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0330](assets/css5_0330.png)'
+- en: Figure 3-30\. The `::first-line` pseudo-element in action
+  id: totrans-510
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图3-30\. `::first-line`伪元素的效果
+- en: 'Because the text from “This” to “only” should be big and purple, the user agent
+    employs a fictional markup that looks something like this:'
+  id: totrans-511
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为从“这”到“仅”之间的文本应该是大号和紫色，用户代理使用一个虚构的标记，看起来可能像这样：
+- en: '[PRE109]'
+  id: totrans-512
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE109]'
+- en: If the first line of text were edited to include only the first seven words
+    of the paragraph, the fictional `</p-first-line>` would move back and occur just
+    after the word “that.” If the user were to increase or decrease the font-size
+    rendering, or expand or contract the browser window causing the width of the text
+    to change, thereby causing the number of words on the first line to increase or
+    decrease, the browser automatically sets only the words in the currently displayed
+    first line to be both big and purple.
+  id: totrans-513
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果文本的第一行编辑后只包括段落的前七个字，那么虚构的`</p-first-line>`将移回并出现在“that”一词之后。如果用户增加或减少字体大小，或展开或收缩浏览器窗口导致文本宽度变化，从而导致第一行的字数增加或减少，浏览器将自动设置当前显示的第一行中的词语为大号且紫色。
+- en: The length of the first line depends on multiple factors, including the font
+    size, letter spacing, and width of the parent container. Depending on the markup
+    and the length of that first line, the end of the first line could come in the
+    middle of a nested element. If the `::first-line` breaks up a nested element,
+    such as an `em` or a hyperlink, the properties attached to the `::first-line`
+    will apply to only the portion of that nested element that is displayed on the
+    first line.
+  id: totrans-514
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一行的长度取决于多个因素，包括字体大小、字母间距和父容器的宽度。根据标记和第一行的长度，第一行的结束可能在嵌套元素的中间。如果`::first-line`打断了一个嵌套元素，例如`em`或超链接，那么附加到`::first-line`的属性仅适用于该嵌套元素的显示在第一行的部分。
+- en: Restrictions on ::first-letter and ::first-line
+  id: totrans-515
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 对`::first-letter`和`::first-line`的限制
+- en: The `::first-letter` and `::first-line` pseudo-elements currently can be applied
+    only to block-display elements such as headings or paragraphs, and not to inline-display
+    elements such as hyperlinks. There are also limits on the CSS properties that
+    may be applied to `::first-line` and `::first-letter`. [Table 3-6](#properties_permitted_on_pseudo-elements)
+    gives an idea of these limitations. Like all pseudo-elements, neither can be included
+    in `:has()` or `:not()`.
+  id: totrans-516
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`::first-letter`和`::first-line`伪元素目前只能应用于块级元素，如标题或段落，而不能应用于内联元素，如超链接。对于`::first-line`和`::first-letter`可以应用的CSS属性也有限制。[表 3-6](#properties_permitted_on_pseudo-elements)提供了这些限制的概述。与所有伪元素一样，它们都不能包含在`:has()`或`:not()`中。'
+- en: Table 3-6\. Properties permitted on pseudo-elements
+  id: totrans-517
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 3-6\. 伪元素上允许的属性
+- en: '| `::first-letter` | `::first-line` |'
+  id: totrans-518
+  prefs: []
+  type: TYPE_TB
+  zh: '| `::first-letter` | `::first-line` |'
+- en: '| --- | --- |'
+  id: totrans-519
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '|'
+  id: totrans-520
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: All font properties
+  id: totrans-521
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有字体属性
+- en: All background properties
+  id: totrans-522
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有背景属性
+- en: All text decoration properties
+  id: totrans-523
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有文本装饰属性
+- en: All inline typesetting properties
+  id: totrans-524
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有内联排版属性
+- en: All inline layout properties
+  id: totrans-525
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有内联布局属性
+- en: All border properties
+  id: totrans-526
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有边框属性
+- en: '`box-shadow`'
+  id: totrans-527
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`box-shadow`'
+- en: '`color`'
+  id: totrans-528
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`color`'
+- en: '`opacity`'
+  id: totrans-529
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`opacity`'
+- en: '|'
+  id: totrans-530
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: All font properties
+  id: totrans-531
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有字体属性
+- en: All background properties
+  id: totrans-532
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有背景属性
+- en: All margin properties
+  id: totrans-533
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有边距属性
+- en: All padding properties
+  id: totrans-534
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有填充属性
+- en: All border properties
+  id: totrans-535
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有边框属性
+- en: All text decoration properties
+  id: totrans-536
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有文本装饰属性
+- en: All inline typesetting properties
+  id: totrans-537
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有内联排版属性
+- en: '`color`'
+  id: totrans-538
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`color`'
+- en: '`opacity`'
+  id: totrans-539
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`opacity`'
+- en: '|'
+  id: totrans-540
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: The Placeholder Text Pseudo-Element
+  id: totrans-541
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 占位符文本伪元素
+- en: 'As it happens, the restrictions on what styles can be applied via `::first-line`
+    are exactly the same as the restrictions on styles applied via `::placeholder`.
+    This pseudo-element matches any placeholder text placed into text inputs and textareas.
+    You could, for example, italicize text input placeholder text and turn textarea
+    placeholder text a dusky blue like this:'
+  id: totrans-542
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正好，通过`::first-line`可以应用的样式的限制与通过`::placeholder`应用的样式的限制完全相同。这个伪元素匹配任何放置在文本输入框和文本区域中的占位符文本。例如，你可以将文本输入框的占位符文本设置为斜体，将文本区域的占位符文本设置为浅蓝色，就像这样：
+- en: '[PRE110]'
+  id: totrans-543
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE110]'
+- en: 'For both `<input>` and `<textarea>` elements, this text is defined by the `placeholder`
+    attribute in HTML. The markup will look something very much like this:'
+  id: totrans-544
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于`<input>`和`<textarea>`元素，这段文本由HTML中的`placeholder`属性定义。标记看起来可能非常像这样：
+- en: '[PRE111]'
+  id: totrans-545
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE111]'
+- en: If text is prefilled using the `value` attribute on `<input>` elements, or by
+    placing content inside the `<textarea>` element, that will override the value
+    of any `placeholder` attribute, and the resulting text won’t be selected with
+    the `::placeholder` pseudo-element.
+  id: totrans-546
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在`<input>`元素的`value`属性或`<textarea>`元素内放置内容来预填文本，这将覆盖任何`placeholder`属性的值，并且结果文本不会被`::placeholder`伪元素选中。
+- en: The Form Button Pseudo-Element
+  id: totrans-547
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 表单按钮伪元素
+- en: Speaking of form elements, it’s also possible to directly select the file-selector
+    button—and *only* the file-selector button—in an `<input>` element that has a
+    `type` of `file`. This gives you a way to call attention to the button a user
+    needs to click to open the file-selection dialog, even if no other part of the
+    input can be directly styled.
+  id: totrans-548
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 谈到表单元素，也可以直接选择文件选择按钮——*仅限*文件选择按钮——在 `type` 为 `file` 的 `<input>` 元素中。这样可以突出显示用户需要单击以打开文件选择对话框的按钮，即使输入的其他部分无法直接样式化。
+- en: 'If you’ve never seen a file-selection input, it usually looks like this:'
+  id: totrans-549
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你从未见过文件选择输入框，它通常是这样的：
+- en: '[PRE112]'
+  id: totrans-550
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE112]'
+- en: 'That second line gets replaced with a control whose appearance is dependent
+    on the combination of operating system and browser, so it tends to look at least
+    a little different (sometimes a lot different) from one user to the next. [Figure 3-31](#styling_button_file_submission)
+    shows one possible rendering of the input, with the button styled by the following
+    CSS:'
+  id: totrans-551
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那第二行会被一个控件替换，其外观取决于操作系统和浏览器的组合，因此它在不同用户之间看起来至少有点不同（有时差异很大）。[图 3-31](#styling_button_file_submission)
+    展示了输入框的一个可能渲染，按钮由以下 CSS 样式化：
+- en: '[PRE113]'
+  id: totrans-552
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE113]'
+- en: '![css5 0331](assets/css5_0331.png)'
+  id: totrans-553
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0331](assets/css5_0331.png)'
+- en: Figure 3-31\. Styling the button in a file-submission input
+  id: totrans-554
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-31\. 样式化文件提交输入框中的按钮
+- en: Generating Content Before and After Elements
+  id: totrans-555
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 生成内容的前后元素
+- en: 'Let’s say you want to preface every `<h2>` element with a pair of silver square
+    brackets as a typographical effect:'
+  id: totrans-556
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想在每个 `<h2>` 元素之前加上一对银色方括号作为排版效果：
+- en: '[PRE114]'
+  id: totrans-557
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE114]'
+- en: CSS lets you insert *generated content*, and then style it directly using the
+    pseudo-elements `::before` and `::after`. [Figure 3-32](#inserting_content_before_an_element)
+    illustrates an example.
+  id: totrans-558
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 允许你插入*生成的内容*，然后直接使用伪元素 `::before` 和 `::after` 进行样式化。[图 3-32](#inserting_content_before_an_element)
+    提供了一个示例。
+- en: '![css5 0332](assets/css5_0332.png)'
+  id: totrans-559
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0332](assets/css5_0332.png)'
+- en: Figure 3-32\. Inserting content before an element
+  id: totrans-560
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-32\. 在元素前插入内容
+- en: 'The pseudo-element is used to insert the generated content and to style it.
+    To place content at the end of an element, right before the closing tag, use the
+    pseudo-element `::after`. You could end your documents with an appropriate finish:'
+  id: totrans-561
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 伪元素用于插入生成的内容并对其进行样式化。要在元素末尾、在关闭标签之前放置内容，请使用伪元素 `::after`。你可以结束你的文档并适当地完成：
+- en: '[PRE115]'
+  id: totrans-562
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE115]'
+- en: Conversely, if you want to insert some content at the beginning of an element,
+    right after the opening tag, use `::before`. Just remember that in either case,
+    you have to use the `content` property in order to insert something to style.
+  id: totrans-563
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另外，如果你想在元素开头插入一些内容，在开标签之后使用 `::before`。只需记住，在任一情况下，都必须使用 `content` 属性来插入并样式化内容。
+- en: Generated content is its own subject, and the entire topic (including more detail
+    on `::before`, `::after`, and `content`) is covered more thoroughly in [Chapter 16](ch16.html#lists-and-generated-content).
+  id: totrans-564
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 生成的内容是自己的主题，整个主题（包括更多关于 `::before`、`::after` 和 `content` 的详细信息）在 [第 16 章](ch16.html#lists-and-generated-content)
+    中更全面地讨论。
+- en: Highlight Pseudo-Elements
+  id: totrans-565
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 高亮伪元素
+- en: A relatively new concept in CSS is the ability to style pieces of content that
+    have been highlighted, either by user selection or by the user agent itself. These
+    are summarized in [Table 3-7](#highlight_pseudo-elements).
+  id: totrans-566
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 中的一个相对较新的概念是能够样式化已经被高亮的内容片段，无论是通过用户选择还是用户代理本身。这些在 [表 3-7](#highlight_pseudo-elements)
+    中总结。
+- en: Table 3-7\. Highlight pseudo-elements
+  id: totrans-567
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 3-7\. 高亮伪元素
+- en: '| Name | Description |'
+  id: totrans-568
+  prefs: []
+  type: TYPE_TB
+  zh: '| Name | Description |'
+- en: '| --- | --- |'
+  id: totrans-569
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `::selection` | Refers to any part of a document that has been highlighted
+    for user operation (e.g., text that has been drag-selected with a mouse) |'
+  id: totrans-570
+  prefs: []
+  type: TYPE_TB
+  zh: '| `::selection` | 指任何已被高亮以供用户操作的文档部分（例如，用鼠标拖选的文本） |'
+- en: '| `::target-text` | Refers to the text of a document that has been targeted;
+    this is distinct from the `:target` pseudo-class, which refers to a targeted element
+    as a whole, not a fragment of text |'
+  id: totrans-571
+  prefs: []
+  type: TYPE_TB
+  zh: '| `::target-text` | 指文档中已被定位的文本；这与 `:target` 伪类不同，后者指的是作为整体被定位的元素，而不是文本片段。'
+- en: '| `::spelling-error` | Refers to the part of a document that has been marked
+    by the user agent as a misspelling |'
+  id: totrans-572
+  prefs: []
+  type: TYPE_TB
+  zh: '| `::spelling-error` | 指用户代理已标记为拼写错误的文档部分 |'
+- en: '| `::grammar-error` | Refers to the part of a document that has been marked
+    by the user agent as a grammar error |'
+  id: totrans-573
+  prefs: []
+  type: TYPE_TB
+  zh: '| `::grammar-error` | 指用户代理已标记为语法错误的文档部分 |'
+- en: Of the four pseudo-elements in [Table 3-7](#highlight_pseudo-elements), only
+    one, `::selection`, has any appreciable support as of early 2023\. So we’ll explore
+    it and leave the others for a future edition.
+  id: totrans-574
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 [表 3-7](#highlight_pseudo-elements) 中的四个伪元素中，只有一个 `::selection` 在2023年初有明显的支持。因此，我们将探索它，并将其余的留给未来的版本。
+- en: 'When someone uses a mouse pointer to click-hold-and-drag in order to highlight
+    some text, that’s a selection. Most browsers have default styles set for text
+    selection. Authors can apply a limited set of CSS properties to such selections,
+    overriding the browser’s default styles, by styling the `::selection` pseudo-element.
+    Let’s say you want selected text to be white on a navy-blue background. The CSS
+    would look like this:'
+  id: totrans-575
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当有人使用鼠标指针点击、按住并拖动以突出显示某些文本时，这就是一个选择操作。大多数浏览器为文本选择设置了默认样式。作者可以对这些选择应用一组有限的 CSS
+    属性，通过样式化 `::selection` 伪元素来覆盖浏览器的默认样式。假设您希望选择的文本是白色的，背景是海军蓝。CSS 将如下所示：
+- en: '[PRE116]'
+  id: totrans-576
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE116]'
+- en: 'The primary use cases for `::selection` are specifying a color scheme for selected
+    text that doesn’t clash with the rest of the design, or defining different selection
+    styles for different parts of a document. For example:'
+  id: totrans-577
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`::selection` 的主要用例是指定选定文本的颜色方案，使其与设计的其余部分不冲突，或为文档的不同部分定义不同的选择样式。例如：'
+- en: '[PRE117]'
+  id: totrans-578
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE117]'
+- en: 'Be careful in styling selection highlights: users generally expect text they
+    select to look a certain way, usually defined by settings in their operating system.
+    Thus, if you get too clever with selection styling, you could confuse users. That
+    said, if you know that selected text can be difficult to see because your design’s
+    colors tend to obscure it, defining more obvious highlight styles is probably
+    a good idea.'
+  id: totrans-579
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在样式化选择高亮时要小心：用户通常希望他们选择的文本看起来某种方式，通常由其操作系统中的设置定义。因此，如果您在选择样式上过于聪明，可能会使用户感到困惑。尽管如此，如果您知道选择的文本由于设计的颜色倾向于模糊而难以看到，定义更明显的高亮样式可能是一个好主意。
+- en: 'Note that selected text can cross element boundaries, and that multiple selections
+    can occur within a given document. Imagine that a user selects text starting from
+    the middle of one paragraph to the middle of the next. In effect, each paragraph
+    will get its own selection pseudo-element nested inside, and selection styling
+    will be handled as appropriate for the context. Given the following CSS and HTML,
+    you’ll get a result like that shown in [Figure 3-33](#selection_styling):'
+  id: totrans-580
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，所选文本可以跨越元素边界，并且在给定文档中可以存在多个选择。假设用户从一个段落中间开始选择文本，直到下一个段落中间。实际上，每个段落都将有其自己的选择伪元素嵌套在内部，并且选择的样式将根据上下文进行处理。考虑到以下的
+    CSS 和 HTML，您将获得类似于 [图 3-33](#selection_styling) 所示的结果：
+- en: '[PRE118]'
+  id: totrans-581
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE118]'
+- en: '[PRE119]'
+  id: totrans-582
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE119]'
+- en: '![css5 0333](assets/css5_0333.png)'
+  id: totrans-583
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0333](assets/css5_0333.png)'
+- en: Figure 3-33\. Selection styling
+  id: totrans-584
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-33\. 选择样式
+- en: 'This underscores a point made earlier: *be careful* with your selection styling.
+    It is all too easy to make text unreadable for some users, particularly if your
+    selection styles interact badly with the user’s default selection styles.'
+  id: totrans-585
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这再次强调了前面提到的一点：*在选择样式上要小心*。如果您的选择样式与用户的默认选择样式互动不良，可能会使某些用户的文本变得难以阅读。
+- en: 'Furthermore, for user privacy reasons, you can apply only a limited number
+    of CSS properties to selections: `color`, `background-color`, `text-decoration`
+    and related properties, `text-shadow`, and the `stroke` properties (in SVG).'
+  id: totrans-586
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，基于用户隐私原因，您只能将一些有限的 CSS 属性应用于选择：`color`、`background-color`、`text-decoration`及其相关属性、`text-shadow`和
+    `stroke` 属性（在SVG中）。
+- en: Note
+  id: totrans-587
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: 'As of early 2023, selections do not have their styles inherited: selecting
+    text containing some inline elements will apply the selection styling to the text
+    outside the inline elements, but not within the inline elements. It is not clear
+    if this behavior is intended, but it is consistent across major browsers.'
+  id: totrans-588
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自2023年初起，选择不会继承其样式：选择包含某些内联元素的文本将使选择样式应用于内联元素之外的文本，但不会应用于内联元素内的文本。目前尚不清楚这种行为是否有意为之，但它在主要浏览器中是一致的。
+- en: Beyond `::selection`, there will likely be increasing support for `::target-text`.
+    As of early 2023, this is supported in only Chromium browsers, which introduced
+    a feature that needs it. With this feature, text can be added to the end of a
+    URL as part of the fragment identifier for highlighting, in order to draw attention
+    to one or more parts of the page.
+  id: totrans-589
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了 `::selection` 外，可能还会逐渐支持 `::target-text`。截至2023年初，这仅在Chromium浏览器中受支持，它引入了一项需要的功能。使用此功能，文本可以作为URL的片段标识符的一部分添加到页面的末尾，以突出显示一个或多个部分。
+- en: 'For example, a URL might look something like: `https://example.org/#:~:text=for%20use%20in%20illustrative%20examples`.
+    The part at the end says to the browser, “Once you’ve loaded the page, highlight
+    any examples of this text.” The text is encoded for use in URLs, which is why
+    it’s filled with `%20` strings—they represent spaces. The result will look something
+    like [Figure 3-34](#target_text_styling).'
+  id: totrans-590
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，URL 可能看起来像这样：`https://example.org/#:~:text=for%20use%20in%20illustrative%20examples`。末尾的部分告诉浏览器：“一旦加载页面，突出显示这些文本的任何示例。”这些文本被编码用于
+    URL，这就是为什么它填充了`%20`字符串——它们表示空格。结果看起来可能类似于[图 3-34](#target_text_styling)。
+- en: '![css5 0334](assets/css5_0334.png)'
+  id: totrans-591
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0334](assets/css5_0334.png)'
+- en: Figure 3-34\. Targeted text styling
+  id: totrans-592
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 3-34\. 目标文本样式
+- en: 'If you wanted to suppress this content highlighting on your own pages, you
+    might do something like this:'
+  id: totrans-593
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想在自己的页面上抑制此内容的高亮显示，你可以做如下操作：
+- en: '[PRE120]'
+  id: totrans-594
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE120]'
+- en: As for `::spelling-error` and `::grammar-error`, these are meant to apply highlighting
+    of some sort to any spelling or grammar errors within a document. You can see
+    the utility for something like Google Docs or the editing fields of CMSs like
+    WordPress or Craft. For most other applications, though, they seem unlikely to
+    be very popular. Regardless, as of this writing, there is no browser support for
+    either, and the Working Group is still hashing out the details of how they should
+    work.
+  id: totrans-595
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 至于`::spelling-error`和`::grammar-error`，它们的作用是对文档中的拼写或语法错误进行某种形式的高亮显示。你可以看到像
+    Google Docs 或 WordPress 或 Craft 等内容管理系统的编辑字段中有这样的实用性。不过，在其他大多数应用程序中，它们似乎不太可能非常受欢迎。无论如何，在撰写本文时，这两者都没有得到浏览器的支持，工作组仍在讨论它们应该如何工作的细节。
+- en: The Backdrop Pseudo-Element
+  id: totrans-596
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 背景伪元素
+- en: Suppose you have an element that’s being presented full-screen, like a video.
+    Furthermore, suppose that element doesn’t neatly fill the screen all the way to
+    the edges, perhaps because the aspect ratio of the element doesn’t match the aspect
+    ratio of the screen. What should be filled in for the parts of the screen that
+    the element doesn’t cover? And how would you select that non-element region with
+    CSS?
+  id: totrans-597
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你有一个全屏显示的元素，比如一个视频。此外，假设该元素没有完全填充到屏幕边缘，也许是因为元素的宽高比与屏幕的宽高比不匹配。那么，对于元素没有覆盖到的屏幕部分，应该填充什么？你如何使用
+    CSS 选择这些非元素区域？
+- en: 'Enter the `::backdrop` pseudo-element. This represents a box that’s the exact
+    size of the full-screen viewport, and it is always drawn beneath a full-screen
+    element. So you might put a dark-gray backdrop behind any full-screen video like
+    this:'
+  id: totrans-598
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 进入`::backdrop`伪元素。它表示一个与全屏视口完全相同大小的盒子，并且始终绘制在全屏元素的下方。因此，你可以像这样在任何全屏视频的背后放置一个深灰色的背景：
+- en: '[PRE121]'
+  id: totrans-599
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE121]'
+- en: CSS doesn’t restrict which styles can be applied to backdrops, but since they’re
+    essentially empty boxes placed behind a full-screen element, most of the time
+    you’ll probably be setting background colors or images.
+  id: totrans-600
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 并不限制可以应用于背景的样式，但由于它们基本上是放置在全屏元素后面的空箱子，所以大多数情况下，你可能只会设置背景颜色或图像。
+- en: An important thing to remember is that backdrops do *not* participate in inheritance.
+    They can’t inherit styles from ancestor elements, nor do they pass any of their
+    styles on to any children. Whatever styles you apply to the backdrop will exist
+    in their own little pocket universe.
+  id: totrans-601
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重要的一点是背景不参与继承。它们不能从祖先元素继承样式，也不会将它们的任何样式传递给任何子元素。你应用于背景的任何样式都将存在于它们自己的小宇宙中。
+- en: The Video-Cue Pseudo-Element
+  id: totrans-602
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 视频提示伪元素
+- en: On the subject of videos, videos often have Web Video Text Tracks (WebVTT) data
+    containing the text captions enabling accessibility. These captions are known
+    as *cues* and can be styled with the `::cue` pseudo-element.
+  id: totrans-603
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 谈到视频，视频通常具有包含文本字幕的 Web 视频文本轨道（WebVTT）数据，从而实现辅助功能。这些字幕称为提示，并可以使用`::cue`伪元素进行样式设置。
+- en: 'Let’s say you have a video that’s mostly dark, with a few light segments. You
+    might style the cues to be a lightish-gray text on a translucent dark background,
+    as follows:'
+  id: totrans-604
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你有一个大部分是黑暗的视频，但有几个亮色片段。你可以将提示样式设置为浅灰色文字，放在半透明的黑色背景上，如下所示：
+- en: '[PRE122]'
+  id: totrans-605
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE122]'
+- en: This will always apply to the currently visible cue.
+  id: totrans-606
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将始终应用于当前可见的提示。
+- en: 'You can also select parts of individual cues by using a selector pattern inside
+    parentheses. This can be used to style specific elements defined in the WebVTT
+    data, drawn from a small list allowed by the WebVTT specification. For example,
+    any italicized cue text could be selected as follows:'
+  id: totrans-607
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以通过在括号内使用选择器模式来选择个别提示的部分。这可以用于样式化 WebVTT 数据中允许的一个小列表中定义的特定元素。例如，可以如下选择任何斜体提示文本：
+- en: '[PRE123]'
+  id: totrans-608
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE123]'
+- en: 'You could use structural pseudo-classes like `:nth-child`, but these will apply
+    only within a given cue, not across cues. You can’t select every other cue for
+    styling, but you can select every other element within a given cue. Assume the
+    following WebVTT data:'
+  id: totrans-609
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用结构伪类如 `:nth-child`，但这些仅适用于给定提示内的元素，而不是跨提示。您不能选择每个其他提示来进行样式化，但可以选择给定提示内的每个其他元素。假设以下是
+    WebVTT 数据：
+- en: '[PRE124]'
+  id: totrans-610
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE124]'
+- en: 'The second cue includes two lines of text. These are treated as separate elements,
+    in effect, even though no elements are specified. Thus, we could make the line
+    Hildy says (indicated with `<v Hildy>`, which is the WebVTT equivalent of `<v
+    voice="Hildy">`) boldface, and give alternate colors to the two lines of dialog
+    in the second cue, like so:'
+  id: totrans-611
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二个提示包括两行文本。实际上，这些被视为单独的元素，即使没有指定元素。因此，我们可以将希尔迪说的那行（用 `<v Hildy>` 指示，这是 `<v
+    voice="Hildy">` 的 WebVTT 等效项）设置为粗体，并且给第二个提示中的两行对话设置不同的颜色，如下所示：
+- en: '[PRE125]'
+  id: totrans-612
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE125]'
+- en: 'As of early 2023, a limited range of properties can be applied to cues:'
+  id: totrans-613
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至 2023 年初，可以应用于提示的属性范围有限：
+- en: '`color`'
+  id: totrans-614
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`color`'
+- en: '`background` and its associated longhand properties (e.g., `background-color`)'
+  id: totrans-615
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`background` 及其相关的长手属性（例如，`background-color`）'
+- en: '`text-decoration` and its associated longhand properties (e.g., `text-decoration-thickness`)'
+  id: totrans-616
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`text-decoration` 及其相关的长手属性（例如，`text-decoration-thickness`）'
+- en: '`text-shadow`'
+  id: totrans-617
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`text-shadow`'
+- en: '`text-combine-upright`'
+  id: totrans-618
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`text-combine-upright`'
+- en: '`font` and its associated longhand properties (e.g., `font-weight`)'
+  id: totrans-619
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`font` 及其相关的长手属性（例如，`font-weight`）'
+- en: '`ruby-position`'
+  id: totrans-620
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ruby-position`'
+- en: '`opacity`'
+  id: totrans-621
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`opacity`'
+- en: '`visibility`'
+  id: totrans-622
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`visibility`'
+- en: '`white-space`'
+  id: totrans-623
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`white-space`'
+- en: '`outline` and its associated longhand properties (e.g., `outline-width`)'
+  id: totrans-624
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`outline` 及其相关的长手属性（例如，`outline-width`）'
+- en: Shadow Pseudo-Classes and -Elements
+  id: totrans-625
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 影子伪类和-元素
+- en: Another recent innovation in HTML has been the introduction of the shadow DOM,
+    which is a deep and complex subject we don’t have the space to explore here. At
+    a basic level, the *shadow DOM* allows developers to create encapsulated markup,
+    style, and scripting within the regular (or *light*) DOM. This keeps the styles
+    and scripts of one shadow DOM from affecting any other part of the document, whether
+    those parts are in the light or shadow DOM.
+  id: totrans-626
+  prefs: []
+  type: TYPE_NORMAL
+  zh: HTML 中的另一个最新创新是引入了影子 DOM，这是一个深入而复杂的主题，我们在这里没有空间来探讨。在基本水平上，*影子 DOM* 允许开发人员在常规（或*轻*）DOM
+    内创建封装的标记、样式和脚本。这使得一个影子 DOM 的样式和脚本不会影响文档中的其他任何部分，无论这些部分是在轻或影子 DOM 中。
+- en: We’re bringing this up here because CSS does provide ways to hook into shadow
+    DOMs, as well as to reach up from within a shadow DOM to select the piece of the
+    light DOM that hosts the shadow. (This all sounds very panel-van artistic, doesn’t
+    it?)
+  id: totrans-627
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们在这里提到这一点是因为 CSS 确实提供了一些方法来连接到影子 DOM，以及从影子 DOM 内部到达并选择托管影子的轻 DOM 的方式。（这一切听起来很面板艺术，不是吗？）
+- en: Shadow Pseudo-Classes
+  id: totrans-628
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 影子伪类
+- en: 'To see what this means, let’s bring back the combobox example from earlier
+    in the chapter. It looks like this:'
+  id: totrans-629
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解这意味着什么，让我们回顾一下本章早些时候的组合框示例。它看起来是这样的：
+- en: '[PRE126]'
+  id: totrans-630
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE126]'
+- en: 'All the CSS (and JS) within this custom element apply *only* to the `<mylib-combobox>`
+    element. Even if the CSS within the custom element says something like `li {color:
+    red;}`, that will apply to only `<li>` elements constructed within the `<mylib-combobox>`.
+    It can’t leak out to turn list items elsewhere on the page red.'
+  id: totrans-631
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '所有在此自定义元素内的 CSS（和 JS）*仅适用于* `<mylib-combobox>` 元素。即使自定义元素内的 CSS 声明了像 `li {color:
+    red;}` 这样的样式，那也只会应用于 `<mylib-combobox>` 内构建的 `<li>` 元素。它不会泄漏到页面上其他地方的列表项来使它们变成红色。'
+- en: 'That’s all good, but what if you want to style the host element in a certain
+    way from within the custom element? The host element, more generally called the
+    *shadow host*, is in this case `<mylib-combobox>`. From within the shadow host,
+    CSS can select the host by using the `:host` pseudo-class. For example:'
+  id: totrans-632
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一切都很好，但是如果你想从自定义元素内部以某种方式样式化宿主元素，该怎么办？宿主元素，在这种情况下通常被称为*影子宿主*，即`<mylib-combobox>`。从影子宿主内部，CSS
+    可以使用`:host`伪类选择宿主。例如：
+- en: '[PRE127]'
+  id: totrans-633
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE127]'
+- en: That will reach up, so to speak, “pierce through the shadow boundary” (to use
+    an evocative phrase from the specification), and select the `<mylib-combobox>`
+    element, or whatever the name of the custom element containing the shadow DOM
+    CSS is.
+  id: totrans-634
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那会“穿透影子边界”（用规范中的生动词语来说），并选择 `<mylib-combobox>` 元素，或者无论影子DOM CSS名称是什么的自定义元素。
+- en: 'Now, suppose there can be different kinds of comboboxes, each with its own
+    class. Something like this:'
+  id: totrans-635
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，假设可以有不同类型的组合框，每个都有自己的类。类似这样的情况：
+- en: '[PRE128]'
+  id: totrans-636
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE128]'
+- en: 'You might want to style each class of combobox differently. For that, the `:host()`
+    pseudo-class exists:'
+  id: totrans-637
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能希望将每类组合框样式化不同。为此，存在`:host()`伪类：
+- en: '[PRE129]'
+  id: totrans-638
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE129]'
+- en: These rules could then be included in the styles that are loaded by all comboboxes,
+    using the presence of classes on the shadow hosts to style as appropriate.
+  id: totrans-639
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些规则随后可以包含在所有组合框加载的样式中，使用影子宿主上的类来适当地进行样式设置。
+- en: 'But wait! What if, instead of latching on to classes, we want to style our
+    shadow hosts based on where they appear in the light DOM? In that case, `:host-context()`
+    has you covered. Thus, we can style our comboxes one way if they’re part of a
+    form, and a different way if they’re part of a header navigation element:'
+  id: totrans-640
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但等等！如果我们不想依赖类，而是想根据它们在光DOM中出现的位置样式化我们的影子宿主怎么办？在这种情况下，`:host-context()`就能帮到您。因此，如果它们是表单的一部分，则可以以一种方式样式化我们的组合框，如果它们是标题导航元素的一部分，则以另一种方式样式化：
+- en: '[PRE130]'
+  id: totrans-641
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE130]'
+- en: The first of these means “if the shadow host is the descendant of a `<form>`
+    element, apply these styles.” The second means “if the shadow host is the descendant
+    of a `<nav>` element that is itself descended from a `<header>` element, apply
+    these styles.” To be clear, `form` and `<nav>` are *not* the shadow hosts in these
+    situations! The selector in `:host-context()` is describing only the context in
+    which the host needs to be placed in order to be selected.
+  id: totrans-642
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中的第一个意味着“如果影子宿主是 `<form>` 元素的后代，则应用这些样式”。第二个意味着“如果影子宿主是 `<nav>` 元素的后代，并且 `<nav>`
+    元素本身是 `<header>` 元素的后代，则应用这些样式。”要明确的是，在这些情况下，`form`和`<nav>` *不是* 影子宿主！`:host-context()`中的选择器仅描述了选择宿主所需放置的上下文。
+- en: Note
+  id: totrans-643
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注
+- en: The four selectors that cross the shadow DOM/light DOM boundary—`:host`, `:host()`,
+    and `:host-content()`, along with the `:slotted()` selector discussed next—are
+    supported only when declared within the context of the shadow DOM. As of early
+    2023, `:host-context()` isn’t supported in Safari or Firefox and is at risk of
+    being removed from the specification.
+  id: totrans-644
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当在影子DOM的上下文中声明时，这四个穿越影子DOM/光DOM边界的选择器——`:host`，`:host()`和`:host-content()`，以及接下来讨论的`:slotted()`选择器——仅在支持影子DOM的情况下生效。截至2023年初，Safari或Firefox不支持`:host-context()`，且有可能从规范中删除。
+- en: Shadow Pseudo-Elements
+  id: totrans-645
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 影子伪元素
+- en: 'In addition to having hosts, shadow DOMs can also define *slots*. These are
+    elements that are meant to have other things slotted into them, much as you would
+    place an expansion card into an expansion slot. Let’s expand the markup of the
+    combobox a little bit:'
+  id: totrans-646
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了拥有宿主外，影子DOM还可以定义插槽。这些是要将其他东西插入其中的元素，就像您将扩展卡插入扩展槽一样。让我们稍微扩展一下组合框的标记：
+- en: '[PRE131]'
+  id: totrans-647
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE131]'
+- en: Now, to be clear, the `shadow tree` isn’t actual markup. It’s just there to
+    represent the shadow DOM that gets constructed by whatever script builds it. So
+    please don’t go writing square-bracketed quoted element names into your documents;
+    they will fail.
+  id: totrans-648
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，要明确一点，`shadow tree`并不是实际的标记。它只是用来表示由构建它的脚本创建的影子DOM。因此，请不要在您的文档中写入方括号引用的元素名称；它们会失败。
+- en: That said, given a setup like the preceding one, `<span>` would be slotted into
+    the `slot` element, because the names match. You could try applying styles to
+    the slot, but what if you’d rather style the thing that got plugged into the slot?
+    That’s represented by the `::slotted()` pseudo-element, which accepts a selector
+    as needed.
+  id: totrans-649
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 话虽如此，考虑到前述设置，`<span>`将插入到`slot`元素中，因为名称匹配。您可以尝试对插槽应用样式，但如果您更愿意对插入插槽的内容进行样式化呢？这由`::slotted()`伪元素表示，根据需要接受选择器。
+- en: 'Thus, if you want to style all slotted elements one way and then add some extra
+    style if the slotted element is a `<span>`, you would write something like this:'
+  id: totrans-650
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，如果您想以一种方式样式化所有插槽元素，然后在插槽元素是 `<span>` 的情况下添加一些额外的样式，您可以这样写：
+- en: '[PRE132]'
+  id: totrans-651
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE132]'
+- en: 'More practically, you could style all slots red, and then remove that red from
+    any slot that’s been slotted with content, thus making the slots that failed to
+    get any content stand out. Something like this:'
+  id: totrans-652
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更实际地说，您可以将所有插槽样式设置为红色，然后从任何已插槽内容的插槽中删除该红色，从而使未获取任何内容的插槽显眼。类似这样的做法：
+- en: '[PRE133]'
+  id: totrans-653
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE133]'
+- en: Note
+  id: totrans-654
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注
+- en: The shadow DOM and its use is a complex topic, and one that we have not even
+    begun to scratch the surface of in this section. Our only goal is to introduce
+    the pseudo-classes and -elements that pertain to the shadow DOM, not explain the
+    shadow DOM or illustrate best practices.
+  id: totrans-655
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 影子 DOM 及其使用是一个复杂的主题，而我们在本节中甚至还没有开始深入探讨它。我们唯一的目标是介绍与影子 DOM 相关的伪类和伪元素，而不是解释影子
+    DOM 或阐明最佳实践。
+- en: Summary
+  id: totrans-656
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 总结
+- en: As you saw in this chapter, pseudo-classes and pseudo-elements bring a whole
+    lot of power and flexibility to the table. Whether selecting hyperlinks based
+    on their visited state, matching elements based on their placement in the document
+    structure, or styling pieces of the shadow DOM, there’s a pseudo selector for
+    nearly every taste.
+  id: totrans-657
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你在本章中看到的，伪类和伪元素为样式表提供了强大和灵活的功能。无论是根据超链接的访问状态选择元素，根据文档结构中的位置匹配元素，还是样式化影子 DOM
+    的部分，几乎每种口味都有相应的伪选择器。
+- en: In this chapter and the preceding one, we’ve mentioned the concepts of specificity
+    and the cascade a few times and promised to talk about them soon. Well, soon is
+    now. That’s exactly what we’ll do in the next chapter.
+  id: totrans-658
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本章和前一章中，我们已经多次提到了特异性和级联的概念，并承诺很快会详细讨论它们。现在就是时候了。这正是我们将在下一章中做的事情。

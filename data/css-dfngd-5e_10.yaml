@@ -1,0 +1,3143 @@
+- en: Chapter 10\. Floating and Positioning
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第十章 浮动和定位
+- en: For a very long time, floated elements were the basis of all our web layout
+    schemes. (This is largely because of the property `clear`, which we’ll get to
+    in a bit.) But floats were never meant for layout; their use as a layout tool
+    was a hack nearly as egregious as the use of tables for layout. They were just
+    what we had. Floats are quite interesting and useful in their own right, however.
+    This is especially true given the recent addition of float *shaping*, which allows
+    the creation of nonrectangular shapes that content can flow past.
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 长期以来，浮动元素是所有网页布局方案的基础。（这主要是因为`clear`属性，我们稍后会详细介绍。）但是浮动从未被用来进行布局；它们作为布局工具的使用几乎和使用表格进行布局一样糟糕。它们只是我们拥有的东西。然而，浮动元素本身非常有趣和有用。特别是考虑到最近添加的浮动*形状*，它允许创建内容可以流过的非矩形形状。
+- en: Floating
+  id: totrans-2
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 浮动
+- en: Ever since the early 1990s, it has been possible to float images by declaring,
+    for instance, `<img src="b5.gif" alt="B4" align="right">`. This causes an image
+    to float to the right and allows other content (such as text) to “flow around”
+    the image. The name *floating*, in fact, came from the Netscape DevEdge page “Extensions
+    to HTML 2.0,” which explained the then-new `align` attribute. Unlike HTML, CSS
+    lets you float any element, from images to paragraphs to lists. This is accomplished
+    using the property `float`.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自从20世纪90年代初以来，通过声明，例如，`<img src="b5.gif" alt="B4" align="right">`，浮动图像就成为可能。这导致图像向右浮动，并允许其他内容（如文本）“环绕”图像。实际上，“浮动”这个名称来自Netscape
+    DevEdge页面“HTML 2.0扩展”，该页面解释了当时新的`align`属性。与HTML不同，CSS允许您浮动任何元素，从图像到段落再到列表。这通过`float`属性实现。
+- en: 'For example, to float an image to the left, you could use this markup:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，要将图像浮动到左侧，您可以使用以下标记：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: As [Figure 10-1](#floating_image_fig) illustrates, the image “floats” to the
+    left side of the browser window, and the text flows around it.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[图 10-1](#floating_image_fig)所示，图像“浮动”到浏览器窗口的左侧，并且文本环绕其周围。
+- en: '![css5 1001](assets/css5_1001.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1001](assets/css5_1001.png)'
+- en: Figure 10-1\. A floating image
+  id: totrans-8
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-1 浮动图像
+- en: You can float to the `left` or `right`, as well as to the `inline-start` and
+    `inline-end` edges of an element. These latter two are useful when you want to
+    float an element toward the start or end of the inline axis, regardless of the
+    direction that axis is pointing. (See [Chapter 6](ch06.html#basic-visual-formatting)
+    for details on the inline axis.)
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以将元素浮动到`left`或`right`，也可以浮动到元素的`inline-start`和`inline-end`边缘。当您希望将元素浮动到内联轴的起始或结束位置时，后两者非常有用，无论该轴的方向如何。（详见[第六章](ch06.html#basic-visual-formatting)关于内联轴的详细信息。）
+- en: Note
+  id: totrans-10
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Throughout the rest of this section, we mostly stick to `left` and `right` because
+    they simplify explanations. They will also be nearly the only `float` values you
+    see in the wild, at least for the next few years.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这一节的其余部分中，我们主要使用`left`和`right`，因为它们简化了解释。至少在接下来的几年里，它们也几乎是唯一的`float`值。
+- en: Floated Elements
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 浮动元素
+- en: Keep a few points in mind with regard to floating elements. First, a floated
+    element is, in some ways, removed from the normal flow of the document, although
+    it still affects the layout of the normal flow. In a manner utterly unique within
+    CSS, floated elements exist almost on their own plane, yet they still have influence
+    over the rest of the document.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在处理浮动元素时，请记住几点。首先，浮动元素在某种程度上脱离了文档的正常流，尽管它仍然影响正常流的布局。在CSS中，浮动元素几乎独立于其他文档，但它们仍然对文档的其余部分产生影响。
+- en: 'This influence arises because when an element is floated, other normal-flow
+    content “flows around” it. This is familiar behavior with floated images, but
+    the same is true if you float a paragraph, for example. In [Figure 10-2](#floating_paragraph_fig),
+    you can see this effect quite clearly, thanks to the margin added to the floated
+    paragraph:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种影响是因为当一个元素被浮动时，其他正常流内容会“环绕”它。这对于浮动图像来说是熟悉的行为，但是如果你浮动一个段落，例如，同样适用。在[图 10-2](#floating_paragraph_fig)中，由于添加到浮动段落的边距，你可以清楚地看到这种效果：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '![css5 1002](assets/css5_1002.png)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1002](assets/css5_1002.png)'
+- en: Figure 10-2\. A floating paragraph
+  id: totrans-17
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-2 浮动段落
+- en: 'One of the first facts to notice about floated elements is that margins around
+    floated elements do not collapse. If you float an image and give it 25-pixel margins,
+    there will be at least 25 pixels of space around that image. If other elements
+    adjacent to the image—and that means adjacent horizontally *and* vertically—also
+    have margins, those margins will not collapse with the margins on the floated
+    image. The following code results in [Figure 10-3](#floating_images_with_margins_fig),
+    with 50 pixels of space between the two floated images:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于浮动元素的首要事实之一是，浮动元素周围的边距不会合并。如果您浮动一个图像并给它25像素的边距，那么该图像周围至少会有25像素的空间。如果与图像相邻的其他元素——这意味着水平*和*垂直相邻——也具有边距，则这些边距不会与浮动图像上的边距合并。以下代码将生成[图10-3](#floating_images_with_margins_fig)，两个浮动图像之间有50像素的间距：
+- en: '[PRE2]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '![css5 1003](assets/css5_1003.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1003](assets/css5_1003.png)'
+- en: Figure 10-3\. Floating images with margins
+  id: totrans-21
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-3。具有边距的浮动图像
+- en: No floating at all
+  id: totrans-22
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 完全不浮动
+- en: 'CSS has one other value for `float` besides the ones we’ve discussed: `float:
+    none` is used to prevent an element from floating at all.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 'CSS除了我们讨论过的值之外，还有一个`float`的其他值：`float: none`用于完全防止元素浮动。'
+- en: This might seem a little silly, since the easiest way to keep an element from
+    floating is to avoid declaring a `float`, right? Well, first of all, the default
+    value of `float` is `none`. In other words, the value has to exist in order for
+    normal, nonfloating behavior to be possible; without it, all elements would float
+    in one way or another.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这可能看起来有点傻，因为保持元素不浮动的最简单方法是避免声明`float`，对吧？嗯，首先，`float`的默认值是`none`。换句话说，为了使正常的非浮动行为成为可能，必须存在这个值；如果没有，所有元素都会以某种方式浮动。
+- en: 'Second, you might want to override floating in some cases. Imagine that you’re
+    using a server-wide stylesheet that floats images. On one particular page, you
+    don’t want those images to float. Rather than writing a whole new stylesheet,
+    you could place `img {float: none;}` in your document’s embedded stylesheet.'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '其次，在某些情况下，您可能希望覆盖浮动。想象一下，您正在使用一个服务器范围内的样式表来浮动图像。在某个特定页面上，您不希望这些图像浮动。您可以在文档的嵌入样式表中添加`img
+    {float: none;}`，而不是编写全新的样式表。'
+- en: 'Floating: The Details'
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 浮动：细节
+- en: 'Before we start digging into details of floating, it’s important to establish
+    the concept of a *containing block*. A floated element’s containing block is the
+    nearest block-level ancestor element. Therefore, in the following markup, the
+    floated element’s containing block is the paragraph element that contains it:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在我们深入浮动细节之前，建立*包含块*的概念非常重要。浮动元素的包含块是最近的块级祖先元素。因此，在以下标记中，浮动元素的包含块是包含它的段落元素：
+- en: '[PRE3]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: We’ll return to the concept of containing blocks when we discuss positioning
+    in [“Positioning”](#positioning).
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当我们讨论[“定位”](#positioning)时，我们将回到包含块的概念。
+- en: 'Furthermore, a floated element generates a block box, regardless of the kind
+    of element it is. Thus, if you float a link, even though the element is inline
+    and would ordinarily generate an inline box, it generates a block box. It will
+    be laid out and act as if it was, for example, a `<div>`. This is not unlike declaring
+    `display: block` for the floated element, although it is not necessary to do so.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '此外，浮动元素生成一个块级框，而不管它是何种类型的元素。因此，如果您浮动一个链接，即使该元素是行内的并且通常生成行内框，它也会生成一个块级框。它将被布局和操作，就好像它是一个`<div>`。这与为浮动元素声明`display:
+    block`类似，尽管不必这样做。'
+- en: 'A series of specific rules govern the placement of a floated element, so let’s
+    cover those before digging into applied behavior. These rules are vaguely similar
+    to those that govern the evaluation of margins and widths and have the same initial
+    appearance of common sense. They are as follows:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在深入探讨应用行为之前，让我们先介绍一系列控制浮动元素位置的具体规则。这些规则与控制边距和宽度评估的规则有些相似，并且在初始外观上具有常识性。它们如下：
+- en: The left (or right) outer edge of a floated element may not be to the left (or
+    right) of the inner edge of its containing block.
+  id: totrans-32
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 浮动元素的左（或右）外边缘不能位于其包含块的内边缘的左侧（或右侧）。
+- en: This is straightforward enough. The outer-left edge of a left-floated element
+    can go only as far left as the inner-left edge of its containing block. Similarly,
+    the farthest right a right-floated element may go is its containing block’s inner-right
+    edge, as shown in [Figure 10-4](#floating_to_the_left_fig). (In this and subsequent
+    figures, the circled numbers show the position where the markup element actually
+    appears in relation to the source, and the numbered boxes show the position and
+    size of the floated visible element.)
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这很简单。左浮动元素的外左边缘只能到达其包含块的内左边缘。同样，右浮动元素最远可以到达其包含块的内右边缘，如[图 10-4](#floating_to_the_left_fig)所示。（在本图及后续图中，带圈数字显示标记元素实际在源中的位置，带编号的框显示浮动可见元素的位置和大小。）
+- en: '![css5 1004](assets/css5_1004.png)'
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![css5 1004](assets/css5_1004.png)'
+- en: Figure 10-4\. Floating to the left (or right)
+  id: totrans-35
+  prefs:
+  - PREF_IND
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-4. 向左（或向右）浮动
+- en: To prevent overlap with other floated elements, the left outer edge of a floated
+    element must be to the right of the right outer edge of a left-floating element
+    that occurs earlier in the document source, unless the top of the latter element
+    is below the bottom of the earlier element. Similarly, the right outer edge of
+    a floated element must be to the left of the left outer edge of a right-floating
+    element that comes earlier in the document source, unless the top of the latter
+    element is below the bottom of the earlier element.
+  id: totrans-36
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 为防止与其他浮动元素重叠，浮动元素的左外边缘必须位于文档源中较早出现的左浮动元素的右外边缘右侧，除非后者的顶部低于前者的底部。同样，浮动元素的右外边缘必须位于文档源中较早出现的右浮动元素的左外边缘左侧，除非后者的顶部低于前者的底部。
+- en: This rule prevents floated elements from “overwriting” each other. If an element
+    is floated to the left, and another floated element is already there, the latter
+    element will be placed against the outer-right edge of the previously floated
+    element. If, however, a floated element’s top is below the bottom of all earlier
+    floated images, it can float all the way to the inner-left edge of the parent.
+    [Figure 10-5](#keeping_floats_from_overlapping_fig) shows some examples.
+  id: totrans-37
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此规则防止浮动元素相互"覆盖"。如果一个元素向左浮动，并且已经有另一个浮动元素存在，后者将被放置在前一个浮动元素的外右边缘上。然而，如果浮动元素的顶部在所有较早浮动图像的底部以下，它可以一直浮动到父元素的内左边缘。[图
+    10-5](#keeping_floats_from_overlapping_fig)展示了一些示例。
+- en: '![css5 1005](assets/css5_1005.png)'
+  id: totrans-38
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![css5 1005](assets/css5_1005.png)'
+- en: Figure 10-5\. Keeping floats from overlapping
+  id: totrans-39
+  prefs:
+  - PREF_IND
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-5. 防止浮动元素重叠
+- en: The advantage of this rule is that all your floated content will be visible,
+    since you don’t have to worry about one floated element obscuring another. This
+    makes floating a fairly safe thing to do. The situation is markedly different
+    when using positioning, where it is very easy to cause elements to overwrite one
+    another.
+  id: totrans-40
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这条规则的优点是，所有浮动内容都将可见，因为您不必担心一个浮动元素遮挡另一个浮动元素。这使得浮动变得相对安全。当使用定位时情况完全不同，定位很容易导致元素相互覆盖。
+- en: The right outer edge of a left-floating element may not be to the right of the
+    left outer edge of any right-floating element to its right. The left outer edge
+    of a right-floating element may not be to the left of the right outer edge of
+    any left-floating element to its left.
+  id: totrans-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 左浮动元素的右外边缘不得位于右浮动元素的左外边缘右侧。右浮动元素的左外边缘不得位于左浮动元素的右外边缘左侧。
+- en: This rule prevents floated elements from overlapping each other. Let’s say you
+    have a body that is 500 pixels wide, and its sole content is two images that are
+    300 pixels wide. The first is floated to the left, and the second is floated to
+    the right. This rule prevents the second image from overlapping the first by 100
+    pixels. Instead, it is forced down until its top is below the bottom of the right-floating
+    image, as depicted in [Figure 10-6](#more_overlap_prevention_fig).
+  id: totrans-42
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此规则防止浮动元素重叠。假设您有一个宽度为 500 像素的主体，并且其唯一内容是两个宽度为 300 像素的图像。第一个图像向左浮动，第二个向右浮动。该规则防止第二个图像重叠在第一个图像上，间距为
+    100 像素。相反，它被迫下移，直到其顶部位于右浮动图像的底部以下，如[图 10-6](#more_overlap_prevention_fig)所示。
+- en: '![css5 1006](assets/css5_1006.png)'
+  id: totrans-43
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![css5 1006](assets/css5_1006.png)'
+- en: Figure 10-6\. More overlap prevention
+  id: totrans-44
+  prefs:
+  - PREF_IND
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-6. 更多重叠预防
+- en: A floating element’s top may not be higher than the inner top of its parent.
+    If a floating element is between two collapsing margins, the floated element is
+    placed as though it had a block-level parent element between the two elements.
+  id: totrans-45
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 浮动元素的顶部不得高于其父元素的内部顶部。如果浮动元素位于两个折叠边距之间，则将其放置为若有一个块级父元素位于这两个元素之间。
+- en: The first part of this rule keeps floating elements from floating all the way
+    to the top of the document. [Figure 10-7](#unlike_balloons_fig) illustrates the
+    correct behavior. The second part of this rule fine-tunes the alignment in some
+    situations—for example, when the middle of three paragraphs is floated. In that
+    case, the floated paragraph is floated as if it had a block-level parent element
+    (say, a `<div>`). This prevents the floated paragraph from moving up to the top
+    of whatever common parent the three paragraphs share.
+  id: totrans-46
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此规则的第一部分防止浮动元素浮动到文档顶部。图 10-7中展示了正确的行为。此规则的第二部分在某些情况下微调对齐方式，例如当三个段落中间有一个浮动段落时。在这种情况下，浮动段落会被视为有一个块级父元素（比如一个
+    `<div>`）。这可以防止浮动段落移动到这三个段落共享的任何公共父元素的顶部。
+- en: '![css5 1007](assets/css5_1007.png)'
+  id: totrans-47
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![css5 1007](assets/css5_1007.png)'
+- en: Figure 10-7\. Unlike balloons, floated elements can’t float upward
+  id: totrans-48
+  prefs:
+  - PREF_IND
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-7\. 与气球不同，浮动元素不能向上浮动
+- en: A floating element’s top may not be higher than the top of any earlier floating
+    or block-level element.
+  id: totrans-49
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 浮动元素的顶部不得高于先前任何浮动或块级元素的顶部。
+- en: 'Similarly to rule 4, rule 5 keeps floated elements from floating all the way
+    to the top of their parent elements. It is also impossible for a floated element’s
+    top to be any higher than the top of a floated element that occurs earlier. [Figure 10-8](#keeping_floats_below_fig)
+    shows an example: since the second float was forced to be below the first one,
+    the third float’s top is even with the top of the second float, not the first.'
+  id: totrans-50
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 类似于规则4，规则5防止浮动元素浮动到其父元素的顶部。浮动元素的顶部也不能高于先前出现的任何浮动元素的顶部。图 10-8展示了一个例子：由于第二个浮动被迫在第一个浮动下方，第三个浮动的顶部与第二个浮动的顶部齐平，而不是第一个浮动的顶部。
+- en: '![css5 1008](assets/css5_1008.png)'
+  id: totrans-51
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![css5 1008](assets/css5_1008.png)'
+- en: Figure 10-8\. Keeping floats below their predecessors
+  id: totrans-52
+  prefs:
+  - PREF_IND
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-8\. 保持浮动元素低于其前置元素
+- en: A floating element’s top may not be higher than the top of any line box that
+    contains a box generated by an element that comes earlier in the document source.
+  id: totrans-53
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 浮动元素的顶部不得高于包含其先前生成的盒子的任何行框的顶部。
+- en: Similarly to rules 4 and 5, this rule further limits the upward floating of
+    an element by preventing it from being above the top of a line box containing
+    content that precedes the floated element. Let’s say that, right in the middle
+    of a paragraph, there is a floated image. The highest the top of that image may
+    be placed is the top of the line box from which the image originates. As you can
+    see in [Figure 10-9](#keeping_floats_level_fig), this keeps images from floating
+    too far upward.
+  id: totrans-54
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 类似于规则4和规则5，此规则进一步限制元素的向上浮动，防止其位于包含先前内容的行框顶部之上。假设在段落中间有一张浮动的图片，那么该图片顶部可以放置的最高位置是其所在行框的顶部。正如您在[图 10-9](#keeping_floats_level_fig)中所见，这样可以防止图片向上浮动过高。
+- en: '![css5 1009](assets/css5_1009.png)'
+  id: totrans-55
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![css5 1009](assets/css5_1009.png)'
+- en: Figure 10-9\. Keeping floats level with their context
+  id: totrans-56
+  prefs:
+  - PREF_IND
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-9\. 保持浮动元素与其上下文的水平
+- en: A left-floating element that has another floating element to its left may not
+    have its right outer edge to the right of its containing block’s right edge. Similarly,
+    a right-floating element that has another floating element to its right may not
+    have its right outer edge to the left of its containing block’s left edge.
+  id: totrans-57
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果左浮动元素左侧有另一个浮动元素，则其右外边缘不得位于其包含块的右边缘的右侧。同样，如果右浮动元素右侧有另一个浮动元素，则其右外边缘不得位于其包含块的左边缘的左侧。
+- en: In other words, a floating element cannot stick out beyond the edge of its containing
+    element, unless it’s too wide to fit on its own. This prevents a succeeding number
+    of floated elements from appearing in a horizontal line and far exceeding the
+    edges of the containing block. Instead, a float that would otherwise stick out
+    of its containing block by appearing next to another one will be floated down
+    to a point below any previous floats, as illustrated by [Figure 10-10](#if_theres_no_room_fig)
+    (in the figure, the floats start on the next line in order to more clearly illustrate
+    the principle at work here).
+  id: totrans-58
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 换句话说，浮动元素不能超出其包含元素的边缘，除非它太宽而无法自行容纳。这可以防止连续的浮动元素出现在水平行中并远超过包含块的边缘。相反，一个浮动元素如果会突出其包含块的边缘，例如[图 10-10](#if_theres_no_room_fig)（在图中，浮动元素从下一行开始以更清晰地展示其工作原理）。
+- en: '![css5 1010](assets/css5_1010.png)'
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![css5 1010](assets/css5_1010.png)'
+- en: Figure 10-10\. If there isn’t room, floats get pushed to a new “line”
+  id: totrans-60
+  prefs:
+  - PREF_IND
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-10\. 如果没有足够的空间，浮动元素将被推到新的“行”上。
+- en: A floating element must be placed as high as possible.
+  id: totrans-61
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 浮动元素必须尽可能高地放置。
+- en: Rule 8 is, as you might expect, subject to the restrictions introduced by the
+    previous seven rules. Historically, browsers aligned the top of a floated element
+    with the top of the line box after the one in which the image’s tag appears. Rule
+    8, however, implies that its top should be even with the top of the same line
+    box as that in which its tag appears, assuming there is enough room. [Figure 10-11](#given_the_other_constraints_fig)
+    shows the theoretically correct behaviors.
+  id: totrans-62
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 第 8 条规则如您所料，受前七条规则的限制。在历史上，浏览器将浮动元素的顶部与出现图像标签的行框顶部对齐。然而，第 8 条规则意味着其顶部应与其标签所在的同一行框的顶部对齐，假设有足够的空间。[图 10-11](#given_the_other_constraints_fig)
+    展示了理论上的正确行为。
+- en: '![css5 1011](assets/css5_1011.png)'
+  id: totrans-63
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![css5 1011](assets/css5_1011.png)'
+- en: Figure 10-11\. Given the other constraints, go as high as possible
+  id: totrans-64
+  prefs:
+  - PREF_IND
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-11\. 在其他限制条件的基础上，尽可能高地去
+- en: A left-floating element must be put as far to the left as possible, and a right-floating
+    element as far to the right as possible. A higher position is preferred to one
+    that is farther to the right or left.
+  id: totrans-65
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 左浮动元素必须尽可能靠左放置，右浮动元素尽可能靠右。更高的位置优先于右侧或左侧更远的位置。
+- en: Again, this rule is subject to restrictions introduced in the preceding rules.
+    As you can see in [Figure 10-12](#get_as_far_to_the_left_fig), it is pretty easy
+    to tell when an element has gone as far as possible to the right or left.
+  id: totrans-66
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 同样，这条规则受前面规则的限制。正如您在[图 10-12](#get_as_far_to_the_left_fig) 中所看到的，很容易判断一个元素何时已尽可能向右或左移动。
+- en: '![css5 1012](assets/css5_1012.png)'
+  id: totrans-67
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![css5 1012](assets/css5_1012.png)'
+- en: Figure 10-12\. Get as far to the left (or right) as possible
+  id: totrans-68
+  prefs:
+  - PREF_IND
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-12\. 尽量靠左（或右）
+- en: Applied Behavior
+  id: totrans-69
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 应用行为
+- en: Several interesting consequences fall out of the rules we’ve just seen, both
+    because of what they say and what they don’t say. The first topic to discuss is
+    what happens when the floated element is taller than its parent element.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们刚刚看到的规则产生了一些有趣的后果，因为它们说了什么，也因为它们没有说的。首先讨论的话题是当浮动元素比其父元素更高时会发生什么。
+- en: This happens quite often, as a matter of fact. Take the example of a short document,
+    composed of no more than a few paragraphs and `<h3>` elements, where the first
+    paragraph contains a floated image. Further, this floated image has a margin of
+    5 pixels (`5px`). You would expect the document to be rendered as shown in [Figure 10-13](#expected_floating_fig).
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际上，这种情况经常发生。例如，考虑一个由几个段落和 `<h3>` 元素组成的短文档，其中第一个段落包含一个浮动图像。此浮动图像的边距为 5 像素（`5px`）。您期望文档呈现如[图 10-13](#expected_floating_fig)
+    所示。
+- en: '![image](assets/css5_1013.png)'
+  id: totrans-72
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1013.png)'
+- en: Figure 10-13\. Expected floating behavior
+  id: totrans-73
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-13\. 预期的浮动行为
+- en: Nothing there is unusual, but [Figure 10-14](#backgrounds_and_floated_elements)
+    shows what happens when you set the first paragraph to have a background.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 没有什么异常，但[图 10-14](#backgrounds_and_floated_elements) 展示了当您将第一段设置为具有背景时会发生什么。
+- en: Nothing is different about the second example, except for the visible background.
+    As you can see, the floated image sticks out of the bottom of its parent element.
+    It also did so in the first example, but it was less obvious there because you
+    couldn’t see the background. The floating rules we discussed earlier address only
+    the left, right, and top edges of floats and their parents. The deliberate omission
+    of bottom edges requires the behavior in [Figure 10-14](#backgrounds_and_floated_elements).
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二个示例与第一个示例没有任何不同，只是可见背景不同。如您所见，浮动图像伸出其父元素的底部。在第一个示例中也是如此，但那里不太明显，因为您看不到背景。我们之前讨论的浮动规则仅涉及浮动元素及其父元素的左、右和顶部边缘。有意忽略底部边缘需要在[图 10-14](#backgrounds_and_floated_elements)中看到的行为。
+- en: '![image](assets/css5_1014.png)'
+  id: totrans-76
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1014.png)'
+- en: Figure 10-14\. Backgrounds and floated elements
+  id: totrans-77
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-14\. 背景和浮动元素
+- en: 'CSS clarified this: one important aspect of floated-element behavior is that
+    a floated element will expand to contain any floated descendants. Thus, you could
+    contain a float within its parent element by floating the parent, as in this example:'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 对此进行了澄清：浮动元素行为的一个重要方面是，浮动元素将扩展以包含任何浮动后代。因此，您可以通过浮动父元素来包含其父元素中的浮动元素，就像这个例子中一样：
+- en: '[PRE4]'
+  id: totrans-79
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: On a related note, consider backgrounds and their relationship to floated elements
+    that occur earlier in the document, which is illustrated in [Figure 10-15](#element_backgrounds_fig_).
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与此相关的是，考虑背景及其与文档中较早出现的浮动元素的关系，在[图 10-15](#element_backgrounds_fig_)中有所说明。
+- en: Because the floated element is both within and outside of the flow, this sort
+    of thing is bound to happen. What’s going on? The content of the heading is being
+    “displaced” by the floated element. However, the heading’s element width is still
+    as wide as its parent element. Therefore, its content area spans the width of
+    the parent, and so does the background. The actual content doesn’t flow all the
+    way across its own content area so that it can avoid being obscured behind the
+    floating element.
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为浮动元素既在流中又在流外，所以这种情况肯定会发生。到底发生了什么？标题的内容被浮动元素“移位”了。但是，标题的元素宽度仍然与其父元素一样宽。因此，其内容区域跨越父元素的宽度，背景也是如此。实际内容并不一直流过其自己的内容区域，以避免被浮动元素遮挡。
+- en: '![image](assets/css5_1015.png)'
+  id: totrans-82
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1015.png)'
+- en: Figure 10-15\. Element backgrounds “slide under” floated elements
+  id: totrans-83
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-15\. 元素背景“滑动”到浮动元素下
+- en: Negative margins
+  id: totrans-84
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 负边距
+- en: Interestingly, negative margins can cause floated elements to move outside of
+    their parent elements. This seems to be in direct contradiction to the rules explained
+    earlier, but it isn’t. In the same way that elements can appear to be wider than
+    their parents through negative margins, floated elements can appear to protrude
+    out of their parents.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有趣的是，负边距可以导致浮动元素移动到其父元素之外。这似乎与前面解释的规则直接矛盾，但事实并非如此。通过负边距，元素可以看起来比其父元素更宽，浮动元素也可以看起来伸出其父元素之外。
+- en: Let’s consider an image that is floated to the left, and that has left and top
+    margins of `-15px`. This image is placed inside a `<div>` that has no padding,
+    borders, or margins. [Figure 10-16](#floating_with_negative_fig) shows the result.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们考虑一个图像，该图像向左浮动，并且左侧和顶部边距为`-15px`。此图像放置在一个没有填充、边框或边距的`<div>`中。[图 10-16](#floating_with_negative_fig)显示了结果。
+- en: '![image](assets/css5_1016.png)'
+  id: totrans-87
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1016.png)'
+- en: Figure 10-16\. Floating with negative margins
+  id: totrans-88
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图    图 10-16\. 负边距的浮动
+- en: Contrary to appearances, this does not violate the restrictions on floated elements
+    being placed outside their parent elements.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与表面看上去的相反，这并不违反浮动元素被放置在其父元素之外的限制。
+- en: 'Here’s the technicality that permits this behavior: a close reading of the
+    rules in the previous section will show that the outer edges of a floating element
+    must be within the element’s parent. However, negative margins can place the floated
+    element’s content such that it effectively overlaps its own outer edge, as detailed
+    in [Figure 10-17](#the_details_of_floating_fig).'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 允许这种行为的技术细节在这里：仔细阅读前一节中的规则将表明，浮动元素的外边缘必须位于元素的父元素内。但是，负边距可以将浮动元素的内容放置在其自身的外边缘之外，详见[图 10-17](#the_details_of_floating_fig)。
+- en: '![image](assets/css5_1017.png)'
+  id: totrans-91
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1017.png)'
+- en: Figure 10-17\. The details of floating up and left with negative margins
+  id: totrans-92
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-17\. 使用负边距向上和向左浮动的详细信息
+- en: 'One important question arises: what happens to the document display when an
+    element is floated out of its parent element by using negative margins? For example,
+    an image could be floated so far up that it intrudes into a paragraph that has
+    already been displayed by the user agent. In such a case, it’s up to the user
+    agent to decide whether the document should be reflowed.'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个重要的问题是：当元素通过使用负边距从其父元素浮动出来时，文档显示会发生什么？例如，一个图像可能被浮动得如此之远，以至于它侵入了用户代理已经显示的段落中。在这种情况下，由用户代理决定是否应重新排列文档。
+- en: The CSS specification explicitly states that user agents are not required to
+    reflow previous content to accommodate things that happen later in the document.
+    In other words, if an image is floated up into a previous paragraph, it will probably
+    overwrite whatever was already there. This makes the utility of negative margins
+    on floats somewhat limited. Hanging floats are usually fairly safe, but trying
+    to push an element upward on the page is generally a bad idea.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 规范明确指出，用户代理不需要重新排列先前的内容以适应稍后在文档中发生的事情。换句话说，如果图像被浮动到前面的段落中，它可能会覆盖掉已经存在的任何内容。这使得浮动元素在负边距上的实用性有些受限。挂起的浮动通常是相当安全的，但试图将元素向上推在页面上通常是个坏主意。
+- en: Another way for a floated element to exceed its parent’s inner left and right
+    edges occurs when the floated element is wider than its parent. In that case,
+    the floated element will overflow the right or left inner edge—depending on which
+    way the element is floated—in its best attempt to display itself correctly. This
+    will lead to a result like that shown in [Figure 10-18](#floating_an_element_thats_wider_fig).
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种使浮动元素超出其父元素内部左右边缘的方式是，当浮动元素比其父元素更宽时。在这种情况下，浮动元素会溢出右侧或左侧内边缘——取决于元素的浮动方向——以最佳尝试正确显示自身。这会导致类似于[图 10-18](#floating_an_element_thats_wider_fig)所示的结果。
+- en: '![image](assets/css5_1018.png)'
+  id: totrans-96
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1018.png)'
+- en: Figure 10-18\. Floating an element that is wider than its parent
+  id: totrans-97
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-18\. 浮动元素比其父元素更宽时的布局
+- en: Floats, Content, and Overlapping
+  id: totrans-98
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 浮动、内容和重叠
+- en: 'An interesting question is this: what happens when a float overlaps content
+    in the normal flow? This can happen if, for example, a float has a negative margin
+    on the side where content is flowing past (e.g., a negative left margin on a right-floating
+    element). You’ve already seen what happens to the borders and backgrounds of block-level
+    elements. What about inline elements?'
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个有趣的问题是：当浮动元素与正常流中的内容重叠时会发生什么？例如，如果浮动元素在内容流过的一侧具有负边距（例如，右浮动元素的负左边距），这种情况可能发生。您已经看到块级元素边框和背景的情况了，那么内联元素呢？
+- en: 'The CSS 2.1 specification states the following:'
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 2.1 规范如下所述：
+- en: An inline box that overlaps with a float has its borders, background, and content
+    all rendered “on top” of the float.
+  id: totrans-101
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 与浮动元素重叠的内联框其边框、背景和内容都渲染在浮动元素的“上”。
+- en: A block box that overlaps with a float has its borders and background rendered
+    “behind” the float, whereas its content is rendered “on top” of the float.
+  id: totrans-102
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 与浮动元素重叠的块级盒子其边框和背景渲染在浮动元素“后”，而其内容则渲染在浮动元素“上”。
+- en: 'To illustrate these rules, consider the following situation:'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了说明这些规则，考虑以下情况：
+- en: '[PRE5]'
+  id: totrans-104
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'To that markup, apply the following styles, with the result seen in [Figure 10-19](#layout_behavior_when_overlapping_fig):'
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对该标记应用以下样式，并查看[图 10-19](#layout_behavior_when_overlapping_fig)中的结果：
+- en: '[PRE6]'
+  id: totrans-106
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '![image](assets/css5_1019.png)'
+  id: totrans-107
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1019.png)'
+- en: Figure 10-19\. Layout behavior when overlapping floats
+  id: totrans-108
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-19\. 重叠浮动时的布局行为
+- en: The inline element (`strong`) completely overlaps the floated image—background,
+    border, content, and all. The block elements, on the other hand, have only their
+    content appear on top of the float. Their backgrounds and borders are placed behind
+    the float.
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内联元素（`strong`）完全覆盖了浮动图像——背景、边框、内容等。而块级元素仅其内容出现在浮动元素之上，背景和边框则位于浮动元素之后。
+- en: 'The described overlapping behavior is independent of the document source order.
+    It does not matter if an element comes before or after a float: the same behaviors
+    still apply.'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述的重叠行为与文档源顺序无关。元素是在浮动元素之前还是之后出现都不重要：行为都是一样的。
+- en: Clearing
+  id: totrans-111
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 清除
+- en: We’ve talked quite a bit about floating behavior, so we have only one more subject
+    to discuss before we turn to shapes. You won’t always want your content to flow
+    past a floated element—in some cases, you’ll specifically want to prevent it.
+    If your document is grouped into sections, you might not want the floated elements
+    from one section hanging down into the next.
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经讨论了浮动行为，所以在我们转向形状之前，我们只需再讨论一个主题。您并不总是希望内容流过浮动元素——在某些情况下，您特别希望阻止它。如果您的文档被分组成部分，您可能不希望一个部分的浮动元素悬挂到下一个部分中。
+- en: In that case, you’d want to set the first element of each section to prohibit
+    floating elements from appearing next to it. If the first element might otherwise
+    be placed next to a floated element, it will be pushed down until it appears below
+    the floated image, and all subsequent content will appear after that, as shown
+    in [Figure 10-20](#displaying_an_element_fig).
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，您会希望设置每个部分的第一个元素，以防止浮动元素出现在其旁边。如果第一个元素可能被放置在浮动元素旁边，它将被推到出现在浮动图像下方，并且所有后续内容将在其后显示，如
+    [Figure 10-20](#displaying_an_element_fig) 所示。
+- en: '![image](assets/css5_1020.png)'
+  id: totrans-114
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1020.png)'
+- en: Figure 10-20\. Displaying an element in the clear
+  id: totrans-115
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-20\. 显示一个清除元素
+- en: This is done with `clear`.
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是通过 `clear` 实现的。
+- en: 'For example, to make sure all `<h3>` elements are not placed to the right of
+    left-floating elements, you would declare `h3 {clear: left;}`. This can be translated
+    as “make sure that the left side of an `<h3>` is clear of floating elements and
+    pseudo-elements.” The following rule uses `clear` to prevent `<h3>` elements from
+    flowing past floated elements to the left side:'
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '例如，为了确保所有 `<h3>` 元素不会放置在左浮动元素的右侧，您可以声明 `h3 {clear: left;}`。这可以翻译为“确保 `<h3>`
+    的左侧清除浮动元素和伪元素”。以下规则使用 `clear` 阻止 `<h3>` 元素流过浮动元素到左侧：'
+- en: '[PRE7]'
+  id: totrans-118
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: While this will push the `<h3>` past any left-floating elements, it will allow
+    floated elements to appear on the right side of `<h3>` elements, as shown in [Figure 10-21](#clear_to_the_left_fig).
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然这将把 `<h3>` 推过任何左浮动元素，但它将允许浮动元素出现在 `<h3>` 元素的右侧，如 [Figure 10-21](#clear_to_the_left_fig)
+    所示。
+- en: '![image](assets/css5_1021.png)'
+  id: totrans-120
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1021.png)'
+- en: Figure 10-21\. Clear to the left, but not the right
+  id: totrans-121
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-21\. 向左清除，但不向右清除
+- en: 'To avoid this sort of thing, and to make sure that `<h3>` elements do not coexist
+    on a line with any floated elements, you use the value `both`:'
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了避免这种情况，并确保 `<h3>` 元素不与任何浮动元素在同一行上，您可以使用 `both` 值：
+- en: '[PRE8]'
+  id: totrans-123
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Understandably, this value prevents coexistence with floated elements on both
+    sides of the cleared element, as demonstrated in [Figure 10-22](#clear_on_both_sides_fig).
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 理解这个值可以防止清除元素两侧与浮动元素并存，如示例 [Figure 10-22](#clear_on_both_sides_fig) 所示。
+- en: '![image](assets/css5_1022.png)'
+  id: totrans-125
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1022.png)'
+- en: Figure 10-22\. Clear on both sides
+  id: totrans-126
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-22\. 两侧清除
+- en: 'If, on the other hand, we were worried only about `<h3>` elements being pushed
+    down past floated elements to their right, then we’d use `h3 {clear: right;}`.'
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '另一方面，如果我们只担心 `<h3>` 元素被推到右侧浮动元素的下方，那么我们会使用 `h3 {clear: right;}`。'
+- en: As with `float`, you can give `clear` the values `inline-start` (and `both`)
+    or `inline-end`. If you’re floating with those values, clearing with them makes
+    sense. If you’re floating using `left` and `right`, using those values for `clear`
+    is sensible.
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 `float` 类似，您可以为 `clear` 属性指定 `inline-start`（以及 `both`）或 `inline-end` 值。如果您使用这些值进行浮动，使用它们来清除是合理的。如果您使用
+    `left` 和 `right` 进行浮动，则使用这些值进行清除也是合理的。
+- en: 'Finally, `clear: none` allows elements to float to either side of an element.
+    As with `float: none`, this value mostly exists to allow for normal document behavior,
+    in which elements will permit floated elements to both sides. The `none` value
+    can be used to override other styles, as shown in [Figure 10-23](#not_clear_at_all_fig).
+    Despite the document-wide rule that `<h3>` elements will not permit floated elements
+    to either side, one `<h3>` in particular has been set so that it does permit floated
+    elements on either side:'
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '最后，`clear: none` 允许元素浮动到元素的任一侧。与 `float: none` 类似，该值主要存在于允许正常文档行为的情况下，其中元素将允许浮动元素出现在两侧。`none`
+    值可用于覆盖其他样式，如 [Figure 10-23](#not_clear_at_all_fig) 所示。尽管整个文档规定 `<h3>` 元素不允许浮动元素在任一侧出现，但特定的
+    `<h3>` 已设置为允许它在两侧出现：'
+- en: '[PRE9]'
+  id: totrans-130
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '![image](assets/css5_1023.png)'
+  id: totrans-131
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1023.png)'
+- en: Figure 10-23\. Not clear at all
+  id: totrans-132
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-23\. 一点都不清楚
+- en: 'The `clear` property works by way of *clearance*—extra spacing added above
+    an element’s top margin in order to push it past any floated elements. This means
+    that the top margin of a cleared element does not change when an element is cleared.
+    Its downward movement is caused by the clearance instead. Pay close attention
+    to the placement of the heading’s border in [Figure 10-24](#clearing_and_its_effect_fig),
+    which results from the following:'
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`clear`属性通过*清除*的方式工作——在元素的顶部边距上方添加额外的间距，以将其推到任何浮动元素的上方。这意味着清除元素的顶部边距在清除元素时不会改变。它的向下移动是由清除引起的。请特别注意[图10-24](#clearing_and_its_effect_fig)中标题边框的位置，这是由以下原因引起的：'
+- en: '[PRE10]'
+  id: totrans-134
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '![image](assets/css5_1024.png)'
+  id: totrans-135
+  prefs: []
+  type: TYPE_IMG
+  zh: '![   ![图片](assets/css5_1024.png)'
+- en: Figure 10-24\. Clearing and its effect on margins
+  id: totrans-136
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-24\. 清除及其对边距的影响
+- en: There is no separation between the top border of the `<h3>` and the bottom border
+    of the floated image because 25 pixels of clearance was added above the 15-pixel
+    top margin in order to push the `<h3>`’s top border edge just past the bottom
+    edge of the float. This occurs unless the `<h3>`’s top margin calculates to 40
+    pixels or more, in which case the `<h3>` will naturally place itself below the
+    float, and the `clear` value will be irrelevant.
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<h3>`的顶部边框与浮动图像的底部边框之间没有间隔，因为在上面增加了`25像素`的间隙，以便将`<h3>`的顶部边框边缘推到浮动边缘的底部边缘之后。除非`<h3>`的顶部边距计算为`40像素`或更多，否则会发生这种情况，此时`<h3>`将自然而然地放置在浮动下方，而`clear`值将无关紧要。'
+- en: 'In most cases, you can’t know how far an element needs to be cleared. The way
+    to make sure a cleared element has some space between its top and the bottom of
+    a float is to put a bottom margin on the float itself. Therefore, if you want
+    at least 15 pixels of space below the float in the previous example, you would
+    change the CSS like this:'
+  id: totrans-138
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在大多数情况下，您无法知道元素需要清除多远。确保清除元素的顶部和浮动底部之间有一些空间的方法是在浮动本身上放置底部边距。因此，如果您希望在前面示例中的浮动下方至少有`15像素`的空间，则会更改CSS如下：
+- en: '[PRE11]'
+  id: totrans-139
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: The floated element’s bottom margin increases the size of the float box, and
+    thus the point past which cleared elements must be pushed. This is because, as
+    you’ve seen before, the margin edges of a floated element define the edges of
+    the floated box.
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 浮动元素的底部边距增加了浮动框的大小，因此清除元素必须被推动到的点。这是因为，正如以前所见，浮动元素的边距边缘定义了浮动框的边缘。
+- en: Positioning
+  id: totrans-141
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 定位
+- en: The idea behind positioning is fairly simple. It allows you to define exactly
+    where element boxes will appear relative to where they would ordinarily be—or
+    position them in relation to a parent element, another element, or even to the
+    viewport (e.g., the browser window) itself.
+  id: totrans-142
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定位背后的想法非常简单。它允许您精确地定义元素框相对于其原本应该出现的位置的位置，或者将其定位相对于父元素、另一个元素，甚至是视口（例如，浏览器窗口）本身。
+- en: Before we delve into the various kinds of positioning, it’s a good idea to look
+    at what types exist and how they differ.
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在深入研究各种类型的定位之前，先看看存在哪些类型以及它们的区别是一个好主意。
+- en: Types of Positioning
+  id: totrans-144
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定位类型
+- en: You can choose one of five types of positioning, which affect how the element’s
+    box is generated, by using the `position` property.
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过使用`position`属性选择五种定位类型之一，这会影响元素框的生成方式。
+- en: 'The values of `position` have the following meanings:'
+  id: totrans-146
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`position`的值具有以下含义：'
+- en: '`static`'
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`static`'
+- en: The element’s box is generated as normal. Block-level elements generate a rectangular
+    box that is part of the document’s flow, and inline-level boxes cause the creation
+    of one or more line boxes that are flowed within their parent element.
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素的框像往常一样生成。块级元素生成一个矩形框，该矩形框是文档流的一部分，而内联级别的框会导致在其父元素内流动一个或多个线框的创建。
+- en: '`relative`'
+  id: totrans-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`relative`'
+- en: The element’s box is offset by a certain distance; `0px` by default. The element
+    retains the shape it would have had were it not positioned, and the space that
+    the element would ordinarily have occupied is preserved.
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素的框被偏移了一定的距离；默认为`0px`。元素保留了其如果未定位时将具有的形状，并且保留了元素本来会占用的空间。
+- en: '`absolute`'
+  id: totrans-151
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`absolute`'
+- en: The element’s box is completely removed from the flow of the document and positioned
+    relative to its closest positioned ancestor, if any, or its containing block,
+    which may be another element in the document or the initial containing block (described
+    in the next section). Whatever space the element might have occupied in the normal
+    document flow is closed up, as though the element did not exist. The positioned
+    element generates a block-level box, regardless of the type of box it would have
+    generated if it were in the normal flow.
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素的框完全从文档流中移除，并相对于其最近的定位祖先（如果有）或其包含块定位，这可能是文档中的另一个元素或初始包含块（在下一节中描述）。元素在正常文档流中可能占用的任何空间都被关闭，就好像元素不存在一样。定位元素生成块级框，而不管如果它在正常流中生成的框的类型。
+- en: '`fixed`'
+  id: totrans-153
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`fixed`'
+- en: The element’s box behaves as though it was set to `absolute`, but its containing
+    block is the viewport itself.
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素的框表现得像被设为`absolute`一样，但其包含块是视口本身。
+- en: '`sticky`'
+  id: totrans-155
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`sticky`'
+- en: The element is left in the normal flow, until the conditions that trigger its
+    stickiness come to pass, at which point it is removed from the normal flow but
+    its original space in the normal flow is preserved. It will then act as if absolutely
+    positioned with respect to its containing block. Once the conditions to enforce
+    stickiness are no longer met, the element is returned to the normal flow in its
+    original space.
+  id: totrans-156
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素保持在正常流中，直到触发其粘性的条件满足为止，此时它将从正常流中移除，但其在正常流中的原始空间保留。然后它将像相对于其包含块绝对定位一样行事。一旦不再满足执行粘性的条件，元素将返回到其原始空间的正常流中。
+- en: Don’t worry so much about the details right now, as we’ll look at each of these
+    kinds of positioning later. Before we do that, we need to discuss containing blocks.
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在不必过多担心细节，因为我们稍后将分别讨论这些种类的定位。在这之前，我们需要讨论包含块。
+- en: The Containing Block
+  id: totrans-158
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 包含块
+- en: In general terms, a *containing block* is the box that contains another element,
+    as we said earlier in the chapter. As an example, in the normal-flow case, the
+    root element (`<html>` in HTML) is the containing block for the `<body>` element,
+    which is in turn the containing block for all its children, and so on. When it
+    comes to positioning, the containing block depends entirely on the type of positioning.
+  id: totrans-159
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，*包含块* 是包含另一个元素的框，正如我们在本章前面所说的那样。例如，在正常流的情况下，根元素（HTML中的`<html>`）是`<body>`元素的包含块，后者依次是其所有子元素的包含块，依此类推。在定位时，包含块完全取决于定位的类型。
+- en: For a nonroot element whose `position` value is `relative` or `static`, its
+    containing block is formed by the content edge of the nearest block-level, table-cell,
+    or inline-block ancestor box.
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于`position`值为`relative`或`static`的非根元素，其包含块由最近的块级、表格单元格或内联块级祖先框的内容边缘形成。
+- en: 'For a nonroot element that has a `position` value of `absolute`, its containing
+    block is set to the nearest ancestor (of any kind) that has a `position` value
+    other than `static`. This happens as follows:'
+  id: totrans-161
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于具有`position`值为`absolute`的非根元素，其包含块被设定为最近的祖先（无论何种类型），其`position`值不是`static`。步骤如下：
+- en: If the ancestor is block-level, the containing block is set to be that element’s
+    padding edge; in other words, the area that would be bounded by a border.
+  id: totrans-162
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果祖先是块级别的，则包含块被设定为该元素的填充边缘；换句话说，即边框将被包围的区域。
+- en: If the ancestor is inline-level, the containing block is set to the content
+    edge of the ancestor. In left-to-right languages, the top and left of the containing
+    block are the top and left content edges of the first box in the ancestor, and
+    the bottom and right edges are the bottom and right content edges of the last
+    box. In right-to-left languages, the right edge of the containing block corresponds
+    to the right content edge of the first box, and the left is taken from the last
+    box. The top and bottom are the same.
+  id: totrans-163
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果祖先元素是内联级别的，包含块被设定为祖先元素的内容边缘。在从左到右的语言中，包含块的顶部和左侧是祖先元素中第一个框的顶部和左侧内容边缘，底部和右侧边缘是最后一个框的底部和右侧内容边缘。在从右到左的语言中，包含块的右边缘对应于第一个框的右内容边缘，左边缘取自最后一个框。顶部和底部保持不变。
+- en: If there are no ancestors, the element’s containing block is defined to be the
+    initial containing block.
+  id: totrans-164
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果没有祖先，则元素的包含块被定义为初始包含块。
+- en: There’s an interesting variant to the containing-block rules when it comes to
+    sticky-positioned elements, which is that a rectangle is defined in relation to
+    the containing block called the *sticky-constraint rectangle*. This rectangle
+    has everything to do with how sticky positioning works, and will be explained
+    in full in [“Sticky Positioning”](#sticky-positioning).
+  id: totrans-165
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在处理粘性定位元素的包含块规则时，有一个有趣的变体，即矩形与包含块相关联的规则称为*粘性约束矩形*。这个矩形与粘性定位的工作原理有密切关系，并将在[“粘性定位”](#sticky-positioning)中详细解释。
+- en: 'An important point: elements can be positioned outside of their containing
+    block. This suggests that the term “containing block” should really be “positioning
+    context,” but since the specification uses “containing block,” so will we.'
+  id: totrans-166
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个重要的观点：元素可以定位到其包含块之外。这表明术语“包含块”实际上应该是“定位上下文”，但由于规范使用“包含块”，因此我们也将使用它。
+- en: Offset Properties
+  id: totrans-167
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 偏移属性
+- en: Four of the positioning schemes described in the previous section—relative,
+    absolute, sticky, and fixed—use distinct properties to describe the offset of
+    a positioned element’s sides with respect to its containing block. These properties,
+    which are referred to as the *offset properties*, are a big part of what makes
+    positioning work. There are four physical offset properties and four logical offset
+    properties.
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前一节描述的四种定位方案中——相对定位、绝对定位、粘性定位和固定定位——使用不同的属性描述了定位元素边缘相对于其包含块的偏移量。这些属性被称为*偏移属性*，是定位工作的重要组成部分。有四个物理偏移属性和四个逻辑偏移属性。
+- en: These properties describe an offset from the nearest side of the containing
+    block (thus the term *offset properties*). The simplest way to look at it is that
+    positive values cause inward offsets, moving the edges toward the center of the
+    containing block, and negative values cause outward offsets.
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些属性描述了相对于包含块最近边缘的偏移量（因此称为*偏移属性*）。最简单的理解方法是，正值会造成内部偏移，将边缘移向包含块的中心，而负值则会造成外部偏移。
+- en: For example, `top` describes how far the top margin edge of the positioned element
+    should be placed from the top of its containing block. In the case of `top`, positive
+    values move the top margin edge of the positioned element *downward*, while negative
+    values move it *above* the top of its containing block. Similarly, `left` describes
+    how far to the right (for positive values) or left (for negative values) the left
+    margin edge of the positioned element is from the left edge of the containing
+    block. Positive values will shift the margin edge of the positioned element to
+    the right, and negative values will move it to the left.
+  id: totrans-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，`top`描述了定位元素的顶部边缘应距其包含块顶部的距离。在`top`的情况下，正值将使定位元素的顶部边缘*向下*移动，而负值将使其*位于*包含块顶部之上。类似地，`left`描述了定位元素的左边缘相对于包含块左边缘的偏移量。正值将使定位元素的边缘向右移动，而负值将使其向左移动。
+- en: The implication of offsetting the margin edges is that it’s possible to set
+    margins, borders, and padding for a positioned element; these will be preserved
+    and kept with the positioned element, and they will be contained within the area
+    defined by the offset properties.
+  id: totrans-171
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 偏移边距边缘的含义在于，可以为定位元素设置边距、边框和填充；这些将被保留并与定位元素一起保持，并且将包含在偏移属性定义的区域内。
+- en: 'It is important to remember that the offset properties define an offset from
+    the analogous side (e.g., `inset-block-end` defines the offset from the block-end
+    side) of the containing block, not from the upper-left corner of the containing
+    block. This is why, for example, one way to fill up the lower-right corner of
+    a containing block is to use these values:'
+  id: totrans-172
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重要的一点是，偏移属性定义的是相对于包含块的类似边缘的偏移量（例如，`inset-block-end`定义了相对于块结束边缘的偏移量），而不是相对于包含块的左上角。这就是为什么，例如，填满包含块的右下角的一种方法是使用这些值的原因：
+- en: '[PRE12]'
+  id: totrans-173
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'In this example, the outer-left edge of the positioned element is placed halfway
+    across the containing block. This is its offset from the left edge of the containing
+    block. The outer-right edge of the positioned element, on the other hand, is not
+    offset from the right edge of the containing block, so the two are coincident.
+    Similar reasoning holds true for the top and bottom of the positioned element:
+    the outer-top edge is placed halfway down the containing block, but the outer-bottom
+    edge is not moved up from the bottom. This leads to what’s shown in [Figure 10-25](#filling_lower-right-quarter).'
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，定位元素的外左边缘位于包含块的一半处。这是它相对于包含块左边缘的偏移量。另一方面，定位元素的外右边缘没有偏移出包含块的右边缘，因此它们重合。对于定位元素的顶部和底部，类似的推理也成立：外顶边缘位于包含块的中间，但外底边缘并未从底部移动上来。这导致了
+    [图 10-25](#filling_lower-right-quarter) 中所示的结果。
+- en: '![css5 1025](assets/css5_1025.png)'
+  id: totrans-175
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1025](assets/css5_1025.png)'
+- en: Figure 10-25\. Filling the lower-right quarter of the containing block
+  id: totrans-176
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-25\. 填充包含块的右下角
+- en: Note
+  id: totrans-177
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: What’s depicted in [Figure 10-25](#filling_lower-right-quarter), and in most
+    of the examples in this chapter, is based around absolute positioning. Since absolute
+    positioning is the simplest scheme in which to demonstrate how the offset properties
+    work, we’ll stick to that for now.
+  id: totrans-178
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 10-25](#filling_lower-right-quarter) 中所示的内容，以及本章大多数示例，都基于绝对定位。由于绝对定位是演示偏移属性如何工作的最简单方案，因此我们暂时保持这种方式。'
+- en: Note the background area of the positioned element. In [Figure 10-25](#filling_lower-right-quarter),
+    it has no margins, but if it did, they would create blank space between the borders
+    and the offset edges. This would make the positioned element appear as though
+    it did not completely fill the lower-right quarter of the containing block. In
+    truth, it *would* fill the area, because margins count as part of the area of
+    a positioned element, but this fact wouldn’t be immediately apparent to the eye.
+  id: totrans-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意定位元素的背景区域。在 [图 10-25](#filling_lower-right-quarter) 中，它没有边距，但如果有的话，它们会在边框和偏移边缘之间创建空白空间。这会使得定位元素看起来好像没有完全填满包含块的右下角。事实上，它确实填充了这个区域，因为边距被视为定位元素区域的一部分，但这个事实可能不会立即显而易见。
+- en: 'Thus, the following two sets of styles would have approximately the same visual
+    appearance, assuming that the containing block is `100em` high by `100em` wide:'
+  id: totrans-180
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，假设包含块的高度为 `100em`，宽度也为 `100em`，那么以下两组样式大致会产生相同的视觉效果：
+- en: '[PRE13]'
+  id: totrans-181
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: 'By using negative offset values, we can position an element outside its containing
+    block. For example, the following values will lead to the result shown in [Figure 10-26](#positioning_outside_block):'
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过使用负的偏移值，我们可以将元素定位到其包含块之外。例如，以下数值将导致 [图 10-26](#positioning_outside_block)
+    所示的结果：
+- en: '[PRE14]'
+  id: totrans-183
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: '![css5 1026](assets/css5_1026.png)'
+  id: totrans-184
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1026](assets/css5_1026.png)'
+- en: Figure 10-26\. Positioning an element outside its containing block
+  id: totrans-185
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-26\. 定位元素超出其包含块
+- en: In addition to length and percentage values, the offset properties can be set
+    to `auto`, which is the default value. There is no single behavior for `auto`;
+    it changes based on the type of positioning used. We’ll explore how `auto` works
+    later, as we consider each of the positioning types in turn.
+  id: totrans-186
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了长度和百分比值外，偏移属性还可以设置为 `auto`，这是默认值。`auto` 没有单一的行为；它会根据所使用的定位类型而改变。我们稍后将探讨 `auto`
+    的工作方式，逐个考虑每种定位类型。
+- en: Inset Shorthands
+  id: totrans-187
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内嵌简写
+- en: 'In addition to the logical inset properties mentioned in the previous section,
+    CSS has a few inset shorthand properties: two logical and one physical.'
+  id: totrans-188
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了前面提到的逻辑内嵌属性外，CSS 还有几个内嵌的简写属性：两个逻辑的和一个物理的。
+- en: 'For both properties, you can supply one or two values. If you supply one, the
+    same value is used for both sides; that is, `inset-block: 10px` will use 10 pixels
+    of inset for both the block-start and block-end edges.'
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '对于这两个属性，可以提供一个或两个值。如果提供一个值，则两侧使用相同的值；也就是说，`inset-block: 10px` 将在块起始边缘和块结束边缘都使用
+    10 像素的内嵌。'
+- en: 'If you supply two values, the first is used for the start edge, and the second
+    for the end edge. Thus, `inset-inline: 1em 2em` will use 1 em of inset for the
+    inline start edge, and 2 ems of inset for the inline end edge.'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果提供两个值，第一个值用于起始边缘，第二个值用于结束边缘。因此，`inset-inline: 1em 2em` 将在行内起始边缘使用 1 个 em
+    的内嵌，而在行内结束边缘使用 2 个 em 的内嵌。'
+- en: 'It’s usually a lot easier to use these two shorthands for logical insets, since
+    you can always supply `auto` when you don’t want to set a specific offset—for
+    example, `inset-block: 25% auto`.'
+  id: totrans-191
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '使用逻辑偏移的这两个简写通常更容易，因为当你不想设置特定偏移时，可以始终提供`auto`，例如`inset-block: 25% auto`。'
+- en: The shorthand for all four edges in one property is called `inset`, but it’s
+    a physical property—it’s shorthand for `top`, `bottom`, `left`, and `right`.
+  id: totrans-192
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有四个边缘的简写属性称为`inset`，但它是一个物理属性——它是`top`、`bottom`、`left`和`right`的简写。
+- en: 'Yes, it looks like this should be shorthand for the logical properties, but
+    it isn’t. The following two rules have the same result:'
+  id: totrans-193
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是的，看起来这应该是逻辑属性的简写，但它并不是。以下两个规则具有相同的结果：
+- en: '[PRE15]'
+  id: totrans-194
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: 'As with other physical shorthands such as those seen in [Chapter 7](ch07.html#padding-borders-outlines-and-margins),
+    the values are in the order TRBL (top, right, bottom, left), and an omitted value
+    is copied from the opposite side. Thus, `inset: 20px 2em` is the same as writing
+    `inset: 20px 2em 20px 2em`.'
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '与其他物理简写属性一样（如在[第7章](ch07.html#padding-borders-outlines-and-margins)中所见），值的顺序为TRBL（顶部、右侧、底部、左侧），省略的值将从相反的一侧复制。因此，`inset:
+    20px 2em`与编写`inset: 20px 2em 20px 2em`相同。'
+- en: Setting Width and Height
+  id: totrans-196
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置宽度和高度
+- en: After determining where you’re going to position an element, you will often
+    want to declare how wide and how high that element should be. In addition, you’ll
+    likely want to limit how high or wide a positioned element gets.
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 确定了元素的位置后，通常会希望声明该元素的宽度和高度。此外，你可能还希望限制定位元素的高度或宽度。
+- en: If you want to give your positioned element a specific width, the property to
+    turn to is `width`. Similarly, `height` will let you declare a specific height
+    for a positioned element.
+  id: totrans-198
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想为你的定位元素指定宽度，可以使用`width`属性。类似地，`height`将允许你为定位元素声明特定的高度。
+- en: 'Although it is sometimes important to set the `width` and `height` of a positioned
+    element, it is not always necessary. For example, if the placement of the four
+    sides of the element is described using `top`, `right`, `bottom`, and `left` (or
+    with `inset-block-start`, `inset-inline-start`, etc.), then the `height` and `width`
+    of the element are implicitly determined by the offsets. Assume that we want an
+    absolutely positioned element to fill the left half of its containing block, from
+    top to bottom. We could use these values, with the result depicted in [Figure 10-27](#positioning_offset_only):'
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管有时设置定位元素的`width`和`height`很重要，但并不总是必要。例如，如果使用`top`、`right`、`bottom`和`left`（或`inset-block-start`、`inset-inline-start`等）描述了元素的四个边的放置方式，那么元素的`height`和`width`就会隐式地由偏移量决定。假设我们希望一个绝对定位的元素填充其包含块的左半部分，从顶部到底部。我们可以使用以下数值，其结果显示在[图 10-27](#positioning_offset_only)中：
+- en: '[PRE16]'
+  id: totrans-200
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: '![css5 1027](assets/css5_1027.png)'
+  id: totrans-201
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1027](assets/css5_1027.png)'
+- en: Figure 10-27\. Positioning and sizing an element by using only the offset properties
+  id: totrans-202
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-27\. 仅使用偏移属性来定位和调整元素的大小
+- en: 'Since the default value of both `width` and `height` is `auto`, the result
+    shown in [Figure 10-27](#positioning_offset_only) is exactly the same as if we
+    had used these values:'
+  id: totrans-203
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于`width`和`height`的默认值均为`auto`，因此显示在[图 10-27](#positioning_offset_only)中的结果与我们使用以下数值完全相同：
+- en: '[PRE17]'
+  id: totrans-204
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: The presence of `width` and `height` in this specific example adds nothing to
+    the layout of the element.
+  id: totrans-205
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个特定示例中，`width`和`height`的存在对元素的布局没有任何影响。
+- en: 'If we were to add padding, a border, or a margin to the element, the presence
+    of explicit values for `height` and `width` could very well make a difference:'
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们要为元素添加填充、边框或外边距，则明确设置`height`和`width`的值可能会产生影响：
+- en: '[PRE18]'
+  id: totrans-207
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: This will give us a positioned element that extends out of its containing block,
+    as shown in [Figure 10-28](#positioning_partially_outside_block).
+  id: totrans-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将使我们得到一个定位元素，其超出其包含块，如[图 10-28](#positioning_partially_outside_block)所示。
+- en: '![css5 1028](assets/css5_1028.png)'
+  id: totrans-209
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1028](assets/css5_1028.png)'
+- en: Figure 10-28\. Positioning an element partially outside its containing block
+  id: totrans-210
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-28\. 部分超出其包含块的元素定位
+- en: This happens because (by default) the padding is added to the content area,
+    and the content area’s size is determined by the values of `height` and `width`.
+    To get the padding we want and still have the element fit inside its containing
+    block, we would either remove the `height` and `width` declarations, explicitly
+    set them both to `auto`, or set `box-sizing` to `border-box`.
+  id: totrans-211
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是因为（默认情况下）填充被添加到内容区域，而内容区域的大小由`height`和`width`的值确定。为了获得所需的填充并确保元素适合其包含块内，我们可以删除`height`和`width`声明，显式将它们都设置为`auto`，或将`box-sizing`设置为`border-box`。
+- en: Limiting Width and Height
+  id: totrans-212
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 限制宽度和高度
+- en: Should it become necessary or desirable, you can place limits on an element’s
+    width by using the following properties, which we’ll refer to as the *min-max
+    properties*. An element’s content area can be defined to have minimum dimensions
+    by using `min-width` and `min-height`.
+  id: totrans-213
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果有必要或者希望，可以通过以下属性对元素的宽度设置限制，我们称之为*最小-最大属性*。可以通过使用`min-width`和`min-height`来定义元素的内容区域具有最小尺寸。
+- en: Similarly, an element’s dimensions can be limited using the properties `max-width`
+    and `max-height`.
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，可以使用`max-width`和`max-height`属性限制元素的尺寸。
+- en: The names of these properties make them fairly self-explanatory. What’s less
+    obvious at first, but makes sense once you think about it, is that values for
+    all these properties cannot be negative.
+  id: totrans-215
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些属性的名称使它们相当易于理解。最初不太明显但经过思考后会变得合理的是，所有这些属性的值都不能为负值。
+- en: 'The following styles will force the positioned element to be at least `10em`
+    wide by `20em` tall, as illustrated in [Figure 10-29](#setting_minimum_width_height):'
+  id: totrans-216
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下样式将强制定位元素的最小宽度为`10em`，高度为`20em`，如[图10-29](#setting_minimum_width_height)所示：
+- en: '[PRE19]'
+  id: totrans-217
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: '![image](assets/css5_1029.png)'
+  id: totrans-218
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1029.png)'
+- en: Figure 10-29\. Setting a minimum width and height for a positioned element
+  id: totrans-219
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-29。为定位元素设置最小宽度和高度
+- en: 'This isn’t a very robust solution since it forces the element to be at least
+    a certain size regardless of the size of its containing block. Here’s a better
+    one:'
+  id: totrans-220
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这并不是一个非常健壮的解决方案，因为它强制元素至少具有一定大小，无论其包含块的大小如何。这里有一个更好的解决方案：
+- en: '[PRE20]'
+  id: totrans-221
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: Here, the element should be 40% as wide as the containing block but can never
+    be less than `15em` wide. We’ve also changed the `bottom` and `height` so that
+    they’re automatically determined. This will let the element be as tall as necessary
+    to display its content, no matter how narrow it gets (never less than `15em`,
+    though!).
+  id: totrans-222
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，元素的宽度应该是包含块宽度的40%，但最小宽度不能少于`15em`。我们还修改了`bottom`和`height`，使它们自动确定。这样一来，元素高度可以根据需要调整，以显示其内容，无论宽度多窄（但绝不少于`15em`）。
+- en: Note
+  id: totrans-223
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: We’ll look at the role `auto` plays in the height and width of positioned elements
+    in [“Placement and Sizing of Absolutely Positioned Elements”](#placement-and-sizing-of-absolutely-positioned-elements).
+  id: totrans-224
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将在[“绝对定位元素的放置和大小”](#placement-and-sizing-of-absolutely-positioned-elements)中探讨`auto`在定位元素的高度和宽度中的作用。
+- en: 'You can turn all this around to keep elements from getting too wide or tall
+    by using `max-width` and `max-height`. Let’s imagine that, for some reason, we
+    want an element to have three-quarters the width of its containing block but to
+    stop getting wider when it hits 400 pixels. The appropriate styles are as follows:'
+  id: totrans-225
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过使用`max-width`和`max-height`来避免元素过宽或过高。例如，假设出于某种原因，我们希望一个元素的宽度是其包含块宽度的四分之三，但在达到400像素时停止扩展。适当的样式如下：
+- en: '[PRE21]'
+  id: totrans-226
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: One great advantage of the min-max properties is that they let you mix units
+    with relative safety. You can use percentage-based sizes while setting length-based
+    limits, or vice versa.
+  id: totrans-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最小-最大属性的一个巨大优势是，它们允许您相对安全地混合单位。您可以在设置基于百分比的尺寸的同时设置基于长度的限制，反之亦然。
+- en: 'It’s worth mentioning that these min-max properties can be very useful in conjunction
+    with floated elements. For example, we can allow a floated element’s width to
+    be relative to the width of its parent element (which is its containing block),
+    while making sure that the float’s width never goes below `10em`. The reverse
+    approach is also possible:'
+  id: totrans-228
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值得一提的是，这些最小-最大属性在与浮动元素结合使用时非常有用。例如，我们可以允许浮动元素的宽度相对于其父元素（即其包含块）的宽度而变化，同时确保浮动元素的宽度不会少于`10em`。反向方法也是可行的：
+- en: '[PRE22]'
+  id: totrans-229
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: This will set the float to `40em` wide, unless that would be more than 40% the
+    width of the containing block, in which case the float will be limited to that
+    40% width.
+  id: totrans-230
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将使浮动元素宽度设置为`40em`，除非它超过包含块宽度的40%，在这种情况下，浮动将被限制在40%的宽度内。
+- en: Note
+  id: totrans-231
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: For details on what to do with content that overflows an element when it’s been
+    constrained to a certain maximum size, see [“Handling Content Overflow”](ch06.html#overflow).
+  id: totrans-232
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关当内容溢出元素并被约束到特定最大大小时如何处理的详细信息，请参阅 [“处理内容溢出”](ch06.html#overflow)。
+- en: Absolute Positioning
+  id: totrans-233
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 绝对定位
+- en: Since most of the examples and figures in the previous sections illustrate absolute
+    positioning, you’ve already seen a bunch of it in action. Most of what remains
+    are the details of what happens when absolute positioning is invoked.
+  id: totrans-234
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于前几节中的大多数示例和图示都展示了绝对定位的应用，您已经看到了大量实际操作。剩下的内容大部分是在调用绝对定位时发生的详细情况。
+- en: Containing Blocks and Absolutely Positioned Elements
+  id: totrans-235
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 包含块和绝对定位元素
+- en: When an element is positioned absolutely, it is completely removed from the
+    document flow. It is then positioned with respect to its closest positioned ancestor,
+    if any, otherwise its containing block, and its margin edges are placed using
+    the offset properties (`top`, `left`, `inset-inline-start`, etc.). The positioned
+    element does not flow around the content of other elements, nor does their content
+    flow around the positioned element. This implies that an absolutely positioned
+    element may overlap other elements or be overlapped by them. (We’ll see how to
+    affect the overlapping order later.)
+  id: totrans-236
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当元素被绝对定位时，它完全从文档流中移除。然后，它相对于其最近的已定位祖先（如果有的话），否则相对于其包含块进行定位，并且其边距边缘使用偏移属性（`top`、`left`、`inset-inline-start`等）进行放置。定位的元素不会围绕其他元素的内容流动，其他元素的内容也不会围绕定位的元素流动。这意味着绝对定位的元素可能会重叠其他元素，或者被其他元素重叠。（我们稍后会看到如何影响重叠顺序。）
+- en: 'The containing block for an absolutely positioned element is the nearest ancestor
+    element that has a `position` value other than `static`. It is common for an author
+    to pick an element that will serve as the containing block for the absolutely
+    positioned element and give it a `position` of `relative` with no offsets, like
+    so:'
+  id: totrans-237
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '绝对定位元素的包含块是最近的祖先元素，其 `position` 值不为 `static`。通常作者会选择一个元素作为绝对定位元素的包含块，并将其设置为
+    `position: relative`，没有偏移量，如下所示：'
+- en: '[PRE23]'
+  id: totrans-238
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: 'Consider the example in [Figure 10-30](#using_relative_positioning), which
+    illustrates the following:'
+  id: totrans-239
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑 [图 10-30](#using_relative_positioning) 中的示例，它说明了以下内容：
+- en: '[PRE24]'
+  id: totrans-240
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: '[PRE25]'
+  id: totrans-241
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: 'The `<b>` elements in both paragraphs have been absolutely positioned. The
+    difference is in the containing block used for each one. The `<b>` element in
+    the first paragraph is positioned with respect to the initial containing block,
+    because all of its ancestor elements have a `position` of `static`. The second
+    paragraph has been set to `position: relative`, so it establishes a containing
+    block for its descendants.'
+  id: totrans-242
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '两段落中的 `<b>` 元素都已经被绝对定位。区别在于每个元素使用的包含块不同。第一个段落中的 `<b>` 元素相对于初始包含块定位，因为其所有祖先元素的
+    `position` 都是 `static`。第二段落设置了 `position: relative`，因此为其后代元素建立了一个包含块。'
+- en: '![image](assets/css5_1030.png)'
+  id: totrans-243
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1030.png)'
+- en: Figure 10-30\. Using relative positioning to define containing blocks
+  id: totrans-244
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-30\. 使用相对定位定义包含块
+- en: You’ve probably noted that in that second paragraph, the positioned element
+    overlaps some of the text content of the paragraph. There is no way to avoid this,
+    short of positioning the `<b>` element outside of the paragraph or specifying
+    a padding for the paragraph that is wide enough to accommodate the positioned
+    element. Also, since the `<b>` element has a transparent background, the paragraph’s
+    text shows through the positioned element. The only way to avoid this is to set
+    a background for the positioned element, or else move it out of the paragraph
+    entirely.
+  id: totrans-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能已经注意到，在第二段落中，定位的元素重叠了段落的一些文本内容。除了将 `<b>` 元素定位到段落外部或为段落指定足够宽度的填充以容纳定位的元素外，没有其他方法可以避免这种情况。此外，由于
+    `<b>` 元素具有透明背景，段落的文本会透过定位的元素显示出来。唯一的避免方法是为定位的元素设置一个背景，或者将其完全移出段落。
+- en: 'Assuming the containing block is the root element, you could drop in an absolutely
+    positioned paragraph, as follows, and get a result like that shown in [Figure 10-31](#positioning_element_contained_by_root):'
+  id: totrans-246
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设包含块是根元素，您可以插入一个绝对定位的段落，如下所示，并获得与 [图 10-31](#positioning_element_contained_by_root)
+    中所示类似的结果：
+- en: '[PRE26]'
+  id: totrans-247
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: The paragraph is now positioned at the very beginning of the document, half
+    as wide as the document’s width and overwriting other content.
+  id: totrans-248
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，段落被定位在文档的开头，宽度为文档宽度的一半，并覆盖其他内容。
+- en: '![image](assets/css5_1031.png)'
+  id: totrans-249
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1031.png)'
+- en: Figure 10-31\. Positioning an element whose containing block is the root element
+  id: totrans-250
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-31。定位包含块为根元素的元素
+- en: 'An important point to highlight is that when an element is absolutely positioned,
+    it establishes a containing block for its descendant elements. For example, we
+    can absolutely position an element and then absolutely position one of its children
+    by using the following styles and basic markup (depicted in [Figure 10-32](#containing_blocks_from_absolute_pos)):'
+  id: totrans-251
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 需要强调的一个重要点是，当元素被绝对定位时，它为其后代元素建立一个包含块。例如，我们可以绝对定位一个元素，然后使用以下样式和基本标记绝对定位其子元素（在[图10-32](#containing_blocks_from_absolute_pos)中描述）：
+- en: '[PRE27]'
+  id: totrans-252
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: Remember that if the document is scrolled, the absolutely positioned elements
+    will scroll right along with it. This is true of all absolutely positioned elements
+    that are not descendants of fixed-position or sticky-position elements.
+  id: totrans-253
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住，如果文档有滚动，绝对定位元素也会随之滚动。这对所有不是固定位置或粘性位置元素的绝对定位元素都是适用的。
+- en: This happens because, eventually, the elements are positioned in relation to
+    something that’s part of the normal flow. For example, if you absolutely position
+    a table, and its containing block is the initial containing block, then the positioned
+    table will scroll because the initial containing block is part of the normal flow,
+    and thus it scrolls.
+  id: totrans-254
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是因为最终，这些元素是相对于正常流的某些部分定位的。例如，如果你绝对定位一个表格，而它的包含块是初始包含块，那么定位的表格将会滚动，因为初始包含块是正常流的一部分，因此会滚动。
+- en: If you want to position elements so that they’re placed relative to the viewport
+    and don’t scroll along with the rest of the document, keep reading. [“Fixed Positioning”](#fixed-positioning)
+    has the answers you seek.
+  id: totrans-255
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想要定位元素，使它们相对于视口定位并且不随文档的其余部分一起滚动，继续阅读。[“固定定位”](#fixed-positioning)可以给出你所寻求的答案。
+- en: '![image](assets/css5_1032.png)'
+  id: totrans-256
+  prefs: []
+  type: TYPE_IMG
+  zh: '![图片](assets/css5_1032.png)'
+- en: Figure 10-32\. Absolutely positioned elements establish containing blocks
+  id: totrans-257
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-32。绝对定位元素创建包含块
+- en: Placement and Sizing of Absolutely Positioned Elements
+  id: totrans-258
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 绝对定位元素的放置和大小
+- en: 'Combining the concepts of placement and sizing may seem odd, but it’s a necessity
+    with absolutely positioned elements because the specification binds them closely
+    together. This is not such a strange pairing, upon reflection. Consider what happens
+    if an element is positioned using the four physical offset properties, like so:'
+  id: totrans-259
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结合定位和大小的概念可能看起来很奇怪，但对于绝对定位元素来说，这是必需的，因为规范将它们紧密地绑定在一起。仔细思考一下，这并不是一个那么奇怪的组合。想象一下，如果一个元素是使用四个物理偏移属性定位的，会发生什么：
+- en: '[PRE28]'
+  id: totrans-260
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: Here, the height and width of the `<h1>`’s element box is determined by the
+    placement of its outer margin edges, as shown in [Figure 10-33](#determining_height_based_on_offset).
+  id: totrans-261
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，`<h1>` 元素框的高度和宽度是由其外边距边缘的放置确定的，如[图10-33](#determining_height_based_on_offset)所示。
+- en: '![image](assets/css5_1033.png)'
+  id: totrans-262
+  prefs: []
+  type: TYPE_IMG
+  zh: '![图片](assets/css5_1033.png)'
+- en: Figure 10-33\. Determining the height of an element based on the offset properties
+  id: totrans-263
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-33。根据偏移属性确定元素的高度
+- en: If the containing block were made taller, the `<h1>` would also become taller;
+    if the containing block were narrowed, the `<h1>` would become narrower. If we
+    were to add margins or padding to the `<h1>`, that would have further effects
+    on its calculated height and width.
+  id: totrans-264
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果包含块变得更高，`<h1>` 也会变得更高；如果包含块变窄，`<h1>` 也会变窄。如果我们给`<h1>`添加边距或填充，那会进一步影响其计算的高度和宽度。
+- en: But what if we do all that and then also try to set an explicit height and width?
+  id: totrans-265
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是如果我们已经做了这一切，然后还尝试设置显式的高度和宽度呢？
+- en: '[PRE29]'
+  id: totrans-266
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: Something has to give, because it’s incredibly unlikely that all those values
+    will be accurate. In fact, the containing block would have to be exactly two and
+    a half times as wide as the `<h1>`’s computed value of `font-size` for all of
+    the shown values to be accurate. Any other `width` would mean at least one value
+    is wrong and has to be ignored. Figuring out which one depends on multiple factors,
+    and the factors change depending on whether an element is replaced or nonreplaced.
+    (See [Chapter 6](ch06.html#basic-visual-formatting) for replaced versus nonreplaced
+    elements.)
+  id: totrans-267
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有些地方必须让步，因为所有这些值都几乎不可能都准确。事实上，包含块的宽度必须恰好是`<h1>` 计算出的`font-size` 的两倍半，才能使所有显示的值都准确。任何其他的`width`
+    都意味着至少有一个值是错误的，必须被忽略。确定哪个值取决于多个因素，并且这些因素根据元素是替换还是非替换而改变。 (见[第6章](ch06.html#basic-visual-formatting)
+    替换与非替换元素。)
+- en: 'For that matter, consider the following:'
+  id: totrans-268
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，考虑以下情况：
+- en: '[PRE30]'
+  id: totrans-269
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: What should the result be? As it happens, the answer is *not* “reset the values
+    to 0.” We’ll see the actual answer, starting in the next section.
+  id: totrans-270
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结果应该是什么？事实上，答案并不是“将值重置为0”。我们将在下一节中看到真正的答案。
+- en: Auto-edges
+  id: totrans-271
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 自动边缘
+- en: 'When absolutely positioning an element, a special behavior applies when any
+    of the offset properties other than `bottom` are set to `auto`. Let’s take `top`
+    as an example. Consider the following:'
+  id: totrans-272
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当绝对定位一个元素时，当偏移属性（除`bottom`以外的任何属性）设置为`auto`时，会应用特殊的行为。以`top`为例。考虑以下情况：
+- en: '[PRE31]'
+  id: totrans-273
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: What should happen? For `left`, the left edge of the element should be placed
+    against the left edge of its containing block (which we’ll assume here to be the
+    initial containing block).
+  id: totrans-274
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 发生了什么？对于`left`，元素的左边缘应该与其包含块的左边缘对齐（我们在此假设为初始包含块）。
+- en: For `top`, however, something much more interesting happens. The top of the
+    positioned element should line up with the place where its top would have been
+    if it were not positioned at all. In other words, imagine where the `<span>` would
+    have been placed if its `position` value were `static`; this is its *static position*—the
+    place where its top edge should be calculated to sit. Therefore, we should get
+    the result shown in [Figure 10-34](#using_static_top_for_absolute_pos).
+  id: totrans-275
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，对于`top`来说，会发生更有趣的事情。定位元素的顶部应与其如果根本未定位时其顶部将要放置的位置对齐。换句话说，想象一下如果其`position`值为`static`时`<span>`会被放置的地方；这就是其*静态位置*——应该计算其顶部边缘放置的位置。因此，我们应该得到图 10-34中显示的结果。
+- en: '![image](assets/css5_1034.png)'
+  id: totrans-276
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1034.png)'
+- en: Figure 10-34\. Absolutely positioning an element consistently with its “static”
+    top edge
+  id: totrans-277
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-34。将元素绝对定位于其“静态”顶部边缘
+- en: The “[4]” sits just outside the paragraph’s content because the initial containing
+    block’s left edge is to the left of the paragraph’s left edge.
+  id: totrans-278
+  prefs: []
+  type: TYPE_NORMAL
+  zh: “[4]”位于段落内容的外部，因为初始包含块的左边缘在段落的左边缘左侧。
+- en: 'The same basic rules hold true for `left` and `right` being set to `auto`.
+    In those cases, the left (or right) edge of a positioned element lines up with
+    the spot where the edge would have been placed if the element weren’t positioned.
+    So let’s modify our previous example so that both `top` and `left` are set to
+    `auto`:'
+  id: totrans-279
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于将`left`和`right`设置为`auto`，相同的基本规则适用。在这些情况下，定位元素的左（或右）边缘与如果元素未定位时边缘将要放置的位置对齐。因此，让我们修改前面的例子，使`top`和`left`都设置为`auto`：
+- en: '[PRE32]'
+  id: totrans-280
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: This results in [Figure 10-35](#static_pos_for_absolute_pos).
+  id: totrans-281
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结果见[图 10-35](#static_pos_for_absolute_pos)。
+- en: '![image](assets/css5_1035.png)'
+  id: totrans-282
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1035.png)'
+- en: Figure 10-35\. Absolutely positioning an element consistently with its “static”
+    position
+  id: totrans-283
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-35。将元素绝对定位于其“静态”位置
+- en: The “[4]” now sits right where it would have were it not positioned. Note that,
+    since it *is* positioned, its normal-flow space is closed up. This causes the
+    positioned element to overlap the normal-flow content.
+  id: totrans-284
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，“[4]”位于其未定位时应该放置的位置。请注意，由于它*被*定位，其正常流空间被关闭。这导致定位元素重叠正常流内容。
+- en: 'This auto-placement works only in certain situations, generally wherever there
+    are few constraints on the other dimensions of a positioned element. Our previous
+    example could be auto-placed because it had no constraints on its height or width,
+    nor on the placement of the bottom and right edges. But suppose, for some reason,
+    there had been such constraints. Consider the following:'
+  id: totrans-285
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此自动放置仅在某些情况下有效，通常是在定位元素的其他尺寸维度上没有约束的情况下。我们之前的例子可以自动放置，因为它对其高度或宽度没有约束，也没有对底部和右侧边缘放置的约束。但假设，出于某种原因，确实有这样的约束。考虑以下情况：
+- en: '[PRE33]'
+  id: totrans-286
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: It is not possible to satisfy all of those values. Determining what happens
+    is the subject of the next section.
+  id: totrans-287
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不可能满足所有这些值。确定发生的事情是下一节的主题。
+- en: Placing and Sizing Nonreplaced Elements
+  id: totrans-288
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 放置和调整非替换元素
+- en: In general, the size and placement of an element depends on its containing block.
+    The values of its various properties (`width`, `right`, `padding-left`, and so
+    on) affect its layout, but the foundation is the containing block.
+  id: totrans-289
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，元素的大小和位置取决于其包含块。其各种属性（`width`、`right`、`padding-left`等）的值影响其布局，但基础是包含块。
+- en: 'Consider the width and horizontal placement of a positioned element. It can
+    be represented as an equation that states the following:'
+  id: totrans-290
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑定位元素的宽度和水平位置。可以表示为以下方程式：
+- en: '[PRE34]'
+  id: totrans-291
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: This calculation is fairly reasonable. It’s basically the equation that determines
+    how block-level elements in the normal flow are sized, except it adds `left` and
+    `right` to the mix. So how do all these interact? We have a series of rules to
+    work through.
+  id: totrans-292
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个计算是相当合理的。它基本上是确定正常流中块级元素大小的方程，只是增加了`left`和`right`。那么所有这些如何交互？我们有一系列规则可供参考。
+- en: 'First, if `left`, `width`, and `right` are all set to `auto`, you get the result
+    seen in the previous section: the left edge is placed at its static position,
+    assuming a left-to-right language. In right-to-left languages, the right edge
+    is placed at its static position. The width of the element is set to be “shrink
+    to fit,” which means the element’s content area is made only as wide as necessary
+    to contain its content. The nonstatic position property (`right` in left-to-right
+    languages, `left` in right-to-left) is set to take up the remaining distance.
+    For example:'
+  id: totrans-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，如果`left`、`width`和`right`都设置为`auto`，则会得到前一节中所见的结果：左边缘被放置在其静态位置，假设是左到右的语言。在右到左的语言中，右边缘被放置在其静态位置。元素的宽度被设置为“收缩适应”，这意味着元素的内容区域仅宽到足以容纳其内容。非静态位置属性（左到右语言中为`right`，右到左语言中为`left`）被设置为占据剩余的距离。例如：
+- en: '[PRE35]'
+  id: totrans-294
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: This results in [Figure 10-36](#shrink-to-fit).
+  id: totrans-295
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这导致了[图10-36](#shrink-to-fit)。
+- en: '![image](assets/css5_1036.png)'
+  id: totrans-296
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1036.png)'
+- en: Figure 10-36\. The “shrink-to-fit” behavior of absolutely positioned elements
+  id: totrans-297
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-36\. 绝对定位元素的“收缩适应”行为
+- en: The top of the element is placed against the top of its containing block (the
+    `<div>`, in this case), and the width of the element is just as wide as is needed
+    to contain the content. The remaining distance from the right edge of the element
+    to the right edge of the containing block becomes the computed value of `right`.
+  id: totrans-298
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素的顶部放置在其包含块的顶部（在本例中为`<div>`），元素的宽度正好足够容纳内容。从元素右边缘到包含块右边缘的剩余距离成为`right`的计算值。
+- en: 'Now suppose that only the left and right margins are set to `auto`, not `left`,
+    `width`, and `right`, as in this example:'
+  id: totrans-299
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在假设只有左右边距被设置为`auto`，而不是`left`、`width`和`right`，如此示例：
+- en: '[PRE36]'
+  id: totrans-300
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: What happens here is that the left and right margins, which are both `auto`,
+    are set to be equal. This will effectively center the element, as shown in [Figure 10-37](#horizontally_centering_with_auto_margins).
+  id: totrans-301
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里发生的是左右边距都设置为`auto`，并且相等。这将有效地使元素居中，如[图10-37](#horizontally_centering_with_auto_margins)所示。
+- en: '![image](assets/css5_1037.png)'
+  id: totrans-302
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1037.png)'
+- en: Figure 10-37\. Horizontally centering an absolutely positioned element with
+    `auto` margins
+  id: totrans-303
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-37\. 使用`auto`边距水平居中绝对定位元素
+- en: 'This is basically the same as `auto`-margin centering in the normal flow. So
+    let’s make the margins something other than `auto`:'
+  id: totrans-304
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这基本上与正常流中的`auto`边距居中相同。因此，让我们将边距设置为除了`auto`之外的其他值：
+- en: '[PRE37]'
+  id: totrans-305
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: Now we have a problem. The positioned `<span>`’s properties add up to only `14em`,
+    whereas the containing block is `25em` wide. That’s an 11-em deficit we have to
+    make up somewhere.
+  id: totrans-306
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们有一个问题。定位的`<span>`属性总和仅为`14em`，而包含块的宽度为`25em`。这意味着我们需要弥补11个em的差额。
+- en: 'The rules state that, in this case, the user agent ignores the value for the
+    inline-end side of the element and solves for that. In other words, the result
+    will be the same as if we’d declared this:'
+  id: totrans-307
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 规则说明，在这种情况下，用户代理忽略元素内联末端的值，并为其求解。换句话说，结果将与我们声明的结果相同：
+- en: '[PRE38]'
+  id: totrans-308
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: This results in [Figure 10-38](#ignoring_value_for_right).
+  id: totrans-309
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这导致了[图10-38](#ignoring_value_for_right)。
+- en: '![image](assets/css5_1038.png)'
+  id: totrans-310
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1038.png)'
+- en: Figure 10-38\. Ignoring the value for `right` in an overconstrained situation
+  id: totrans-311
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-38\. 在超约束情况下忽略`right`的值
+- en: 'If one of the margins had been set to `auto`, that would have been changed
+    instead. Suppose we change the styles to state the following:'
+  id: totrans-312
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果其中一个边距被设置为`auto`，那将会发生变化。假设我们改变样式如下所述：
+- en: '[PRE39]'
+  id: totrans-313
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: The visual result would be the same as that in [Figure 10-38](#ignoring_value_for_right),
+    only it would be attained by computing the right margin to `12em` instead of overriding
+    the value assigned to the property `right`.
+  id: totrans-314
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 视觉结果将与[图10-38](#ignoring_value_for_right)相同，只是通过计算右边距为`12em`来达到，而不是覆盖给属性`right`分配的值。
+- en: 'If, on the other hand, we made the left margin `auto`, *it* would be reset,
+    as illustrated in [Figure 10-39](#ignoring_margin-right):'
+  id: totrans-315
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，如果我们将左边距设为`auto`，*它*将被重置，如[图10-39](#ignoring_margin-right)所示：
+- en: '[PRE40]'
+  id: totrans-316
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: '![image](assets/css5_1039.png)'
+  id: totrans-317
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1039.png)'
+- en: Figure 10-39\. Making use of an `auto` left margin
+  id: totrans-318
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-39\. 利用 `auto` 左边距
+- en: 'In general, if only one of the properties is set to `auto`, that property will
+    be used to satisfy the equation given earlier in the section. Thus, given the
+    following styles, the element’s width would expand to whatever size is needed,
+    instead of “shrink-wrapping” the content:'
+  id: totrans-319
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，如果只有一个属性设置为 `auto`，那么该属性将用于满足前面章节中给出的方程。因此，根据以下样式，元素的宽度会扩展到需要的任何尺寸，而不是“包裹”内容：
+- en: '[PRE41]'
+  id: totrans-320
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: 'So far we’ve really examined behavior only along the horizontal axis, but very
+    similar rules hold true along the vertical axis. If we take the previous discussion
+    and rotate it 90 degrees, as it were, we get almost the same behavior. For example,
+    the following markup results in [Figure 10-40](#vertical_layout_behavior):'
+  id: totrans-321
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们主要考察了沿水平轴的行为，但沿垂直轴也适用非常相似的规则。如果我们将之前的讨论旋转90度，实际上我们得到的几乎是相同的行为。例如，以下标记会导致[图 10-40](#vertical_layout_behavior)的结果：
+- en: '[PRE42]'
+  id: totrans-322
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: In the first case, the height of the element is shrink-wrapped to the content.
+    In the second, the unspecified property (`bottom`) is set to make up the distance
+    between the bottom of the positioned element and the bottom of its containing
+    block. In the third case, `top` is unspecified, and therefore used to make up
+    the difference.
+  id: totrans-323
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一种情况下，元素的高度会被包裹到内容。在第二种情况下，未指定的属性 (`bottom`) 被设置为弥补定位元素底部与其包含块底部之间的距离。在第三种情况下，`top`
+    未指定，因此用于弥补差距。
+- en: '![image](assets/css5_1040.png)'
+  id: totrans-324
+  prefs: []
+  type: TYPE_IMG
+  zh: '![图片](assets/css5_1040.png)'
+- en: Figure 10-40\. Vertical layout behavior for absolutely positioned elements
+  id: totrans-325
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-40\. 绝对定位元素的垂直布局行为
+- en: 'For that matter, auto-margins can lead to vertical centering. Given the following
+    styles, the absolutely positioned `<div>` will be vertically centered within its
+    containing block, as shown in [Figure 10-41](#vertically_centering_with_auto_margins):'
+  id: totrans-326
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就这一点而言，自动边距可以导致垂直居中。根据以下样式，绝对定位的 `<div>` 将在其包含块内垂直居中，如[图 10-41](#vertically_centering_with_auto_margins)所示：
+- en: '[PRE43]'
+  id: totrans-327
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: '![css5 1041](assets/css5_1041.png)'
+  id: totrans-328
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1041](assets/css5_1041.png)'
+- en: Figure 10-41\. Vertically centering an absolutely positioned element with auto-margins
+  id: totrans-329
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-41\. 使用自动边距垂直居中绝对定位元素
+- en: There are two small variations to point out. In horizontal layout, either `right`
+    or `left` can be placed according to the static position if their values are `auto`.
+    In vertical layout, only `top` can take on the static position; `bottom`, for
+    whatever reason, cannot.
+  id: totrans-330
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有两个小变化需要指出。在水平布局中，如果值为 `auto`，则 `right` 或 `left` 可以根据静态位置放置。在垂直布局中，只有 `top`
+    可以采用静态位置；由于某种原因，`bottom` 不能。
+- en: 'Also, if an absolutely positioned element’s size is overconstrained in the
+    vertical direction, `bottom` is ignored. Thus, in the following situation, the
+    declared value of `bottom` would be overridden by the calculated value of `5em`:'
+  id: totrans-331
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，如果绝对定位元素在垂直方向上尺寸过多约束，`bottom` 将被忽略。因此，在以下情况下，`bottom` 的声明值将被计算值 `5em` 覆盖：
+- en: '[PRE44]'
+  id: totrans-332
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: There is no provision for `top` to be ignored if the properties are overconstrained.
+  id: totrans-333
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果属性过多，`top` 无法被忽略。
+- en: Placing and Sizing Replaced Elements
+  id: totrans-334
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 放置和调整替换元素
+- en: Positioning rules are different for replaced elements (e.g., images) than they
+    are for nonreplaced elements. This is because replaced elements have an intrinsic
+    height and width, and therefore are not altered unless explicitly changed by the
+    author. Thus, there is no concept of “shrink to fit” in the positioning of replaced
+    elements.
+  id: totrans-335
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 替换元素（例如图像）的定位规则与非替换元素不同。这是因为替换元素具有固有的高度和宽度，因此除非作者明确更改，否则不会改变。因此，在替换元素的定位中没有“收缩以适应”概念。
+- en: 'The behaviors that go into placing and sizing replaced elements are most easily
+    expressed by this series of rules, to be taken one after the other:'
+  id: totrans-336
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 放置和调整替换元素的行为可以通过以下一系列规则最容易地表达，逐一采取：
+- en: If `width` is set to `auto`, the used value of `width` is determined by the
+    intrinsic width of the element’s content. Thus, if an image is intrinsically 50
+    pixels wide, the used value is calculated to be `50px`. If `width` is explicitly
+    declared (that is, something like `100px` or `50%`), the width is set to that
+    value.
+  id: totrans-337
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果 `width` 设置为 `auto`，则 `width` 的使用值由元素内容的固有宽度确定。因此，如果图像固有宽度为50像素，则使用值计算为 `50px`。如果显式声明了
+    `width`（例如 `100px` 或 `50%`），则宽度设置为该值。
+- en: If `left` has the value `auto` in a left-to-right language, replace `auto` with
+    the static position. In right-to-left languages, replace an `auto` value for `right`
+    with the static position.
+  id: totrans-338
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果 `left` 在从左到右的语言环境中具有 `auto` 值，则将其替换为静态位置。在从右到左的语言环境中，将 `right` 上的 `auto`
+    值替换为静态位置。
+- en: If either `left` or `right` is still `auto` (in other words, it hasn’t been
+    replaced in a previous step), replace any `auto` on `margin-left` or `margin-right`
+    with `0`.
+  id: totrans-339
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果 `left` 或 `right` 仍然是 `auto`（换句话说，在之前的步骤中它还没有被替换），则将 `margin-left` 或 `margin-right`
+    上的任何 `auto` 替换为 `0`。
+- en: If, at this point, both `margin-left` and `margin-right` are still defined to
+    be `auto`, set them to be equal, thus centering the element in its containing
+    block.
+  id: totrans-340
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果此时 `margin-left` 和 `margin-right` 都仍然被定义为 `auto`，则将它们设置为相等，从而使元素在其包含块中居中。
+- en: After all that, if only one `auto` value is left, change it to equal the remainder
+    of the equation.
+  id: totrans-341
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 最后，如果只剩下一个 `auto` 值，将其更改为等于方程的余数。
+- en: 'This leads to the same basic behaviors you saw with absolutely positioned nonreplaced
+    elements, as long as you assume that there is an explicit `width` for the nonreplaced
+    element. Therefore, the following two elements will have the same width and placement,
+    assuming the image’s intrinsic width is 100 pixels (see [Figure 10-42](#absolutely_positioning_replaced_element)):'
+  id: totrans-342
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这导致与绝对定位的非替换元素看到的相同基本行为，只要你假设非替换元素有一个显式的 `width`。因此，以下两个元素将具有相同的宽度和位置，假设图像的固有宽度为
+    100 像素（参见 [图 10-42](#absolutely_positioning_replaced_element)）：
+- en: '[PRE45]'
+  id: totrans-343
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: '![css5 1042](assets/css5_1042.png)'
+  id: totrans-344
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1042](assets/css5_1042.png)'
+- en: Figure 10-42\. Absolutely positioning a replaced element
+  id: totrans-345
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-42\. 绝对定位替换元素
+- en: 'As with nonreplaced elements, if the values are overconstrained, the user agent
+    is supposed to ignore the value on the inline-end side: `right` in left-to-right
+    languages and `left` in right-to-left languages. Thus, in the following example,
+    the declared value for `right` is overridden with a computed value of `50px`:'
+  id: totrans-346
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与非替换元素类似，如果值被过度约束，用户代理应忽略行内结束端上的值：在从左到右的语言中为 `right`，在从右到左的语言中为 `left`。因此，在以下示例中，`right`
+    的声明值被计算为 `50px` 覆盖了：
+- en: '[PRE46]'
+  id: totrans-347
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: 'Similarly, layout along the vertical axis is governed by this series of rules:'
+  id: totrans-348
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，沿垂直轴的布局受以下一系列规则的控制：
+- en: If `height` is set to `auto`, the computed value of `height` is determined by
+    the intrinsic height of the element’s content. Thus, the height of an image 50
+    pixels tall is computed to be `50px`. If `height` is explicitly declared (that
+    is, something like `100px` or `50%`), the height is set to that value.
+  id: totrans-349
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果 `height` 设置为 `auto`，则 `height` 的计算值由元素内容的固有高度决定。因此，高度为 50 像素的图像的计算值为 `50px`。如果显式声明了
+    `height`（比如 `100px` 或 `50%`），则高度将设置为该值。
+- en: If `top` has the value `auto`, replace it with the replaced element’s static
+    position.
+  id: totrans-350
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果 `top` 的值为 `auto`，则用替换元素的静态位置替换它。
+- en: If `bottom` has a value of `auto`, replace any `auto` value on `margin-top`
+    or `margin-bottom` with `0`.
+  id: totrans-351
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果 `bottom` 的值为 `auto`，则将 `margin-top` 或 `margin-bottom` 上的任何 `auto` 值替换为 `0`。
+- en: If, at this point, both `margin-top` and `margin-bottom` are still defined to
+    be `auto`, set them to be equal, thus centering the element in its containing
+    block.
+  id: totrans-352
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果此时 `margin-top` 和 `margin-bottom` 都仍然被定义为 `auto`，则将它们设置为相等，从而使元素在其包含块中居中。
+- en: After all that, if only one `auto` value is left, change it to equal the remainder
+    of the equation.
+  id: totrans-353
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 最后，如果只剩下一个 `auto` 值，将其更改为等于方程的余数。
+- en: As with nonreplaced elements, if the values are overconstrained, the user agent
+    is supposed to ignore the value for `bottom`.
+  id: totrans-354
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与非替换元素类似，如果值被过度约束，用户代理应忽略 `bottom` 的值。
+- en: 'Thus, the following markup results in [Figure 10-43](#stretching_replaced_elements):'
+  id: totrans-355
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，以下标记结果为 [图 10-43](#stretching_replaced_elements)：
+- en: '[PRE47]'
+  id: totrans-356
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: '![css5 1043](assets/css5_1043.png)'
+  id: totrans-357
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1043](assets/css5_1043.png)'
+- en: Figure 10-43\. Stretching replaced elements through positioning
+  id: totrans-358
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-43\. 通过定位拉伸替换元素
+- en: Placement on the Z-Axis
+  id: totrans-359
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Z 轴上的放置
+- en: With all of the positioning going on, there will inevitably be a situation where
+    two elements will try to exist in the same place, visually speaking. One of them
+    will have to overlap the other—so how do we control which element comes out “on
+    top”? This is where `z-index` comes in.
+  id: totrans-360
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 随着所有定位的进行，不可避免地会出现两个元素试图在视觉上占据相同位置的情况。其中一个将会覆盖另一个，那么我们如何控制哪个元素显示在“顶部”呢？这就是 `z-index`
+    发挥作用的地方。
+- en: This property lets you alter the way that elements overlap one another. It takes
+    its name from the coordinate system in which side-to-side is the x-axis and top-to-bottom
+    is the y-axis. In such a case, the third axis—which runs from back to front, as
+    you look at the display surface—is termed the *z-axis*. Thus, elements are given
+    values along this axis by using `z-index`. [Figure 10-44](#conceptual_view_of_zindex)
+    illustrates this system.
+  id: totrans-361
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一属性允许您改变元素重叠的方式。它的名字源自坐标系，其中从左到右是x轴，从上到下是y轴。在这种情况下，从背后到前面的第三轴被称为*z轴*。因此，通过使用`z-index`，元素沿这个轴被赋予值。[图 10-44](#conceptual_view_of_zindex)展示了这个系统。
+- en: '![css5 1044](assets/css5_1044.png)'
+  id: totrans-362
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1044](assets/css5_1044.png)'
+- en: Figure 10-44\. A conceptual view of z-index stacking
+  id: totrans-363
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-44\. z-index堆叠的概念视图
+- en: In this coordinate system, an element with a higher `z-index` value is closer
+    to the reader than those with lower `z-index` values. This will cause the high-value
+    element to overlap the others, as illustrated in [Figure 10-45](#how_elements_are_stacked),
+    which is a “head-on” view of [Figure 10-44](#conceptual_view_of_zindex). This
+    precedence of overlapping is referred to as *stacking*.
+  id: totrans-364
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个坐标系中，具有较高`z-index`值的元素比具有较低`z-index`值的元素更接近读者。这将导致高值元素重叠其他元素，如[图 10-45](#how_elements_are_stacked)所示，这是[图 10-44](#conceptual_view_of_zindex)的“头对头”视图。这种重叠优先级称为*堆叠*。
+- en: '![image](assets/css5_1045.png)'
+  id: totrans-365
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1045.png)'
+- en: Figure 10-45\. How the elements are stacked
+  id: totrans-366
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-45\. 元素的堆叠方式
+- en: 'Any integer can be used as a value for `z-index`, including negative numbers.
+    Assigning an element a negative `z-index` will move it further away from the reader;
+    that is, it will be moved lower in the stack. Consider the following styles, illustrated
+    in [Figure 10-46](#stacked_elements_can_overlap):'
+  id: totrans-367
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何整数都可以作为`z-index`的值，包括负数。给一个元素赋予负的`z-index`值会将其移动到离读者更远的位置；也就是说，它会在堆叠中放置得更低。考虑以下样式，如[图 10-46](#stacked_elements_can_overlap)所示：
+- en: '[PRE48]'
+  id: totrans-368
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: Each of the elements is positioned according to its styles, but the usual order
+    of stacking is altered by the `z-index` values. Assuming the paragraphs were in
+    numeric order, a reasonable stacking order would have been, from lowest to highest,
+    `p#first`, `p#second`, `p#third`, `p#fourth`. This would have put `p#first` behind
+    the other three elements, and `p#fourth` in front of the others. Thanks to `z-index`,
+    the stacking order is under your control.
+  id: totrans-369
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个元素根据其样式进行定位，但堆叠的常规顺序通过`z-index`值进行了改变。假设段落按数字顺序排列，合理的堆叠顺序应该是，从低到高，`p#first`、`p#second`、`p#third`、`p#fourth`。这会将`p#first`置于其他三个元素后面，而`p#fourth`置于其他元素前面。由于`z-index`，堆叠顺序在您控制之下。
+- en: '![image](assets/css5_1046.png)'
+  id: totrans-370
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1046.png)'
+- en: Figure 10-46\. Stacked elements can overlap
+  id: totrans-371
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-46\. 堆叠元素可以重叠
+- en: 'As the previous example demonstrates, the `z-index` values don’t need to be
+    contiguous. You can assign any integer of any size. If you want to be fairly certain
+    that an element stays in front of everything else, you might use a rule along
+    the lines of `z-index: 100000`. This would work as expected in most cases—although
+    if you ever declared another element’s `z-index` to be `100001` (or higher), it
+    would appear in front.'
+  id: totrans-372
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如前面的例子所示，`z-index`值不需要连续。您可以分配任何大小的任何整数。如果您希望某个元素保持在其他所有元素的前面，您可以使用类似于`z-index:
+    100000`的规则。在大多数情况下，这将按预期工作 —— 尽管如果您声明另一个元素的`z-index`为`100001`（或更高），它将显示在最前面。'
+- en: 'Once you assign an element a value for `z-index` (other than `auto`), that
+    element establishes its own local *stacking context*. This means that all of the
+    element’s descendants have their own stacking order, except relative to their
+    ancestor element. This is very similar to the way that elements establish new
+    containing blocks. Given the following styles, you would see something like [Figure 10-47](#local_stacking_from_positioned):'
+  id: totrans-373
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦为元素分配了`z-index`值（除了`auto`之外），该元素将建立自己的本地*堆叠上下文*。这意味着所有该元素的后代元素有它们自己的堆叠顺序，但相对于它们的祖先元素而言。这与元素建立新的包含块的方式非常相似。根据以下样式，您将看到类似于[图 10-47](#local_stacking_from_positioned)的效果：
+- en: '[PRE49]'
+  id: totrans-374
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: '![image](assets/css5_1047.png)'
+  id: totrans-375
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1047.png)'
+- en: Figure 10-47\. Positioned elements establish local stacking contexts
+  id: totrans-376
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-47\. 定位元素建立本地堆叠上下文
+- en: 'Note where the `<em>` elements fall in the stacking order (you can find a list
+    of the various ways to establish a stacking context in [“Blending in Isolation”](ch20.html#blending-in-isolation1)
+    in [Chapter 20](ch20.html#filters-compositing)). Each is correctly layered with
+    respect to its parent element. Each `<em>` is drawn in front of its parent element,
+    whether or not its `z-index` is negative, and parents and children are grouped
+    together like layers in an editing program. (The specification keeps children
+    from being drawn behind their parents when using `z-index` stacking, so the `em`
+    in `p#three` is drawn on top of `p#one`, even though its `z-index` value is `-343`.)
+    This is because its `z-index` value is taken with respect to its local stacking
+    context: its containing block. That containing block, in turn, has a `z-index`,
+    which operates within its local stacking context.'
+  id: totrans-377
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意 `<em>` 元素在堆叠顺序中的位置（您可以在 [“孤立混合”](ch20.html#blending-in-isolation1) 中找到建立堆叠上下文的各种方法的列表，在
+    [第 20 章](ch20.html#filters-compositing) 中）。每个元素都与其父元素正确分层。每个 `<em>` 都位于其父元素的前面，无论其
+    `z-index` 是否为负，并且父元素和子元素被像编辑程序中的图层一样分组在一起。 （规范在使用 `z-index` 堆叠时阻止子元素被绘制在其父元素后面，因此
+    `p#three` 中的 `em` 被绘制在 `p#one` 的顶部，即使其 `z-index` 值为 `-343`。）这是因为其 `z-index` 值是相对于其局部堆叠上下文的取值：其包含块。而该包含块反过来具有一个
+    `z-index`，它在其局部堆叠上下文中起作用。
+- en: 'We have one more `z-index` value to examine. The CSS specification has this
+    to say about the default value, `auto`:'
+  id: totrans-378
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们还有一个 `z-index` 值需要检查。CSS 规范对默认值 `auto` 有以下说明：
+- en: The stack level of the generated box in the current stacking context is 0\.
+    The box does not establish a new stacking context unless it is the root element.
+  id: totrans-379
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 生成的盒子在当前堆叠上下文中的堆叠级别为 0\. 该盒子不会创建新的堆叠上下文，除非它是根元素。
+- en: 'So, any element with `z-index: auto` can be treated as though it is set to
+    `z-index: 0`.'
+  id: totrans-380
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '因此，任何具有 `z-index: auto` 的元素可以被视为设置为 `z-index: 0`。'
+- en: Tip
+  id: totrans-381
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 小贴士
+- en: '`z-index` is also honored by flex and grid items, even though they are not
+    positioned using the `position` property. The rules are essentially the same.'
+  id: totrans-382
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使不使用 `position` 属性定位，`z-index` 也会被 flex 和 grid 项目所尊重。规则本质上是相同的。
+- en: Fixed Positioning
+  id: totrans-383
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 固定定位
+- en: As implied in a previous section, *fixed positioning* is just like absolute
+    positioning, except the containing block of a fixed element is the *viewport*.
+    A fixed-position element is totally removed from the document’s flow and does
+    not have a position relative to any part of the document.
+  id: totrans-384
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前一节所示，*固定定位* 就像绝对定位一样，唯一不同的是固定元素的包含块是 *视口*。固定定位的元素完全从文档流中移除，并且不相对于文档的任何部分定位。
+- en: Fixed positioning can be exploited in interesting ways. First off, it’s possible
+    to create frame-style interfaces by using fixed positioning. Consider [Figure 10-48](#emulating_frames_with_fixed),
+    which shows a common layout scheme.
+  id: totrans-385
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 固定定位可以以有趣的方式进行利用。首先，可以通过使用固定定位创建类似框架的界面。考虑 [图 10-48](#emulating_frames_with_fixed)，显示了一个常见的布局方案。
+- en: '![image](assets/css5_1048.png)'
+  id: totrans-386
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1048.png)'
+- en: Figure 10-48\. Emulating frames with fixed positioning
+  id: totrans-387
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-48\. 使用固定定位模拟框架
+- en: 'This could be done using the following styles:'
+  id: totrans-388
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用以下样式完成这个过程：
+- en: '[PRE50]'
+  id: totrans-389
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: 'This will fix the header and sidebar to the top and side of the viewport, where
+    they will remain regardless of how the document is scrolled. The drawback here,
+    though, is that the rest of the document will be overlapped by the fixed elements.
+    Therefore, the rest of the content should probably be contained in its own wrapper
+    element and employ something like the following:'
+  id: totrans-390
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将使页眉和侧边栏固定在视口的顶部和侧边，无论文档如何滚动，它们都会保持在那里。然而，这里的缺点是文档的其余内容会被固定元素覆盖。因此，其余内容可能应该包含在自己的包装元素中，并使用以下类似方法：
+- en: '[PRE51]'
+  id: totrans-391
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: 'It would even be possible to create small gaps between the three positioned
+    elements by adding some appropriate margins, as follows:'
+  id: totrans-392
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过添加适当的边距，甚至可以在三个定位元素之间创建小间隙，如下所示：
+- en: '[PRE52]'
+  id: totrans-393
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: Given such a case, a tiled image could be applied to the `<body>` background.
+    This image would show through the gaps created by the margins, which could certainly
+    be widened if the author saw fit.
+  id: totrans-394
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 鉴于这种情况，可以将平铺图像应用于 `<body>` 的背景。如果作者认为合适，可以通过边距创建的间隙显示这个图像。
+- en: 'Another use for fixed positioning is to place a “persistent” element on the
+    screen, like a short list of links. We could create a persistent `footer` with
+    copyright and other information as follows:'
+  id: totrans-395
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 固定定位的另一个用途是将“持久”元素放置在屏幕上，例如一小段链接列表。我们可以像以下这样创建一个持久的 `footer`，包含版权和其他信息：
+- en: '[PRE53]'
+  id: totrans-396
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: This would place the `footer` element at the bottom of the viewport and leave
+    it there no matter how much the document is scrolled.
+  id: totrans-397
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这会将`footer`元素放置在视口底部，并且无论文档滚动多少，都会保持在那里。
+- en: Note
+  id: totrans-398
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Many of the layout cases for fixed positioning, besides “persistent elements,”
+    are handled as well, if not better, by grid layout (see [Chapter 12](ch12.html#grid-layout)
+    for more).
+  id: totrans-399
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 固定定位的许多布局案例，除了“持久元素”外，都可以通过网格布局（详见[第12章](ch12.html#grid-layout)）处理得更好。
+- en: Relative Positioning
+  id: totrans-400
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 相对定位
+- en: The simplest of the positioning schemes to understand is *relative positioning*.
+    In this scheme, a positioned element is shifted by use of the offset properties.
+    However, this can have some interesting consequences.
+  id: totrans-401
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最简单的定位方案是*相对定位*。在这种方案中，定位元素通过偏移属性进行移动。然而，这可能会带来一些有趣的后果。
+- en: 'On the surface, it seems simple enough. Suppose we want to shift an image up
+    and to the left. [Figure 10-49](#relatively_positioned_element) shows the result
+    of these styles:'
+  id: totrans-402
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表面上看，这似乎很简单。假设我们想要将一个图像向上和向左移动。这些样式的结果如图[10-49](#relatively_positioned_element)所示：
+- en: '[PRE54]'
+  id: totrans-403
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: '![image](assets/css5_1049.png)'
+  id: totrans-404
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1049.png)'
+- en: Figure 10-49\. A relatively positioned element
+  id: totrans-405
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-49\. 一个相对定位元素
+- en: All we’ve done here is offset the image’s top-edge 20 pixels upward and offset
+    the left-edge 20 pixels to the left. However, notice the blank space where the
+    image would have been had it not been positioned. This happened because when an
+    element is relatively positioned, it’s shifted from its normal place, but the
+    space it would have occupied doesn’t disappear.
+  id: totrans-406
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们在这里所做的只是将图像的顶边向上偏移了20像素，并将左边缘向左偏移了20像素。然而，请注意，图像本应存在的空白空间没有消失。这是因为当一个元素相对定位时，它会从其正常位置偏移，但它原本占据的空间并没有消失。
+- en: Note
+  id: totrans-407
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Relative positioning is very similar to translation element transforms, which
+    are discussed in [Chapter 17](ch17.html#transforms).
+  id: totrans-408
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相对定位与翻译元素转换非常相似，这在[第17章](ch17.html#transforms)中有所讨论。
+- en: 'Consider the results of the following styles, which are depicted in [Figure 10-50](#another_relatively_positioned_element):'
+  id: totrans-409
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下样式的结果，这些样式如图[10-50](#another_relatively_positioned_element)所示：
+- en: '[PRE55]'
+  id: totrans-410
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE55]'
+- en: '![image](assets/css5_1050.png)'
+  id: totrans-411
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1050.png)'
+- en: Figure 10-50\. Another relatively positioned element
+  id: totrans-412
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-50\. 另一个相对定位元素
+- en: As you can see, the paragraph has some blank space in it. This is where the
+    `<em>` element would have been, and the layout of the `<em>` element in its new
+    position exactly mirrors the space it left behind.
+  id: totrans-413
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，段落中有些空白空间。这是`<em>`元素原本的位置，而`<em>`元素在其新位置的布局正好与它留下的空间完全相同。
+- en: 'It’s also possible to shift a relatively positioned element to overlap other
+    content. For example, the following styles and markup are illustrated in [Figure 10-51](#relatively_positioned_elements_overlap_content):'
+  id: totrans-414
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相对定位元素也可以移动到重叠其他内容上。例如，以下样式和标记在[图 10-51](#relatively_positioned_elements_overlap_content)中有详细说明：
+- en: '[PRE56]'
+  id: totrans-415
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE56]'
+- en: '[PRE57]'
+  id: totrans-416
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE57]'
+- en: '![image](assets/css5_1051.png)'
+  id: totrans-417
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1051.png)'
+- en: Figure 10-51\. Relatively positioned elements can overlap other content
+  id: totrans-418
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-51\. 相对定位元素可以重叠其他内容
+- en: 'Relative positioning has one interesting wrinkle. What happens when a relatively
+    positioned element is overconstrained? For example:'
+  id: totrans-419
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相对定位有一个有趣的特点。当一个相对定位的元素过度约束时会发生什么？例如：
+- en: '[PRE58]'
+  id: totrans-420
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE58]'
+- en: 'Here we have values that call for two very different behaviors. If we consider
+    only `top: 10px`, the element should be shifted downward 10 pixels, but `bottom:
+    20px` clearly calls for the element to be shifted upward 20 pixels.'
+  id: totrans-421
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在这里，我们有两个调用非常不同行为的值。如果仅考虑`top: 10px`，元素应向下移动10像素，但是`bottom: 20px`显然要求元素向上移动20像素。'
+- en: 'CSS states that when it comes to overconstrained relative positioning, one
+    value is reset to be the negative of the other. Thus, `bottom` would always equal
+    `-top`. This means the previous example would be treated as though it had been
+    the following:'
+  id: totrans-422
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS规定，当涉及过度约束的相对定位时，一个值会被重置为另一个的负值。因此，`bottom`始终等于`-top`。这意味着前面的示例将被视为以下内容：
+- en: '[PRE59]'
+  id: totrans-423
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE59]'
+- en: 'Therefore, the `<strong>` element will be shifted downward 10 pixels. The specification
+    also makes allowances for writing directions. In relative positioning, `right`
+    always equals `-left` in left-to-right languages; but in right-to-left languages,
+    this is reversed: `left` always equals `-right`.'
+  id: totrans-424
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，`<strong>`元素将向下偏移10像素。规范也允许书写方向。在相对定位中，`right`始终等于左边语言中的`-left`；但在右至左语言中，情况则相反：`left`始终等于`-right`。
+- en: Note
+  id: totrans-425
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: As you saw in previous sections, when we relatively position an element, it
+    immediately establishes a new containing block for any of its children. This containing
+    block corresponds to the place where the element has been newly positioned.
+  id: totrans-426
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您在前面的章节中看到的那样，当我们相对定位一个元素时，它立即为其子元素建立一个新的包含块。这个包含块对应于元素被新定位的位置。
+- en: Sticky Positioning
+  id: totrans-427
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 粘性定位
+- en: 'The last type of positioning in CSS is *sticky positioning*. If you’ve ever
+    used a decent music app on a mobile device, you’ve probably noticed this in action:
+    as you scroll through an alphabetized list of artists, the current letter stays
+    stuck at the top of the window until a new letter section is entered, at which
+    point the new letter replaces the old. It’s a little hard to show in print, but
+    [Figure 10-52](#sticky_positioning) takes a stab at it by showing three points
+    in a scroll.'
+  id: totrans-428
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS中的最后一种定位类型是*粘性定位*。如果您曾经在移动设备上使用过一个不错的音乐应用程序，您可能已经注意到这种效果：当您滚动通过按字母排序的艺术家列表时，当前字母会固定在窗口顶部，直到进入新的字母部分时，新的字母会替换旧的。在打印中很难显示，但[图10-52](#sticky_positioning)试图通过显示滚动中的三个点来解释它。
+- en: '![image](assets/css5_1052.png)'
+  id: totrans-429
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1052.png)'
+- en: Figure 10-52\. Sticky positioning
+  id: totrans-430
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-52。粘性定位
+- en: 'CSS makes this sort of thing possible by declaring an element to be `position:
+    sticky`, but (as usual) there’s more to it than that.'
+  id: totrans-431
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 'CSS通过声明元素为`position: sticky`，使得这种效果成为可能，但通常情况下，这还不够。'
+- en: 'First off, the offsets (`top`, `left`, etc.) are used to define a *sticky-positioning
+    rectangle* with relation to the containing block. Take the following as an example.
+    It will have the effect shown in [Figure 10-53](#sticky-positioning_rectangle),
+    where the dashed line shows where the sticky-positioning rectangle is created:'
+  id: totrans-432
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，偏移量（`top`、`left`等）用于相对于包含块定义*粘性定位矩形*。以以下内容为例。它将产生[图10-53](#sticky-positioning_rectangle)中所示的效果，其中虚线显示了粘性定位矩形的创建位置：
+- en: '[PRE60]'
+  id: totrans-433
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE60]'
+- en: '![css5 1053](assets/css5_1053.png)'
+  id: totrans-434
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1053](assets/css5_1053.png)'
+- en: Figure 10-53\. The sticky-positioning rectangle
+  id: totrans-435
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-53。粘性定位矩形
+- en: Notice that the `<h2>` is in the middle of the rectangle in [Figure 10-53](#sticky-positioning_rectangle).
+    That’s its place in the normal flow of the content inside the `#scrollbox` element.
+    The only way to make the `<h2>` sticky is to scroll that content until the top
+    of the `<h2>` touches the top of the sticky-positioning rectangle (which is `2em`
+    below the top of the scrollbox)—at which point, the `<h2>` will stick there. This
+    is illustrated in [Figure 10-54](#sticking_to_the_top).
+  id: totrans-436
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`<h2>`位于[图10-53](#sticky-positioning_rectangle)中的矩形中间。这是它在`#scrollbox`元素内部内容正常流中的位置。要使`<h2>`粘性，唯一的方法是滚动内容，直到`<h2>`的顶部触及粘性定位矩形的顶部（即位于scrollbox顶部以下`2em`的位置）—在此之后，`<h2>`将会粘在那里。这在[图10-54](#sticking_to_the_top)中有所说明。
+- en: '![image](assets/css5_1054.png)'
+  id: totrans-437
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1054.png)'
+- en: Figure 10-54\. Sticking to the top of the sticky-positioning rectangle
+  id: totrans-438
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-54。粘在粘性定位矩形顶部
+- en: In other words, the `<h2>` sits in the normal flow until its sticky edge touches
+    the sticky edge of the sticky-positioning rectangle. At that point, it sticks
+    there as if absolutely positioned, *except* that it leaves behind the space it
+    otherwise would have occupied in the normal flow.
+  id: totrans-439
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 换句话说，`<h2>`在正常流中，直到其粘性边缘触及粘性定位矩形的粘性边缘。在那一点上，它会像绝对定位一样粘在那里，*不过*会在正常流中留下本应占据的空间。
+- en: 'You may have noticed that the `#scrollbox` element doesn’t have a `position`
+    declaration. One isn’t hiding offstage, either: it’s the `overflow: scroll` set
+    on `#scrollbox` that creates a containing block for the sticky-positioned `<h2>`
+    elements. This is a case where a containing block isn’t determined by `position`.'
+  id: totrans-440
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '你可能已经注意到，`#scrollbox`元素没有`position`声明。它也没有被隐藏到幕后：正是`#scrollbox`上设置的`overflow:
+    scroll`创建了粘性定位的`<h2>`元素的包含块。这是一个情况，其中包含块并非由`position`决定。'
+- en: If the scrolling is reversed so that the `<h2>`’s normal-flow position moves
+    lower than the top of the rectangle, the `<h2>` is detached from the rectangle
+    and resumes its place in the normal flow. This is shown in [Figure 10-55](#detaching_from_the_top).
+  id: totrans-441
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果滚动反向，使得`<h2>`的正常流位置低于矩形的顶部，`<h2>`将从矩形中分离，并恢复到正常流中的位置。这在[图10-55](#detaching_from_the_top)中有所显示。
+- en: '![image](assets/css5_1055.png)'
+  id: totrans-442
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1055.png)'
+- en: Figure 10-55\. Detaching from the top of the sticky-positioning rectangle
+  id: totrans-443
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图10-55。从粘性定位矩形顶部脱离
+- en: 'Note that the reason the `<h2>` sticks to the *top* of the rectangle in these
+    examples is that the value of `top` is set to something other than `auto` for
+    the `<h2>` (that is, for the sticky-positioned element). You can use whatever
+    offset side you want. For example, you could have elements stick to the bottom
+    of the rectangle as you scroll downward through the content. The following code
+    is illustrated in [Figure 10-56](#sticking_to_the_bottom):'
+  id: totrans-444
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在这些示例中，`<h2>` 粘在矩形的*顶部*是因为 `<h2>` 的 `top` 值设置为非 `auto`（即粘性定位元素）。你可以使用任何你想要的偏移侧面。例如，你可以让元素在向下滚动内容时粘在矩形的底部。以下代码在
+    [图 10-56](#sticking_to_the_bottom) 中有所体现：
+- en: '[PRE61]'
+  id: totrans-445
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE61]'
+- en: '![image](assets/css5_1056.png)'
+  id: totrans-446
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1056.png)'
+- en: Figure 10-56\. Sticking to the bottom of the sticky-positioning rectangle
+  id: totrans-447
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-56\. 粘在粘性定位矩形的底部
+- en: This could be a way to show footnotes or comments for a given paragraph, for
+    example, while allowing them to scroll away as the paragraph moves upward. The
+    same rules apply for the left and right sides, which is useful for side-scrolling
+    content.
+  id: totrans-448
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，这可以是显示给定段落的脚注或评论的一种方式，同时允许它们随着段落向上移动而滚动消失。同样的规则也适用于左右两侧，这对于侧向滚动内容非常有用。
+- en: 'If you define more than one offset property to have a value other than `auto`,
+    *all* of them will become sticky edges. For example, this set of styles will force
+    the `<h2>` to always appear inside the scrollbox, regardless of which way its
+    content is scrolled (see [Figure 10-57](#making_every_side_sticky)):'
+  id: totrans-449
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你定义了多个偏移属性，并且它们的值不是 `auto`，那么*所有*这些属性都将成为粘性边缘。例如，这组样式将强制 `<h2>` 始终出现在滚动框内，无论其内容如何滚动（见
+    [图 10-57](#making_every_side_sticky)）：
+- en: '[PRE62]'
+  id: totrans-450
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE62]'
+- en: '![image](assets/css5_1057.png)'
+  id: totrans-451
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1057.png)'
+- en: Figure 10-57\. Making every side a sticky side
+  id: totrans-452
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-57\. 使每个边都成为粘性边
+- en: 'You might wonder: what happens if I have multiple sticky-positioned elements
+    in a situation like this, and I scroll past two or more? In effect, they pile
+    up on top of one another:'
+  id: totrans-453
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能会想：如果我在这种情况下有多个粘性定位的元素，并且我滚动超过两个或更多，会发生什么？事实上，它们会相互堆叠在一起：
+- en: '[PRE63]'
+  id: totrans-454
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE63]'
+- en: 'It’s not easy to see in static images like [Figure 10-58](#sticky-header_pileup),
+    but the way the headers are piling up is that the later they are in the source,
+    the closer they are to the viewer. This is the usual `z-index` behavior—which
+    means that you can decide which sticky elements sit on top of others by assigning
+    explicit `z-index` values. For example, suppose we want the first sticky element
+    in our content to sit atop all the others. By giving it `z-index: 1000`, or any
+    other sufficiently high number, it would sit on top of all the other sticky elements
+    that are stuck in the same place. The visual effect would be of the other elements
+    “sliding under” the topmost element.'
+  id: totrans-455
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在静态图像中（例如 [图 10-58](#sticky-header_pileup)），很难看出标题堆叠的方式，但它们在源文件中的后面，它们离观察者越近。这是常见的
+    `z-index` 行为——这意味着您可以通过指定显式的 `z-index` 值来决定哪些粘性元素位于其他元素之上。例如，假设我们希望内容中的第一个粘性元素位于所有其他元素之上。通过给它
+    `z-index: 1000` 或任何足够高的数值，它将位于所有其他粘性元素的顶部。视觉效果将是其他元素“滑动在”最顶部元素下方。'
+- en: '![image](assets/css5_1058.png)'
+  id: totrans-456
+  prefs: []
+  type: TYPE_IMG
+  zh: '![image](assets/css5_1058.png)'
+- en: Figure 10-58\. A sticky-header pileup
+  id: totrans-457
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 10-58\. 一个粘性头部的堆积
+- en: Summary
+  id: totrans-458
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 摘要
+- en: As you saw in this chapter, CSS offers numerous ways to affect the placement
+    of basic elements. Floats may be a fundamentally simple aspect of CSS, but that
+    doesn’t keep them from being useful and powerful. They fill a vital and honorable
+    niche, allowing the placement of content to one side while the rest of the content
+    flows around it.
+  id: totrans-459
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如本章中所示，CSS 提供了多种影响基本元素位置的方法。浮动可能是 CSS 的一个基本简单方面，但这并不妨碍它们的有用和强大。它们填补了一个重要且光荣的空白，允许内容一边靠在一边的一侧。
+- en: Thanks to positioning, it’s possible to move elements around in ways that the
+    normal flow could never accommodate. Combined with the stacking possibilities
+    of the z-axis and the various overflow patterns, there’s still a lot to like in
+    positioning, even in a time when flexbox and grid layout are available to us.
+  id: totrans-460
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于定位的存在，我们可以以正常流无法实现的方式移动元素。结合 `z` 轴的堆叠可能性和各种溢出模式，即使在我们可以使用 Flexbox 和 Grid 布局的时代，定位仍然有很多优点。

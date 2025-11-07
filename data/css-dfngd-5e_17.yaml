@@ -1,0 +1,2226 @@
+- en: Chapter 17\. Transforms
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第17章。Transforms
+- en: Ever since the inception of CSS, elements have been rectangular and firmly oriented
+    on the horizontal and vertical axes. Several tricks arose to make elements look
+    like they were tilted and so on, but underneath it all was a rigid grid.
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自CSS诞生以来，元素一直是矩形的，并且严格在水平和垂直轴上定位。出现了一些技巧使元素看起来像是倾斜等，但在所有这些技巧的背后都是一个严格的网格。
+- en: With CSS *transforms*, you have the ability to break that visual grid and shake
+    up the way your elements are presented. Whether it’s as simple as rotating some
+    photographs a bit to make them appear more natural, or creating interfaces where
+    information can be revealed by flipping over elements, or doing interesting perspective
+    tricks with sidebars, CSS transforms can—if you’ll pardon the obvious expression—transform
+    the way you design.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 CSS *transforms*，您可以打破视觉网格并改变元素呈现的方式。
+- en: Coordinate Systems
+  id: totrans-3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 坐标系
+- en: Before embarking on this journey, let’s take a moment to orient ourselves. Specifically,
+    let’s review the *coordinate systems* used to define positions or movement in
+    space as a sequence of measurements. Two types of coordinate systems are used
+    in transforms, and it’s a good idea to be familiar with both.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无论是简单地稍微旋转一些照片以使它们看起来更自然，还是创建信息可以通过翻转元素显示的界面，或者在侧边栏中进行有趣的透视技巧，CSS transforms
+    都能——如果您允许这个显而易见的表达——转变您设计的方式。
+- en: 'The first is the *Cartesian coordinate system*, often called the *x/y/z coordinate
+    system*. This system describes the position of a point in space by using two numbers
+    (for two-dimensional placement) or three numbers (for three-dimensional placement).
+    In CSS, the system uses three axes: the x-axis (horizontal); the y-axis (vertical);
+    and the z-axis (depth). This is illustrated in [Figure 17-1](#tf_fig01).'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在踏上这段旅程之前，让我们花一点时间来定位自己。具体来说，让我们回顾一下用于定义空间中位置或运动的*坐标系*作为一系列测量的两种类型的坐标系。在transforms中使用的第一种是*笛卡尔坐标系*，通常称为*x/y/z坐标系*。该系统通过使用两个数字（用于二维放置）或三个数字（用于三维放置）描述空间中点的位置。在CSS中，该系统使用三个轴：x轴（水平）、y轴（垂直）和z轴（深度）。这在
+    [Figure 17-1](#tf_fig01) 中有所说明。
+- en: '![css5 1701](assets/css5_1701.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1701](assets/css5_1701.png)'
+- en: Figure 17-1\. The three Cartesian axes used in CSS transforms
+  id: totrans-7
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-1。CSS transforms中使用的三个笛卡尔坐标轴
+- en: For any two-dimensional (2D) transform, you need to worry about only the x-
+    and y-axes. By convention, positive x values go to the right, and negative values
+    go to the left. Similarly, positive y values go downward along the y-axis, while
+    negative values go upward along the y-axis.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于任何二维（2D）变换，您只需关心x和y轴。按照惯例，正x值向右移动，负值向左移动。同样地，正y值沿y轴向下移动，而负值沿y轴向上移动。
+- en: 'That might seem a little weird, since we tend to think that higher numbers
+    should place something higher up, not lower down, as many of us learned in pre-algebra.
+    (This is why the “y” label is at the bottom of the y-axis in [Figure 17-1](#tf_fig01):
+    the labels are placed in the positive direction on all three axes.) If you are
+    experienced with absolute positioning in CSS, think of the `top` property values
+    for absolutely positioned elements: they get moved downward for positive `top`
+    values, and upward when `top` has a negative length.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这可能看起来有点奇怪，因为我们倾向于认为更高的数字应该使某些东西放置得更高，而不是更低，就像我们在初代数中学到的一样。（这就是为什么在 [Figure 17-1](#tf_fig01)
+    中，“y”标签位于y轴的底部的原因：标签在所有三个轴上的正方向上。）如果您在CSS中有绝对定位的经验，请考虑绝对定位元素的`top`属性值：对于正值的`top`值，它们向下移动，而当`top`具有负长度时，它们向上移动。
+- en: 'Given this, in order to move an element leftward and down, you would give it
+    a negative x and a positive y value. Here is one way to do this:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 鉴于此，为了将元素向左和向下移动，您需要给出一个负x值和一个正y值。这是一个实现方式：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: That is, in fact, a valid transform value, as you’ll see in just a bit. Its
+    effect is to translate (move) the element 5 ems to the left and 33 pixels down,
+    in that order.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事实上，这是一个有效的transform值，您很快会看到。它的效果是按顺序将元素向左移动5 ems并向下移动33像素。
+- en: If you want to transform something in three-dimensional (3D) space, you add
+    a z-axis value. This axis is the one that “sticks out” of the display and runs
+    straight through your head—in a theoretical sense, that is. Positive z values
+    are closer to you, and negative z values are farther away from you. In this regard,
+    it’s very much like the `z-index` property.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想要在三维空间中进行转换，需要添加一个z轴值。这个轴是“伸出”显示器并直接穿过您头部的轴——在理论上是这样的。正z值更接近您，负z值则远离您。在这方面，它非常像`z-index`属性。
+- en: 'So let’s say that we want to take the element we moved before and add a z-axis
+    value:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设我们要取之前移动的元素，并添加一个z轴值：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Now the element will appear 200 pixels closer to us than it would be without
+    the z value.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在该元素看起来比没有z值时更接近我们200像素。
+- en: Well, you might wonder exactly how an element can be moved 200 pixels closer
+    to you, given that holographic displays are regrettably rare and expensive. How
+    many molecules of air between you and your monitor are equivalent to 200 pixels?
+    What does an element moving closer to you even look like, and what happens if
+    it gets *too* close? These are excellent questions that we’ll get to later. For
+    now, just accept that moving an element along the z-axis appears to move it closer
+    or farther away.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 嗯，您可能会想知道如何将元素移动200像素靠近您，考虑到全息显示器很少见且昂贵。在您和显示器之间的空气分子等效于200像素有多少？元素靠近您看起来是什么样子，如果它变得*太*靠近会发生什么？这些都是我们稍后会讨论的绝佳问题。现在，只需接受沿z轴移动元素似乎会使其看起来更接近或更远即可。
+- en: The really important thing to remember is that every element carries its own
+    frame of reference and so considers its axes with respect to itself. If you rotate
+    an element, the axes rotate along with it, as illustrated in [Figure 17-2](#tf_fig02).
+    Any further transforms are calculated with respect to those rotated axes, not
+    the axes of the display.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 非常重要的一点要记住，每个元素都带有自己的参考框架，因此考虑其轴与自身的关系。如果旋转一个元素，轴也会随之旋转，如[第17-2图](#tf_fig02)所示。任何进一步的转换都是相对于那些旋转后的轴计算的，而不是显示的轴。
+- en: '![css5 1702](assets/css5_1702.png)'
+  id: totrans-19
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1702](assets/css5_1702.png)'
+- en: Figure 17-2\. Elemental frames of reference
+  id: totrans-20
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 第17-2图。参考基本框架
+- en: 'Now, suppose you want to rotate an element 45 degrees clockwise in the plane
+    of the display (i.e., around the z-axis). Here’s the transform value you’re most
+    likely to use:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，假设您想在显示平面（即绕z轴）顺时针旋转45度一个元素。这是您最有可能使用的转换值：
+- en: '[PRE2]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Change that to `–45deg`, and the element will rotate counterclockwise (anticlockwise
+    for our international friends) around the z-axis. In other words, it will rotate
+    in the *xy* plane, as illustrated in [Figure 17-3](#tf_fig05).
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将其更改为`–45deg`，元素将逆时针绕z轴旋转（对于我们的国际朋友则是逆时针）。换句话说，它将在*xy*平面内旋转，如[第17-3图](#tf_fig05)所示。
+- en: '![css5 1703](assets/css5_1703.png)'
+  id: totrans-24
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1703](assets/css5_1703.png)'
+- en: Figure 17-3\. Rotations in the xy plane
+  id: totrans-25
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 第17-3图。xy平面上的旋转
+- en: Speaking of rotations, the other coordinate system used in CSS transforms is
+    a *spherical system*, which describes angles in 3D space. It’s illustrated in
+    [Figure 17-4](#tf_fig03).
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 谈到旋转，CSS转换中使用的另一种坐标系是*球坐标系*，它描述了三维空间中的角度。它在[第17-4图](#tf_fig03)中有示例。
+- en: '![css5 1704](assets/css5_1704.png)'
+  id: totrans-27
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1704](assets/css5_1704.png)'
+- en: Figure 17-4\. The spherical coordinate system used in CSS transforms
+  id: totrans-28
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 第17-4图。CSS转换中使用的球坐标系
+- en: 'For the purposes of 2D transforms, you have to worry about only a single 360-degree
+    polar system: the one that sits on the plane described by the x- and y-axes. When
+    it comes to rotations, a 2D rotation actually describes a rotation around the
+    z-axis. Similarly, rotations around the x-axis tilt the element toward or away
+    from you, and rotations around the y-axis turn the element from side to side.
+    These are illustrated in [Figure 17-5](#tf_fig04).'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于2D转换，您只需担心一个单独的360度极坐标系：即坐落在由x轴和y轴描述的平面上的坐标系。在旋转方面，2D旋转实际上描述了绕z轴的旋转。类似地，绕x轴的旋转会使元素向您倾斜或远离您，而绕y轴的旋转则会使元素从一侧转向另一侧。这些在[第17-5图](#tf_fig04)中有示例。
+- en: '![css5 1705](assets/css5_1705.png)'
+  id: totrans-30
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1705](assets/css5_1705.png)'
+- en: Figure 17-5\. Rotations around the three axes
+  id: totrans-31
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 第17-5图。绕三个轴旋转
+- en: All right, now that we have our bearings, let’s get started with using CSS transforms!
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 好了，既然我们有了方向，那么让我们开始使用CSS转换吧！
+- en: Transforming
+  id: totrans-33
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 转换中
+- en: One property applies all transforms as a single operation, and a few ancillary
+    properties affect exactly how the transforms are applied or allow transforms in
+    a single manner. We’ll start with the big cheese.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个属性将所有变换作为单个操作应用，而一些辅助属性则影响如何精确应用变换，或者允许以一种单一的方式进行变换。我们将从最重要的开始。
+- en: A <*`transform-list`*> is a space-separated list of functions defining different
+    transformations, like the examples used in the preceding section. We’ll dig into
+    the specific functions you can use in a moment.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <*`transform-list`*> 是定义不同变换的函数的以空格分隔的列表，就像在前面一节中使用的示例一样。我们稍后将详细讨论可以在其中使用的具体函数。
+- en: First off, let’s clear up the matter of the bounding box. For any element being
+    affected by CSS, the *bounding box* is the border box—the outermost edge of the
+    element’s border. Any outlines and margins are ignored for the purposes of calculating
+    the bounding box.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，让我们澄清边界框的问题。对于任何受 CSS 影响的元素，*边界框* 是边框框——元素边框的最外边缘。为了计算边界框，任何轮廓和边距都将被忽略。
+- en: Note
+  id: totrans-37
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: If a table-display element is being transformed, its bounding box is the table
+    wrapper box, which encloses the table box and any associated caption box.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果正在变换表格显示元素，则其边界框是表格包装框，它包围表格框和任何相关联的标题框。
+- en: If you’re transforming an SVG element with CSS, its bounding box is its SVG-defined
+    *object bounding box*.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在用 CSS 变换 SVG 元素，则其边界框是其 SVG 定义的 *对象边界框*。
+- en: Note that all transformed elements (e.g., elements with `transform` set to a
+    value other than `none`) have their own stacking context. (See [“Placement on
+    the Z-Axis”](ch10.html#placement-on-the-z-axis) for an explanation.)
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，所有变换的元素（例如，将 `transform` 设置为除 `none` 以外的值的元素）都有自己的堆叠上下文。（有关说明，请参见 [“Z轴上的放置”](ch10.html#placement-on-the-z-axis)。）
+- en: 'While a scaled element may be much smaller or larger than it was before the
+    transform was applied, the actual space on the page that the element occupies
+    remains the same as before the transform was applied. This is true for all the
+    transform functions: when you translate or rotate an element, its siblings don’t
+    automatically move out of the way.'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管经过变换后的缩放元素可能比之前大或小得多，但元素在页面上实际占据的空间与变换应用前相同。这对所有变换函数都是适用的：当您平移或旋转元素时，其兄弟元素不会自动让开。
+- en: 'Now, the value entry <*`transform-list`*> requires some explanation. It refers
+    to a list of one or more transform functions, one after the other, in space-separated
+    format. It looks something like this, with the result shown in [Figure 17-6](#tf_fig06):'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，值输入 <*`transform-list`*> 需要一些解释。它指的是一个或多个变换函数的列表，一个接一个地以空格分隔的格式。它看起来像这样，其结果显示在
+    [Figure 17-6](#tf_fig06) 中：
+- en: '[PRE3]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '![css5 1706](assets/css5_1706.png)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1706](assets/css5_1706.png)'
+- en: Figure 17-6\. A transformed `<div>` element
+  id: totrans-45
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-6\. 一个变换的 `<div>` 元素
+- en: 'The functions are processed one at a time, starting with the first (leftmost)
+    and proceeding to the last (rightmost). This first-to-last processing order is
+    important, because changing the order can lead to drastically different results.
+    Consider the following two rules, which have the results shown in [Figure 17-7](#tf_fig07):'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 函数逐一处理，从最左边的第一个开始，依次到最右边的最后一个。这种从头到尾的处理顺序非常重要，因为改变顺序可能导致截然不同的结果。请考虑以下两个规则，其结果显示在
+    [Figure 17-7](#tf_fig07) 中：
+- en: '[PRE4]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '![css5 1707](assets/css5_1707.png)'
+  id: totrans-48
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1707](assets/css5_1707.png)'
+- en: Figure 17-7\. Different transform lists, different results
+  id: totrans-49
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-7\. 不同的变换列表，不同的结果
+- en: In the first instance, an image is translated (moved) 200 pixels along its x-axis
+    and then rotated 45 degrees. In the second instance, an image is rotated 45 degrees
+    and then moved 200 pixels along its x-axis—that’s the x-axis of the transformed
+    element, *not* of the parent element, page, or viewport. In other words, when
+    an element is rotated, its x-axis (along with its other axes) rotates along with
+    it. All element transforms are conducted with respect to the element’s own frame
+    of reference.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一个示例中，图像沿其 x 轴平移（移动）了 200 像素，然后旋转了 45 度。在第二个示例中，图像旋转了 45 度，然后沿其 x 轴移动了 200
+    像素——这是变换元素的 x 轴，*而不是* 父元素、页面或视口的 x 轴。换句话说，当一个元素被旋转时，它的 x 轴（以及其它轴）会随之旋转。所有元素变换都是相对于元素自身的参考系进行的。
+- en: 'Note that when you have a series of transform functions, all of them must be
+    properly formatted; that is, they must be valid. If even one function is invalid,
+    it renders the entire value invalid. Consider the following:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，当您有一系列变换函数时，它们必须全部正确格式化；即它们必须是有效的。如果有一个函数无效，那么整个值就会无效。请考虑以下情况：
+- en: '[PRE5]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Because the value for `rotate()` is invalid—rotational values must be an <*`angle`*>—the
+    entire value is dropped. The image in question will just sit there in its initial
+    untransformed state, neither translated nor scaled, let alone rotated.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`rotate()`的值是无效的—旋转值必须是一个<*`angle`*>—整个值被丢弃了。所讨论的图像将仅保持其初始未转换状态，既没有平移也没有缩放，更不用说旋转了。
+- en: 'In addition, transforms are not usually cumulative. If you apply a transform
+    to an element and then later want to add a transformation, you need to restate
+    the original transform. Consider the following scenarios, illustrated in [Figure 17-8](#tf_fig08):'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，变换通常不是累积的。如果你对一个元素应用了一个变换，然后稍后想添加一个变换，你需要重新声明原始的变换。考虑以下场景，见[图 17-8](#tf_fig08)：
+- en: '[PRE6]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '![css5 1708](assets/css5_1708.png)'
+  id: totrans-56
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1708](assets/css5_1708.png)'
+- en: Figure 17-8\. Overwriting or modifying transforms
+  id: totrans-57
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-8\. 覆盖或修改变换
+- en: In the first case, the second rule completely replaces the first, meaning that
+    the element is scaled only along the y-axis. This makes some sense; it’s the same
+    as if you declare a font size and then elsewhere declare a different font size
+    for the same element. You don’t get a cumulative font size that way. You just
+    get one size or the other. In the second example, the entirety of the first set
+    of transforms is included in the second set, so they all are applied along with
+    the `scaleY()` function.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一种情况下，第二条规则完全取代了第一条，这意味着元素仅沿着 y 轴进行缩放。这有些合理；这就像你声明一个字体大小，然后在其他地方为同一个元素声明了不同的字体大小一样。你不会得到累积的字体大小。你只会得到其中一个大小。在第二个例子中，第一组变换的全部内容包含在第二组中，因此它们都与`scaleY()`函数一起应用。
+- en: Note
+  id: totrans-59
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: If you’re wishing for properties that apply to just a single type of transformation,
+    such as a property that only rotates or a property that only scales elements,
+    you’ll see some later in the chapter, so hang in there.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你希望应用于单一类型变换的属性，例如仅旋转或仅缩放元素的属性，你将在本章的后面看到一些例子，所以请耐心等待。
+- en: 'There’s one important caveat: as of this writing, transforms are not applied
+    to *atomic inline-level* boxes. These are inline boxes like spans, hyperlinks,
+    and so on. Those elements can be transformed if their block-level parent is transformed,
+    in which case they go along for the ride. But you can’t just rotate a `<span>`
+    unless you’ve changed its display role via `display: block`, `display: inline-block`,
+    or something along those lines. The reason for this limitation boils down to an
+    uncertainty. Suppose you have a `<span>` (or any inline-level box) that breaks
+    across multiple lines. If you rotate it, what happens? Does each line box rotate
+    with respect to itself, or should all the line boxes be rotated as a single group?
+    There’s no clear answer, and the debate continues, so for now you can’t directly
+    transform inline-level boxes.'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这里有一个重要的警告：截至本文写作时，变换通常不应用于*原子内联级*框。这些是像 span、超链接等内联框。这些元素可以在它们的块级父元素进行变换时进行变换，这样它们就随之而动。但你不能仅仅旋转一个
+    `<span>`，除非你通过 `display: block`、`display: inline-block` 或类似的方式改变了它的显示角色。这种限制的原因归结为不确定性。假设你有一个
+    `<span>`（或任何内联级框），它跨越多行。如果你旋转它，会发生什么？每一行框是否独立旋转，还是所有行框作为一个整体旋转？没有明确的答案，争论仍在进行中，因此目前你不能直接转换内联级框。'
+- en: The Transform Functions
+  id: totrans-62
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 变换函数
+- en: 'CSS has 21 transform functions, as of early 2023, employing various value patterns
+    to get their jobs done. The following is a list of all the available transform
+    functions, minus their value patterns:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2023年初，CSS共有21个变换函数，使用各种值模式来完成它们的工作。以下是所有可用变换函数的列表，减去它们的值模式：
+- en: '| `translate()` `translate3d()`'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `translate()` `translate3d()`'
+- en: '`translateX()`'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`translateX()`'
+- en: '`translateY()`'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`translateY()`'
+- en: '`translateZ()` | `scale()` `scale3d()`'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`translateZ()` | `scale()` `scale3d()`'
+- en: '`scaleX()`'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`scaleX()`'
+- en: '`scaleY()`'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`scaleY()`'
+- en: '`scaleZ()` | `rotate()` `rotate3d()`'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`scaleZ()` | `rotate()` `rotate3d()`'
+- en: '`rotateX()`'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`rotateX()`'
+- en: '`rotateY()`'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`rotateY()`'
+- en: '`rotateZ()` | `skew()` `skewX()`'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`rotateZ()` | `skew()` `skewX()`'
+- en: '`skewY()` | `matrix()` `matrix3d()`'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`skewY()` | `matrix()` `matrix3d()`'
+- en: '`perspective()` |'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`perspective()` |'
+- en: We’ll tackle the most common types of transforms first, along with their associated
+    properties if they exist, and then deal with the more obscure or difficult ones.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将首先解决最常见的变换类型，以及它们的相关属性（如果存在），然后再处理更晦涩或更难的部分。
+- en: Translation
+  id: totrans-77
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 平移
+- en: A *translation transform* is just a move along one or more axes. For example,
+    `translateX()` moves an element along its own x-axis, `translateY()` moves it
+    along its y-axis, and `translateZ()` moves it along its z-axis.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*平移变换* 只是沿一个或多个轴的移动。例如，`translateX()` 沿其自身的 x 轴移动元素，`translateY()` 沿其 y 轴移动它，而
+    `translateZ()` 则沿其 z 轴移动它。'
+- en: These are usually referred to as the 2D *translation functions*, since they
+    can slide an element up and down, or side to side, but not forward or backward
+    along the z-axis. Each of these functions accepts a single distance value, expressed
+    as either a length or a percentage.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些通常被称为二维 *平移函数*，因为它们可以将元素向上下或左右滑动，但不能沿着 z 轴向前或向后移动。每个函数接受一个距离值，表示为长度或百分比。
+- en: If the value is a length, the effect is about what you’d expect. Translate an
+    element 200 pixels along the x-axis with `translateX(200px)`, and it will move
+    200 pixels to its right. Change that to `translateX(-200px)`, and the element
+    will move 200 pixels to its left. For `translateY()`, positive values move the
+    element downward, while negative values move it upward.
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果值是一个长度，则效果与预期相符。使用 `translateX(200px)` 可以将元素沿 x 轴移动 200 像素，它将向右移动 200 像素。将其改为
+    `translateX(-200px)`，元素将向左移动 200 像素。对于 `translateY()`，正值将使元素向下移动，而负值将使其向上移动。
+- en: Keep in mind that translations are always declared with respect to the element
+    itself. Thus, for example, if you flip the element upside down by rotation, positive
+    `translateY()` values will move the element downward on the page, because that’s
+    a move upward from the upside-down element’s point of view.
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，平移始终是相对于元素本身声明的。因此，例如，如果你通过旋转将元素倒置，正的 `translateY()` 值将使元素在页面上向下移动，因为从倒置元素的角度来看，这是向上移动。
+- en: If the value is a percentage, the distance is calculated as a percentage of
+    the element’s own size. Thus, if an element is 300 pixels wide and 200 pixels
+    tall, `translateX(50%)` will move it 150 pixels to its right, and `translateY(-10%)`
+    will move that same element upward (with respect to itself) by 20 pixels.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果值是一个百分比，则距离按元素自身大小的百分比计算。因此，如果一个元素宽度为 300 像素，高度为 200 像素，则 `translateX(50%)`
+    将使其向右移动 150 像素，而 `translateY(-10%)` 将使该元素向上移动 20 像素（相对于自身而言）。
+- en: If you want to translate an element along both the x- and y-axes at the same
+    time, `translate()` makes it easy. Just supply the x value first and the y value
+    second, separated by a comma, which is the same as if you included both a `translateX()`
+    and a `translateY()`. If you omit the y value, it’s assumed to be 0\. Thus, `translate(2em)`
+    is treated as if it were `translate(2em,0)`, which is also the same as `translateX(2em)`.
+    See [Figure 17-9](#tf_fig09) for some examples of 2D translation.
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想同时沿 x 轴和 y 轴平移一个元素，`translate()` 使得这很容易。只需首先提供 x 值，然后是 y 值，用逗号分隔，这与包含 `translateX()`
+    和 `translateY()` 的效果相同。如果省略 y 值，则假定为 0。因此，`translate(2em)` 被视为 `translate(2em,0)`，这也与
+    `translateX(2em)` 相同。参见 [图 17-9](#tf_fig09) 了解二维平移的一些示例。
+- en: '![css5 1709](assets/css5_1709.png)'
+  id: totrans-84
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1709](assets/css5_1709.png)'
+- en: Figure 17-9\. Translating in two dimensions
+  id: totrans-85
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-9\. 二维平移
+- en: The `translateZ()` function translates elements along the z-axis, thus moving
+    them into the third dimension. Unlike the 2D translation functions, `translateZ()`
+    accepts only length values. Percentage values are *not* permitted for `translateZ()`,
+    or indeed for any z-axis value.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`translateZ()` 函数沿 z 轴平移元素，从而将其移入第三维。与二维平移函数不同，`translateZ()` 仅接受长度值。不允许使用百分比值用于
+    `translateZ()`，实际上也不允许用于任何 z 轴值。'
+- en: Much like `translate()` does for x and y translations, `translate3d()` is a
+    shorthand function that incorporates the x, y, and z translation values into a
+    single function. This is handy if you want to move an element over, up, and forward
+    in one fell swoop.
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像 `translate()` 对于 x 和 y 的转换一样，`translate3d()` 是一个快捷函数，将 x、y 和 z 的转换值合并为一个函数。如果你想一次性向前、向上和向前移动一个元素，这非常方便。
+- en: See [Figure 17-10](#tf_fig10) for an illustration of how 3D translation works.
+    Each arrow represents the translation along that axis, arriving at a point in
+    3D space. The dashed lines show the distance and direction from the origin point
+    (the intersection of the three axes) and the distance above the x*y* plane.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 见 [图 17-10](#tf_fig10) 了解 3D 平移工作原理的插图。每个箭头代表沿该轴的平移，到达三维空间中的一个点。虚线显示了从原点（三个轴的交点）到达的距离和方向，以及在
+    x*y* 平面上方的距离。
+- en: Unlike `translate()`, there is no fallback if `translate3d()` does not contain
+    three values. Thus, `translate3d(1em,-50px)` should be treated as invalid by browsers,
+    with no actual translation taking place as a result.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`translate()`不同，如果`translate3d()`不包含三个值，那么没有回退选项。因此，浏览器应将`translate3d(1em,-50px)`视为无效，因为不会发生实际的平移。
+- en: '![css5 1710](assets/css5_1710.png)'
+  id: totrans-90
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1710](assets/css5_1710.png)'
+- en: Figure 17-10\. Translating in three dimensions
+  id: totrans-91
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-10\. 三维平移
+- en: The translate property
+  id: totrans-92
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 平移属性
+- en: When you want to translate an element without having to go through the `transform`
+    property, you can use the `translate` property instead.
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您想要对元素进行平移而无需通过`transform`属性时，可以使用`translate`属性代替。
+- en: Very much like the `translate()` function, the `translate` property accepts
+    from one to three length values, or two percentages and a length value, or more
+    reduced patterns such as a single length. Unlike the `translate()` function, the
+    `transform` property does not use commas to separate its values.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`translate()`函数非常类似，`translate`属性接受从一个到三个长度值，或两个百分比和一个长度值，或更简化的模式，如单个长度。与`translate()`函数不同，`transform`属性不使用逗号分隔其值。
+- en: If only one value is given, it is used as an x-axis translation. With two values,
+    the first is the x-axis translation, and the second is the y-axis translation.
+    With three values, they are taken in the order `x y z`. Any missing values default
+    to `0px`.
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果只提供一个值，则用作x轴的平移。当提供两个值时，第一个是x轴的平移，第二个是y轴的平移。当提供三个值时，它们按顺序`x y z`取值。任何缺失的值默认为`0px`。
+- en: 'If you refer back to [Figure 17-9](#tf_fig09), the following would yield the
+    same results as are shown there:'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您回顾[图17-9](#tf_fig09)，以下示例将产生与其所示相同的结果：
+- en: '[PRE7]'
+  id: totrans-97
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Similarly, the following would have the same effect diagrammed in [Figure 17-10](#tf_fig10):'
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，以下示例将产生与[图17-10](#tf_fig10)中所示相同的效果：
+- en: '[PRE8]'
+  id: totrans-99
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: The default value, `none`, means that no translation is applied.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值为`none`，意味着不应用任何翻译。
+- en: Scaling
+  id: totrans-101
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 缩放
+- en: A *scale transform* makes an element larger or smaller, depending on the value
+    you supply. These values are unitless real numbers, either positive or negative.
+    On the 2D plane, you can scale along the x- and y-axes individually or scale them
+    together.
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*缩放变换*会使元素变大或变小，具体取决于您提供的值。这些值是无单位的实数，可以是正数或负数。在二维平面上，您可以分别沿x轴和y轴缩放，也可以同时缩放它们。'
+- en: A number value supplied to a scale function is a multiplier; thus, `scaleX(2)`
+    will make an element twice as wide as it was before the transformation, whereas
+    `scaleY(0.5)` will make it half as tall. Percentage values are equivalent to number
+    values at a ratio of 100:1; that is, `50%` will have the same effect as `0.5`,
+    and `200%` will have the same effect as `2`, and so on.
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 提供给缩放函数的数字值是一个乘数；因此，`scaleX(2)`将使元素比转换之前宽出两倍，而`scaleY(0.5)`将使其高度减少一半。百分比值等同于数字值的比例为100:1；也就是说，`50%`将产生与`0.5`相同的效果，`200%`将产生与`2`相同的效果，依此类推。
+- en: If you want to scale along both axes simultaneously, use `scale()`. The x value
+    is always first, and the y always second, so `scale(2,0.5)` will make the element
+    twice as wide and half as tall as it was before being transformed. If you supply
+    only one number, it is used as the scaling value for both axes; thus, `scale(2)`
+    will make the element twice as wide *and* twice as tall. This is in contrast to
+    `translate()`, where an omitted second value is always set to 0\. Using `scale(1)`
+    will scale an element to be exactly the same size it was before you scaled it,
+    as will `scale(1,1)`—just in case you were dying to do that.
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想要同时沿两个轴缩放，请使用`scale()`。x值始终在前，y值始终在后，因此`scale(2,0.5)`将使元素的宽度增加一倍，高度减少一半。如果只提供一个数字，则用作两个轴的缩放值；因此，`scale(2)`将使元素的宽度和高度都增加一倍。这与`translate()`形成对比，其中省略的第二个值总是被设置为0。使用`scale(1)`将会使元素缩放为与缩放之前完全相同的大小，如同`scale(1,1)`一样—假如您想要这样做。
+- en: '[Figure 17-11](#tf_fig11) shows a few examples of element scaling, using the
+    single-axis scaling functions as well as the combined `scale()`.'
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图17-11](#tf_fig11)展示了使用单轴缩放函数以及组合`scale()`的几个示例。'
+- en: If you can scale in two dimensions, you can also scale in three. CSS offers
+    `scaleZ()` for scaling just along the z-axis, and `scale3d()` for scaling along
+    all three axes at once. These have an effect only if the element has any depth,
+    which elements don’t by default. If you do make a change that conveys depth—say,
+    rotating an element around the x- or y-axis—then there is a depth that can be
+    scaled, and either `scaleZ()` or `scale3d()` can do so.
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果可以在两个维度上进行缩放，也可以在三个维度上进行缩放。CSS 提供了 `scaleZ()` 用于仅沿 z 轴缩放，以及 `scale3d()` 用于同时沿三个轴缩放。这仅在元素具有任何深度时有效，默认情况下元素没有深度。如果确实进行了传达深度的更改，比如围绕
+    x 轴或 y 轴旋转元素，则可以缩放深度，`scaleZ()` 或 `scale3d()` 可以这样做。
+- en: '![css5 1711](assets/css5_1711.png)'
+  id: totrans-107
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1711](assets/css5_1711.png)'
+- en: Figure 17-11\. Scaled elements
+  id: totrans-108
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-11\. 缩放元素
+- en: Similar to `translate3d()`, the `scale3d()` function requires all three numbers
+    to be valid. If you fail to do this, the malformed `scale3d()` will invalidate
+    the entire transform value to which it belongs.
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 `translate3d()` 类似，`scale3d()` 函数要求所有三个数字都有效。如果未能做到这一点，格式错误的 `scale3d()` 将使其所属的整个变换值无效。
+- en: 'Also note that scaling an element will change the effective distance of any
+    translations. For example, the following will cause the element to be translated
+    50 pixels to its right:'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还要注意，缩放元素会改变任何平移的有效距离。例如，以下内容将导致元素向右平移 50 像素：
+- en: '[PRE9]'
+  id: totrans-111
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: This is because the element is shrunk by 50%, and then moved to the right by
+    100 pixels *within its own frame of reference*, which is half-size. Switch the
+    order of the functions, and the element will be translated 100 pixels to its right
+    and then shrunk 50% from that spot.
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是因为元素缩小了 50%，然后在其自身的参考框架内向右移动了 100 像素，其大小为原始的一半。交换函数的顺序，元素将首先向右移动 100 像素，然后从该位置缩小
+    50%。
+- en: The scale property
+  id: totrans-113
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 缩放属性
+- en: Also similarly to translation, the `scale` property allows you to scale elements
+    up or down without having to use the `transform` property.
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与平移类似，`scale` 属性允许你在不使用 `transform` 属性的情况下对元素进行缩放。
+- en: The way `scale` handles its values differs little from the `translate` property.
+    If you give only one value, such as `scale(2)`, that value is used to scale in
+    both the x and y directions. With two values, the first is used to scale in the
+    x-axis direction, and the second in the y-axis direction. With three values, the
+    third is used to scale in the z-axis direction.
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`scale` 处理其值的方式与 `translate` 属性几乎没有区别。如果只给出一个值，例如 `scale(2)`，则该值用于在 x 和 y 方向上进行缩放。使用两个值时，第一个用于在
+    x 轴方向上进行缩放，第二个用于在 y 轴方向上进行缩放。使用三个值时，第三个用于在 z 轴方向上进行缩放。'
+- en: The following would have the same results as shown in [Figure 17-11](#tf_fig11).
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下列结果与 [图 17-11](#tf_fig11) 所示相同。
+- en: '[PRE10]'
+  id: totrans-117
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The default value, `none`, means that no scaling is applied.
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值 `none` 表示不应用任何缩放。
+- en: Element Rotation
+  id: totrans-119
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 元素旋转
+- en: A *rotation function* causes an element to be rotated around an axis, or around
+    an arbitrary vector in 3D space. CSS has four simple rotation functions, and one
+    less-simple function meant specifically for 3D.
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*旋转函数*会导致元素围绕轴或三维空间中的任意向量旋转。CSS 提供了四个简单的旋转函数，以及一个专门用于三维的较复杂函数。'
+- en: 'All four basic rotation functions accept just one value: an angle. This can
+    be expressed using a number, either positive or negative, and then any of the
+    valid angle units (`deg`, `grad`, `rad`, and `turn`). (See [“Angles”](ch05.html#angles)
+    for more details.) If a value’s number runs outside the usual range for the given
+    unit, it will look as if it were given a value in the allowed range. In other
+    words, a value of `437deg` will be tilted the same as if it were `77deg`, or,
+    for that matter, `-283deg`.'
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有四个基本的旋转函数只接受一个值：角度。这可以用一个数字表示，可以是正数或负数，并且可以使用任何有效的角度单位（`deg`、`grad`、`rad`
+    和 `turn`）。（更多详情请参见 [“角度”](ch05.html#angles)。）如果值的数字超出了给定单位的通常范围，则它看起来就像是给定了允许范围内的值。换句话说，`437deg`
+    的值会倾斜，就像它是 `77deg` 或 `-283deg` 一样。
+- en: Note, however, that these are visually equivalent only if you don’t animate
+    the rotation in some fashion. That is to say, animating a rotation of `1100deg`
+    will spin the element around several times before coming to rest at a tilt of
+    –20 degrees (or 340 degrees, if you like). By contrast, animating a rotation of
+    `-20deg` will tilt the element a bit to the left, with no spinning; and animating
+    a rotation of `340deg` will animate an almost full spin to the right. All three
+    animations come to the same end state, but the process of getting there is very
+    different in each case.
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但请注意，这些仅在视觉上等效，前提是不以某种方式对旋转进行动画处理。也就是说，对`1100deg`的旋转进行动画处理将使元素在倾斜20度（或者如果你愿意，340度）之前多次旋转。相比之下，对`-20deg`的旋转进行动画处理将使元素稍微向左倾斜，没有旋转；而对`340deg`的旋转进行动画处理将使元素几乎完全向右旋转。这三种动画都会达到相同的最终状态，但是每种情况下的过程却截然不同。
+- en: The `rotate()` function is a straight 2D rotation, and the one you’re most likely
+    to use. It is visually equivalent to `rotateZ()` because it rotates the element
+    around the z-axis. In a similar manner, `rotateX()` causes rotation around the
+    x-axis, thus causing the element to tilt toward or away from you; and `rotateY()`
+    rotates the element around its y-axis, as though it were a door. These are all
+    illustrated in [Figure 17-12](#tf_fig12).
+  id: totrans-123
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`rotate()`函数是直接的2D旋转函数，是你最有可能使用的。它在视觉上等效于`rotateZ()`，因为它使元素围绕z轴旋转。类似地，`rotateX()`会导致围绕x轴旋转，从而使元素朝向你或远离你倾斜；而`rotateY()`则围绕其y轴旋转元素，就像它是一个门一样。这些都在[图 17-12](#tf_fig12)中有所说明。'
+- en: '![css5 1712](assets/css5_1712.png)'
+  id: totrans-124
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1712](assets/css5_1712.png)'
+- en: Figure 17-12\. Rotations around the three axes
+  id: totrans-125
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-12\. 绕三个轴的旋转
+- en: Warning
+  id: totrans-126
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: Several of the examples in [Figure 17-12](#tf_fig12) present a fully 3D appearance.
+    This is possible with certain values of the `transform-style` and `perspective`
+    properties, described in [“Choosing a 3D Style”](#choosing-a-3d-style) and [“Changing
+    Perspective”](#changing-perspective) and omitted here for clarity. This will be
+    true throughout this text anytime 3D-transformed elements appear to be fully three-dimensional.
+    This is important to keep in mind because if you just try to apply the transform
+    functions shown, you won’t get the same visual results as in the figures.
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 17-12](#tf_fig12)中的几个示例展示了完全3D的外观。这是通过某些`transform-style`和`perspective`属性值实现的，详见[“选择3D风格”](#choosing-a-3d-style)和[“改变透视”](#changing-perspective)，这里省略以确保清晰。在本文的任何时候，只要出现完全三维变换的元素，这一点都很重要。需要记住，如果仅尝试应用所示的变换函数，不会得到与图示相同的视觉效果。'
+- en: If you’re comfortable with vectors and want to rotate an element through 3D
+    space, `rotate3d()` is for you. The first three numbers specify the x, y, and
+    z components of a vector in 3D space, and the degree value (angle) determines
+    the amount of rotation around the declared 3D vector.
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你对向量感到舒适，并希望通过3D空间旋转元素，那么`rotate3d()`就适合你。前三个数指定了3D空间中向量的x、y和z分量，度数值（角度）决定了围绕声明的3D矢量旋转的量。
+- en: To start with a basic example, the 3D equivalent of `rotateZ(45deg)` is `rotate3d(0,0,1,45deg)`.
+    This specifies a vector of zero magnitude on the x- and y-axes, and a magnitude
+    of 1 along the z-axis; in other words, the z-axis. The element is thus rotated
+    45 degrees around that vector, as shown in [Figure 17-13](#tf_fig13). This figure
+    also shows the appropriate `rotate3d()` values to rotate an element by 45 degrees
+    around the x- and y-axes.
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从基本示例开始，`rotateZ(45deg)`的3D等效函数是`rotate3d(0,0,1,45deg)`。这指定了在x轴和y轴上为零的矢量，以及在z轴上为1的矢量；换句话说，就是z轴。元素因此围绕该矢量旋转了45度，如[图 17-13](#tf_fig13)所示。该图还显示了围绕x轴和y轴旋转元素45度所需的适当`rotate3d()`值。
+- en: '![css5 1713](assets/css5_1713.png)'
+  id: totrans-130
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1713](assets/css5_1713.png)'
+- en: Figure 17-13\. Rotations around 3D vectors
+  id: totrans-131
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-13\. 绕3D矢量旋转
+- en: 'A little more complicated is something like `rotate3d(-0.95,0.5,1,45deg)`,
+    where the described vector points off into 3D space between the axes. To understand
+    how this works, let’s start with a basic example: `rotateZ(45deg)` (illustrated
+    in [Figure 17-13](#tf_fig13)). The equivalent is `rotate3d(0,0,1,45deg)`. The
+    first three numbers describe the components of a vector that has no x or y magnitude,
+    and a z magnitude of 1\. Thus, it points along the z-axis in a positive direction—that
+    is, toward the viewer. The element is then rotated clockwise as you look toward
+    the origin of the vector.'
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更复杂一点的是像`rotate3d(-0.95,0.5,1,45deg)`这样的情况，其中描述的向量指向3D空间中的轴之间。为了理解其工作原理，让我们从一个基本示例开始：`rotateZ(45deg)`（见[图17-13](#tf_fig13)）。其等效于`rotate3d(0,0,1,45deg)`。前三个数字描述了一个向量的分量，该向量在x或y方向上没有大小，而在z方向上的大小为1。因此，它沿着z轴正方向指向观察者。然后，元素顺时针旋转，当你朝向向量的起点时。
+- en: Similarly, the 3D equivalent of `rotateX(45deg)` is `rotate3d(1,0,0,45deg)`.
+    The vector points along the x-axis in the positive direction (to the right). If
+    you stand at the end of that vector and look toward its origin, you rotate the
+    element 45 degrees clockwise around the vector. Thus, from the usual viewer placement,
+    the top of the element rotates away from, and the bottom rotates toward, the viewer.
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，`rotateX(45deg)`的3D等效是`rotate3d(1,0,0,45deg)`。向量沿着x轴正方向（向右）指向。如果您站在该向量的末端并朝向其起点看，您将顺时针旋转45度。因此，从通常的观察者位置来看，元素的顶部远离观察者，底部朝向观察者旋转。
+- en: 'Now let’s make the example slightly more complex: suppose you have `rotate3d(1,1,0,45deg)`.
+    When viewed on your monitor, that describes a vector running from the top-left
+    to bottom-right corner, going right through the center of the element (by default,
+    anyway; we’ll see how to change that later). So the element’s rectangle has a
+    line running through it at a 45-degree angle, effectively spearing it. Then the
+    vector rotates 45 degrees, taking the element with it. The rotation is clockwise
+    as you look back toward the vector’s origin, so again, the top of the element
+    rotates away from the viewer, while the bottom rotates toward the viewer. If we
+    were to change the rotation to `rotate3d(1,1,0,90deg)`, the element would be edge-on
+    to the viewer, tilted at a 45-degree angle and facing off toward the upper right.
+    Try it with a piece of paper: draw a line from the top left to bottom right, and
+    then rotate the paper around that line.'
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们稍微复杂化这个例子：假设你有`rotate3d(1,1,0,45deg)`。当在您的显示器上查看时，描述的向量从左上角到右下角，通过元素中心穿过（默认情况下；稍后我们将看到如何更改）。因此，元素的矩形形状有一条线在45度角度上，实际上是在其上穿过。然后，向量旋转45度，将元素随之旋转。当你向向量起点望回去时，旋转是顺时针的，所以元素的顶部远离观察者旋转，而底部朝向观察者旋转。如果我们将旋转改为`rotate3d(1,1,0,90deg)`，那么元素将面向观察者，以45度角倾斜并朝右上方。
+- en: OK, so given all of that, now try visualizing how the vector is determined for
+    `rotate3d(-0.95,0.5,1,45deg)`. If we assume a cube 200 pixels on a side, the vector’s
+    components are 190 pixels to the *left* along the x-axis, 100 pixels down along
+    the y-axis, and 200 pixels toward the views along the z-axis. The vector goes
+    from the origin point (0, 0, 0) to the point (–190 px, 100 px, 200 px). [Figure 17-14](#tf_fig14)
+    depicts that vector, as well as the final result presented to the viewer.
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 好的，有了这一切，现在试着想象如何确定`rotate3d(-0.95,0.5,1,45deg)`的向量。假设一个边长为200像素的立方体，向量的分量为沿x轴向左190像素，沿y轴向下100像素，沿z轴向观察者200像素。[图17-14](#tf_fig14)展示了该向量及向观察者呈现的最终结果。
+- en: So the vector is like a metal rod speared through the element being rotated.
+    As we look back along the line of the vector, the rotation is 45 degrees clockwise.
+    But since the vector points left, down, and forward, that means the top-left corner
+    of the element rotates toward the viewer, and the bottom right rotates away, as
+    shown in [Figure 17-14](#tf_fig14).
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，向量就像穿过正在旋转的元素的金属棒。当我们沿着向量的线望回去时，旋转是顺时针45度。但由于向量指向左、下和前方，这意味着元素的左上角朝向观察者旋转，而右下角朝远离观察者旋转，如[图17-14](#tf_fig14)所示。
+- en: '![css5 1714](assets/css5_1714.png)'
+  id: totrans-137
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1714](assets/css5_1714.png)'
+- en: Figure 17-14\. Rotation around a 3D vector, and how that vector is determined
+  id: totrans-138
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-14\. 围绕3D向量的旋转及其向量的确定
+- en: Just to be crystal clear, `rotate3d(1,1,0,45deg)` is *not* equivalent to `rotateX(45deg)
+    rotateY(45deg) rotateZ(0deg)`! It’s an easy mistake to make, and many people—including
+    your humble correspondent—have made it. It seems like it should be equivalent,
+    but it really isn’t. If we place that vector inside the imaginary 200 × 200 ×
+    200 cube previously mentioned, the axis of rotation would go from the origin point
+    to a point 200 pixels right and 200 pixels down (200, 200, 0).
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了更加清楚，`rotate3d(1,1,0,45deg)` *不* 等同于 `rotateX(45deg) rotateY(45deg) rotateZ(0deg)`！这是一个容易犯的错误，包括你的谦逊通讯者在内。看起来它应该是等效的，但实际上并不是。如果我们将该向量放置在前面提到的虚拟200×200×200的立方体内，旋转轴将从原点指向右200像素和下200像素的点（200,
+    200, 0）。
+- en: Having done that, the axis of rotation is shooting through the element from
+    the top left to the bottom right, at a 45-degree angle. The element then rotates
+    45 degrees clockwise around that diagonal, as you look back toward its origin
+    (the top left), which rotates the top-right corner of the element away and a bit
+    to the left, while the bottom-left corner rotates closer and a bit to the right.
+    This is distinctly different from the result of `rotateX(45deg) rotateY(45deg)
+    rotateZ(0deg)`, as you can see in [Figure 17-15](#tf_fig15).
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这样做后，旋转轴将从左上到右下穿过元素，以45度角度。元素然后顺时针围绕该对角线旋转45度，当你向其原点（左上角）回望时，将右上角的元素角度向左移动，并稍微向左移动，而左下角的元素则向右移动。这与
+    `rotateX(45deg) rotateY(45deg) rotateZ(0deg)` 的结果有明显不同，如[图17-15](#tf_fig15)所示。
+- en: '![css5 1715](assets/css5_1715.png)'
+  id: totrans-141
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1715](assets/css5_1715.png)'
+- en: Figure 17-15\. The difference between rotating around a 3D axis and rotating
+    in sequence around three different axes
+  id: totrans-142
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-15。围绕3D轴旋转和依序围绕三个不同轴旋转的区别
+- en: The rotate property
+  id: totrans-143
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 旋转属性
+- en: As with translations and scaling, CSS has a `rotate` property that allows you
+    to rotate elements around various axes without having to use the `transform` property
+    to do so. The value syntax to make that possible is a bit different, however.
+  id: totrans-144
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与平移和缩放一样，CSS有一个`rotate`属性，允许你围绕各种轴旋转元素，而无需使用`transform`属性。然而，使其可能的值语法有些不同。
+- en: The valid values are divided into three mutually exclusive syntax options. The
+    simplest is that the default value of `none` means no rotation is applied.
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有效值被划分为三种互斥的语法选项。最简单的是`none`的默认值意味着不应用旋转。
+- en: 'If you want to rotate around a single axis, it’s easiest to give the axis identifier
+    along with the angle you want to rotate. In the following code, each line contains
+    two equivalent ways of rotating an element around a given axis:'
+  id: totrans-146
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想围绕单个轴旋转，最简单的方法是给出轴标识符以及你想旋转的角度。在以下代码中，每行包含了围绕给定轴旋转元素的两种等效方式：
+- en: '[PRE11]'
+  id: totrans-147
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'The last line is similar to the handling of the `rotate()` function discussed
+    earlier: a rotation with a single degree value is a 2D rotation on the *xy* plane.
+    (See [Figure 17-12](#tf_fig12) for a refresher.)'
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一行与前面讨论过的`rotate()`函数的处理类似：使用单个度数值进行旋转是在*xy*平面上的2D旋转。（参见[图17-12](#tf_fig12)进行复习。）
+- en: 'If you want to define a 3D vector as the axis of rotation, the value of `rotate`
+    looks a little different. For example, suppose we want to rotate an element 45
+    degrees around the vector –0.95, 0.5, 1, as illustrated in [Figure 17-14](#tf_fig14).
+    Either of the following two declarations will have this effect:'
+  id: totrans-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想定义一个3D向量作为旋转轴，`rotate`的值看起来会有些不同。例如，假设我们想围绕向量 -0.95, 0.5, 1 旋转一个元素45度，如[图17-14](#tf_fig14)所示。以下两种声明中的任何一种都会产生这种效果：
+- en: '[PRE12]'
+  id: totrans-150
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'If you want, you can use this pattern to rotate around the cardinal axes; that
+    is, `rotate: z 23deg` and `rotate: 0 0 1 23deg` will have that same effect (as
+    will `rotate: 23deg`). This can be useful when changing the vector of rotation
+    via JavaScript, but is rarely useful in other cases.'
+  id: totrans-151
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果你愿意，你可以使用这种模式来围绕基本轴进行旋转；也就是说，`rotate: z 23deg` 和 `rotate: 0 0 1 23deg` 将产生相同的效果（就像
+    `rotate: 23deg` 一样）。在通过JavaScript更改旋转向量时，这可能很有用，但在其他情况下很少有用。'
+- en: 'Note that `transform` has a power that `rotate` cannot duplicate: the ability
+    to chain rotations in sequence. For example, `transform: rotateZ(20deg) rotateY(30deg)`
+    will first rotate the element 20 degrees around the z-axis, and then the result
+    of that rotation is rotated around the y-axis. The `rotate` property can do only
+    one or the other of these on its own. The only way to get the same result is to
+    figure out the vector and angle that will leave the element in the same state
+    as the `transform` operation did. The math to do that certainly exists, but is
+    outside the scope of this book (although see [“Matrix Functions”](#matrix_functions)).'
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '注意，`transform`具有`rotate`无法复制的能力：链式旋转。例如，`transform: rotateZ(20deg) rotateY(30deg)`将首先围绕z轴旋转20度，然后对该旋转结果围绕y轴旋转。`rotate`属性只能执行其中一种操作。获得相同结果的唯一方法是找出能使元素保持与`transform`操作相同状态的向量和角度。当然，有数学方法可以做到这一点，但这超出了本书的范围（尽管请参见[“矩阵函数”](#matrix_functions)）。'
+- en: Individual Transform Property Order
+  id: totrans-153
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 个人转换属性顺序
+- en: 'When using the individual transform properties, the effects are always applied
+    in the order `translate`, then `rotate`, then `scale`. The following two rules
+    are functionally equivalent:'
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用单独的变换属性时，效果总是按照`translate`、然后`rotate`、然后`scale`的顺序应用。以下两条规则在功能上是等效的：
+- en: '[PRE13]'
+  id: totrans-155
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: This matters because, for example, translating and then rotating is very different
+    from rotating and then translating. If you need to have an element’s transforms
+    happen in an order other than transform-rotate-scale, use `transform` instead
+    of the individual properties.
+  id: totrans-156
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这很重要，因为例如，先平移再旋转与先旋转再平移是完全不同的。如果你需要使元素的变换按照非transform-rotate-scale的顺序发生，请使用`transform`而不是单独的属性。
+- en: Skewing
+  id: totrans-157
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 倾斜
+- en: When you *skew* an element, you slant it along one or both of the x- and y-axes.
+    There is no z-axis or 3D skewing.
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你*倾斜*一个元素时，你沿着x轴和/或y轴倾斜它。没有z轴或3D倾斜。
+- en: In both cases, you supply an angle value, and the element is skewed to match
+    that angle. It’s much easier to show skewing rather than try to explain it in
+    words, so [Figure 17-16](#tf_fig16) shows skew examples along the x- and y-axes.
+  id: totrans-159
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在两种情况下，提供一个角度值，元素就会倾斜以匹配该角度。展示倾斜要比用文字解释要容易得多，因此[图17-16](#tf_fig16)展示了沿x轴和y轴的倾斜示例。
+- en: '![css5 1716](assets/css5_1716.png)'
+  id: totrans-160
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1716](assets/css5_1716.png)'
+- en: Figure 17-16\. Skewing along the x- and y-axes
+  id: totrans-161
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-16\. 沿x轴和y轴倾斜
+- en: Using `skew(a,b)` is different from including `skewX(a)` with `skewY(b)`. The
+    former specifies a 2D skew using the matrix operation `[ax,ay]`. [Figure 17-17](#tf_fig17)
+    shows examples of this matrix skewing and how they differ from double-skew transforms
+    that look the same at first but aren’t.
+  id: totrans-162
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`skew(a,b)`与使用`skewX(a)`和`skewY(b)`不同。前者使用矩阵操作`[ax,ay]`指定2D倾斜。[图17-17](#tf_fig17)展示了这种矩阵倾斜的示例，以及它们与外观相似但实际上不同的双倾斜变换的区别。
+- en: Warning
+  id: totrans-163
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: For a variety of reasons, including the way `skew(a,b)` is different from `skewX(a)
+    skewY(b)`, the CSS specification explicitly discourages the use of `skew()`. You
+    should avoid using it if at all possible; we document it here in case you find
+    yourself coming across it in legacy code.
+  id: totrans-164
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于多种原因，包括`skew(a,b)`与`skewX(a) skewY(b)`不同的方式，CSS规范明确建议避免使用`skew()`。如果可能的话，你应该尽量避免使用它；我们在这里记录它，以防你在遗留代码中遇到它。
+- en: '![css5 1717](assets/css5_1717.png)'
+  id: totrans-165
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1717](assets/css5_1717.png)'
+- en: Figure 17-17\. Skewed elements
+  id: totrans-166
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-17\. 倾斜元素
+- en: If you supply two values, the x skew angle is always first, and the y skew angle
+    comes second. If you leave out a y skew angle, it’s treated as 0.
+  id: totrans-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果提供两个值，x轴倾斜角总是在前，y轴倾斜角在后。如果省略y轴倾斜角，则视为0。
+- en: Note
+  id: totrans-168
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Unlike for translation, rotation, and scaling, CSS has no `skew` property as
+    of late 2022, so any skewing has to be managed via the `transform` property.
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不像平移、旋转和缩放那样，截至2022年末，CSS 没有`skew`属性，因此任何倾斜都必须通过`transform`属性进行管理。
+- en: Matrix Functions
+  id: totrans-170
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 矩阵函数
+- en: If you’re a particular fan of advanced math, or stale jokes derived from the
+    Wachowski siblings’ movies, the matrix functions will be your favorites. CSS has
+    no `matrix` properties, to be clear.
+  id: totrans-171
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你是高级数学爱好者，或者喜欢从华克斯兄弟电影中得到的陈旧笑话，那么矩阵函数将成为你的最爱。要明确一点，CSS 没有`matrix`属性。
+- en: In the CSS transforms specification, we find the trenchant description of `matrix()`
+    as a function that “specifies a 2D transformation in the form of a transformation
+    matrix of the six values *a*–*f*.”
+  id: totrans-172
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在CSS转换规范中，我们发现了`matrix()`的尖锐描述，它是一个以“六个值*a*-*f*的变换矩阵形式”指定2D变换的函数。
+- en: 'First things first: a valid `matrix()` value is a list of six comma-separated
+    numbers. No more, no less. The values can be positive or negative. Second, the
+    value describes the final transformed state of the element, combining all of the
+    other transform types (rotation, skewing, and so on) into a compact syntax. Third,
+    very few people use this syntax to write code themselves, though it is often generated
+    by drawing or animation software.'
+  id: totrans-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先要明确一件事：一个有效的`matrix()`值是一个由六个逗号分隔的数字组成的列表。 不能多，不能少。 值可以是正数或负数。 其次，该值描述了元素的最终转换状态，将所有其他变换类型（旋转、倾斜等）合并为一个紧凑的语法。
+    第三，很少有人使用这种语法自己编写代码，尽管它经常由绘图或动画软件生成。
+- en: We’re not going to go through the complicated process of doing the matrix math.
+    For most readers, it would be an eye-watering wall of apparent gibberish; for
+    the rest, it would be time wasted on familiar territory. You can certainly research
+    the intricacies of matrix calculations online, and we encourage anyone with an
+    interest to do so. We’ll just look at the basics of syntax and usage in CSS.
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们不打算详细讨论进行矩阵数学运算的复杂过程。 对于大多数读者来说，这将是一堵显而易见的胡言乱语的墙壁； 对于其他人来说，这将是在熟悉的领域上浪费时间。
+    您当然可以在线研究矩阵计算的复杂性，并鼓励任何有兴趣的人这样做。 我们只看看CSS中的语法和用法的基础知识。
+- en: 'Here’s a brief rundown of how it works. Say you have this function applied
+    to an element:'
+  id: totrans-175
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是它的简要介绍。 假设你将这个函数应用于一个元素：
+- en: '[PRE14]'
+  id: totrans-176
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'That’s the CSS syntax used to describe this transformation matrix:'
+  id: totrans-177
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这就是用来描述这个变换矩阵的CSS语法：
+- en: '[PRE15]'
+  id: totrans-178
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: 'Right. So what does that do? It has the result shown in [Figure 17-18](#tf_fig20),
+    which is exactly the same result as writing this:'
+  id: totrans-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是的。 那么这是做什么？ 它的结果显示在[图17-18](#tf_fig20)中，这与编写以下内容的结果完全相同：
+- en: '[PRE16]'
+  id: totrans-180
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: '![css5 1718](assets/css5_1718.png)'
+  id: totrans-181
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1718](assets/css5_1718.png)'
+- en: Figure 17-18\. A matrix-transformed element and its functional equivalent
+  id: totrans-182
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-18。一个经过矩阵变换的元素及其功能等效
+- en: What this comes down to is that if you’re familiar with or need to use matrix
+    calculations, you can and should. Otherwise, you can chain much more human-readable
+    transform functions together and get the element to the same end state.
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 问题实质上是，如果你熟悉或需要使用矩阵计算，你可以且应该使用。否则，你可以将更多可读性强的变换函数链接在一起，并将元素转换到相同的最终状态。
+- en: Now, that was for plain old 2D transforms. What if you want to use a matrix
+    to transform through three dimensions?
+  id: totrans-184
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，那是关于简单的二维变换。 如果你想使用一个矩阵通过三个维度进行变换，那该怎么办？
+- en: 'Again, just for kicks, we’ll savor the definition of `matrix3d()` from the
+    CSS Transforms specification: “specifies a 3D transformation as a 4 × 4 homogeneous
+    matrix of 16 values in column-major order.” This means the parameter of `matrix3d()`
+    *must* be a list of 16 comma-separated numbers, no more or less. Those numbers
+    are arranged in a 4 × 4 grid in column order, so the first column of the matrix
+    is formed by the first set of four numbers in the value, the second column by
+    the second set of four numbers, the third column by the third set, and so on.
+    Thus, you can take the following function,'
+  id: totrans-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次，仅仅是为了好玩，我们来品味一下来自CSS变换规范的`matrix3d()`的定义：“指定一个4×4的齐次矩阵作为三维变换的参数，这个矩阵由16个以列为主序列的值组成。”
+    这意味着`matrix3d()`的参数必须是一个由16个逗号分隔的数字组成的列表，不多不少。 这些数字按列顺序排列在4×4的网格中，因此矩阵的第一列由值中的第一组四个数字形成，第二列由第二组四个数字形成，依此类推。
+    因此，你可以使用以下函数，
+- en: '[PRE17]'
+  id: totrans-186
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: 'and write it out as this matrix:'
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 并将其写成这个矩阵：
+- en: '[PRE18]'
+  id: totrans-188
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: Both have an end state equivalent to the following, which is depicted in [Figure 17-19](#tf_fig21).
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两者都有一个等效的最终状态，如下所示，这在[图17-19](#tf_fig21)中显示。
+- en: '[PRE19]'
+  id: totrans-190
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: '![css5 1719](assets/css5_1719.png)'
+  id: totrans-191
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1719](assets/css5_1719.png)'
+- en: Figure 17-19\. A `matrix3d()`-transformed element and its functional equivalent
+  id: totrans-192
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-19。一个经过`matrix3d()`变换的元素及其功能等效
+- en: A note on end-state equivalence
+  id: totrans-193
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 关于最终状态等效的说明
+- en: 'It’s important to keep in mind that only the end states of a `matrix()` function,
+    and of an equivalent chain of transform functions, can be considered identical.
+    This is for the same reason discussed in [“Element Rotation”](#element_rotation):
+    because a rotation angle of `393deg` will end with the same visible rotation as
+    an angle of `33deg`. This matters if you are animating the transformation, since
+    the former will cause the element to do a barrel roll in the animation, whereas
+    the latter will not. The `matrix()` version of this end state won’t include the
+    barrel roll, either. Instead, it will always use the shortest possible rotation
+    to reach the end state.'
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 需要记住的是，`matrix()`函数的最终状态及其等效的转换函数链只能被认为是相同的。这与[“元素旋转”](#element_rotation)讨论的原因相同：因为`393deg`的旋转角度最终显示的旋转与`33deg`的角度相同。如果你正在对变换进行动画处理，这一点很重要，因为前者将导致元素在动画中进行滚筒翻滚，而后者不会。`matrix()`版本的最终状态也不会包含滚筒翻滚，而是始终使用最短可能的旋转达到最终状态。
+- en: 'To illustrate what this means, consider the following, a transform chain and
+    its `matrix()` equivalent:'
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了说明这意味着什么，考虑以下，一个转换链及其`matrix()`等效形式：
+- en: '[PRE20]'
+  id: totrans-196
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: 'Note the rotation of 200 degrees. We naturally interpret this to mean a clockwise
+    rotation of 200 degrees, which it is. If these two transforms are animated, however,
+    they will act differently: the chained-functions version will indeed rotate 200
+    degrees clockwise, whereas the `matrix()` version will rotate 160 degrees counterclockwise.
+    Both will end up in the same place but will get there in different ways.'
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意200度的旋转。我们自然地将其解释为顺时针旋转200度，这也确实如此。然而，如果这两个转换进行动画处理，它们将表现出不同的效果：串联函数版本将确实顺时针旋转200度，而`matrix()`版本将逆时针旋转160度。两者最终会到达同一个位置，但是它们的到达方式不同。
+- en: 'Other differences can arise even when you might think they wouldn’t. Once again,
+    this is because a `matrix()` transformation will always take the shortest possible
+    route to the end state, whereas a transform chain might not. (In fact, it probably
+    doesn’t.) Consider these apparently equivalent transforms:'
+  id: totrans-198
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使在你可能认为它们不会有差异的情况下，也可能出现其他差异。再次强调，这是因为`matrix()`转换总是采用最短可能的路线到达最终状态，而转换链可能不会。（事实上，它可能不会。）考虑这些表面上等效的转换：
+- en: '[PRE21]'
+  id: totrans-199
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: As ever, they end up in the same place. When animated, though, the elements
+    will take different paths to reach that end state. They might not be obviously
+    different at first glance, but the difference is still there.
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如常，它们最终到达同一个地方。然而，在动画时，元素会采用不同的路径达到该最终状态。乍一看可能不明显有差异，但差异确实存在。
+- en: None of this matters if you aren’t animating the transformation, but it’s an
+    important distinction to make nevertheless, because you never know when you’ll
+    decide to start animating things. (Hopefully after reading Chapters [18](ch18.html#x-transitions)
+    and [19](ch19.html#animation)!)
+  id: totrans-201
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你不对转换进行动画处理，这一切都无关紧要，但仍然是一个重要的区别，因为你永远不知道何时会决定开始进行动画处理。（希望在阅读第[18](ch18.html#x-transitions)章和第[19](ch19.html#animation)章后！）
+- en: Setting Element Perspective
+  id: totrans-202
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置元素透视
+- en: If you’re transforming an element in 3D space, you most likely want it to have
+    some perspective. *Perspective* gives the appearance of front-to-back depth, and
+    you can vary the degree of perspective applied to an element.
+  id: totrans-203
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你在三维空间中转换一个元素，很可能希望它具有一些透视效果。*透视*可以使得前后深度显现，你可以调整应用到元素的透视程度。
+- en: It might seem a bit weird to specify perspective as a distance. After all, `perspective(200px)`
+    seems odd when you can’t really measure pixels along the z-axis. And yet, here
+    we are. You supply a length, and the illusion of depth is constructed around that
+    value.
+  id: totrans-204
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定透视作为一个距离可能有点奇怪。毕竟，`perspective(200px)`看起来很奇怪，因为你实际上不能沿着 z 轴测量像素。然而，我们就是这样。你提供了一个长度，围绕该值构建深度的幻觉。
+- en: Smaller numbers create a more extreme perspective, as though you are up close
+    to the element. Higher numbers create a gentler perspective, as though viewing
+    the element through a zoom lens from far away. *Really* high perspective values
+    create an isometric effect, which looks the same as no perspective at all.
+  id: totrans-205
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 较小的数字会创建更极端的透视效果，就像你靠近元素一样。较大的数字会创建更温和的透视效果，就像通过远处的变焦镜头查看元素一样。*非常*高的透视值会创建等距效果，看起来和没有透视效果一样。
+- en: This makes a certain amount of sense. You can visualize perspective as a pyramid,
+    with its apex point at the perspective origin (by default, the center of the untransformed
+    element’s position) and its base as the browser window that you’re looking through.
+    A shorter distance between apex and base will create a shallower pyramid, and
+    thus a more extreme distortion. This is illustrated in [Figure 17-20](#tf_fig18),
+    with hypothetical pyramids representing 200-pixel, 800-pixel, and 2,000-pixel
+    perspective distances.
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是有一定道理的。你可以将透视视为一个金字塔，其顶点位于透视原点（默认为未变换元素位置的中心），其底部为你正在查看的浏览器窗口。顶点与底部之间的较短距离将创建一个较浅的金字塔，因此会产生更极端的扭曲。这在[图17-20](#tf_fig18)中有所说明，其中展示了代表200像素、800像素和2000像素透视距离的假设金字塔。
+- en: '![css5 1720](assets/css5_1720.png)'
+  id: totrans-207
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1720](assets/css5_1720.png)'
+- en: Figure 17-20\. Different perspective pyramids
+  id: totrans-208
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-20\. 不同视角的金字塔
+- en: In [documentation for Safari](https://developer.apple.com/library/archive/documentation/InternetWeb/Conceptual/SafariVisualEffectsProgGuide/Using2Dand3DTransforms/Using2Dand3DTransforms.html),
+    Apple writes that perspective values below `300px` tend to be extremely distorted,
+    values above `2000px` create “very mild” distortion, and values between `500px`
+    and `1000px` create “moderate perspective.” To illustrate this, [Figure 17-21](#tf_fig19)
+    shows a series of elements with the exact same rotation as displayed with varying
+    perspective values.
+  id: totrans-209
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[苹果的 Safari 文档](https://developer.apple.com/library/archive/documentation/InternetWeb/Conceptual/SafariVisualEffectsProgGuide/Using2Dand3DTransforms/Using2Dand3DTransforms.html)中写道，透视值在`300px`以下会产生极端扭曲，`2000px`以上会产生“非常轻微”的扭曲，而`500px`到`1000px`之间会产生“适度的透视”。[图17-21](#tf_fig19)展示了相同旋转的一系列元素，不同的透视值下展示的效果。
+- en: '![css5 1721](assets/css5_1721.png)'
+  id: totrans-210
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1721](assets/css5_1721.png)'
+- en: Figure 17-21\. The effects of varying perspective values
+  id: totrans-211
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-21\. 不同透视值的效果
+- en: 'Perspective values must always be positive, nonzero lengths. Any other value
+    will cause the `perspective()` function to be ignored. Also note that its placement
+    in the list of functions is important. If you look at the code for [Figure 17-21](#tf_fig19),
+    the `perspective()` function comes before the `rotateY()` function:'
+  id: totrans-212
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 透视值必须始终为正数，非零长度。任何其他值都会导致`perspective()`函数被忽略。还要注意其在函数列表中的位置。如果你查看[图17-21](#tf_fig19)的代码，`perspective()`函数出现在`rotateY()`函数之前：
+- en: '[PRE22]'
+  id: totrans-213
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: If you were to reverse the order, the rotation would happen before the perspective
+    is applied, so all four examples in [Figure 17-21](#tf_fig19) would look exactly
+    the same. So if you plan to apply a perspective value via the list of transform
+    functions, make sure it comes first, or at the very least before any transforms
+    that depend on it. This serves as a stark reminder that the order in which you
+    write `transform` functions can be very important.
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你反转顺序，旋转会在应用透视之前发生，所以[图17-21](#tf_fig19)中的四个示例看起来完全相同。因此，如果你计划通过变换函数列表应用透视值，请确保它首先出现，或者至少出现在依赖它的任何变换之前。这提醒我们，编写`transform`函数的顺序非常重要。
+- en: More Transform Properties
+  id: totrans-215
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 更多变换属性
+- en: In addition to the base `transform` property and the standalone transform properties
+    like `rotate`, a few related properties help to define how the elements transform
+    the origin point of a transform, the perspective used for a “scene,” and more.
+  id: totrans-216
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了基本的`transform`属性和像`rotate`这样的独立变换属性外，还有一些相关的属性帮助定义元素变换原点、用于“场景”的透视等等。
+- en: Moving the Transform’s Origin
+  id: totrans-217
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 移动变换的原点
+- en: 'So far, all of our transforms have shared one thing in common: we’ve used the
+    precise center of the element as the *transform origin*. For example, when rotating
+    the element, it rotated around its center, instead of, say, a corner. This is
+    the default behavior, but with the property `transform-origin`, you can change
+    it.'
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们所有的变换都有一个共同点：我们使用了元素的精确中心作为*变换原点*。例如，当旋转元素时，它围绕其中心旋转，而不是围绕角落旋转。这是默认行为，但通过属性`transform-origin`，你可以改变它。
+- en: 'The syntax definition looks really abstruse and confusing, but it’s fairly
+    simple in practice. With `transform-origin`, you supply two or three lengths or
+    keywords to define the point around which transforms should be made: first the
+    horizontal, then the vertical, and optionally a length along the z-axis. For the
+    horizontal and vertical axes, you can use plain-English keywords like `top` and
+    `right`, percentages, lengths, or a combination of keywords and percentage or
+    length values. For the z-axis, you can’t use plain-English keywords or percentages,
+    but can use any length value. Pixels are by far the most common.'
+  id: totrans-219
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 语法定义看起来确实晦涩和令人困惑，但实际上非常简单。使用 `transform-origin`，你需要提供两个或三个长度或关键词来定义变换应该围绕的点：首先是水平方向，然后是垂直方向，可选地是沿
+    z 轴的长度。对于水平和垂直轴，你可以使用简单的英文关键词如 `top` 和 `right`，百分比、长度，或者关键词和百分比或长度值的组合。对于 z 轴，不能使用简单的英文关键词或百分比，但可以使用任何长度值。像素是迄今为止最常见的单位。
+- en: 'Length values are taken as a distance starting from the top-left corner of
+    the element. Thus, `transform-origin: 5em 22px` will place the transform origin
+    5 ems in from the left side of the element, and 22 pixels down from the top of
+    the element. Similarly, `transform-origin: 5em 22px -200px` will place it 5 ems
+    over, 22 pixels down, and 200 pixels away (that is, 200 pixels behind the untransformed
+    position of the element).'
+  id: totrans-220
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '长度值被视为从元素的左上角开始的距离。因此，`transform-origin: 5em 22px` 将使变换原点位于元素左侧内部 5 em，并且距离元素顶部下方
+    22 像素处。同样地，`transform-origin: 5em 22px -200px` 将使其位于左侧内部 5 em，下方 22 像素处，并且在元素的未变换位置的背后
+    200 像素处。'
+- en: 'Percentages are calculated with respect to the corresponding axis and size
+    of the element’s bounding box, as offsets from the element’s top-left corner.
+    For example, `transform-origin: 67% 40%` will place the transform origin 67 percent
+    of the width to the right of the element’s left side, and 40 percent of the element’s
+    height down from the element’s top side. [Figure 17-22](#tf_fig22) illustrates
+    a few origin calculations.'
+  id: totrans-221
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '百分比是相对于元素的边界框的对应轴和大小计算的，作为相对于元素左上角的偏移量。例如，`transform-origin: 67% 40%` 将使变换原点位于元素左侧的
+    67% 处，距离元素顶部的 40% 处。图 [17-22](#tf_fig22) 展示了一些起始点计算的例子。'
+- en: '![css5 1722](assets/css5_1722.png)'
+  id: totrans-222
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1722](assets/css5_1722.png)'
+- en: Figure 17-22\. Various origin calculations
+  id: totrans-223
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-22\. 不同的起始点计算
+- en: All right, so if you change the origin, what happens? The easiest way to visualize
+    this is with 2D rotations. Suppose you rotate an element 45 degrees to the right.
+    Its final placement will depend on its origin. [Figure 17-23](#tf_fig23) illustrates
+    the effects of several transform origins; in each case, the transform origin is
+    marked with a circle.
+  id: totrans-224
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 好了，如果你改变起始点，会发生什么？用二维旋转最容易理解这一点。假设你将一个元素向右旋转 45 度。其最终位置将取决于其起始点。图 [17-23](#tf_fig23)
+    展示了几个变换起点的效果；在每种情况下，变换起点都用圆圈标记。
+- en: '![css5 1723](assets/css5_1723.png)'
+  id: totrans-225
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1723](assets/css5_1723.png)'
+- en: Figure 17-23\. Rotational effects using various transform origins
+  id: totrans-226
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-23\. 使用不同的变换起点的旋转效果
+- en: The origin matters for other transform types, such as skews and scales. Scaling
+    down an element with its origin in the center will pull in all sides equally,
+    whereas scaling down an element with a bottom-right origin will cause it to shrink
+    toward that corner. Similarly, skewing an element with respect to its center will
+    result in the same shape as if it’s skewed with respect to the top-right corner,
+    but the placement of the shape will be different. Some examples are shown in [Figure 17-24](#tf_fig24);
+    again, each transform origin is marked with a circle.
+  id: totrans-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 起始点对于其他变换类型也很重要，例如倾斜和缩放。使用中心作为起始点缩小元素将导致各边等比例收缩，而使用右下角作为起始点缩小元素将导致元素向该角收缩。类似地，相对于中心倾斜元素将产生与相对于右上角倾斜相同的形状，但形状的放置位置将不同。一些示例显示在图
+    [17-24](#tf_fig24) 中；同样地，每个变换起点都用圆圈标记。
+- en: '![css5 1724](assets/css5_1724.png)'
+  id: totrans-228
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1724](assets/css5_1724.png)'
+- en: Figure 17-24\. Skew and scale effects using various transform origins
+  id: totrans-229
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 17-24\. 使用不同的变换起点的倾斜和缩放效果
+- en: The one transform type that isn’t really affected by changing the transform
+    origin is translation. If you move an element around with `translate()` or its
+    cousins like `translateX()` and `translateY()`, or the `translate` property, the
+    element is going to end up in the same place regardless of where the transform’s
+    origin is located. If that’s all the transforming you plan to do, setting the
+    transform origin is irrelevant. If you ever do anything besides translating, though,
+    the origin will matter. Use it wisely.
+  id: totrans-230
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 唯一不受变换原点改变影响的变换类型是平移。如果你用`translate()`或其类似的方法如`translateX()`和`translateY()`，或`translate`属性来移动一个元素，不管变换原点在哪里，元素最终都会停留在同一个位置。如果你计划做的只是移动，设置变换原点是不相关的。但是如果除了平移还要做其他事情，变换原点就很重要了。明智地使用它。
+- en: Choosing the Transform’s Box
+  id: totrans-231
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 选择变换的框
+- en: We wrote the previous section as though the transform origin is always calculated
+    with respect to the outer border edge, and that is indeed the default in HTML,
+    but not always in SVG. You can change this, at least in theory, with the property
+    `transform-box`.
+  id: totrans-232
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们前面的部分是写成变换原点始终相对于外部边缘计算的形式，这确实是HTML的默认设置，但SVG中并非总是如此。你可以至少在理论上通过`transform-box`属性进行更改。
+- en: 'Two of the values are directly related to CSS when styling HTML:'
+  id: totrans-233
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两个值与在HTML上样式化时直接相关：
+- en: '`border-box`'
+  id: totrans-234
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`border-box`'
+- en: Use the element’s border box (defined by the outer border edge) as the reference
+    box for transforms.
+  id: totrans-235
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用元素的边框框（由外边界定义）作为变换的参考框。
+- en: '`content-box`'
+  id: totrans-236
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`content-box`'
+- en: Use the element’s content box as the reference box for transforms.
+  id: totrans-237
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用元素的内容框作为变换的参考框。
+- en: 'The remaining three are designed for SVG purposes, though they can also apply
+    in HTML contexts:'
+  id: totrans-238
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 剩下的三个是为SVG目的设计的，尽管它们也可以应用于HTML上下文：
+- en: '`fill-box`'
+  id: totrans-239
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`fill-box`'
+- en: Use the element’s object bounding box as the reference box.
+  id: totrans-240
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用元素的对象边界框作为变换的参考框。
+- en: '`stroke-box`'
+  id: totrans-241
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`stroke-box`'
+- en: Use the element’s stroke bounding box as the reference box.
+  id: totrans-242
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用元素的描边边界框作为变换的参考框。
+- en: '`view-box`'
+  id: totrans-243
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`view-box`'
+- en: Use the element’s nearest SVG viewport as the reference box.
+  id: totrans-244
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用元素的最近SVG视口作为参考框。
+- en: 'Using `fill-box` in an SVG context causes transforms to be performed on the
+    element in question, as we would expect from HTML. The default `view-box`, on
+    the other hand, causes all transforms to be calculated with respect to the origin
+    of the coordinate system established by the SVG `viewBox` attribute. The difference
+    is illustrated in [Figure 17-25](#transform-box-compare), which is the result
+    of the following SVG file and the CSS it contains:'
+  id: totrans-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在SVG上下文中使用`fill-box`会导致对相应元素进行变换，正如我们从HTML中所期望的那样。另一方面，默认的`view-box`会导致所有变换都相对于由SVG的`viewBox`属性建立的坐标系统的原点进行计算。这种差异在图[17-25](#transform-box-compare)中有所说明，该图是以下SVG文件及其包含的CSS的结果：
+- en: '[PRE23]'
+  id: totrans-246
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: '![css5 1725](assets/css5_1725.png)'
+  id: totrans-247
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1725](assets/css5_1725.png)'
+- en: Figure 17-25\. A square rotated around the SVG origin and its own origin
+  id: totrans-248
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-25\. 围绕SVG原点和其自身原点旋转的方块
+- en: The first square, on the left, is rotated 20 degrees from its starting point,
+    with the center of rotation as the top left of the entire SVG file (the top-left
+    corner of the dashed-line box). This is because the value of `transform-box` for
+    this square is `view-box`. The second square has a `transform-box` of `fill-box`,
+    so it uses the top left of its own fill box—what in HTML we would call the background
+    area—as the center of rotation.
+  id: totrans-249
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个方块位于左侧，从其起始点旋转20度，旋转中心为整个SVG文件的左上角（虚线框的左上角）。这是因为此方块的`transform-box`值为`view-box`。第二个方块的`transform-box`为`fill-box`，因此它使用自己的填充框的左上角——在HTML中我们称之为背景区域——作为旋转中心。
+- en: Choosing a 3D Style
+  id: totrans-250
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 选择一个3D样式
+- en: If you’re setting elements to be transformed through three dimensions—using,
+    say, `translate3d()` or `rotateY()`—you probably expect that the elements will
+    be presented as though they’re in a 3D space. The `transform-style` property helps
+    bring that to life.
+  id: totrans-251
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你正在设置通过三维元素进行变换——比如使用`translate3d()`或`rotateY()`——你可能期望元素呈现为在三维空间中的样子。`transform-style`属性有助于实现这一点。
+- en: 'Suppose you want to move an element “closer” to your eye, and then tilt it
+    away a bit, with a moderate amount of perspective. You might use something like
+    this rule:'
+  id: totrans-252
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想把一个元素“靠近”你的眼睛，然后稍微倾斜一点，加入适度的透视效果。你可能会使用类似这样的规则：
+- en: '[PRE24]'
+  id: totrans-253
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: So you do that and get the result shown in [Figure 17-26](#tf_fig25)—more or
+    less what you might expect.
+  id: totrans-254
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所以，你这样做，得到的结果如图[17-26](#tf_fig25)所示——大体上是你可能期望的。
+- en: '![css5 1726](assets/css5_1726.png)'
+  id: totrans-255
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1726](assets/css5_1726.png)'
+- en: Figure 17-26\. A 3D-transformed inner `<div>`
+  id: totrans-256
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-26\. 一个3D转换的内部`<div>`
+- en: But then you decide to rotate the outer `<div>` to one side, and suddenly nothing
+    makes sense anymore. The inner `<div>` isn’t where you envisioned it. In fact,
+    it just looks like a picture pasted to the front of the outer `<div>`.
+  id: totrans-257
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，当你决定将外部`<div>`旋转到一侧时，突然间一切都变得毫无意义了。内部`<div>`并不在你预想的位置。事实上，它看起来就像是粘贴在外部`<div>`前面的一幅图片。
+- en: 'Well, that’s exactly what it is, because the default value of `transform-style`
+    is `flat`. The inner `div` got drawn in its moved-forward, tilted-back state,
+    and that was applied to the front of the outer `<div>` as if it were an image.
+    So when you rotated the outer `<div>`, as shown in [Figure 17-27](#tf_fig27),
+    the flat picture rotated right along with it:'
+  id: totrans-258
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 好吧，这正是问题所在，因为`transform-style`的默认值是`flat`。内部`div`以其前移、后倾的状态绘制，这被应用到外部`<div>`的前面，就像一幅图片一样。因此，当你像[图17-27](#tf_fig27)中所示旋转外部`<div>`时，这幅扁平的图片也会随之旋转：
+- en: '[PRE25]'
+  id: totrans-259
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: 'Change the value to `preserve-3d`, however, and the result is very different.
+    The inner `div` will be drawn as a full 3D object with respect to its parent outer
+    `<div>`, floating in space nearby, and *not* as a picture pasted on the front
+    of the outer `<div>`. You can see the results of this change in [Figure 17-27](#tf_fig27):'
+  id: totrans-260
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，将值更改为`preserve-3d`，结果会大不相同。内部`div`将作为完整的3D对象绘制，相对于其父级外部`<div>`在空间中浮动，*而不是*像粘贴在外部`<div>`前面的图片。你可以在[图17-27](#tf_fig27)中看到这种变化的结果：
+- en: '[PRE26]'
+  id: totrans-261
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: '![css5 1727](assets/css5_1727.png)'
+  id: totrans-262
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1727](assets/css5_1727.png)'
+- en: Figure 17-27\. The effects of a flat versus a 3D-preserved transform style
+  id: totrans-263
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-27\. 扁平与保留3D转换样式的效果
+- en: One important aspect of `transform-style` is that it can be overridden by other
+    properties. The reason is that some values of these other properties require a
+    flattened presentation of an element and its children in order to work. In such
+    cases, the value of `transform-style` is forced to be `flat`, regardless of what
+    you may have declared.
+  id: totrans-264
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`transform-style`的一个重要方面是它可能会被其他属性覆盖。原因是这些其他属性的某些值要求以扁平化的方式呈现元素及其子元素才能工作。在这种情况下，`transform-style`的值被强制设为`flat`，无论你之前声明了什么。'
+- en: 'So, to avoid this overriding behavior, make sure the following properties are
+    set to the listed values on any 3D-transformed container elements that also have
+    3D-transformed children:'
+  id: totrans-265
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，为了避免这种覆盖行为，请确保以下属性在任何具有3D转换子元素的3D转换容器元素上设置为列出的值：
+- en: '`overflow: visible`'
+  id: totrans-266
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`overflow: visible`'
+- en: '`filter: none`'
+  id: totrans-267
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`filter: none`'
+- en: '`clip: auto`'
+  id: totrans-268
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`clip: auto`'
+- en: '`clip-path: none`'
+  id: totrans-269
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`clip-path: none`'
+- en: '`mask-image: none`'
+  id: totrans-270
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`mask-image: none`'
+- en: '`mask-border-source: none`'
+  id: totrans-271
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`mask-border-source: none`'
+- en: '`mix-blend-mode: normal`'
+  id: totrans-272
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`mix-blend-mode: normal`'
+- en: '`isolation: auto`'
+  id: totrans-273
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`isolation: auto`'
+- en: Those are all the default values for those properties, so as long as you don’t
+    try to change any of them for your preserved 3D elements, you’re fine! But if
+    you find that editing some CSS suddenly flattens out your lovely 3D transforms,
+    one of these properties might be the culprit.
+  id: totrans-274
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些都是这些属性的默认值，只要你不试图改变保留的3D元素的任何值，那么一切都没问题！但是，如果你发现编辑某些CSS突然使你可爱的3D变换变平了，其中一个属性可能是罪魁祸首。
+- en: Changing Perspective
+  id: totrans-275
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 改变透视
+- en: 'Two properties are used to define the way perspective is handled: one to define
+    the perspective distance, as with the `perspective()` function discussed in an
+    earlier section; and another to define the perspective’s origin point.'
+  id: totrans-276
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两个属性用于定义透视的处理方式：一个用于定义透视距离，如前面章节中讨论的`perspective()`函数；另一个用于定义透视的原点。
+- en: Defining a group perspective
+  id: totrans-277
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 定义一个透视组
+- en: First, let’s consider the property `perspective`, which accepts a length that
+    defines the depth of the perspective pyramid. At first glance, it looks just like
+    the `perspective()` function discussed earlier, but some critical differences
+    exist.
+  id: totrans-278
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，让我们考虑`perspective`属性，它接受一个长度来定义透视金字塔的深度。乍一看，它看起来就像是之前讨论的`perspective()`函数，但存在一些关键的差异。
+- en: 'As a quick example, if you want to create a very deep perspective, one mimicking
+    the results you’d get from a zoom lens, you might declare something like `perspective:
+    2500px`. For a shallow depth, one that mimics a close-up fish-eye lens effect,
+    you might declare `perspective: 200px`.'
+  id: totrans-279
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '举个快速的例子，如果你想创建一个非常深的透视效果，模仿使用变焦镜头的效果，你可以声明类似于`perspective: 2500px`。对于一个浅的透视深度，模仿特写镜头的效果，你可以声明`perspective:
+    200px`。'
+- en: 'So how does this differ from the `perspective()` function? When you use `perspective()`,
+    you’re defining the perspective effect for the element that is given that function.
+    So if you write `transform: perspective(800px) rotateY(-50grad);`, you’re applying
+    that perspective to each element that has the rule applied.'
+  id: totrans-280
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '那么这与`perspective()`函数有何不同呢？当你使用`perspective()`时，你为具有该规则的每个元素定义透视效果。因此，如果你写了`transform:
+    perspective(800px) rotateY(-50grad);`，那么你将该透视应用于每个具有此规则的元素。'
+- en: 'With the `perspective` property, on the other hand, you’re creating a shared
+    perspective for all the child elements of the element that received the property.
+    Here’s an illustration of the difference, as shown in [Figure 17-28](#tf_fig28):'
+  id: totrans-281
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，使用`perspective`属性，你为接收该属性的元素的所有子元素创建了一个共享的透视。这里有一个区别的示例，如[图17-28](#tf_fig28)所示：
+- en: '[PRE27]'
+  id: totrans-282
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: '![css5 1728](assets/css5_1728.png)'
+  id: totrans-283
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1728](assets/css5_1728.png)'
+- en: Figure 17-28\. No perspective, individual `perspective()`, and shared `perspective`,
+    respectively
+  id: totrans-284
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图17-28。没有透视，独立的`perspective()`，以及共享的`perspective`
+- en: In [Figure 17-28](#tf_fig28), we first see a line of images that haven’t been
+    transformed. In the second line, each image has been rotated 50 gradians (equivalent
+    to 45 degrees) toward us, but each one within its own individual perspective.
+  id: totrans-285
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[图17-28](#tf_fig28)中，我们首先看到一行未经转换的图像。在第二行中，每个图像都向我们旋转了50 gradians（相当于45度），但每个图像都有自己独立的透视。
+- en: 'In the third line of images, none has an individual perspective. Instead, all
+    are drawn within the perspective defined by `perspective: 800px;` that’s been
+    set on the `<div>` that contains them. Since they all operate within a shared
+    perspective, they look “correct”—that is, as we would expect if we had three physical
+    pictures mounted on a clear sheet of glass and rotated that toward us around its
+    center horizontal axis.'
+  id: totrans-286
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在第三行图像中，没有一个具有独立的透视。相反，它们都是在包含它们的`<div>`上设置了`perspective: 800px;`后所定义的共享透视中绘制的。由于它们都在共享的透视中运行，它们看起来“正确”——即，如果我们有三张物理图片安装在透明玻璃上，并绕其中心水平轴旋转向我们，我们会如预期那样看到它们。'
+- en: This is the critical difference between `perspective`, the property, and `perspective()`,
+    the function. The former creates a 3D space shared by all its children. The latter
+    affects only the element to which it’s applied. Another difference is that the
+    effect of the `perspective()` function is different depending on when it is called
+    in the chain of transforms. The `perspective` property is always applied before
+    all other transforms, which is what you normally want to create a 3D effect.
+  id: totrans-287
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是`perspective`的关键区别，即属性和`perspective()`函数之间的差异。前者创建一个所有子元素共享的三维空间。后者仅影响应用它的元素。另一个区别是，`perspective()`函数的效果取决于在转换链中的调用顺序。`perspective`属性始终在所有其他转换之前应用，这通常是用来创建三维效果的理想方式。
+- en: In most cases, you’re going to use the `perspective` property instead of the
+    `perspective()` function. In fact, container `<div>`s (or other elements) are
+    a common feature of 3D transforms—the way they used to be for page layout—largely
+    to establish a shared perspective. In the previous example, the `<div id="two">`
+    is there solely to serve as a perspective container, so to speak. On the other
+    hand, we couldn’t have done what we did without it.
+  id: totrans-288
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在大多数情况下，你会使用`perspective`属性而不是`perspective()`函数。事实上，容器`<div>`（或其他元素）是三维变换的常见特征——它们以前用于页面布局——主要用于建立共享透视。在上面的例子中，`<div
+    id="two">`完全是为了充当透视容器而存在。另一方面，如果没有它，我们就无法完成我们所做的事情。
+- en: Moving the perspective’s origin
+  id: totrans-289
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 移动透视的原点
+- en: When transforming elements in three dimensions, a perspective will be used.
+    (See `transform-style` and `perspective` in previous sections.) That perspective
+    will have an origin, which is also known as the *vanishing point*, and you can
+    change its location with the `perspective-origin` property.
+  id: totrans-290
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当在三维空间中转换元素时，将使用透视效果。（请参见前面章节中的`transform-style`和`perspective`。）透视将有一个原点，也被称为*消失点*，你可以使用`perspective-origin`属性更改其位置。
+- en: With `perspective-origin`, you define the point on which sight lines converge,
+    and as with `perspective`, that point is defined relative to a parent container.
+  id: totrans-291
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`perspective-origin`，你定义了视线汇聚的点，与`perspective`类似，该点是相对于父容器定义的。
+- en: 'As with most 3D transform properties, this is more easily demonstrated than
+    described. Consider the following CSS and markup, illustrated in [Figure 17-29](#tf_fig29):'
+  id: totrans-292
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与大多数三维变换属性一样，这种效果比描述更容易展示。考虑以下CSS和标记示例，如[图17-29](#tf_fig29)所示：
+- en: '[PRE28]'
+  id: totrans-293
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: '![css5 1729](assets/css5_1729.png)'
+  id: totrans-294
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1729](assets/css5_1729.png)'
+- en: Figure 17-29\. A basic “ruler”
+  id: totrans-295
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: Figure 17-29\. 一个基本的“标尺”
+- en: We have a repeated background image of tick marks on a ruler, with the `<div>`
+    that contains them tilted away from us by 60 degrees. All the lines point at a
+    common vanishing point, the top center of the container `<div>` (because of the
+    `50% 0%` value for `perspective-origin`).
+  id: totrans-296
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们有一个重复的背景图像，上面有一个标尺上的刻度，包含它们的 `<div>` 被向我们倾斜了 60 度。所有线条都指向一个共同的消失点，即容器 `<div>`
+    的顶部中心（由于 `perspective-origin` 的值是 `50% 0%`）。
+- en: Now consider that same setup with various perspective origins ([Figure 17-30](#tf_fig30)).
+  id: totrans-297
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在考虑同样的设置，但使用不同的透视原点（[图 17-30](#tf_fig30)）。
+- en: '![css5 1730](assets/css5_1730.png)'
+  id: totrans-298
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1730](assets/css5_1730.png)'
+- en: Figure 17-30\. A basic “ruler” with different perspective origins
+  id: totrans-299
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: Figure 17-30\. 带有不同透视原点的基本“标尺”
+- en: As you can see, moving the perspective origin changes the rendering of the 3D-transformed
+    element. Note that these have an effect only because we supplied a value for `perspective`.
+    If the value of `perspective` is ever the default `none`, any value given for
+    `perspective-origin` will be ignored. That makes sense, since you can’t have a
+    perspective origin when there’s no perspective at all!
+  id: totrans-300
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，移动透视原点会改变 3D 变换元素的渲染效果。请注意，这些效果仅因为我们为 `perspective` 提供了一个值才能生效。如果 `perspective`
+    的值是默认的 `none`，则 `perspective-origin` 给定的任何值都将被忽略。这是有道理的，因为当没有透视时，就不可能有透视原点！
+- en: Dealing with Backfaces
+  id: totrans-301
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理背面
+- en: Over all the years you’ve been laying out elements, you’ve probably never thought,
+    “What would it look like if we could see the back side of the element?” With 3D
+    transforms, if there comes a day when you *do* see the back side of an element,
+    CSS has you covered. What happens is determined by the property `backface-visibility`.
+  id: totrans-302
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多年来，你一直在布局元素，可能从未想过：“如果我们能看到元素的背面会是什么样子？”有了 3D 变换，如果有一天你真的看到了元素的背面，CSS 已经为你准备好了。发生的情况取决于
+    `backface-visibility` 属性。
+- en: Unlike many of the other properties and functions we’ve already talked about,
+    this one is pretty uncomplicated. All it does is determine whether the back side
+    of an element is rendered when it’s facing toward the viewer, or not. That’s it.
+  id: totrans-303
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与我们已经讨论过的许多其他属性和功能不同，这个属性非常简单。它只是确定当元素面向观众时，是否渲染其背面。仅此而已。
+- en: 'So let’s say you flip over two elements, one with `backface-visibility` set
+    to the default value of `visible` and the other set to `hidden`. You get the result
+    shown in [Figure 17-31](#tf_fig31):'
+  id: totrans-304
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所以，假设你翻转了两个元素，一个元素的 `backface-visibility` 设置为默认值 `visible`，另一个设置为 `hidden`。你将得到如
+    [图 17-31](#tf_fig31) 所示的结果：
+- en: '[PRE29]'
+  id: totrans-305
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: '![css5 1731](assets/css5_1731.png)'
+  id: totrans-306
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1731](assets/css5_1731.png)'
+- en: Figure 17-31\. Visible and hidden backfaces
+  id: totrans-307
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: Figure 17-31\. 可见和隐藏的背面
+- en: As you can see, the first image is unchanged. The second is flipped over its
+    x-axis, so we see it from the back. The third has also been flipped, but we can’t
+    see it at all because its backface has been hidden.
+  id: totrans-308
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，第一幅图像保持不变。第二幅图像沿其 x 轴翻转，因此我们从背面看到它。第三幅图像也已经翻转，但因为其背面已被隐藏，所以我们根本看不见它。
+- en: 'This property can come in handy in several situations. In the simplest, you
+    have two elements that represent the two sides of a UI element that flips over—say,
+    a search area with preference settings on its back, or a photo with some information
+    on the back. Let’s take the latter case. The CSS and markup might look something
+    like this:'
+  id: totrans-309
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个属性在几种情况下都很有用。在最简单的情况下，您有两个表示 UI 元素两侧的元素翻转的情况——比如一个带有其背面设置的搜索区域和偏好设置，或者一张照片的背面有一些信息。让我们考虑后一种情况。CSS
+    和标记可能看起来像这样：
+- en: '[PRE30]'
+  id: totrans-310
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: (This would be a lot more interesting with an animated rotation, causing the
+    card to flip over in 3D space.)
+  id: totrans-311
+  prefs: []
+  type: TYPE_NORMAL
+  zh: （如果有一个动画旋转，使卡片在 3D 空间中翻转，这将会更加有趣。）
+- en: 'A variant of this example uses the same markup, but slightly different CSS
+    to show the image’s backface when it’s flipped over. This is probably more what
+    was intended, since it makes information look like it’s literally written on the
+    back of the image. It leads to the end result shown in [Figure 17-32](#tf_fig32):'
+  id: totrans-312
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例的变体使用相同的标记，但稍微不同的 CSS 来显示图像翻转后的背面。这可能更符合预期，因为它使信息看起来就像真的写在图像的背面一样。这导致了 [图 17-32](#tf_fig32)
+    所示的最终结果：
+- en: '[PRE31]'
+  id: totrans-313
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: '![css5 1732](assets/css5_1732.png)'
+  id: totrans-314
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1732](assets/css5_1732.png)'
+- en: Figure 17-32\. Photo on the front, information on the back
+  id: totrans-315
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: Figure 17-32\. 正面是照片，背面是信息
+- en: 'All we had to do to make that happen was shift `backface-visibility: hidden`
+    to the `<div>` instead of applying it to both the `<img>` and the `<div>`. Thus,
+    the `<div>`’s backface is hidden when it’s flipped over, but that of the image
+    is not. (Well, that and use a semitransparent background so we could see both
+    the text and the flipped image underneath it.)'
+  id: totrans-316
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '我们要做的一切只是将 `backface-visibility: hidden` 从 `<img>` 和 `<div>` 都应用到 `<div>` 上。因此，当
+    `<div>` 翻转时，其反面被隐藏，但图像的反面则不是（嗯，还有使用半透明背景，这样我们可以看到文本和翻转后的图像）。'
+- en: Summary
+  id: totrans-317
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 摘要
+- en: With the ability to transform elements in two- and three-dimensional space,
+    CSS transforms provide a great deal of power to designers. From creating interesting
+    combinations of 2D transforms, to creating a fully 3D-acting interface, transforms
+    open up a great deal of new territory in the design space. Some dependencies exist
+    between properties, which is something that not every CSS author will find natural
+    at first, but they become second nature with practice.
+  id: totrans-318
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 具有在二维和三维空间中转换元素的能力，CSS 变换为设计师提供了强大的功能。从创建有趣的二维变换组合，到创建完全仿三维的界面，变换在设计空间中开辟了大量新领域。一些属性之间存在依赖关系，这对于并非每个
+    CSS 作者一开始就能自然理解的事情，但通过实践后变得轻车熟路。
+- en: One of the things authors often do with transforms is animate them, so that
+    a card flips over, an element scales and rotates smoothly, and so on. In the next
+    two chapters, we’ll get into the details of how those transitions and animations
+    are defined.
+  id: totrans-319
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作者们经常使用变换来进行动画处理，例如卡片翻转、元素平滑缩放和旋转等。在接下来的两章中，我们将详细讨论这些过渡和动画是如何定义的。

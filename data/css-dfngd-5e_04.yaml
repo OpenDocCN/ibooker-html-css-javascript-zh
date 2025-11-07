@@ -1,0 +1,1607 @@
+- en: Chapter 4\. Specificity, Inheritance, and the Cascade
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第四章。具体性、继承和级联
+- en: 'Chapters [2](ch02.html#selectors) and [3](ch03.html#pseudo_classes_and_elements)
+    showed how document structure and CSS selectors allow you to apply a wide variety
+    of styles to elements. Knowing that every valid document generates a structural
+    tree, you can create selectors that target elements based on their ancestors,
+    attributes, sibling elements, and more. The structural tree is what allows selectors
+    to function and is also central to a similarly crucial aspect of CSS: inheritance.'
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第 [2](ch02.html#selectors) 章和第 [3](ch03.html#pseudo_classes_and_elements) 章展示了文档结构和
+    CSS 选择器如何允许你对元素应用各种样式。知道每个有效文档生成一个结构树，你可以创建基于祖先元素、属性、兄弟元素等进行选择的选择器。结构树是选择器正常工作的基础，也是
+    CSS 中继承同样重要的一个方面。
+- en: '*Inheritance* is the mechanism by which some property values are passed on
+    from an element to a descendant element. When determining which values should
+    apply to an element, a user agent must consider not only inheritance but also
+    the *specificity* of the declarations, as well as the origin of the declarations
+    themselves. This process of consideration is what’s known as the *cascade*.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*继承* 是某些属性值从一个元素传递到后代元素的机制。在确定应将哪些值应用于元素时，用户代理必须考虑不仅继承，还要考虑声明的*具体性*以及声明本身的来源。这个考虑的过程就是所谓的*级联*。'
+- en: 'We will explore the interrelation between these three mechanisms—specificity,
+    inheritance, and the cascade—in this chapter. For now, the difference between
+    the latter two can be summed up this way: when we write `h1 {color: red; color:
+    blue;}`, the `<h1>` becomes blue because of the cascade, and any `<span>` inside
+    the `<h1>` also becomes blue because of inheritance.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '我们将在本章探讨这三种机制——具体性、继承和级联——之间的相互关系。目前，后两者的区别可以总结如下：当我们编写 `h1 {color: red; color:
+    blue;}` 时，`<h1>` 变为蓝色是因为级联的影响，而 `<h1>` 内的任何 `<span>` 也因为继承而变为蓝色。'
+- en: Above all, regardless of how abstract things may seem, keep going! Your perseverance
+    will be rewarded.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无论事物看起来多么抽象，都要坚持下去！你的坚持将会得到回报。
+- en: Specificity
+  id: totrans-5
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 具体性
+- en: 'You know from Chapters [2](ch02.html#selectors) and [3](ch03.html#pseudo_classes_and_elements)
+    that you can select elements by using a wide variety of means. In fact, the same
+    element can often be selected by two or more rules, each with its own selector.
+    Let’s consider the following three pairs of rules. Assume that each pair will
+    match the same element:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你从第 [2](ch02.html#selectors) 章和第 [3](ch03.html#pseudo_classes_and_elements)
+    章知道，可以通过多种方式选择元素。事实上，同一个元素通常可以被两个或更多规则选中，每个规则都有自己的选择器。让我们考虑以下三对规则。假设每一对将匹配同一个元素：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Only one of the two rules in each pair can be applied, or “win,” since the matched
+    elements can be only one color at a time. How do we know which one will win?
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每一对规则中只有一条可以应用或“胜出”，因为匹配的元素一次只能是一种颜色。我们怎么知道哪一个会胜出呢？
+- en: The answer is found in the *specificity* of each selector. For every rule, the
+    user agent (i.e., a web browser) evaluates the specificity of the selector and
+    attaches the specificity to each declaration in the rule within the cascade layer
+    that has precedence. When an element has two or more conflicting property declarations,
+    the one with the highest specificity will win out.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 答案在每个选择器的*具体性*中找到。对于每个规则，用户代理（即 web 浏览器）评估选择器的具体性，并将具体性附加到具有优先级的级联层中的每个声明中。当一个元素有两个或更多冲突的属性声明时，具有最高具体性的声明将获胜。
+- en: Note
+  id: totrans-10
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: This isn’t the whole story in terms of conflict resolution, which is a bit more
+    complicated than a single paragraph can cover. For now, just keep in mind that
+    selector specificity is compared only to other selectors that share the same origin
+    and cascade layer. We’ll cover those terms, and more in [“The Cascade”](#the_cascade).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 冲突解决的整个过程不仅仅是一个段落可以涵盖的那么简单。目前，只需记住，选择器的具体性仅与共享相同来源和级联层的其他选择器进行比较。我们将在“级联”一节中详细讨论这些术语及更多内容。
+- en: 'A selector’s specificity is determined by the components of the selector itself.
+    A specificity value can be expressed in three parts, like this: `0,0,0`. The actual
+    specificity of a selector is determined as follows:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择器的具体性由选择器本身的组成部分决定。具体性值可以用三个部分表示，如下所示：`0,0,0`。选择器的实际具体性如下确定：
+- en: For every ID attribute value given in the selector, add `1,0,0`.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于选择器中给定的每个 ID 属性值，添加 `1,0,0`。
+- en: For every class attribute value, attribute selection, or pseudo-class given
+    in the selector, add `0,1,0`.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于选择器中给定的每个类属性值、属性选择或伪类，添加`0,1,0`。
+- en: For every element and pseudo-element given in the selector, add `0,0,1`.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于选择器中给定的每个元素和伪元素，添加`0,0,1`。
+- en: Combinators do not contribute anything to the specificity.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 组合符不对特异性做出任何贡献。
+- en: Anything listed inside a `:where()` pseudo-class, and the universal selector,
+    adds `0,0,0`. (While they do not contribute anything to the specificity weight,
+    they do match elements, unlike combinators.)
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 任何列在`:where()`伪类内部和通用选择器中的内容，添加`0,0,0`。（虽然它们不对特异性权重做出贡献，但与组合符不同，它们确实匹配元素。）
+- en: The specificity of an `:is()`, `:not()`, or `:has()` pseudo-class is equal to
+    the specificity of the most specific selector in its selector list argument.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`:is()`，`:not()`或`:has()`伪类的特异性等于其选择器列表参数中最具体选择器的特异性。'
+- en: 'For example, the following rules’ selectors result in the indicated specificities:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，以下规则的选择器得出指定的特异性：
+- en: '[PRE1]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: If an `<em>` element is matched by both the second and fifth rules in this example,
+    that element will be maroon because the sixth rule’s specificity outweighs the
+    second’s.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果此例中的`<em>`元素同时符合第二条和第五条规则，那么该元素将是栗色，因为第六条规则的特异性大于第二条规则。
+- en: Take special note of the next-to-last selector, `*:is(aside#warn, code)`. The
+    `:is()` pseudo-class is one of a small group of pseudo-classes for which the specificity
+    is equal to the most specific selector in the selector list. Here, the selector
+    list is `aside#warn, code`. The `aside#warn` compound selector has a specificity
+    of `1,0,1`, and the `code` selector has a specificity of `0,0,1`. Thus, the whole
+    `:is()` portion of the selector is set to the specificity of the `aside#warn`
+    selector.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特别注意倒数第二个选择器`*:is(aside#warn, code)`。`:is()`伪类是一组特异性等于选择器列表中最具体选择器的少数伪类之一。在这里，选择器列表为`aside#warn,
+    code`。`aside#warn`复合选择器的特异性为`1,0,1`，`code`选择器的特异性为`0,0,1`。因此，整个`:is()`选择器的特异性设置为`aside#warn`选择器的特异性。
+- en: 'Now, let’s return to the pairs of rules from earlier in the section and fill
+    in the specificities:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，让我们回到本节前面的规则对，并填写特异性：
+- en: '[PRE2]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: We’ve indicated the winning rule in each pair; in each case, it’s because the
+    specificity is higher. Notice how they’re listed and that the order of the rules
+    doesn’t matter here.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们在每一对中指示了胜出的规则；在每种情况下，这是因为特异性更高。注意它们的列出方式以及规则的顺序在这里并不重要。
+- en: 'In the second pair, the selector `h2.grape` wins because it has an extra class:
+    `0,1,1` beats out `0,0,1`. In the third pair, the second rule wins because `1,0,1`
+    wins out over `0,1,7`. In fact, the specificity value `0,1,0` would win out over
+    the value `0,0,13`.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第二对中，选择器`h2.grape`胜出，因为它有一个额外的类：`0,1,1`击败了`0,0,1`。在第三对中，第二条规则胜出，因为`1,0,1`优于`0,1,7`。事实上，特异性值`0,1,0`将优于值`0,0,13`。
+- en: This happens because the values are compared from left to right. A specificity
+    of `1,0,0` will win out over any specificity that begins with a `0`, no matter
+    what the rest of the numbers might be. So `1,0,1` wins over `0,1,7` because the
+    `1` in the first value’s first position beats the `0` in the second value’s first
+    position.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是因为值是从左到右比较的。特异性为`1,0,0`的规则将优先于任何以`0`开头的特异性，无论后面的数字是什么。因此，`1,0,1`比`0,1,7`更优，因为第一个值的第一个位置上的`1`胜过第二个值的第一个位置上的`0`。
+- en: Declarations and Specificity
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 声明和特异性
+- en: 'Once the specificity of a selector has been determined, the specificity value
+    will be conferred on all of its associated declarations. Consider this rule:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦确定了选择器的特异性，特异性值将被赋予其所有关联的声明。考虑这条规则：
+- en: '[PRE3]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'For specificity purposes, the user agent must treat the rule as if it were
+    “ungrouped” into separate rules. Thus, the previous example would become the following:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于特异性目的，用户代理必须将规则视为未分组为单独的规则。因此，前面的例子将变成以下形式：
+- en: '[PRE4]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Both have a specificity of `0,0,1`, and that’s the value conferred on each declaration.
+    The same splitting-up process happens with a grouped selector as well. Given the
+    rule,
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两者的特异性均为`0,0,1`，每个声明都赋予了这个值。分组选择器也会发生同样的拆分过程。给定规则，
+- en: '[PRE5]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'the user agent treats it as if it were the following:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户代理将其视为以下形式：
+- en: '[PRE6]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'This becomes important when multiple rules match the same element and some
+    of the declarations clash. For example, consider these rules:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当多个规则匹配同一元素且一些声明发生冲突时，这一点变得很重要。例如，考虑以下规则：
+- en: '[PRE7]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'When applied to the following markup, the content will be rendered as shown
+    in [Figure 4-1](#how_different_rules_affect_a_document):'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当应用于以下标记时，内容将如 [图 4-1](#how_different_rules_affect_a_document) 所示呈现：
+- en: '[PRE8]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '![css5 0401](assets/css5_0401.png)'
+  id: totrans-41
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0401](assets/css5_0401.png)'
+- en: Figure 4-1\. How different rules affect a document
+  id: totrans-42
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 4-1\. 不同规则如何影响文档
+- en: In every case, the user agent determines which rules match a given element,
+    calculates all of the associated declarations and their specificities, determines
+    which rules win out, and then applies the winners to the element to get the styled
+    result. These machinations must be performed on every element, selector, and declaration.
+    Fortunately, the user agent does it all automatically and nearly instantly. This
+    behavior is an important component of the cascade, which we’ll discuss later in
+    this chapter.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在每种情况下，用户代理确定哪些规则匹配给定元素，计算所有相关声明及其特异性，确定哪些规则胜出，然后将胜出的规则应用于元素以获取样式化结果。这些操作必须对每个元素、选择器和声明都执行。幸运的是，用户代理会自动且几乎即时地完成所有这些操作。这种行为是级联的重要组成部分，我们稍后在本章中将讨论。
+- en: Resolving Multiple Matches
+  id: totrans-44
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 解决多个匹配项
+- en: 'When an element is matched by more than one selector in a grouped selector,
+    the most specific selector is used. Consider the following CSS:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当一个元素被一组选择器中的多个选择器匹配时，将使用最特异的选择器。考虑以下 CSS：
+- en: '[PRE9]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'Here we have one rule with a grouped selector, and each of the individual selectors
+    has a very different specificity. Now suppose we find this in our HTML:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里我们有一个带有组合选择器的规则，每个单独的选择器具有非常不同的特异性。现在假设我们在 HTML 中找到了这个：
+- en: '[PRE10]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Every one of the selectors in the grouped selector applies to the list item!
+    Which one is used for specificity purposes? The most specific. Thus, in this example,
+    the blue is applied with a specificity of `1,3,1`.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组合选择器中的每一个选择器都应用于列表项！哪一个用于特异性目的？最特异的那个。因此，在这个例子中，蓝色将以`1,3,1`的特异性应用。
+- en: 'You might have noticed that we repeated the `happy` class name three times
+    in one of the selectors. This is a bit of hack that can be used with classes,
+    attributes, pseudo-classes, and even ID selectors to increase specificity. Do
+    be careful with it, since artificially inflating specificity can create problems
+    in the future: you might want to override that rule with another, and that rule
+    will need even more classes chained together.'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能已经注意到，在某个选择器中我们重复了 `happy` 类名三次。这是一种技巧，可以用于类、属性、伪类，甚至是 ID 选择器，以增加特异性。使用时需小心，因为人为提高特异性可能会在将来造成问题：你可能希望用另一条规则覆盖该规则，而那条规则需要更多链式类名。
+- en: Zeroed Selector Specificity
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 选择器特异性归零
+- en: 'The universal selector does not contribute to specificity. It has a specificity
+    of `0,0,0`, which is different from having no specificity (as we’ll discuss in
+    [“Inheritance”](#inheritance)). Therefore, given the following two rules, a paragraph
+    descended from a `<div>` will be black, but all other elements will be gray:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通用选择器不会影响特异性。它具有`0,0,0`的特异性，这与没有特异性（正如我们将在 [“继承”](#inheritance) 中讨论的）不同。因此，根据以下两条规则，从
+    `<div>` 继承的段落将是黑色，但所有其他元素将是灰色：
+- en: '[PRE11]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'This means the specificity of a selector that contains a universal selector
+    along with other selectors is not changed by the presence of the universal selector.
+    The following two selectors have exactly the same specificity:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着包含通用选择器的选择器的特异性不会因通用选择器的存在而改变。以下两个选择器具有完全相同的特异性：
+- en: '[PRE12]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: The same is true for the `:where()` pseudo-class, regardless of whatever selectors
+    might be in its selector list. Thus, `:where(aside#warn, code)` has a specificity
+    of `0,0,0`.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于 `:where()` 伪类来说也是如此，无论其选择器列表中可能包含哪些选择器。因此，`:where(aside#warn, code)` 的特异性为`0,0,0`。
+- en: Combinators, including `~`, `>`, `+`, and the space character, have no specificity
+    at all—not even zero specificity. Thus, they have no impact on a selector’s overall
+    specificity.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组合符号，包括 `~`、`>`、`+` 和空格字符，在选择器的特异性中没有任何影响，甚至零特异性。因此，它们对选择器的总体特异性没有影响。
+- en: ID and Attribute Selector Specificity
+  id: totrans-58
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ID 和属性选择器的特异性
+- en: 'It’s important to note the difference in specificity between an ID selector
+    and an attribute selector that targets an `id` attribute. Returning to the third
+    pair of rules in the example code, we find the following:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 需要注意 ID 选择器与针对 `id` 属性的属性选择器之间特异性的差异。回到示例代码中的第三对规则，我们发现以下内容：
+- en: '[PRE13]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: 'The ID selector (`#answer`) in the second rule contributes `1,0,0` to the overall
+    specificity of the selector. In the first rule, however, the attribute selector
+    (`[id="totals"]`) contributes `0,1,0` to the overall specificity. Thus, given
+    the following rules, the element with an `id` of `meadow` will be green:'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二条规则中的ID选择器（`#answer`）对选择器的整体特异性贡献了 `1,0,0`。然而，在第一条规则中，属性选择器（`[id="totals"]`）对选择器的整体特异性贡献了
+    `0,1,0`。因此，根据以下规则，具有`id`为`meadow`的元素将变为绿色：
+- en: '[PRE14]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: Importance
+  id: totrans-63
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 重要性
+- en: 'Sometimes a declaration is so important that it outweighs all other considerations.
+    CSS calls these *important declarations* (for hopefully obvious reasons) and lets
+    you mark them by inserting the flag `!important` just before the terminating semicolon
+    in a declaration:'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时声明如此重要，以至于它超越所有其他考虑因素。CSS称这些为*重要声明*（希望理由显而易见），并允许您通过在声明的终止分号之前插入`!important`标志来标记它们：
+- en: '[PRE15]'
+  id: totrans-65
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: 'Here, the color value of `#333` is marked with the `!important` flag, whereas
+    the background value of `white` is not. If you wish to mark both declarations
+    as important, each declaration needs its own `!important` flag:'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，`#333`的颜色值被标记为`!important`标志，而`white`的背景值则没有。如果您希望将两个声明都标记为重要，则每个声明都需要自己的`!important`标志：
+- en: '[PRE16]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: 'You must place the `!important` flag correctly, or the declaration may be invalidated:
+    `!important` *always* goes at the end of a declaration, just before the semicolon.
+    This placement is especially critical when it comes to properties that allow values
+    containing multiple keywords, such as `font`:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你必须正确放置`!important`标志，否则声明可能会失效：`!important` *总是* 在声明的末尾，分号之前。在涉及允许包含多个关键字值的属性（如`font`）时，这一放置尤为关键：
+- en: '[PRE17]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: If `!important` were placed anywhere else in the `font` declaration, the entire
+    declaration would likely be invalidated and none of its styles applied.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`!important`被放置在`font`声明的任何其他地方，整个声明很可能会失效，其样式不会应用。
+- en: Note
+  id: totrans-71
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: We realize that to those of you who come from a programming background, the
+    syntax of this token instinctively translates to “not important.” For whatever
+    reason, the bang (`!`) was chosen as the delimiter for important flags, and it
+    does *not* mean “not” in CSS, no matter how many other languages give it that
+    very meaning. This association is unfortunate, but we’re stuck with it.
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们意识到，对于那些来自编程背景的人来说，这个令牌的语法本能地被翻译为“不重要”。无论出于何种原因，感叹号（`!`）被选择作为重要标志的分隔符，在CSS中*并不*意味着“不”，无论其他语言给予它这个确切的含义。这种关联是不幸的，但我们却不得不接受它。
+- en: Declarations that are marked `!important` do not have a special specificity
+    value, but are instead considered separately from unimportant declarations. In
+    effect, all `!important` declarations are grouped together, and specificity conflicts
+    are resolved within that group. Similarly, all unimportant declarations are considered
+    as a group, with any conflicts within the unimportant group as described previously.
+    Thus, in any case where an important and an unimportant declaration conflict,
+    an important declaration will always win (unless the user agent or user have declared
+    the same property as important, which you’ll see later in the chapter).
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 被标记为`!important`的声明没有特殊的优先级值，而是被单独考虑，与不重要的声明分开。实际上，所有`!important`声明被分组在一起，并且在该组内解决特异性冲突。类似地，所有不重要的声明被视为一个组，任何组内的冲突都如前所述。因此，在任何重要和不重要的声明冲突的情况下，重要声明总是胜出（除非用户代理或用户已将相同的属性声明为重要，这将在本章后面看到）。
+- en: '[Figure 4-2](#important_rules_always_win) illustrates the result of the following
+    rules and markup fragment:'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 4-2](#important_rules_always_win) 展示了以下规则和标记片段的结果：'
+- en: '[PRE18]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: '[PRE19]'
+  id: totrans-76
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: '![css5 0402](assets/css5_0402.png)'
+  id: totrans-77
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0402](assets/css5_0402.png)'
+- en: Figure 4-2\. Important rules always win
+  id: totrans-78
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图4-2\. 重要规则总是胜出
+- en: Warning
+  id: totrans-79
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: It’s generally bad practice to use `!important` in your CSS, and it is rarely
+    needed. If you find yourself reaching for `!important`, stop and look for other
+    ways to get the same result without using `!important`. Cascade layers are one
+    such possibility; see [“Sorting by Cascade Layer”](#sorting_by_layer) for more
+    details.
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在你的CSS中通常不建议使用`!important`，而且很少需要。如果你发现自己使用了`!important`，请停下来寻找其他方法来达到同样的效果而不使用`!important`。级联层是其中之一的可能性；请参阅[“按级联层排序”](#sorting_by_layer)以了解更多详情。
+- en: Inheritance
+  id: totrans-81
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 继承
+- en: 'Another key concept in understanding how styles are applied to elements is
+    *inheritance*. Inheritance is the mechanism by which some styles are applied not
+    only to a specified element, but also to its descendants. If a color is applied
+    to an `<h1>` element, for example, that color is applied to all text inside the
+    `<h1>`, even the text enclosed within child elements of that `<h1>`:'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 理解样式应用于元素的另一个关键概念是*继承*。继承是一种机制，使某些样式不仅应用于指定的元素，还应用于其后代。例如，如果将颜色应用于`<h1>`元素，则该颜色将应用于`<h1>`内所有文本，甚至是该`<h1>`子元素内的文本：
+- en: '[PRE20]'
+  id: totrans-83
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: '[PRE21]'
+  id: totrans-84
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: Both the ordinary `<h1>` text and the `<em>` text are colored gray because the
+    `<em>` element inherits the value of `color` from the `<h1>`. If property values
+    could not be inherited by descendant elements, the `<em>` text would be black,
+    not gray, and we’d have to color the elements separately.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 普通`<h1>`文本和`<em>`文本都被着灰色，因为`<em>`元素继承了`<h1>`的`color`值。如果属性值不能被后代元素继承，那么`<em>`文本将是黑色，而不是灰色，我们将不得不单独为这些元素着色。
+- en: 'Consider an unordered list. Let’s say we apply a style of `color: gray;` for
+    `<ul>` elements:'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '考虑一个无序列表。假设我们为`<ul>`元素应用了`color: gray;`样式：'
+- en: '[PRE22]'
+  id: totrans-87
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: We expect that style applied to a `<ul>` will also be applied to its list items,
+    as well as to any content of those list items, including the marker (i.e., the
+    bullet next to each list item). Thanks to inheritance, that’s exactly what happens,
+    as [Figure 4-3](#inheritance_of_styles) demonstrates.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们期望应用于`<ul>`的样式也将应用于其列表项，以及任何这些列表项的内容，包括标记（即每个列表项旁边的符号）。由于继承的存在，这正是发生的，正如[图4-3](#inheritance_of_styles)所示。
+- en: '![css5 0403](assets/css5_0403.png)'
+  id: totrans-89
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0403](assets/css5_0403.png)'
+- en: Figure 4-3\. Inheritance of styles
+  id: totrans-90
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图4-3\. 样式的继承
+- en: It’s easier to see how inheritance works by turning to a tree diagram of a document.
+    [Figure 4-4](#a_simple_tree_diagram) shows the tree diagram for a document much
+    like the very simple document shown in [Figure 4-3](#inheritance_of_styles).
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过查看文档的树形图，更容易理解继承的工作方式。[图4-4](#a_simple_tree_diagram)展示了与图4-3中显示的非常简单文档类似的文档的树形图。
+- en: '![css5 0404](assets/css5_0404.png)'
+  id: totrans-92
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0404](assets/css5_0404.png)'
+- en: Figure 4-4\. A simple tree diagram
+  id: totrans-93
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图4-4\. 简单的树形图
+- en: 'When the declaration `color: gray;` is applied to the `<ul>` element, that
+    element takes on that declaration. The value is then propagated down the tree
+    to the descendant elements and continues on until no more descendants remain to
+    inherit the value. Values are *never* propagated upward; an element never passes
+    values up to its ancestors.'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '当将声明`color: gray;`应用于`<ul>`元素时，该元素采用该声明。然后该值向下传播到后代元素，并一直持续到没有更多后代可以继承该值为止。值*绝对不会*向上传播；元素永远不会将值传递给其祖先。'
+- en: Note
+  id: totrans-95
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: 'The upward propagation rule in HTML has a notable exception: background styles
+    applied to the `<body>` element can be passed to the `<html>` element, which is
+    the document’s root element and therefore defines its canvas. This happens only
+    if the `<body>` element has a defined background and the `<html>` element does
+    not. A few other properties share this body-to-root behavior, such as `overflow`,
+    but it happens only with the `<body>` element. No other elements risk inheriting
+    properties from a descendant.'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在HTML中，上行传播规则有一个显著的例外：应用于`<body>`元素的背景样式可以传递给`<html>`元素，后者是文档的根元素，因此定义了其画布。这仅在`<body>`元素具有定义的背景且`<html>`元素没有时发生。少数其他属性也具有此从body到root的行为，例如`overflow`，但仅适用于`<body>`元素。其他元素不会从后代继承属性。
+- en: Inheritance is one of those things about CSS that is so basic that you almost
+    never think about it unless you have to. However, you should still keep a couple
+    of things in mind.
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 继承是CSS中非常基本的内容之一，几乎从不考虑，除非必须处理。然而，仍应牢记几点。
+- en: First, note that many properties are not inherited—generally in order to avoid
+    undesirable outcomes. For example, the property `border` (which is used to set
+    borders on elements) does not inherit. A quick glance at [Figure 4-5](#why_borders_arenat_inherited)
+    reveals why this is the case. If borders were inherited, documents would become
+    much more cluttered—unless the author took the extra effort to turn off the inherited
+    borders.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，请注意，许多属性不会被继承——通常是为了避免不良结果。例如，`border`属性（用于为元素设置边框）不会继承。快速查看[图4-5](#why_borders_arenat_inherited)就可以看出原因。如果边框被继承，文档会变得更加混乱——除非作者额外努力关闭继承的边框。
+- en: '![css5 0405](assets/css5_0405.png)'
+  id: totrans-99
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0405](assets/css5_0405.png)'
+- en: Figure 4-5\. Why borders aren’t inherited
+  id: totrans-100
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 4-5\. 为什么边框不会被继承
+- en: As it happens, most of the box-model properties—including margins, padding,
+    backgrounds, and borders—are not inherited for the same reason. After all, you
+    likely wouldn’t want all of the links in a paragraph to inherit a 30-pixel left
+    margin from their parent element!
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如事实上所发生的那样，大多数框模型属性——包括边距、填充、背景和边框——由于同样的原因而不会被继承。毕竟，你可能不希望段落中的所有链接都从其父元素继承一个
+    30 像素的左边距！
+- en: 'Second, inherited values have no specificity at all, not even zero specificity.
+    This seems like an academic distinction until you work through the consequences
+    of the lack of inherited specificity. Consider the following rules and markup
+    fragment and compare them to the result shown in [Figure 4-6](#zero_specificity_defeats_no_specificity):'
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其次，继承的值根本没有任何特异性，甚至是零特异性。这似乎是一种学术上的区别，直到你通过缺乏继承特异性的后果来工作，考虑下列规则和标记片段，并将其与[图
+    4-6](#zero_specificity_defeats_no_specificity)中显示的结果进行比较：
+- en: '[PRE23]'
+  id: totrans-103
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: '[PRE24]'
+  id: totrans-104
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: '![css5 0406](assets/css5_0406.png)'
+  id: totrans-105
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0406](assets/css5_0406.png)'
+- en: Figure 4-6\. Zero specificity defeats no specificity
+  id: totrans-106
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 4-6\. 零特异性击败无特异性
+- en: 'Since the universal selector applies to all elements and has zero specificity,
+    its color declaration’s value of `gray` wins out over the inherited value of `black`,
+    which has no specificity at all. (And now you may understand why we listed `:where()`
+    and the universal selector as having `0,0,0` specificity: they add no weight,
+    but do match elements.) Therefore, the `<em>` element is rendered gray instead
+    of black.'
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于通用选择器适用于所有元素并且具有零特异性，其颜色声明的`gray`值胜过完全没有特异性的继承值`black`。（现在你可能理解为什么我们将`:where()`和通用选择器列为具有`0,0,0`特异性了：它们不增加权重，但确实匹配元素。）因此，`<em>`元素呈现为灰色而不是黑色。
+- en: This example vividly illustrates one of the potential problems of using the
+    universal selector indiscriminately. Because it can match *any* element or pseudo-element,
+    the universal selector often has the effect of short-circuiting inheritance. This
+    can be worked around, but it’s usually more sensible to avoid the problem in the
+    first place by not using the universal selector by itself indiscriminately.
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个例子生动地说明了无差别使用通用选择器可能会遇到的潜在问题之一。因为它可以匹配*任何*元素或伪元素，通用选择器通常会导致继承的短路效应。虽然可以绕过这个问题，但通常更明智的做法是避免使用单独的通用选择器以避免这个问题。
+- en: 'The complete lack of specificity for inherited values is not a trivial point.
+    For example, assume that a stylesheet has been written such that all text in a
+    toolbar is to be white on black:'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于继承值的完全缺乏特异性并非一个微不足道的观点。例如，假设样式表已被编写，以便工具栏中的所有文本都是白色的黑色背景：
+- en: '[PRE25]'
+  id: totrans-110
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: 'This will work so long as the element with an `id` of `toolbar` contains nothing
+    but plain text. If, however, the text within this element is all hyperlinks (`a`
+    elements), then the user agent’s styles for hyperlinks will take over. In a web
+    browser, this means they’ll likely be colored blue, since the browser’s internal
+    stylesheet probably contains an entry like this:'
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只要具有`toolbar` id 的元素内不包含超链接（`a`元素）的纯文本，这将起作用。但是，如果此元素内的文本全部都是超链接，那么用户代理样式表中的超链接样式将接管。在
+    Web 浏览器中，这意味着它们可能会被着蓝色，因为浏览器的内部样式表可能包含类似以下条目：
+- en: '[PRE26]'
+  id: totrans-112
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: 'To overcome this problem, you must declare something like this:'
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要解决这个问题，你必须声明类似以下内容：
+- en: '[PRE27]'
+  id: totrans-114
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: By targeting a rule directly at the `a` elements within the toolbar, you’ll
+    get the result shown in [Figure 4-7](#directly_assigning_styles_to_the_relevan).
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过直接针对工具栏内的`a`元素制定规则，你将获得[图 4-7](#directly_assigning_styles_to_the_relevan)中显示的结果。
+- en: '![css5 0407](assets/css5_0407.png)'
+  id: totrans-116
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0407](assets/css5_0407.png)'
+- en: Figure 4-7\. Directly assigning styles to the relevant elements
+  id: totrans-117
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 4-7\. 直接为相关元素分配样式
+- en: 'Another way to get the same result is to use the value `inherit`, covered in
+    the next chapter. We can alter the previous example like so:'
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种获得相同结果的方法是使用值`inherit`，在下一章节中进行讨论。我们可以像这样修改前面的例子：
+- en: '[PRE28]'
+  id: totrans-119
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: This also leads to the result shown in [Figure 4-7](#directly_assigning_styles_to_the_relevan),
+    because the value of `color` is explicitly inherited thanks to an assigned rule
+    whose selector has specificity.
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这也导致了[图 4-7](#directly_assigning_styles_to_the_relevan)中显示的结果，因为`color`的值由于具有特异性的分配规则而明确继承。
+- en: The Cascade
+  id: totrans-121
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 层叠
+- en: 'Throughout this chapter, we’ve skirted one rather important issue: what happens
+    when two rules of equal specificity apply to the same element? How does the browser
+    resolve the conflict? For example, consider the following rules:'
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本章中，我们回避了一个相当重要的问题：当两个具有相等特异性的规则应用于同一元素时会发生什么？浏览器如何解决冲突？例如，考虑以下规则：
+- en: '[PRE29]'
+  id: totrans-123
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: Which one wins? Both have a specificity of `0,0,1`, so they have equal weight
+    and should both apply. That can’t be the case because the element can’t be both
+    red and blue. So which will it be?
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 哪个胜出？两者的特异性都是`0,0,1`，因此它们具有相等的权重，应该都适用。但事实并非如此，因为元素不能既是红色又是蓝色。那么将是哪一个呢？
+- en: 'At last, the name *Cascading Style Sheets* comes into focus: CSS is based on
+    a method of causing styles to *cascade* together, which is made possible by combining
+    inheritance and specificity with a few rules. The cascade rules for CSS are as
+    follows:'
+  id: totrans-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，*Cascading Style Sheets*的名字开始变得清晰：CSS是基于一种将样式*级联*在一起的方法，通过结合继承和特异性以及一些规则实现。CSS的级联规则如下：
+- en: Find all rules containing a selector that matches a given element.
+  id: totrans-126
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 查找包含与给定元素匹配的选择器的所有规则。
+- en: Sort all declarations applying to the given element by *explicit weight*.
+  id: totrans-127
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将应用于给定元素的所有声明按*显式权重*排序。
+- en: 'Sort all declarations applying to the given element by *origin*. There are
+    three basic origins: author, reader, and user agent. Under normal circumstances,
+    the author’s styles (that is, your styles as the author of the page) win out over
+    the reader’s styles, and both author and reader styles override the user agent’s
+    default styles. This is reversed for rules marked `!important`, where user agent
+    styles override author styles, and both override reader styles.'
+  id: totrans-128
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将应用于给定元素的所有声明按*来源*排序。有三种基本来源：作者、读者和用户代理。在正常情况下，作者的样式（即您作为页面作者的样式）优先于读者的样式，作者和读者的样式都会覆盖用户代理的默认样式。但对于标记为`!important`的规则，用户代理样式优先于作者样式，而两者都优先于读者样式。
+- en: Sort all declarations applying to the given element by *encapsulation context*.
+    If a style is assigned via a shadow DOM, for example, it has an encapsulation
+    context for all elements within that same shadow DOM and does not apply to elements
+    outside that shadow DOM. This allows encapsulated styles to override styles that
+    are inherited from outside the shadow DOM.
+  id: totrans-129
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将应用于给定元素的所有声明按*封装上下文*排序。例如，如果通过影子DOM分配样式，则对于该影子DOM中的所有元素都有封装上下文，不适用于影子DOM外的元素。这允许封装样式覆盖从影子DOM外继承的样式。
+- en: Sort all declarations by whether they are *element attached*. Styles assigned
+    via a `style` attribute are element attached. Styles assigned from a stylesheet,
+    whether external or embedded, are not.
+  id: totrans-130
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将所有声明按是否*元素附加*排序。通过`style`属性分配的样式是元素附加的。通过样式表分配的样式，无论是外部的还是嵌入的，都不是。
+- en: Sort all declarations by *cascade layer*. For normal-weight styles, the later
+    a cascade layer first appears in the CSS, the greater the precedence. Styles without
+    a layer are considered to be part of a “default” final pseudo-layer, one that
+    has higher precedence than styles in explicitly created layers. For important-weight
+    styles, the *earlier* a cascade layer appears in the CSS, the greater its precedence,
+    and all important-weight styles in explicitly created layers win out over styles
+    in the default layer, important or otherwise. Cascade layers can appear in any
+    origin.
+  id: totrans-131
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将所有声明按*级联层*排序。对于普通权重的样式，级联层在CSS中首次出现的越晚，优先级越高。没有层的样式被视为“默认”最终伪层的一部分，其优先级高于显式创建层中的样式。对于重要权重的样式，级联层在CSS中出现得越*早*，优先级就越高，而显式创建层中的所有重要权重样式都优先于默认层中的样式，无论是否重要。级联层可以出现在任何来源中。
+- en: Sort all declarations applying to the given element by *specificity*. Those
+    elements with a higher specificity have more weight than those with lower specificity.
+  id: totrans-132
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将应用于给定元素的所有声明按*特异性*排序。具有较高特异性的元素比具有较低特异性的元素具有更高的权重。
+- en: Sort all declarations applying to the given element by *order of appearance*.
+    The later a declaration appears in the stylesheet or document, the more weight
+    it is given. Declarations that appear in an imported stylesheet are considered
+    to come before all declarations within the stylesheet that imports them.
+  id: totrans-133
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将应用于给定元素的所有声明按*出现顺序*排序。声明在样式表或文档中出现得越晚，其权重就越高。被导入样式表中的声明被认为出现在导入它们的样式表中的所有声明之前。
+- en: To be clear about how this all works, let’s consider examples that illustrate
+    some of the cascade rules.
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要清楚这一切是如何运作的，让我们考虑一些例子，这些例子说明了一些级联规则。
+- en: Sorting by Importance and Origin
+  id: totrans-135
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 按重要性和来源排序
+- en: 'If two rules apply to an element, and one is marked `!important`, the important
+    rule wins out:'
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果两条规则适用于一个元素，并且其中一条标记为`!important`，则重要规则获胜：
+- en: '[PRE30]'
+  id: totrans-137
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: '[PRE31]'
+  id: totrans-138
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: Even though a color is assigned in the `style` attribute of the paragraph, the
+    `!important` rule wins out, and the paragraph is gray. This occurs because sorting
+    by `!important` has higher precedence than sorting by element-attached styles
+    (`style=""`). The gray is inherited by the `<em>` element as well.
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使段落的`style`属性中分配了颜色，`!important`规则仍然占优势，段落会是灰色的。这是因为`!important`的排序比元素附加样式（`style=""`）的排序具有更高的优先级。灰色也会被`<em>`元素继承。
+- en: 'Note that if `!important` is added to the inline style in this situation, *it*
+    will be the winner. Thus, given the following, the paragraph (and its descendant
+    element) will be black:'
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，如果在此情况下将`!important`添加到内联样式中，*它*将获胜。因此，根据以下情况，段落（及其后代元素）将是黑色的：
+- en: '[PRE32]'
+  id: totrans-141
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: '[PRE33]'
+  id: totrans-142
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: 'If the importance is the same, the origin of a rule is considered. If an element
+    is matched by normal styles in both the author’s stylesheet and the reader’s stylesheet,
+    the author’s styles are used. For example, assume that the following styles come
+    from the indicated origins:'
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果重要性相同，则考虑规则的来源。如果元素同时匹配作者样式表和读者样式表中的普通样式，则使用作者样式。例如，假设以下样式来自指定的来源：
+- en: '[PRE34]'
+  id: totrans-144
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: 'In this case, emphasized text within paragraphs is colored black, not yellow,
+    because the author styles win out over the reader styles. However, if both rules
+    are marked `!important`, the situation changes:'
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，段落中的强调文本将是黑色的，而不是黄色的，因为作者样式胜过读者样式。然而，如果两条规则都标记为`!important`，情况将发生变化：
+- en: '[PRE35]'
+  id: totrans-146
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: Now the emphasized text in paragraphs will be yellow, not black.
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在段落中的强调文本将是黄色的，而不是黑色的。
+- en: As it happens, the user agent’s default styles—which are often influenced by
+    the user preferences—are figured into this step. The default style declarations
+    are the least influential of all. Therefore, if an author-defined rule applies
+    to anchors (e.g., declaring them to be `white`), then this rule overrides the
+    user agent’s defaults.
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如所述，用户代理的默认样式——通常受用户偏好影响——也被考虑在内。默认样式声明是所有声明中最不具影响力的。因此，如果作者定义了一个适用于锚点的规则（例如，声明它们为`white`），那么此规则将覆盖用户代理的默认值。
+- en: 'To sum up, CSS has eight basic levels to consider in terms of declaration precedence.
+    In order of most to least precedence, these are as follows:'
+  id: totrans-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总结一下，CSS 在声明优先级方面有八个基本级别。按照优先级从高到低的顺序，它们如下：
+- en: Transition declarations (see [Chapter 18](ch18.html#x-transitions))
+  id: totrans-150
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 过渡声明（参见[第18章](ch18.html#x-transitions)）
+- en: User agent important declarations
+  id: totrans-151
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 用户代理重要声明
+- en: Reader important declarations
+  id: totrans-152
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 读者重要声明
+- en: Author important declarations
+  id: totrans-153
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 作者重要声明
+- en: Animation declarations (see [Chapter 19](ch19.html#animation))
+  id: totrans-154
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 动画声明（参见[第19章](ch19.html#animation)）
+- en: Author normal declarations
+  id: totrans-155
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 作者普通声明
+- en: Reader normal declarations
+  id: totrans-156
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 读者普通声明
+- en: User agent declarations
+  id: totrans-157
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 用户代理声明
+- en: Thus, a transition style will override all other rules, regardless of whether
+    those other rules are marked `!important` or from what origin the rules come.
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，过渡样式将覆盖所有其他规则，无论这些规则是否标记为`!important`或规则的来源如何。
+- en: Sorting by Element Attachment
+  id: totrans-159
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 按元素附加排序
+- en: Styles can be attached to an element by using a markup attribute such as `style`.
+    These are called *element-attached* styles, and they are outweighed only by considerations
+    of origin and weight.
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 样式可以通过使用诸如`style`这样的标记属性附加到元素。这些被称为*元素附加*样式，它们仅被来源和权重的考虑所超越。
+- en: 'To understand this, consider the following rule and markup fragment:'
+  id: totrans-161
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要理解这一点，请考虑以下规则和标记片段：
+- en: '[PRE36]'
+  id: totrans-162
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: '[PRE37]'
+  id: totrans-163
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: 'Given that the rule is applied to the `<h1>` element, you would still probably
+    expect the text of the `<h1>` to be green. This happens because every inline declaration
+    is element attached, and so has a higher weight than styles that aren’t element
+    attached, like the `color: red` rule.'
+  id: totrans-164
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '给定规则应用于`<h1>`元素，你可能仍然期望`<h1>`文本是绿色的。这是因为每个内联声明都是元素附加的，因此比不是元素附加的样式（如`color:
+    red`规则）权重更高。'
+- en: 'This means that even elements with `id` attributes that match a rule will obey
+    the inline style declaration. Let’s modify the previous example to include an
+    `id`:'
+  id: totrans-165
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着即使元素具有与规则匹配的`id`属性，也会遵守内联样式声明。让我们修改前面的示例以包括一个`id`：
+- en: '[PRE38]'
+  id: totrans-166
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: '[PRE39]'
+  id: totrans-167
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: Thanks to the inline declaration’s weight, the text of the `<h1>` element will
+    still be green.
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于内联声明的权重，`<h1>`元素的文本仍将是绿色的。
+- en: Just remember that inline styles are generally a bad practice, so try not to
+    use them if at all possible.
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只需记住，内联样式通常是不良实践，如果可能的话尽量不要使用它们。
+- en: Sorting by Cascade Layer
+  id: totrans-170
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 按级联层排序
+- en: '*Cascade layers* allow authors to group styles together so that they share
+    a precedence level within the cascade. This might sound like `!important`; in
+    some ways they are similar—but in others, very different. This is easier to demonstrate
+    than it is to describe. The ability to create cascade layers means authors can
+    balance various needs, such as the needs of a component library, against the needs
+    of a specific page or part of a web app.'
+  id: totrans-171
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*级联层*允许作者将样式分组，以便它们在级联中共享一个优先级别。这听起来有点像`!important`；在某些方面它们是相似的，但在其他方面则截然不同。这比描述要容易演示。创建级联层的能力意味着作者可以平衡各种需求，例如组件库的需求与网页或Web应用的特定部分的需求。'
+- en: Note
+  id: totrans-172
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注
+- en: Cascade layers were introduced to CSS at the end of 2021, so browser support
+    for them exists only in browsers released from that point forward.
+  id: totrans-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 级联层是在2021年底引入到CSS中的，因此只有从那时起发布的浏览器才支持它们。
+- en: 'If conflicting declarations apply to an element and all have the same explicit
+    weight and origin, and none are element attached, they are next sorted by cascade
+    layer. The order of precedence for layers is set by the order in which the layers
+    are first declared or used, with later declared layers taking precedence over
+    earlier declared layers for normal styles. Consider the following:'
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果冲突声明适用于元素，并且所有声明具有相同的显式权重和来源，并且没有元素附加，那么它们将按级联层排序。层的优先顺序由首次声明或使用层的顺序设置，后面声明的层对于普通样式具有比前面声明的层更高的优先级。考虑以下示例：
+- en: '[PRE40]'
+  id: totrans-175
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: These `<h1>` elements will be colored blue. This is because the `page` layer
+    comes later in the CSS than the `site` layer, and so has higher precedence.
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些`<h1>`元素将会被着蓝色色。这是因为在CSS中，`page`层在`site`层之后，因此具有更高的优先级。
+- en: 'Any style not part of a named cascade layer is assigned to an implicit “default”
+    layer, one that has higher precedence than any named layer for unimportant rules.
+    Suppose we alter the previous example as follows:'
+  id: totrans-177
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何不属于命名级联层的样式都会分配给隐式的“默认”层，这一层对于不重要的规则具有比任何命名层更高的优先级。假设我们如下修改之前的示例：
+- en: '[PRE41]'
+  id: totrans-178
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: 'The `<h1>` elements will now be maroon, because the implicit “default” layer
+    to which the `h1 {color: maroon;}` belongs has higher precedence than any named
+    layer.'
+  id: totrans-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<h1>`元素现在将是栗色的，因为隐式“默认”层（`h1 {color: maroon;}`所属的层）比任何命名层具有更高的优先级。'
+- en: 'You can also define a specific precedence order for named cascade layers. Consider
+    the following CSS:'
+  id: totrans-180
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以为命名级联层定义特定的优先顺序。考虑以下CSS：
+- en: '[PRE42]'
+  id: totrans-181
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: 'Here, the first line defines an order of precedence for the layers: the `page`
+    layer will be given higher precedence than the `site` layer for normal-weight
+    rules like those shown in the example. Thus, in this case, `<h1>` elements will
+    be blue, because when the layers are sorted, `page` is given more precedence than
+    `site`. For important-flagged rules, the order of precedence is reversed. Thus,
+    if both rules were marked `!important`, the precedence would flip and `<h1>` elements
+    would be red.'
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，第一行定义了层的优先顺序：对于像示例中显示的普通权重规则，`page`层将比`site`层具有更高的优先级。因此，在这种情况下，`<h1>`元素将是蓝色的，因为在排序层时，`page`比`site`具有更高的优先级。对于标记为重要的规则，优先顺序则相反。因此，如果两个规则都标记为`!important`，优先级将翻转，`<h1>`元素将是红色的。
+- en: 'Let’s talk a little bit more about how cascade layers specifically work, especially
+    since they’re so new to CSS. Let’s say you want to define three layers: one for
+    the basic site styles, one for individual page styles, and one for a component
+    library whose styles are imported from an external stylesheet. The CSS might look
+    like this:'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们再详细讨论一下级联层的工作原理，特别是因为它们对CSS来说是如此新的。假设您想定义三个层：一个用于基本站点样式，一个用于单个页面样式，以及一个用于从外部样式表导入的组件库的样式。CSS可能如下所示：
+- en: '[PRE43]'
+  id: totrans-184
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: This ordering will have normal-weight `components` styles override and `page`
+    and `site` normal-weight styles, and normal-weight `page` styles will override
+    only `site` normal-weight styles. Conversely, important `site` styles will override
+    all `page` and `components` styles, whether they’re important or normal weight,
+    and `page` important styles will override all `components` styles.
+  id: totrans-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种排序方式将会使普通权重的`components`样式覆盖`page`和`site`的普通权重样式，而普通权重的`page`样式仅会覆盖`site`的普通权重样式。相反，重要的`site`样式将会覆盖所有`page`和`components`样式，不论它们是重要的还是普通权重的，而重要的`page`样式将会覆盖所有`components`样式。
+- en: 'Here’s a small example of how layers might be managed:'
+  id: totrans-186
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个小例子，展示了如何管理层：
+- en: '[PRE44]'
+  id: totrans-187
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: This example has three imported stylesheets, one of which is assigned to the
+    `site` layer and two of which are in the `component` layer. Then some rules are
+    assigned to the `page` layer, and a couple of rules are placed in the `site` layer.
+    The rules in the `@layer site {}` block will be combined with the rules from `/c/site.css`
+    into a single `site` layer.
+  id: totrans-188
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例包含三个导入的样式表，其中一个分配给了`site`层，另外两个在`component`层。然后一些规则分配给了`page`层，并且有一些规则放在了`site`层。`@layer
+    site {}`块中的规则将与`/c/site.css`中的规则合并成一个单独的`site`层。
+- en: After that, there’s a rule outside the explicit cascade layers, which means
+    it’s part of the implicit “default” layer. Rules in this default layer will override
+    the styles of any of the other layers. So, given the code shown, paragraphs will
+    have top margins of `1em`.
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此之后，有一个层外的显式级联层之外的规则，这意味着它是隐式“默认”层的一部分。默认层中的规则将覆盖任何其他层的样式。因此，根据所示的代码，段落将具有`1em`的顶部边距。
+- en: 'But before all of that, a directive sets the precedence order of the named
+    layers: `page` overrules `component` and `site`, and `component` overrules `site`.
+    Here’s how those various rules are grouped as far as the cascade is concerned,
+    with comments to describe their placement in the sorting:'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但在此之前，一个指令设置了命名层的优先顺序：`page`优先于`component`和`site`，`component`优先于`site`。以下是这些各种规则在级联方面的分组，带有描述它们在排序中的位置的注释：
+- en: '[PRE45]'
+  id: totrans-191
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: As you can see, the later a layer comes in the ordering of the layers, the more
+    weight it’s given by the cascade’s sorting algorithm.
+  id: totrans-192
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您所看到的，层在层次排序中越晚出现，级联排序算法就会给予它们越多的权重。
+- en: 'To be clear, cascade layers don’t have to be named. Naming just keeps things
+    a lot clearer in terms of setting an order for them, and it also enables adding
+    styles to the layer. Here are some examples of using unnamed cascade layers:'
+  id: totrans-193
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 清楚地说，级联层不一定要有名称。命名只是在设置它们的顺序方面更加清晰，并且还使得可以向层添加样式。这里有一些使用未命名级联层的例子：
+- en: '[PRE46]'
+  id: totrans-194
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: In this case, the rules imported from *base.css* are assigned to an unnamed
+    layer. Even though this layer doesn’t actually have a name, let’s think of it
+    as CL1\. Then a rule outside the layers sets paragraph top margins to `1em`. Finally,
+    an unnamed layer block has a couple of rules; let’s think of this layer as CL2.
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，从*base.css*导入的规则分配给了一个未命名层。即使这个层实际上没有名称，我们可以把它看作是CL1。然后，一个层外的规则将段落的顶部边距设置为`1em`。最后，一个未命名的层块有一些规则；我们可以把这个层看作是CL2。
+- en: 'So now we have rules in three layers: CL1, CL2, and the implicit layer. And
+    that’s the order they’re considered in, so in the case of any conflicting normal
+    rules, the rules in the implicit default layer (which comes last in the ordering)
+    will win over conflicting rules in the other two layers, and rules in CL2 will
+    win over conflicting rules in CL1.'
+  id: totrans-196
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们有了三个层中的规则：CL1、CL2和隐式层。它们的考虑顺序是这样的，所以在任何冲突的普通规则的情况下，隐式默认层中的规则（在排序中排在最后）将胜出于其他两个层中的冲突规则，CL2中的规则将胜出于CL1中的冲突规则。
+- en: At least, that’s the case for normal-weight rules. For `!important` rules, the
+    order of precedence is flipped, so those in CL1 will win over conflicting important
+    rules in the other two layers, and important rules in CL2 win over conflicting
+    important rules in the implicit layer. Strange but true!
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 至少对于普通权重规则是这样的。对于`!important`规则，优先级顺序是相反的，所以CL1中的规则将胜过其他两个层中的冲突重要规则，CL2中的重要规则将胜过隐式层中的冲突重要规则。奇怪但是事实！
+- en: This sorting by order will come up again in just a little bit, but first let’s
+    bring specificity into the cascade.
+  id: totrans-198
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种按顺序排序将在稍后再次出现，但首先让我们把特异性引入级联。
+- en: Sorting by Specificity
+  id: totrans-199
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 按特异性排序
+- en: 'If conflicting declarations apply to an element and those declarations all
+    have the same explicit weight, origin, element attachment (or lack thereof), and
+    cascade layer, they are then sorted by specificity. The most specific declaration
+    wins out, like this:'
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果冲突声明应用于一个元素，并且这些声明具有相同的显式权重、来源、元素附加（或缺乏附加）和级联层，则它们将按特异性排序。最特异的声明胜出，就像这样：
+- en: '[PRE47]'
+  id: totrans-201
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: '[PRE48]'
+  id: totrans-202
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: Given these rules, the text of the paragraph will be silver, as illustrated
+    in [Figure 4-8](#higher_specificity_wins_out_over_lower). Why? Because the specificity
+    of `p#bright` (`1,0,1`) overrides the specificity of `p` (`0,0,1)`, even though
+    the latter rule comes later in the stylesheet. The styles from the `page` layer,
+    even though they have the strongest selector (`3,0,1`), aren’t even compared.
+    Only the declarations from the layer with precedence are in contention.
+  id: totrans-203
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据这些规则，段落的文本将呈现为银色，如 [图 4-8](#higher_specificity_wins_out_over_lower) 所示。为什么？因为
+    `p#bright` 的特异性（`1,0,1`）优先于 `p` 的特异性（`0,0,1`），尽管后者在样式表中出现得更晚。即使具有最强选择器（`3,0,1`）的
+    `page` 层的样式也没有被比较。只有具有优先级的层中的声明才会竞争。
+- en: '![css5 0408](assets/css5_0408.png)'
+  id: totrans-204
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0408](assets/css5_0408.png)'
+- en: Figure 4-8\. Higher specificity wins out over lower specificity
+  id: totrans-205
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 4-8\. 更高的特异性胜过更低的特异性
+- en: 'Remember that this rule applies only if the rules are part of the same cascade
+    layer. If not, specificity doesn’t matter: a `0,0,1` selector in the implicit
+    layer will win over any unimportant rule in an explicitly created cascade layer,
+    no matter how high the latter’s specificity gets.'
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住，这个规则只适用于规则属于同一个级联层的情况。如果不是，特异性就不重要了：隐式层中的 `0,0,1` 选择器将优先于显式创建的级联层中的任何不重要规则，无论后者的特异性有多高。
+- en: Sorting by Order
+  id: totrans-207
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 按顺序排序
+- en: Finally, if two rules have exactly the same explicit weight, origin, element
+    attachment, cascade layer, and specificity, then the one that appears later in
+    the stylesheet wins out, similar to the way cascade layers are sorted in order
+    so that later layers win over earlier layers.
+  id: totrans-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，如果两条规则在显式权重、来源、元素附加、级联层和特异性完全相同，那么在样式表中后出现的规则将获胜，类似于级联层按顺序排序，后续层次胜过早期层次。
+- en: 'Let’s return to an earlier example, where we find the following two rules in
+    the document’s stylesheet:'
+  id: totrans-209
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们回到一个早期的例子，在文档样式表中找到以下两条规则：
+- en: '[PRE49]'
+  id: totrans-210
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: In this case, the value of `color` for all `<h1>` elements in the document will
+    be `blue`, not `red`. This is because the two rules are tied with each other in
+    terms of explicit weight and origin, are in the same cascade layer, and the selectors
+    have equal specificity, so the last one declared is the winner. It doesn’t matter
+    how close together the elements are in the document tree; even though `<body>`
+    and `<h1>` are closer together than `<html>` and `<h1>`, the later one wins. The
+    only thing that matters (when the origin, cascade layer, layer, and specificity
+    are the same) is the order in which the rules appear in the CSS.
+  id: totrans-211
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，文档中所有 `<h1>` 元素的 `color` 值将是 `blue`，而不是 `red`。这是因为这两条规则在显式权重和来源上是相等的，位于同一个级联层中，并且选择器具有相等的特异性，因此最后声明的规则是赢家。文档树中元素之间的距离有多近并不重要；即使
+    `<body>` 和 `<h1>` 比 `<html>` 和 `<h1>` 更接近，后者也是赢家。唯一重要的事情（当来源、级联层、层和特异性相同时）是规则在
+    CSS 中出现的顺序。
+- en: 'So what happens if rules from completely separate stylesheets conflict? For
+    example, suppose the following:'
+  id: totrans-212
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么如果完全不同的样式表中的规则冲突会发生什么？例如，假设如下：
+- en: '[PRE50]'
+  id: totrans-213
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: 'What if `h1 {color: red;}` appears in *basic.css*? In this case, since there
+    are no cascade layers in play, the entire contents of *basic.css* are treated
+    as if they were pasted into the stylesheet at the point where the `@import` occurs.
+    Thus, any rule contained in the document’s stylesheet occurs later than those
+    from the `@import`. If they tie in terms of explicit weight and specificity, the
+    document’s stylesheet contains the winner. Consider the following:'
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果 `h1 {color: red;}` 出现在 *basic.css* 中会发生什么？在这种情况下，由于没有级联层参与，整个 *basic.css*
+    的内容都被视为粘贴到 `@import` 发生的样式表的点。因此，文档的样式表中包含的任何规则都比 `@import` 中的规则晚出现。如果在显式权重和特异性上达到平局，文档的样式表包含的规则将获胜。考虑以下情况：'
+- en: '[PRE51]'
+  id: totrans-215
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: In this case, the second rule wins out over the imported rule because it is
+    the last one specified, and both are in the implicit cascade layer.
+  id: totrans-216
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，第二条规则胜过了导入规则，因为它是最后一个指定的规则，并且两者都在隐式级联层中。
+- en: 'Order sorting is the reason behind the often-recommended ordering of link styles.
+    The recommendation is that you write your link styles in the order `link`, `visited`,
+    `focus`, `hover`, `active`, or LVFHA, like this:'
+  id: totrans-217
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 排序排序是常推荐的链接样式排序背后的原因。推荐的顺序是你应该按照 `link`、`visited`、`focus`、`hover`、`active` 或者
+    LVFHA 的顺序编写你的链接样式，就像这样：
+- en: '[PRE52]'
+  id: totrans-218
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: 'Thanks to the information in this chapter, you now know that the specificity
+    of all of these selectors is the same: `0,1,1`. Because they all have the same
+    explicit weight, origin, and specificity, the last one that matches an element
+    will win out. An unvisited link that is being clicked or otherwise activated,
+    such as via the keyboard, is matched by four of the rules—`:link`, `:focus`, `:hover`,
+    and `:active`—so the last one of those four will win out. Given the LVFHA ordering,
+    `:active` will win, which is likely what the author intended.'
+  id: totrans-219
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多亏了本章节中的信息，现在你知道所有这些选择器的特异性都是相同的：`0,1,1`。因为它们都有相同的显式权重、起源和特异性，匹配元素的最后一个将胜出。一个正在点击或通过键盘等方式激活的未访问链接会被四条规则匹配——`:link`、`:focus`、`:hover`和`:active`——因此这四条规则中的最后一条将胜出。根据
+    LVFHA 排序，`:active` 将胜出，这可能是作者想要的结果。
+- en: 'Assume for a moment that you decide to ignore the common ordering and alphabetize
+    your link styles instead. This would yield the following:'
+  id: totrans-220
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你决定忽略常见的顺序并按字母顺序排列你的链接样式。这将得到以下结果：
+- en: '[PRE53]'
+  id: totrans-221
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: Given this ordering, no link would ever show `:hover`, `:focus`, or `:active`
+    styles because the `:link` and `:visited` rules come after the other three. Every
+    link must be either visited or unvisited, so those styles will always override
+    the others.
+  id: totrans-222
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据这种顺序，没有任何链接会显示`:hover`、`:focus`或`:active`样式，因为`:link`和`:visited`规则在其他三个规则之后。每个链接必须是已访问或未访问的，因此这些样式总是会覆盖其他样式。
+- en: 'Let’s consider a variation on the LVFHA order that an author might want to
+    use. In this ordering, only unvisited links will get a hover style; visited links
+    will not. Both visited and unvisited links will get an active style:'
+  id: totrans-223
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们考虑作者可能想要使用的 LVFHA 顺序的变体。在这种排序中，只有未访问的链接会获得悬停样式；已访问的链接则不会。已访问和未访问的链接都会获得活动样式：
+- en: '[PRE54]'
+  id: totrans-224
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: 'Such conflicts arise only when all the states attempt to set the same property.
+    If each state’s styles address a different property, the order does not matter.
+    In the following case, the link styles could be given in any order and would still
+    function as intended:'
+  id: totrans-225
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种冲突只有在所有状态尝试设置相同属性时才会发生。如果每个状态的样式涉及不同的属性，则顺序并不重要。在以下情况中，链接样式可以以任何顺序给出，仍将按预期功能运行：
+- en: '[PRE55]'
+  id: totrans-226
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE55]'
+- en: You may also have realized that the order of the `:link` and `:visited` styles
+    doesn’t matter. You could order the styles LVFHA or VLFHA with no ill effect.
+  id: totrans-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能也意识到`:link`和`:visited`样式的顺序并不重要。你可以以 LVFHA 或 VLFHA 的顺序排列这些样式，没有任何负面影响。
+- en: 'The ability to chain pseudo-classes together eliminates all these worries.
+    The following could be listed in any order without any overrides, as the specificity
+    of the latter two is greater than that of the first two:'
+  id: totrans-228
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 能够链式使用伪类消除了所有这些担忧。后两者的特异性大于前两者，因此可以任意顺序列出：
+- en: '[PRE56]'
+  id: totrans-229
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE56]'
+- en: 'Because each rule applies to a unique set of link states, they do not conflict.
+    Therefore, changing their order will not change the styling of the document. The
+    last two rules do have the same specificity, but that doesn’t matter. A hovered
+    unvisited link will not be matched by the rule regarding hovered visited links,
+    and vice versa. If we were to add active-state styles, order would start to matter
+    again. Consider this:'
+  id: totrans-230
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为每条规则适用于一组唯一的链接状态，它们不会冲突。因此，改变它们的顺序不会改变文档的样式。最后两条规则的特异性确实相同，但这并不重要。悬停的未访问链接不会匹配关于悬停已访问链接的规则，反之亦然。如果我们添加活动状态样式，顺序将再次变得重要。考虑下面这个例子：
+- en: '[PRE57]'
+  id: totrans-231
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE57]'
+- en: 'If the active styles were moved before the hover styles, they would be ignored.
+    Again, this would happen because of specificity conflicts. The conflicts could
+    be avoided by adding more pseudo-classes to the chains, like this:'
+  id: totrans-232
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果将活动样式移至悬停样式之前，它们将被忽略。同样，这是因为特异性冲突。可以通过在链中添加更多伪类来避免冲突，如下所示：
+- en: '[PRE58]'
+  id: totrans-233
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE58]'
+- en: 'This does have the effect of raising the specificity of the selectors—both
+    have a specificity value of `0,3,1`—but they don’t conflict because the actual
+    selection states are mutually exclusive. A link can’t be both a visited hovered
+    active link *and* an unvisited hovered active link: only one of the two rules
+    will match.'
+  id: totrans-234
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这确实提高了选择器的特异性——两者的特异性值均为 `0,3,1`——但它们并不冲突，因为实际的选择状态是互斥的。链接既不能是访问的悬停活动链接，*也*不能是未访问的悬停活动链接：只有两者之一的规则会匹配。
+- en: Working with Non-CSS Presentational Hints
+  id: totrans-235
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用非 CSS 展示性提示进行工作
+- en: A document could contain presentational hints that are not CSS—for example,
+    the deprecated `<font>` element, or the still very much used `height`, `width`,
+    and `hidden` attributes. Such presentational hints will be overridden by any author
+    or reader styles, but not by the user agent’s styles. In modern browsers, presentational
+    hints from outside CSS are treated as if they belong to the user agent’s stylesheet.
+  id: totrans-236
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个文档可能包含非CSS的表现提示，比如已弃用的`<font>`元素，或者仍然广泛使用的`height`、`width`和`hidden`属性。这些表现提示会被作者或读者的样式覆盖，但不会被用户代理的样式覆盖。在现代浏览器中，来自CSS外部的表现提示被视为属于用户代理的样式表。
+- en: Summary
+  id: totrans-237
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 总结
+- en: Perhaps the most fundamental aspect of Cascading Style Sheets is the cascade
+    itself—the process used to sort out conflicting declarations and determine the
+    final document presentation. Integral to this process is the specificity of selectors
+    and their associated declarations, and the mechanism of inheritance.
+  id: totrans-238
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 层叠样式表（Cascading Style Sheets，CSS）最基本的方面也许就是层叠本身——用于解决冲突声明并确定最终文档呈现的过程。这一过程的核心是选择器的特异性及其关联声明，以及继承机制。

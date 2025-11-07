@@ -1,0 +1,3071 @@
+- en: Chapter 8\. Backgrounds
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第8章\. 背景
+- en: By default, the *background area* of an element consists of the content box,
+    padding box, and border box, with the borders drawn on top of the background.
+    (You can change that to a degree with CSS, as you’ll see in this chapter.)
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，元素的*背景区域*包括内容框、填充框和边框框，边框绘制在背景之上。（您可以在本章中使用CSS来改变这一点。）
+- en: CSS lets you apply one solid opaque or semitransparent color to the background
+    of an element, as well as apply one or more images to the background of a single
+    element, or even describe your own color gradients of various shapes to fill the
+    background area.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS允许您将一个实心不透明或半透明颜色应用到元素的背景上，并且可以将一个或多个图像应用到单个元素的背景上，甚至描述各种形状的自定义颜色渐变以填充背景区域。
+- en: Setting Background Colors
+  id: totrans-3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设置背景颜色
+- en: To declare a color for the background of an element, you use the property `background-color`,
+    which accepts any valid color value.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要声明元素背景的颜色，您可以使用属性`background-color`，它接受任何有效的颜色值。
+- en: 'If you want the color to extend out a little bit from the content area of the
+    element, add some padding to the mix, as shown in the following code and illustrated
+    in [Figure 8-1](#cab_fig07):'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您希望颜色从元素的内容区域稍微延伸出来，请添加一些填充，如下面的代码所示，并在[图8-1](#cab_fig07)中有所说明：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '![css5 0801](assets/css5_0801.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0801](assets/css5_0801.png)'
+- en: Figure 8-1\. Background color and padding
+  id: totrans-9
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图8-1\. 背景颜色和填充
+- en: You can set a background color for any element, from `<body>` all the way down
+    to inline elements such as `<em>` and `<a>`. The value of `background-color` is
+    not inherited.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以为任何元素设置背景颜色，从`<body>`一直到内联元素如`<em>`和`<a>`。`background-color`的值不会被继承。
+- en: 'Its default value is the keyword `transparent`, which should make sense: if
+    an element doesn’t have a defined color, its background should be transparent
+    so that the background and content of its ancestor elements will be visible.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 它的默认值是关键字`transparent`，这应该是有道理的：如果一个元素没有定义的颜色，它的背景应该是透明的，这样它的祖先元素的背景和内容就会可见。
+- en: One way to picture what that means is to imagine a clear (i.e., transparent)
+    plastic sign mounted to a textured wall. The wall is still visible through the
+    sign, but this is not the background of the sign; it’s the background of the wall
+    (in CSS terms, anyway). Similarly, if you set the page canvas to have a background,
+    it can be seen through all of the elements in the document that don’t have their
+    own backgrounds.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 想象一下这意味着什么的一种方式是想象一个透明的塑料标志安装在纹理墙上。墙壁仍然通过标志可见，但这不是标志的背景；这是墙壁的背景（以CSS术语来说）。类似地，如果您设置页面画布具有背景，它可以通过文档中所有没有自己背景的元素来看到。
+- en: They don’t inherit the background; it is visible *through* the elements. This
+    may seem like an irrelevant distinction, but as you’ll see when we discuss background
+    images, it’s a critical difference.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 它们不继承背景；它通过元素可见。这可能看起来是一个无关紧要的区别，但当我们讨论背景图像时，这是一个关键的区别。
+- en: Explicitly Setting a Transparent Background
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 显式设置透明背景
+- en: Most of the time, you’ll have no reason to use the keyword `transparent`, since
+    that’s the default value. On occasion, though, it can be useful.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数情况下，您不会使用关键字`transparent`，因为这是默认值。不过，偶尔使用它也是有用的。
+- en: 'Imagine that a third-party script you have to include has set all images to
+    have a white background, but your design includes a few transparent PNG images,
+    and you don’t want the background on those images to be white. To make sure your
+    design choice prevails, you would declare the following:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 想象一下，您必须包含的第三方脚本已经将所有图像设置为白色背景，但是您的设计包含一些透明PNG图像，您不希望这些图像的背景是白色的。为了确保您的设计选择优先，您应该声明以下内容：
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Without this (and adding classes to your images), your semitransparent images
+    would not appear semitransparent; rather, they would look like they had a solid
+    white background.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 没有这一点（并给您的图像添加类），您的半透明图像将不会显示为半透明；相反，它们会看起来像是有固定白色背景。
+- en: While the right color background on a semitransparent image is a nice-to-have,
+    good contrast between text and the text’s background color is a must-have. If
+    the contrast between text and any part of the background isn’t great enough, the
+    text will be illegible. Always ensure that the contrast between the text and background
+    is greater than or equal to 4.5:1 for small text and 3:1 for large text.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在半透明图像上选择正确的背景色虽然好，但文字与背景颜色之间的良好对比是必须的。如果文字与任何背景部分的对比不足够大，文字将变得难以辨认。始终确保文字与背景之间的对比度大于或等于小文字的
+    4.5:1，大文字的 3:1。
+- en: 'Declaring both a color and a background color, with a good contrast, on your
+    root element is generally considered a good practice. Not declaring a background
+    color when declaring a color will lead the CSS validator to generate warnings
+    such as, “You have no `background-color` with your `color`” to remind you that
+    author-user color interaction can occur, and your rule has not taken this possibility
+    into account. Warnings do not mean your styles are invalid: only errors prevent
+    validation.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在根元素上同时声明颜色和背景颜色，并确保良好的对比度，通常被认为是一个良好的实践。当声明颜色而没有声明背景颜色时，CSS 验证器将生成警告，例如，“您没有在您的`color`旁边添加了`background-color`”，以提醒您作者-用户颜色交互可能会发生，并且您的规则没有考虑到这种可能性。警告并不意味着您的样式无效：只有错误才会阻止验证。
+- en: Background and Color Combinations
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 背景和颜色组合
+- en: 'By combining `color` and `background-color`, you can create interesting effects:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过结合 `color` 和 `background-color`，你可以创建有趣的效果：
+- en: '[PRE3]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '[Figure 8-2](#cab_fig08) depicts this example.'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 8-2](#cab_fig08) 描述了这个例子。'
+- en: '![css5 0802](assets/css5_0802.png)'
+  id: totrans-25
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0802](assets/css5_0802.png)'
+- en: Figure 8-2\. A reverse-text effect for `<h1>` elements
+  id: totrans-26
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-2\. `<h1>` 元素的反向文本效果
+- en: There are as many color combinations as there are colors, and we can’t show
+    all of them here. Still, we’ll try to give you some idea of what you can do.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有多少种颜色组合就有多少种颜色，我们无法在这里展示所有的组合。尽管如此，我们仍会尝试为你展示一些你可以做的事情。
+- en: 'This stylesheet is a little more complicated, as illustrated by [Figure 8-3](#cab_fig09):'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如 [图 8-3](#cab_fig09) 所示，这个样式表稍微复杂一些：
+- en: '[PRE4]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '![css5 0803](assets/css5_0803.png)'
+  id: totrans-30
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0803](assets/css5_0803.png)'
+- en: Figure 8-3\. The results of a more complicated stylesheet
+  id: totrans-31
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-3\. 更复杂样式表的结果
+- en: 'And then there’s the question of what happens when you apply a background to
+    a replaced element. We already discussed images with transparent portions, like
+    a PNG or WebP. Suppose, though, you want to create a two-tone border around a
+    JPEG. You can pull that off by adding a background color and a little bit of padding
+    to your image, as shown in the following code and illustrated in [Figure 8-4](#cab_fig10):'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有一个问题是当你为替换元素应用背景时会发生什么。我们已经讨论了带有透明部分的图像，例如 PNG 或 WebP。假设你想为 JPEG 创建一个双色调边框。你可以通过为图像添加背景颜色和一点内边距来实现，如下面的代码所示，并在
+    [图 8-4](#cab_fig10) 中进行了说明：
+- en: '[PRE5]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '![css5 0804](assets/css5_0804.png)'
+  id: totrans-34
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0804](assets/css5_0804.png)'
+- en: Figure 8-4\. Using background and border to two-tone an image
+  id: totrans-35
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-4\. 使用背景和边框来双色调图像
+- en: Technically, the background goes to the outer border edge, but since the border
+    is solid and continuous, we can’t see the background behind it. The 5 pixels of
+    padding allow a thin ring of background to be seen between the image and its border,
+    creating the visual effect of an “inner border.” This technique could be extended
+    to create more complicated effects with box shadows (discussed at the end of the
+    chapter) and background images like gradients (discussed in [Chapter 9](ch09.html#gradients)).
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 技术上，背景延伸到外边框的边缘，但由于边框是实心且连续的，我们看不到其背后的背景。5 像素的内边距允许在图像和其边框之间看到一圈细微的背景，创造出“内边框”的视觉效果。这种技术可以扩展到使用盒阴影（在章节末讨论）和背景图像如渐变（在
+    [第 9 章](ch09.html#gradients) 讨论）创建更复杂的效果。
+- en: Clipping the Background
+  id: totrans-37
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 裁剪背景
+- en: When you apply a background to a replaced element, such as an image, the background
+    will show through any transparent portions. Background colors, by default, go
+    to the outer edge of the element’s border, showing behind the border if the border
+    is itself transparent, or if it has transparent areas such as the spaces between
+    dots, dashes, or lines when border style `dotted`, `dashed`, or `double` is applied.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你为替换元素（如图像）应用背景时，背景将透过任何透明部分显示出来。默认情况下，背景颜色延伸到元素边框的外边缘，在边框本身是透明的时候显示在边框后面，或者当边框样式为
+    `dotted`、`dashed` 或 `double` 时，显示在边框之间的空白区域。
+- en: To prevent the background from showing behind semitransparent or fully transparent
+    borders, we can use `background-clip`. This property defines how far out an element’s
+    background will go.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要防止背景显示在半透明或完全透明的边框后面，我们可以使用 `background-clip`。该属性定义了元素背景的延伸范围。
+- en: The default value `border-box` indicates that the *background painting area*
+    (which is what `background-clip` defines) extends out to the outer edge of the
+    border. Given this value, the background will *always* be drawn behind the visible
+    parts of the border, if any.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值 `border-box` 指示*背景绘制区域*（即 `background-clip` 定义的内容）延伸到边框的外边缘。有了这个值，如果存在边框的话，背景将*始终*在可见部分的边框后面绘制。
+- en: If you choose the value `padding-box`, the background will extend to only the
+    outer edge of the padding area (which is also the inner edge of the border). Thus,
+    the background won’t be drawn behind the border. The value `content-box`, on the
+    other hand, restricts the background to just the content area of the element.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果选择值 `padding-box`，背景将仅延伸到填充区域的外边缘（也是边框的内边缘）。因此，背景不会绘制在边框后面。另一方面，值 `content-box`
+    限制背景只到元素的内容区域。
+- en: 'The effects of these three values are illustrated in [Figure 8-5](#cab_fig11),
+    which is the result of the following code:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这三个值的效果在 [图 8-5](#cab_fig11) 中有所说明，这是以下代码的结果：
+- en: '[PRE6]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '![css5 0805](assets/css5_0805.png)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0805](assets/css5_0805.png)'
+- en: Figure 8-5\. The three box-oriented types of background clipping
+  id: totrans-45
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-5\. 三种基于框的背景剪裁类型
+- en: That might seem pretty simple, but several caveats exist. First, `background-clip`
+    has no effect on the root element (in HTML, that’s either the `<html>` element,
+    or the `<body>` element if you haven’t defined any background styles on `<html>`).
+    This has to do with how the background painting of the root element has to be
+    handled.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 看起来很简单，但是存在几个注意事项。首先，`background-clip` 对根元素没有影响（在 HTML 中，这可以是 `<html>` 元素，或者如果没有定义
+    `<html>` 的背景样式，则是 `<body>` 元素）。这与如何处理根元素的背景绘制有关。
+- en: Second, the exact clipping of the background area can be reduced if the element
+    has rounded corners, thanks to the `border-radius` property (see [Chapter 7](ch07.html#padding-borders-outlines-and-margins)).
+    This is basically common sense, since if you give your element significantly rounded
+    corners, you want the background to be clipped by those corners instead of stick
+    out past them. The way to think of this is that the background painting area is
+    determined by `background-clip`, and then any corners that have to be further
+    clipped by rounded corners are appropriately clipped.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二，如果元素具有圆角，背景区域的确切剪裁可以减少，这要归功于 `border-radius` 属性（参见 [第 7 章](ch07.html#padding-borders-outlines-and-margins)）。这基本上是常识，因为如果给元素添加了显著的圆角，希望背景被这些圆角剪裁而不是伸出圆角外。可以这样理解，背景绘制区域由
+    `background-clip` 决定，然后任何需要进一步剪裁的圆角都会得到适当的剪裁。
+- en: Third, the value of `background-clip` can interact poorly with some of the more
+    interesting values of `background-repeat`, which we’ll get to later.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三，`background-clip` 的值可能与一些更有趣的 `background-repeat` 值交互作用不良，我们稍后会讲到。
+- en: Fourth, `background-clip` defines the clipping area of the background. It doesn’t
+    affect other background properties. When it comes to flat background colors, that’s
+    a distinction without meaning; but when it comes to background images, which we’ll
+    talk about in the next section, it can make a great deal of difference.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第四，`background-clip` 定义了背景的剪裁区域。它不影响其他背景属性。对于纯色背景来说，这是一个没有意义的区别；但是对于我们接下来要讨论的背景图片来说，它可能产生很大的影响。
+- en: There is one more value, `text`, which clips the background to the text of the
+    element. In other words, the text is “filled in” with the background, and the
+    rest of the element’s background area remains transparent. This is a simple way
+    to add textures to text, by “filling in” the text of an element with its background.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有一个值，`text`，它将背景剪切到元素的文本中。换句话说，文本被背景“填充”，而元素的其余背景区域保持透明。这是通过“填充”元素的文本来添加纹理的简单方法。
+- en: 'The kicker is that to see this effect, you have to remove the foreground color
+    of the element. Otherwise, the foreground color obscures the background. Consider
+    the following, which has the result shown in [Figure 8-6](#cbag_css4_background-clip-text):'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关键在于，要看到这种效果，必须去除元素的前景色。否则，前景色会遮挡背景。考虑以下内容，其结果显示在 [图 8-6](#cbag_css4_background-clip-text)
+    中：
+- en: '[PRE7]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '![css5 0806](assets/css5_0806.png)'
+  id: totrans-53
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0806](assets/css5_0806.png)'
+- en: Figure 8-6\. Clipping the background to the text
+  id: totrans-54
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图8-6。将背景剪切到文本
+- en: For the first example, the foreground color is made completely transparent,
+    and the blue background is visible only where it intersects with the text shapes
+    in the element’s content. It is not visible through the image inside the paragraph,
+    since an image’s foreground can’t be set to `transparent`.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于第一个例子，前景色被完全设置为透明，蓝色背景仅在与元素内容中的文本形状相交的地方可见。在段落内部的图像中不可见，因为图像的前景色不能设置为`transparent`。
+- en: In the second example, the foreground color has been set to `rgba(255 0 0 0.5)`,
+    which is a half-opaque red. The text there is rendered purple, because the half-opaque
+    red combines with the blue underneath. The borders, on the other hand, blend their
+    half-opaque red with the white background behind them, yielding a light red.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第二个例子中，前景色已设置为`rgba(255 0 0 0.5)`，这是半透明的红色。那里的文本呈紫色，因为半透明的红色与其下的蓝色混合。边框则将其半透明的红色与其后面的白色背景混合，得到淡红色。
+- en: In the third example, the foreground color is a solid, opaque red. The text
+    and borders are both fully red, with no hint of the blue background. It can’t
+    be seen in this instance, because it’s been clipped to the text. The foreground
+    just completely obscures the background.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第三个例子中，前景色是纯粹的不透明红色。文本和边框都是完全红色，没有任何蓝色背景的迹象。在这种情况下看不见它，因为它已被裁剪到文本中。前景完全遮挡了背景。
+- en: 'This technique works for any background, including gradient and image backgrounds,
+    topics that we’ll cover in a bit. Remember, however: if the background for some
+    reason fails to be drawn behind the text, the transparent text meant to be “filled”
+    with the background will instead be completely unreadable.'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种技术适用于任何背景，包括渐变和图像背景，我们稍后会讨论这些主题。但请记住：如果由于某种原因背景未能绘制在文本后面，那么本应“填充”背景的透明文本将完全不可读。
+- en: Warning
+  id: totrans-59
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: 'As of late 2022, not all browsers support `background-clip: text` correctly.
+    Blink browsers (Chrome and Edge) require a `-webkit-` prefix, supporting `-webkit-background-clip:
+    text`. Also, since browsers may not support the `text` value in the future (it’s
+    under discussion for removal from CSS as we write this), include the prefixed
+    and nonprefixed versions of `background-clip` and set the transparent color inside
+    a `@supports` feature query (for more information, see [Chapter 21](ch21.html#css-at-rules)).'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '截至2022年底，并非所有浏览器都正确支持`background-clip: text`。Blink浏览器（Chrome和Edge）需要使用`-webkit-`前缀，支持`-webkit-background-clip:
+    text`。此外，由于浏览器未来可能不再支持`text`值（在我们撰写本文时正在讨论从CSS中删除），请包括带有前缀和非前缀版本的`background-clip`，并在`@supports`功能查询中设置透明色（有关更多信息，请参见[第21章](ch21.html#css-at-rules)）。'
+- en: Working with Background Images
+  id: totrans-61
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 处理背景图像
+- en: Having covered the basics of background colors, we turn now to the subject of
+    background images. By default, images are tiled, repeating in both horizontal
+    and vertical directions to fill up the entire background of the document. This
+    default CSS behavior created horrific websites often referred to as “Geocities
+    1996,” but CSS can do a great deal more than simple tiling of background images.
+    It can be used to create subtle beauty. We’ll start with the basics and then work
+    our way up.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在介绍了背景颜色的基础知识之后，我们现在转向背景图像的主题。默认情况下，图像是平铺的，在水平和垂直方向上重复，以填充整个文档的背景。这种默认的CSS行为曾经创造出一些可怕的网站，通常被称为“Geocities
+    1996”，但是CSS可以做的远不止简单的背景图像平铺。它可以用来创造微妙的美感。我们将从基础开始，然后逐步深入。
+- en: Using an Image
+  id: totrans-63
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用图像
+- en: In order to get an image into the background in the first place, use the property
+    `background-image`.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要首先将图像放置在背景中，请使用属性`background-image`。
+- en: 'The default value of `none` means about what you’d expect: no image is placed
+    in the background. If you want a background image, you must give this property
+    at least one image reference, such as in the following:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值为`none`意味着正如您所期望的那样：没有图像放置在背景中。如果您想要背景图像，您必须至少提供这个属性的一个图像引用，例如以下内容：
+- en: '[PRE8]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Because of the default values of other background properties, this will cause
+    the image *bg23.gif* to be tiled in the document’s background, as shown in [Figure 8-7](#cab_fig12).
+    You’ll learn how to change that shortly.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于其他背景属性的默认值，这将导致图像*bg23.gif*在文档的背景中平铺，如[图8-7](#cab_fig12)所示。稍后您将学习如何更改这一点。
+- en: '![css5 0807](assets/css5_0807.png)'
+  id: totrans-68
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0807](assets/css5_0807.png)'
+- en: Figure 8-7\. Applying a background image in CSS
+  id: totrans-69
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图8-7。在CSS中应用背景图像
+- en: It’s usually a good idea to specify a background color to go along with your
+    background image; we’ll come back to that concept a little later. (We’ll also
+    talk about how to have more than one image at the same time, but for now we’re
+    going to stick to just one background image per element.)
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最好指定一个背景颜色来配合背景图像；稍后我们会回到这个概念。（我们也会讨论如何同时使用多个图像，但现在我们只会使用一个背景图像。）
+- en: 'You can apply background images to any element, block-level or inline. If you
+    have more than one background image, comma-separate them:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以将背景图像应用于任何元素，块级或行内。如果有多个背景图像，用逗号分隔它们：
+- en: '[PRE9]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'If you combine simple icons with creative attribute selectors, you can (by
+    using properties we’ll get to in just a bit) mark when a link points to a PDF,
+    word processor document, email address, or other unusual resource. You can, for
+    example, use the following code to display [Figure 8-8](#cab_fig14):'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你将简单的图标与创意属性选择器结合起来，可以（通过我们即将介绍的属性）标记链接指向PDF、文字处理器文档、电子邮件地址或其他不寻常的资源。例如，你可以使用以下代码显示[图 8-8](#cab_fig14)：
+- en: '[PRE10]'
+  id: totrans-74
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '![css5 0808](assets/css5_0808.png)'
+  id: totrans-75
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0808](assets/css5_0808.png)'
+- en: Figure 8-8\. Adding link icons as background images
+  id: totrans-76
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-8\. 将链接图标添加为背景图像
+- en: It’s true that you can add multiple background images to an element, but until
+    you learn how to position each image and prevent it from repeating, you most likely
+    won’t want to. We’ll cover repeating background images after we cover these necessary
+    properties.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 的确，你可以为一个元素添加多个背景图像，但在学会如何定位每个图像并防止其重复之前，你可能不会这样做。我们将在介绍这些必要属性后讨论重复背景图像。
+- en: 'Just like `background-color`, `background-image` is not inherited—in fact,
+    not a single one of the background properties is inherited. Remember also that
+    when specifying the URL of a background image, it falls under the usual restrictions
+    and caveats for `url()` values: a relative URL should be interpreted with respect
+    to the stylesheet (see [“URLs”](ch05.html#urls)).'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像`background-color`一样，`background-image`也不会被继承——事实上，背景属性中没有一个是继承的。同样要记住，当指定背景图像的URL时，它受到`url()`值通常的限制和注意事项：相对URL应该相对于样式表进行解释（参见[“URLs”](ch05.html#urls)）。
+- en: Understanding Why Backgrounds Aren’t Inherited
+  id: totrans-79
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解为什么背景不会被继承
+- en: Earlier, we specifically noted that backgrounds are not inherited. Background
+    images demonstrate why inherited backgrounds would be a bad thing. Imagine a situation
+    that backgrounds were inherited, and you applied a background image to the `<body>`.
+    That image would be used for the background of every element in the document,
+    with each element doing its own tiling, as shown in [Figure 8-9](#cab_fig15).
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 早些时候，我们特别指出背景不会被继承。背景图像展示了为什么继承背景将是一个坏主意。想象一下如果背景是继承的情况，你将一个背景图像应用于`<body>`，那么该图像将用作文档中每个元素的背景，每个元素都会执行自己的平铺，如[图 8-9](#cab_fig15)所示。
+- en: '![css5 0809](assets/css5_0809.png)'
+  id: totrans-81
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0809](assets/css5_0809.png)'
+- en: Figure 8-9\. What inherited backgrounds would do to layout
+  id: totrans-82
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-9\. 继承的背景会对布局产生什么影响
+- en: 'Note that the pattern restarts at the top left of every element, including
+    the links. This isn’t what most authors would want, and this is why background
+    properties are not inherited. If you do want this particular effect for some reason,
+    you can make it happen with a rule like this:'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，图案在每个元素的左上角重新开始，包括链接。这并不是大多数作者想要的效果，这也是为什么背景属性不被继承的原因。如果出于某种原因你确实想要这种特定效果，你可以通过以下规则实现：
+- en: '[PRE11]'
+  id: totrans-84
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'Alternatively, you could use the value `inherit` like this:'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，你可以像这样使用值`inherit`：
+- en: '[PRE12]'
+  id: totrans-86
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Following Good Background Practices
+  id: totrans-87
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 遵循良好的背景实践
+- en: Images are laid on top of whatever background color you specify. If your images
+    aren’t tiled or have areas that are not opaque, the background will show through,
+    blending its color with that of the semitransparent images. If the image fails
+    to load, the background color specified will show instead of the image. For this
+    reason, it’s always a good idea to specify a background color when using a background
+    image, so that you’ll at least get a legible result if the image doesn’t appear.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 图像叠放在你指定的背景颜色之上。如果你的图像没有平铺或者有不透明的区域，背景颜色会透过显示，将其颜色与半透明图像混合。如果图像加载失败，将显示指定的背景颜色而不是图像。因此，当使用背景图像时，最好指定一个背景颜色，这样即使图像不出现，你也能得到一个可读的结果。
+- en: Background images can cause accessibility issues. For example, if you have an
+    image of a clear blue sky as a background image with dark text, that is likely
+    very legible. But what if there is a bird in the sky? If dark text lands on a
+    dark part of the background, that text will not be legible. Adding a drop shadow
+    to the text (see [Chapter 15](ch15.html#text_properties)) or a list semitransparent
+    background color behind all the text can reduce the risk of illegibility.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 背景图像可能会导致可访问性问题。例如，如果您将晴朗蓝天的图像作为背景，上面放置深色文本，那么通常很易读。但如果天空中有一只鸟呢？如果深色文本落在背景的深色部分上，则文本将不可读。为文本添加阴影（请参见[第
+    15 章](ch15.html#text_properties)）或在所有文本后面添加半透明背景色可以减少非可读风险。
+- en: Positioning Background Images
+  id: totrans-90
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定位背景图像
+- en: OK, so we can put images in the background of an element. How about positioning
+    the image exactly where you want? No problem! The `background-position` property
+    is here to help.
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 好的，我们可以将图像放置在元素的背景中。想要精确定位图像怎么样？没问题！`background-position` 属性来帮忙。
+- en: That value syntax looks horrific, but it isn’t; it’s just what happens when
+    you try to formalize the fast-and-loose implementations of a new technology into
+    a regular syntax and then layer even more features on top of that while trying
+    to reuse parts of the old syntax. (So, OK, kind of horrific.) In practice, the
+    syntax for `background-position` is simple, but the percent values can be a little
+    difficult to wrap your head around.
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那些值的语法看起来可怕，但实际上并非如此；这只是当您试图将新技术的快速实现形式化为常规语法，并在此基础上叠加更多功能时所产生的情况。实际上，`background-position`
+    的语法很简单，但百分比值可能有点难以理解。
+- en: Note
+  id: totrans-93
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: 'Throughout this section, we’ll be using the rule `background-repeat: no-repeat`
+    to prevent tiling of the background image. You’re not imagining things: we haven’t
+    talked about `background-repeat` yet! For now, just accept that the rule restricts
+    the background to a single image. You’ll learn more details in [“Background Repeating
+    (or Lack Thereof)”](#background-repeating-or-lack-thereof).'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在本节中，我们将使用规则 `background-repeat: no-repeat` 来阻止背景图像的平铺。您没有想错：我们还没有讨论 `background-repeat`！目前，只需接受这条规则限制了背景为单一图像。您将在
+    [“背景重复（或缺少）”](#background-repeating-or-lack-thereof) 中了解更多细节。'
+- en: 'For example, we can center a background image in the `<body>` element as follows,
+    with the result depicted in [Figure 8-10](#cab_fig17):'
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，我们可以在 `<body>` 元素中居中背景图像，如下所示，并在 [图 8-10](#cab_fig17) 中显示结果：
+- en: '[PRE13]'
+  id: totrans-96
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: '![css5 0810](assets/css5_0810.png)'
+  id: totrans-97
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0810](assets/css5_0810.png)'
+- en: Figure 8-10\. Centering a single background image
+  id: totrans-98
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-10\. 居中单个背景图片
+- en: Here, we’ve placed a single image in the background and then prevented it from
+    being repeated with `background-repeat`. Every background that includes an image
+    starts with a single image. This starting image is called the *origin image*.
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，我们将一个单一图像放在背景中，并使用 `background-repeat` 阻止其重复。每个包含图像的背景都以一个单一图像开始。这个起始图像称为*原始图像*。
+- en: The placement of the origin image is accomplished with `background-position`,
+    and there are several ways to supply values for this property. First off, we can
+    use the keywords `top`, `bottom`, `left`, `right`, and `center`. Usually, these
+    appear in pairs, but (as the previous example shows) this is not always true.
+    We can also use length values, such as `50px` or `2cm`; the combinations of keywords
+    and length values, such as `right 50px bottom 2cm`; and finally, percentage values,
+    such as `43%`. Each type of value has a slightly different effect on the placement
+    of the background image.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `background-position` 完成原始图像的定位，有几种方法可以为此属性提供值。首先，我们可以使用关键词 `top`、`bottom`、`left`、`right`
+    和 `center`。通常，这些关键词会成对出现，但（正如前面的例子所示）并非总是如此。我们还可以使用长度值，如 `50px` 或 `2cm`；关键词和长度值的组合，如
+    `right 50px bottom 2cm`；最后，百分比值，如 `43%`。每种类型的值对背景图像的放置有稍微不同的影响。
+- en: Keywords
+  id: totrans-101
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 关键词
+- en: 'The image placement keywords are easiest to understand. They have the effects
+    you’d expect from their names; for example, `top right` would cause the origin
+    image to be placed in the top-right corner of the element’s background. Let’s
+    use a small yin-yang symbol:'
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 图像放置关键词最容易理解。它们具有预期的效果；例如，`top right`会使原始图像位于元素背景的右上角。让我们使用一个小的阴阳符号：
+- en: '[PRE14]'
+  id: totrans-103
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: This will place a nonrepeated origin image in the top-right corner of each paragraph’s
+    background, and the result would be exactly the same if the position were declared
+    as `right top`.
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将在每个段落背景的右上角放置一个非重复的原始图像，如果位置声明为`right top`，结果将完全相同。
+- en: This is because position keywords can appear in any order, as long as there
+    are no more than two of them—one for the horizontal and one for the vertical.
+    If you use two horizontal (`right right`) or two vertical (`top top`) keywords,
+    the whole value is ignored.
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是因为位置关键词可以以任何顺序出现，只要不超过两个——一个用于水平和一个用于垂直。如果使用两个水平（`right right`）或两个垂直（`top
+    top`）关键词，整个值都将被忽略。
+- en: 'If only one keyword appears, the other is assumed to be `center`. So if you
+    want an image to appear in the top center of every paragraph, you need only declare
+    this:'
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果只有一个关键词出现，则另一个假定为`center`。因此，如果您希望图像出现在每个段落顶部中心位置，只需声明如下：
+- en: '[PRE15]'
+  id: totrans-107
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: Percentage values
+  id: totrans-108
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 百分比值
+- en: 'Percentage values are closely related to the keywords, although they behave
+    in a more sophisticated way. Let’s say that you want to center an origin image
+    within its element by using percentage values. That’s straightforward enough:'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 百分比值与关键词紧密相关，尽管它们的行为方式更为复杂。假设您想要使用百分比值将原始图像在其元素内居中。这非常简单：
+- en: '[PRE16]'
+  id: totrans-110
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: This places the origin image such that its center is aligned with the center
+    of its element’s background. In other words, the percentage values apply to both
+    the element and the origin image. The pixel of the image that is 50% from the
+    top and 50% from the left in the image is placed 50% from the top and 50% from
+    the left of the element on which it was set.
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这会使原始图像的中心与其元素背景的中心对齐。换句话说，百分比值适用于元素和原始图像。在图像中从顶部和左侧各50%处的像素将放置在其设置的元素的顶部和左侧各50%处。
+- en: To understand what that means, let’s examine the process in closer detail. When
+    you center an origin image in an element’s background, the point in the image
+    that can be described as `50% 50%` (the center) is lined up with the point in
+    the background that can be described the same way. If the image is placed at `0%
+    0%`, its top-left corner is placed in the top-left corner of the element’s background.
+    Using `100% 100%` causes the bottom-right corner of the origin image to go into
+    the bottom-right corner of the background. [Figure 8-11](#cab_fig19) contains
+    examples of those values, as well as a few others, with the points of alignment
+    for each located at the center of the concentric rings.
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要理解这意味着什么，让我们更详细地检查这个过程。当您在元素的背景中心放置原始图像时，可以描述为`50% 50%`（中心）的图像点与可以以同样方式描述的背景点对齐。如果将图像放置在`0%
+    0%`，其左上角将放置在元素背景的左上角。使用`100% 100%`会导致原始图像的右下角进入背景的右下角。[图 8-11](#cab_fig19) 包含了这些值的示例，以及几个其他值，每个值的对齐点位于同心圆的中心。
+- en: 'Thus, if you want to place a single origin image a third of the way across
+    the background and two-thirds of the way down, your declaration would be as follows:'
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，如果您想要将单个原始图像放置在背景的横向三分之一和纵向两分之一处，则声明如下：
+- en: '[PRE17]'
+  id: totrans-114
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: With these rules, the point in the origin image that is one-third across and
+    two-thirds down from the top-left corner of the image will be aligned with the
+    point that is farthest from the top-left corner of the background. Note that the
+    horizontal value *always* comes first with percentage values. If you were to switch
+    the percentages in the preceding example, the point in the image that is two-thirds
+    from the left side of the image and one-third of the way down from the top would
+    be placed two-thirds of the way across the background and one-third of the way
+    down.
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据这些规则，图像中从左上角横向三分之一，纵向向下两分之一处的点将与距离左上角背景最远的点对齐。请注意，水平值在百分比值中*始终*排在前面。如果您在前面的示例中交换百分比，图像中距离左侧两分之一和顶部向下三分之一处的点将被放置在背景横向两分之一和垂直向下三分之一处。
+- en: '![css5 0811](assets/css5_0811.png)'
+  id: totrans-116
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0811](assets/css5_0811.png)'
+- en: Figure 8-11\. Various percentage positions
+  id: totrans-117
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-11\. 不同的百分比位置
+- en: 'If you supply only one percentage value, the single value supplied is taken
+    to be the horizontal value, and the vertical is assumed to be `50%`. For example:'
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您只提供一个百分比值，则假定提供的是水平值，垂直值假定为`50%`。例如：
+- en: '[PRE18]'
+  id: totrans-119
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: 'The origin image is placed one-quarter of the way across the paragraph’s background
+    and halfway down it, as if `background-position: 25% 50%;` had been set.'
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '原始图像位于段落背景的四分之一处，并且在中间位置，就好像设置了`background-position: 25% 50%;`。'
+- en: '[Table 8-1](#cab_table02) gives a breakdown of keyword and percentage equivalencies.'
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[表 8-1](#cab_table02) 提供了关键字和百分比等效的详细信息。'
+- en: Table 8-1\. Positional equivalents
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表8-1\. 位置等效
+- en: '| Keyword(s) | Equivalent keywords | Equivalent percentages |'
+  id: totrans-123
+  prefs: []
+  type: TYPE_TB
+  zh: '| 关键字 | 等效关键字 | 等效百分比 |'
+- en: '| --- | --- | --- |'
+  id: totrans-124
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- |'
+- en: '| `center` | `center center` | `50% 50%` `50%` |'
+  id: totrans-125
+  prefs: []
+  type: TYPE_TB
+  zh: '| `中间` | `中间` | `50% 50%` `50%` |'
+- en: '| `right` | `center right` `right center` | `100% 50%` `100%` |'
+  id: totrans-126
+  prefs: []
+  type: TYPE_TB
+  zh: '| `右` | `中右` `右中` | `100% 50%` `100%` |'
+- en: '| `left` | `center left` `left center` | `0% 50%` `0%` |'
+  id: totrans-127
+  prefs: []
+  type: TYPE_TB
+  zh: '| `左` | `中左` `左中` | `0% 50%` `0%` |'
+- en: '| `top` | `top center` `center top` | `50% 0%` |'
+  id: totrans-128
+  prefs: []
+  type: TYPE_TB
+  zh: '| `顶部` | `顶部中间` `中间顶部` | `50% 0%` |'
+- en: '| `bottom` | `bottom center` `center bottom` | `50% 100%` |'
+  id: totrans-129
+  prefs: []
+  type: TYPE_TB
+  zh: '| `底部` | `底部中间` `中间底部` | `50% 100%` |'
+- en: '| `top left` | `left top` | `0% 0%` |'
+  id: totrans-130
+  prefs: []
+  type: TYPE_TB
+  zh: '| `左上` | `左上` | `0% 0%` |'
+- en: '| `top right` | `right top` | `100% 0%` |'
+  id: totrans-131
+  prefs: []
+  type: TYPE_TB
+  zh: '| `右上` | `右上` | `100% 0%` |'
+- en: '| `bottom right` | `right bottom` | `100% 100%` |'
+  id: totrans-132
+  prefs: []
+  type: TYPE_TB
+  zh: '| `右下` | `右下` | `100% 100%` |'
+- en: '| `bottom left` | `left bottom` | `0% 100%` |'
+  id: totrans-133
+  prefs: []
+  type: TYPE_TB
+  zh: '| `左下` | `左下` | `0% 100%` |'
+- en: As the property table in [“Positioning Background Images”](#background-positioning)
+    showed, the default values for `background-position` are `0% 0%`, which is functionally
+    the same as `top left`. This is why, unless you set different values for the position,
+    background images always start tiling from the top-left corner of the element’s
+    background.
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[“背景图像定位”](#background-positioning)中的属性表所示，`background-position`的默认值为`0% 0%`，在功能上与`左上`相同。这就是为什么除非您为位置设置不同的值，否则背景图像始终从元素背景的左上角开始平铺的原因。
+- en: Length values
+  id: totrans-135
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 长度值
+- en: Finally, we turn to length values for positioning. When you supply lengths for
+    the position of the origin image, they are interpreted as offsets from the top-left
+    corner of the element’s background. The offset point is the top-left corner of
+    the origin image; thus, if you set the values `20px 30px`, the top-left corner
+    of the origin image will be 20 pixels to the right of, and 30 pixels below, the
+    top-left corner of the element’s background, as shown (along with a few other
+    length examples) in [Figure 8-12](#cab_fig21). As with percentages, the horizontal
+    value comes first with length values.
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，我们来讨论位置定位的长度值。当您为原始图像的位置提供长度时，它们被解释为从元素背景的左上角偏移的距离。偏移点是原始图像的左上角；因此，如果您设置值`20px
+    30px`，则原始图像的左上角将位于元素背景的左上角的右侧20像素，并且下方30像素，正如[图 8-12](#cab_fig21)中所示的几个长度示例。与百分比一样，水平值在长度值中始续放在第一位。
+- en: '![css5 0812](assets/css5_0812.png)'
+  id: totrans-137
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0812](assets/css5_0812.png)'
+- en: Figure 8-12\. Offsetting the background image by using length measures
+  id: totrans-138
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图8-12\. 通过使用长度度量来偏移背景图像
+- en: This is quite different from percentage values because the offset is from one
+    top-left corner to another. In other words, the top-left corner of the origin
+    image lines up with the point specified in the `background-position` declaration.
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这与百分比值有很大不同，因为偏移量是从一个左上角到另一个左上角。换句话说，原始图像的左上角与`background-position`声明中指定的点对齐。
+- en: 'You can combine length and percentage values to get a “best of both worlds”
+    effect. Let’s say you need to have a background image that is all the way to the
+    right side of the background and 10 pixels down from the top. As always, the horizontal
+    value comes first:'
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以组合长度和百分比值以获得“两全其美”的效果。比如说，您需要一个背景图像，它位于背景的右侧并且距离顶部下降10像素。如常，水平值首先出现：
+- en: '[PRE19]'
+  id: totrans-141
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: For that matter, you can get the same result by using `right 10px`, since you’re
+    allowed to mix keywords with lengths and percentages. The syntax enforces axis
+    order when using nonkeyword values; if you use a length or percentage value, the
+    horizontal value must *always* come first, and the vertical must *always* come
+    second. That means `right 10px` is fine, whereas `10px right` is invalid and will
+    be ignored (because `right` is not a valid vertical keyword).
+  id: totrans-142
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事实上，通过使用`right 10px`也可以得到相同的结果，因为可以将关键字与长度和百分比混合使用。当使用非关键字值时，语法要求轴的顺序；如果使用长度或百分比值，则水平值必须始终放在第一位，垂直值必须始终放在第二位。这意味着`right
+    10px`是合法的，而`10px right`是无效的且将被忽略（因为`right`不是有效的垂直关键字）。
+- en: Negative values
+  id: totrans-143
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 负值
+- en: If you’re using lengths or percentages, you can use negative values to pull
+    the origin image outside of the element’s background. Consider a document with
+    a very large yin-yang symbol for a background. What if we want only part of it
+    visible in the top-left corner of the element’s background? No problem, at least
+    in theory.
+  id: totrans-144
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您使用长度或百分比，可以使用负值将原始图像拉出元素的背景。考虑一个具有非常大的阴阳符号背景的文档。如果我们只希望在元素背景的左上角看到其中的一部分，理论上没有问题。
+- en: 'Assuming that the origin image is 300 pixels tall by 300 pixels wide and that
+    only the bottom-right third of the image should be visible, we get the desired
+    effect (shown in [Figure 8-13](#cab_fig23)) like this:'
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设原始图像高 300 像素，宽 300 像素，并且只有图像的右下角三分之一应该可见，则我们得到所需效果（如 [图 8-13](#cab_fig23)
+    所示）如下：
+- en: '[PRE20]'
+  id: totrans-146
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: '![css5 0813](assets/css5_0813.png)'
+  id: totrans-147
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0813](assets/css5_0813.png)'
+- en: Figure 8-13\. Using negative length values to position the origin image
+  id: totrans-148
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-13\. 使用负长度值来定位原始图像
+- en: 'Or, say you want just the right half of the origin image to be visible and
+    vertically centered within the element’s background area:'
+  id: totrans-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者说，您希望仅在原始图像的右半部分可见，并且在元素的背景区域内垂直居中：
+- en: '[PRE21]'
+  id: totrans-150
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: Negative values will come into play later, as they are useful in creating gorgeous
+    backgrounds; see [“Conic Gradients”](ch09.html#conic-gradients).
+  id: totrans-151
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 负值稍后将发挥作用，因为它们在创建华丽背景时非常有用；参见 [“锥形渐变”](ch09.html#conic-gradients)。
+- en: 'Negative percentages are also possible, although they are somewhat interesting
+    to calculate. The origin image and the element are likely to be very different
+    sizes, for one thing, and that can lead to unexpected effects. Consider, for example,
+    the situation created by the following rule, illustrated in [Figure 8-14](#cab_fig24):'
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 负百分比也是可能的，尽管计算起来有些有趣。例如，原始图像和元素可能大小差异很大，这可能导致意想不到的效果。例如，考虑以下规则造成的情况，详见 [图 8-14](#cab_fig24)：
+- en: '[PRE22]'
+  id: totrans-153
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: '![css5 0814](assets/css5_0814.png)'
+  id: totrans-154
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0814](assets/css5_0814.png)'
+- en: Figure 8-14\. Varying effects of negative percentage values
+  id: totrans-155
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-14\. 负百分比值的不同效果
+- en: The rule calls for the point outside the origin image defined by `-10% -10%`
+    to be aligned with a similar point for each paragraph. The image is 300 × 300
+    pixels, so we know its alignment point can be described as 30 pixels above the
+    top of the image, and 30 pixels to the left of its left edge (effectively `-30px`
+    and `-30px`). The paragraph elements are all the same width (`500px`), so the
+    horizontal alignment point is 50 pixels to the left of the left edge of their
+    backgrounds. This means that each origin image’s left edge will be 20 pixels to
+    the left of the left padding edge of the paragraphs. This is because the `-30px`
+    alignment point of the images lines up with the `-50px` point for the paragraphs.
+    The difference between the two is 20 pixels.
+  id: totrans-156
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 规则要求由 `-10% -10%` 定义的原始图像外的点与每个段落的类似点对齐。图像尺寸为 300 × 300 像素，因此我们知道其对齐点可以描述为图像顶部上方
+    30 像素，左边缘左侧 30 像素（实际上是 `-30px` 和 `-30px`）。段落元素的宽度均为 `500px`，因此水平对齐点在它们的背景左边缘左侧
+    50 像素处。这意味着每个原始图像的左边缘将位于段落左内边距边缘左侧 20 像素处。这是因为图像的 `-30px` 对齐点与段落的 `-50px` 点对齐。两者之间的差异为
+    20 像素。
+- en: The paragraphs have different heights, however, so the vertical alignment point
+    changes for each paragraph. If a paragraph’s background area is 300 pixels high,
+    to pick a semi-random example, then the top of the origin image will line up exactly
+    with the top of the element’s background, because both will have vertical alignment
+    points of `-30px`. If a paragraph is 50 pixels tall, its alignment point would
+    be `-5px`, and the top of the origin image will actually be 25 pixels *below*
+    the top of the background. This is why you can see all the tops of the background
+    images in [Figure 8-14](#cab_fig24)—the paragraphs are shorter than the background
+    image.
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，段落的高度各不相同，因此每个段落的垂直对齐点也会随之改变。如果段落的背景区域高度为 300 像素，随机选取一个例子，那么原始图像的顶部将与元素背景的顶部完全对齐，因为两者的垂直对齐点都是
+    `-30px`。如果段落高度为 50 像素，则其对齐点将是 `-5px`，原始图像的顶部实际上将比背景的顶部低 25 像素。这就是为什么您可以在 [图 8-14](#cab_fig24)
+    中看到所有背景图像的顶部——段落比背景图像短。
+- en: Changing the offset edges
+  id: totrans-158
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 更改偏移边缘
+- en: 'It’s time for a confession: throughout this whole discussion of background
+    positioning, we’ve been keeping two facts from you. We acted as though the value
+    of `background-position` could have no more than two keywords, and that all offsets
+    were always made from the top-left corner of the background area.'
+  id: totrans-159
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是时候坦白了：在整个背景定位的讨论中，我们对你隐瞒了两个事实。我们表现得好像`background-position`的值最多只能有两个关键字，并且所有的偏移都总是从背景区域的左上角开始。
+- en: That was originally the case with CSS but hasn’t been true for a while. When
+    we include four keywords, or two keywords and two length or percentage values
+    in a very specific pattern, we can set the edge from which the background image
+    should be offset.
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最初是这样的，但现在不再是这样了。当我们以非常特定的模式包括四个关键字，或者两个关键字和两个长度或百分比值时，可以设置背景图像应偏移的边缘。
+- en: 'Let’s start with a simple example: placing the origin image a quarter of the
+    way across and 30 pixels down from the top-left corner. Using what we saw in previous
+    sections, that would be the following:'
+  id: totrans-161
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们从一个简单的例子开始：将原始图像放置在距离左上角四分之一处并向下偏移30像素。根据前面章节的内容，那将是以下内容：
+- en: '[PRE23]'
+  id: totrans-162
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: 'Now let’s do the same thing with this four-part syntax:'
+  id: totrans-163
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们用这个四部分语法做同样的事情：
+- en: '[PRE24]'
+  id: totrans-164
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: This four-part value says, “From the `left` edge, have a horizontal offset of
+    `25%`; from the `top` edge, have an offset of `30px`.”
+  id: totrans-165
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个四部分的值表示，“从`左`边缘开始，水平偏移`25%`；从`顶部`边缘开始，偏移`30px`。”
+- en: 'Great, so that’s a more verbose way of getting the default behavior. Now let’s
+    change the code so the origin image is placed a quarter of the way across and
+    30 pixels up from the bottom-right corner, as shown in [Figure 8-15](#cab_fig25)
+    (which assumes no repeating of the background image, for clarity’s sake):'
+  id: totrans-166
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 很好，这是一种更详细的方法来获得默认行为。现在让我们改变代码，使得原始图像放置在距离右下角四分之一处并距离底部30像素的位置，如[图 8-15](#cab_fig25)所示（假设背景图像不重复，以便清楚明了）：
+- en: '[PRE25]'
+  id: totrans-167
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: Here, we have a value that means “from the `right` edge, have a horizontal offset
+    of `25%`; from the `bottom` edge, have an offset of `30px`.”
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，我们有一个值，意思是“从`右`边缘开始，水平偏移`25%`；从`底部`边缘开始，偏移`30px`。”
+- en: Thus, the general pattern is *edge keyword, offset distance, edge keyword, offset
+    distance*. You can mix the order of horizontal and vertical information; that
+    is, `bottom 30px right 25%` works just as well as `right 25% bottom 30px`. However,
+    you cannot omit either of the edge keywords; `30px right 25%` is invalid and will
+    be ignored.
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，一般的模式是*边缘关键字、偏移距离、边缘关键字、偏移距离*。你可以混合水平和垂直信息的顺序；例如，`bottom 30px right 25%`和`right
+    25% bottom 30px`都可以正常工作。然而，你不能省略任何一个边缘关键字；`30px right 25%`是无效的，并且会被忽略。
+- en: '![css5 0815](assets/css5_0815.png)'
+  id: totrans-170
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0815](assets/css5_0815.png)'
+- en: Figure 8-15\. Changing the offset edges for the origin image
+  id: totrans-171
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-15\. 改变原始图像的偏移边缘
+- en: That said, you can omit an offset distance when you want it to be 0. So `right`
+    `bottom` `30px` would put the origin image against the right edge and 30 pixels
+    up from the bottom of the background area, whereas `right 25% bottom` would place
+    the origin image a quarter of the way across from the right edge and up against
+    the bottom. These are both illustrated in [Figure 8-16](#cab_fig26).
+  id: totrans-172
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也就是说，当你希望偏移距离为0时，可以省略偏移距离。因此，`right bottom 30px`会将原始图像放在背景区域右边缘并距离底部30像素的位置，而`right
+    25% bottom`会将原始图像放在距离右边缘四分之一处并靠近底部的位置。这两者都在[图 8-16](#cab_fig26)中有图示。
+- en: '![css5 0816](assets/css5_0816.png)'
+  id: totrans-173
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0816](assets/css5_0816.png)'
+- en: Figure 8-16\. Inferred zero-length offsets
+  id: totrans-174
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-16\. 推断出的零长度偏移
+- en: You can define only the edges of an element as offset bases, not the center.
+    A value like `center 25% center 25px` will be ignored.
+  id: totrans-175
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你只能将元素的边缘定义为偏移基准，而不能定义中心。像`center 25% center 25px`这样的值会被忽略。
+- en: If you have multiple background images and only one background position, all
+    the images will be placed in the same location. If you want to place them in different
+    spots, provide a comma-separated list of background positions. They will be applied
+    to the images in order. If you have more images than position values, the positions
+    get repeated (as we’ll explore further later in the chapter).
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你有多个背景图像，但只有一个背景位置，那么所有图像将放置在同一个位置。如果你希望它们放置在不同的位置，请提供一个以逗号分隔的背景位置列表。它们将按顺序应用于图像。如果图像比位置值多，位置将重复出现（我们将在本章后面进一步探讨）。
+- en: Changing the positioning box
+  id: totrans-177
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 改变定位框
+- en: Now you know how to add an image to the background, and can even change where
+    the origin image is placed. But what if we want to place it with respect to the
+    border edge, or to the outer content edge, instead of to the default outer padding
+    edge? We can use the property `background-origin`.
+  id: totrans-178
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您知道如何将图像添加到背景中，甚至可以更改原点图像的放置位置。但是，如果我们希望将其放置在边框边缘或外部内容边缘，而不是默认的外部填充边缘，我们可以使用属性`background-origin`。
+- en: This property probably looks similar to `background-clip`, and with good reason,
+    but its effect is distinct. Whereas `background-clip` defines the *background
+    painting area*, `background-origin` defines the edge that’s used to determine
+    placement of the origin image. This is also known as *defining the background
+    positioning area*.
+  id: totrans-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此属性可能看起来类似于`background-clip`，这是有道理的，但其效果是不同的。`background-clip`定义了*背景绘制区域*，而`background-origin`定义了用于确定原点图像放置位置的边缘。这也称为*定义背景定位区域*。
+- en: The default, `padding-box`, means that the top-left corner of the origin image
+    will be placed in the top-left corner of the outer edge of the element’s padding
+    box (if `background-position` hasn’t been changed from its default of `top left`
+    or `0 0`), which is just inside the border area.
+  id: totrans-180
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，`padding-box`意味着原点图像的左上角将被放置在元素的填充框外边缘的左上角（如果`background-position`未从其默认值`top
+    left`或`0 0`更改），即在边框区域内部。
+- en: 'If you use the value `border-box`, the top-left corner of a `background-position:
+    0 0` origin image will go into the top-left corner of the padding area. The border,
+    if any, will be drawn over the origin image (assuming the background painting
+    area wasn’t restricted to be `padding-box` or `content-box`, that is).'
+  id: totrans-181
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果使用值`border-box`，则`background-position: 0 0`的原点图像的左上角将进入填充区域的左上角。如果存在边框，则会在原点图像之上绘制（假设背景绘制区域未限制为`padding-box`或`content-box`）。'
+- en: 'With `content-box`, you shift the origin image to the top-left corner of the
+    content area. The following code depicts the three options, illustrated in [Figure 8-17](#cab_fig27):'
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`content-box`，您将原点图像移至内容区域的左上角。以下代码描绘了在[图 8-17](#cab_fig27)中所示的三个选项。
+- en: '[PRE26]'
+  id: totrans-183
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: '![css5 0817](assets/css5_0817.png)'
+  id: totrans-184
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0817](assets/css5_0817.png)'
+- en: Figure 8-17\. The three types of background origins
+  id: totrans-185
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-17\. 背景来源的三种类型
+- en: 'Remember that this “placed in the top left” behavior is the default behavior,
+    which you can change with `background-position`. The position of the origin image
+    is calculated with respect to the box defined by `background-origin`: the border
+    edge, the padding edge, or the content edge. Consider, for example, this variant
+    of our previous example, which is illustrated in [Figure 8-18](#cab_fig28):'
+  id: totrans-186
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，“放置在左上角”的行为是默认行为，您可以通过`background-position`进行更改。原点图像的位置是相对于由`background-origin`定义的框（边框边缘、填充边缘或内容边缘）来计算的。例如，考虑我们先前示例的这个变体，如[图
+    8-18](#cab_fig28)所示：
+- en: '[PRE27]'
+  id: totrans-187
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: '![css5 0818](assets/css5_0818.png)'
+  id: totrans-188
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0818](assets/css5_0818.png)'
+- en: Figure 8-18\. The three types of background origins, redux
+  id: totrans-189
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-18\. 背景来源的三种类型，重制版
+- en: 'Things can get *really* interesting if you’ve explicitly defined your background
+    origin and clipping to be different boxes. Imagine you have the origin placed
+    with respect to the padding edge but the background clipped to the content area,
+    or vice versa. The following code results in [Figure 8-19](#cab_fig29):'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您明确定义了背景原点和裁剪为不同的框，则情况会变得*非常*有趣。想象一下，您已将原点放置在填充边缘，但背景被裁剪到内容区域，或者反之。以下代码结果显示在[图
+    8-19](#cab_fig29)中：
+- en: '[PRE28]'
+  id: totrans-191
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: '![css5 0819](assets/css5_0819.png)'
+  id: totrans-192
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0819](assets/css5_0819.png)'
+- en: Figure 8-19\. When origin and clipping diverge
+  id: totrans-193
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-19\. 原点和裁剪不一致时
+- en: In the first example, the edges of the origin image are clipped because it is
+    positioned with respect to the padding box, but the background painting area has
+    been clipped at the edge of the content box. In the second example, the origin
+    image is placed with respect to the content box, but the painting area extends
+    into the padding box. Thus, the origin image is visible all the way down to the
+    bottom padding edge, even though its top is not placed against the top padding
+    edge.
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一个示例中，由于原点图像是相对于填充框定位的，所以原点图像的边缘被裁剪，但是背景绘制区域已在内容框的边缘处被裁剪。在第二个示例中，原点图像是相对于内容框放置的，但是绘制区域延伸到了填充框内部。因此，原点图像可见一直延伸到底部填充边缘，即使其顶部未放置在顶部填充边缘。
+- en: Background Repeating (or Lack Thereof)
+  id: totrans-195
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 背景重复（或其缺乏）
+- en: Viewports come in an infinite number of sizes. Fortunately, we can tile background
+    images, meaning we don’t need to create backgrounds of multiple sizes or serve
+    large-format (and file size) wallpaper to small-screen low-bandwidth devices.
+    When you want to repeat an image in a specific way, or when you don’t want to
+    repeat it at all, we have `background-repeat`.
+  id: totrans-196
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 视口有无限多种尺寸。幸运的是，我们可以平铺背景图像，这意味着我们不需要创建多种尺寸的背景，也不必为小屏幕低带宽设备提供大尺寸（和文件大小）的壁纸。当您想以特定方式重复图像或根本不想重复时，可以使用
+    `background-repeat`。
+- en: 'The value syntax for `background-repeat` looks a bit complicated at first glance,
+    but it’s fairly straightforward. In fact, at its base, it uses just four values:
+    `repeat`, `no-repeat`, `space`, and `round`. The other two, `repeat-x` and `repeat-y`,
+    are considered shorthand for combinations of the others. [Table 8-2](#cab_table03)
+    shows how they break down.'
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`background-repeat` 的值语法乍看起来有点复杂，但实际上非常简单。事实上，它基本上只使用了四个值：`repeat`、`no-repeat`、`space`
+    和 `round`。其余两个值 `repeat-x` 和 `repeat-y` 被视为其他值的组合方式。[Table 8-2](#cab_table03)
+    显示了它们的具体含义。'
+- en: If two values are given, the first applies in the horizontal direction, and
+    the second in the vertical. If there is just one value, it applies in both the
+    horizontal and vertical directions, with the exception, as shown in [Table 8-2](#cab_table03),
+    of `repeat-x` and `repeat-y`.
+  id: totrans-198
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果给定了两个值，则第一个值适用于水平方向，第二个值适用于垂直方向。如果只有一个值，则适用于水平和垂直方向，除了如[Table 8-2](#cab_table03)
+    所示的 `repeat-x` 和 `repeat-y` 例外。
+- en: Table 8-2\. Repeat keyword equivalents
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Table 8-2\. 重复关键字的等效表示
+- en: '| Single keyword | Equivalent keywords |'
+  id: totrans-200
+  prefs: []
+  type: TYPE_TB
+  zh: '| 单关键字 | 等效关键字 |'
+- en: '| --- | --- |'
+  id: totrans-201
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `repeat-x` | `repeat no-repeat` |'
+  id: totrans-202
+  prefs: []
+  type: TYPE_TB
+  zh: '| `repeat-x` | `repeat no-repeat` |'
+- en: '| `repeat-y` | `no-repeat repeat` |'
+  id: totrans-203
+  prefs: []
+  type: TYPE_TB
+  zh: '| `repeat-y` | `no-repeat repeat` |'
+- en: '| `repeat` | `repeat repeat` |'
+  id: totrans-204
+  prefs: []
+  type: TYPE_TB
+  zh: '| `repeat` | `repeat repeat` |'
+- en: '| `no-repeat` | `no-repeat no-repeat` |'
+  id: totrans-205
+  prefs: []
+  type: TYPE_TB
+  zh: '| `no-repeat` | `no-repeat no-repeat` |'
+- en: '| `space` | `space space` |'
+  id: totrans-206
+  prefs: []
+  type: TYPE_TB
+  zh: '| `space` | `space space` |'
+- en: '| `round` | `round round` |'
+  id: totrans-207
+  prefs: []
+  type: TYPE_TB
+  zh: '| `round` | `round round` |'
+- en: 'As you might guess, `repeat` by itself causes the image to tile infinitely
+    in all directions. The `repeat-x` and `repeat-y` values cause the image to be
+    repeated in the horizontal or vertical directions, respectively, and `no-repeat`
+    prevents the image from tiling along a given axis. If you have more than one image,
+    each with different repeat patterns, provide a comma-separated list of values.
+    We said “all directions” rather than “both directions” because a `background-position`
+    may have put the initial repeating image somewhere other than the top-left corner
+    of the clip box. With `repeat`, the image repeats in all directions. By default,
+    the background image will start from the top-left corner of an element. Therefore,
+    the following rules will have the effect shown in [Figure 8-20](#cab_fig30):'
+  id: totrans-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您可能猜到的那样，`repeat` 单独会导致图像在所有方向上无限平铺。`repeat-x` 和 `repeat-y` 值分别导致图像在水平或垂直方向重复，并且
+    `no-repeat` 防止图像沿指定轴线重复。如果有多个图像，每个图像的重复模式不同，请提供一个逗号分隔的值列表。我们说“所有方向”而不是“两个方向”，因为
+    `background-position` 可能会将初始重复图像放在裁剪框的左上角之外。使用 `repeat`，图像在所有方向上重复。默认情况下，背景图像将从元素的左上角开始。因此，以下规则将产生[Figure 8-20](#cab_fig30)
+    中显示的效果：
+- en: '[PRE29]'
+  id: totrans-209
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: '![css5 0820](assets/css5_0820.png)'
+  id: totrans-210
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0820](assets/css5_0820.png)'
+- en: Figure 8-20\. Tiling the background image vertically
+  id: totrans-211
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: Figure 8-20\. 垂直平铺背景图像
+- en: 'Let’s assume, though, that you want the image to repeat only across the top
+    of the document. Rather than creating a special image with a whole lot of blank
+    space underneath, you can just make a small change to that last rule:'
+  id: totrans-212
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您只想让图像在文档顶部重复。与其创建一个下面有很多空白空间的特殊图像，不如只需对最后一个规则进行小改动：
+- en: '[PRE30]'
+  id: totrans-213
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: As [Figure 8-21](#cab_fig31) shows, the image is repeated along the x-axis (horizontally)
+    from its starting position—in this case, the top-left corner of the `<body>` element’s
+    background area.
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[Figure 8-21](#cab_fig31) 所示，图像在 x 轴（水平方向）从其起始位置开始重复——在这种情况下，是 `<body>` 元素背景区域的左上角。
+- en: '![css5 0821](assets/css5_0821.png)'
+  id: totrans-215
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0821](assets/css5_0821.png)'
+- en: Figure 8-21\. Tiling the background image horizontally
+  id: totrans-216
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: Figure 8-21\. 水平平铺背景图像
+- en: 'Finally, you may not want to repeat the background image. In this case, use
+    the value `no-repeat`:'
+  id: totrans-217
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，您可能不想重复背景图像。在这种情况下，请使用值 `no-repeat`：
+- en: '[PRE31]'
+  id: totrans-218
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: 'With this tiny image, `no-repeat` may not seem terribly useful, but it is the
+    most common value, and unfortunately not the default. Let’s try it again with
+    a much bigger symbol. The following code results in [Figure 8-22](#cab_fig32):'
+  id: totrans-219
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于这个小图像来说，`no-repeat`可能看起来并不是非常有用，但它是最常见的值，不幸的是不是默认值。让我们再试一次，使用一个更大的符号。以下代码的结果是[图
+    8-22](#cab_fig32)：
+- en: '[PRE32]'
+  id: totrans-220
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: '![css5 0822](assets/css5_0822.png)'
+  id: totrans-221
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0822](assets/css5_0822.png)'
+- en: Figure 8-22\. Placing a single large background image
+  id: totrans-222
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-22\. 放置单个大背景图像
+- en: 'The ability to control the repeat direction dramatically expands the range
+    of possible effects. For example, let’s say you want a triple border on the left
+    side of each `<h1>` element in your document. You can take that concept further
+    and decide to set a wavy border along the top of each `<h2>` element. The image
+    is colored in such a way that it blends with the background color and produces
+    the wavy effect shown in [Figure 8-23](#cab_fig33), which is the result of the
+    following code:'
+  id: totrans-223
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 控制重复方向的能力极大地扩展了可能的效果范围。例如，假设你想要在文档中每个`<h1>`元素的左侧设置三重边框。你可以进一步将这个概念推广，并决定在每个`<h2>`元素的顶部设置波浪边框。这张图片的着色与背景色混合，产生了[图
+    8-23](#cab_fig33)所示的波浪效果，这是以下代码的结果：
+- en: '[PRE33]'
+  id: totrans-224
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: '![css5 0823](assets/css5_0823.png)'
+  id: totrans-225
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0823](assets/css5_0823.png)'
+- en: Figure 8-23\. Bordering elements with background images
+  id: totrans-226
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-23\. 使用背景图像边框元素
+- en: Tip
+  id: totrans-227
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 提示
+- en: There are better ways to create a wavy-border effect—notably, the border image
+    properties explored in [“Image Borders”](ch07.html#image-borders).
+  id: totrans-228
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建波浪边框效果有更好的方法——特别是在[“图像边框”](ch07.html#image-borders)中探讨的边框图像属性。
+- en: Positioning images that repeat
+  id: totrans-229
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 定位重复的图像
+- en: In the previous section, we explored the values `repeat-x`, `repeat-y`, and
+    `repeat`, and how they affect the tiling of background images. In each case, the
+    tiling pattern always started from the top-left corner of the element’s background.
+    That’s because, as you’ve seen, the default values for `background-position` are
+    `0% 0%`. Given that you know how to change the position of the origin image, you
+    need to know how user agents will handle it.
+  id: totrans-230
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前一节中，我们探讨了`repeat-x`、`repeat-y`和`repeat`的值，以及它们如何影响背景图像的平铺。在每种情况下，平铺图案始终从元素背景的左上角开始。这是因为，正如你所看到的，`background-position`的默认值为`0%
+    0%`。鉴于你已经知道如何改变原始图像的位置，你需要了解用户代理如何处理它。
+- en: 'It will be easier to show an example and then explain it. Consider the following
+    markup, which is illustrated in [Figure 8-24](#cab_fig34):'
+  id: totrans-231
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更容易通过示例展示然后解释它。考虑以下标记，它在[图 8-24](#cab_fig34)中有所说明：
+- en: '[PRE34]'
+  id: totrans-232
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: '![css5 0824](assets/css5_0824.png)'
+  id: totrans-233
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0824](assets/css5_0824.png)'
+- en: Figure 8-24\. Centering the origin image and repeating it
+  id: totrans-234
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-24\. 将原始图像居中并重复显示
+- en: 'So there you have it: stripes running through the center of the elements. It
+    may look wrong, but it isn’t.'
+  id: totrans-235
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所以你看到了：条纹贯穿元素中心。它看起来可能是错误的，但实际上并不是。
+- en: 'These examples are correct because the origin image has been placed in the
+    center of the first `<p>` element. In the first example, the image is tiled along
+    the y-axis *in both* *directions*—up *and* down, starting from the origin image
+    at the center. In the second example, the images are tiled along the x-axis, starting
+    from the origin image, and repeated to both the right *and* left. You may notice
+    the first and last repetitions are slightly cut off, whereas when we started with
+    `background-position: 0 0`, only the last image, or rightmost and bottommost images,
+    risked being clipped.'
+  id: totrans-236
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这些例子是正确的，因为原始图像已经放置在第一个`<p>`元素的中心。在第一个例子中，图像沿着y轴在上下两个方向上铺设，从中心的原始图像开始。在第二个例子中，图像沿x轴铺设，从原始图像开始，并重复到右侧和左侧。你可能注意到第一个和最后一个重复略有被截断，而当我们从`background-position:
+    0 0`开始时，只有最后一个图像或最右边和最下边的图像可能被剪切。'
+- en: 'Setting an image in the center of the `<p>` and then letting it fully repeat
+    will cause it to tile in all *four* directions: up, down, left, and right. The
+    only difference `background-position` makes is in where the tiling starts. When
+    the background image repeats from the center, the grid of yin-yang symbols is
+    centered within the element, resulting in consistent clipping along the edges.
+    When the tiling begins at the top-left corner of the padding area, the clipping
+    is not consistent around the edges. The `spacing` and `rounding` values, on the
+    other hand, prevent image clipping but have their own drawbacks.'
+  id: totrans-237
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`<p>`中设置一张图像并让其完全重复会导致其在四个方向上平铺：上、下、左、右。 `background-position`唯一影响的是平铺开始的位置。当背景图像从中心重复时，阴阳符号的网格会居中在元素内部，导致沿边缘的一致裁剪。当平铺从填充区域的左上角开始时，边缘周围的裁剪不一致。另一方面，`spacing`和`rounding`值可以防止图像裁剪，但它们也有自己的缺点。
+- en: Note
+  id: totrans-238
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: In case you’re wondering, CSS has no single-direction values such as `repeat-left`
+    or `repeat-up`.
+  id: totrans-239
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你好奇的话，CSS没有像`repeat-left`或`repeat-up`这样的单方向值。
+- en: Spacing and rounding repeat patterns
+  id: totrans-240
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 间隔和舍入重复模式
+- en: 'Beyond the basic tiling patterns you’ve seen thus far, `background-repeat`
+    has the ability to exactly fill out the background area. Consider, for example,
+    what happens if we use the value `space` to define the tiling pattern, as shown
+    in [Figure 8-25](#cab_fig36):'
+  id: totrans-241
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了到目前为止看到的基本平铺模式外，`background-repeat`还能够精确填充背景区域。例如，考虑如果使用值`space`定义平铺模式会发生什么，如图[8-25](#cab_fig36)所示：
+- en: '[PRE35]'
+  id: totrans-242
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: '![css5 0825](assets/css5_0825.png)'
+  id: totrans-243
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0825](assets/css5_0825.png)'
+- en: Figure 8-25\. Tiling the background image with filler space
+  id: totrans-244
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-25\. 使用填充空间平铺背景图像
+- en: You’ll notice background images in each of the four corners of the element.
+    Furthermore, the images are spaced out so that they occur at regular intervals
+    in both the horizontal and vertical directions.
+  id: totrans-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您会注意到元素的四个角落中都有背景图像。此外，这些图像间隔开来，使它们在水平和垂直方向上都以规则间隔发生。
+- en: 'This is what `space` does: it determines the number of repetitions that will
+    fully fit along a given axis, and then spaces them out at regular intervals so
+    that the repetitions go from one edge of the background to another. This doesn’t
+    guarantee a regular square grid, with intervals that are all the same both horizontally
+    and vertically. It just means that you’ll have what look like columns and rows
+    of background images. While no image will be clipped, unless there isn’t enough
+    room for even one iteration (as can happen with very large background images),
+    this value often results in different horizontal and vertical separations. [Figure 8-26](#cab_fig37)
+    shows some examples.'
+  id: totrans-246
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`space`的作用是：它确定沿着给定轴线完全适合的重复次数，然后以规则间隔将它们间隔开，使重复从背景的一边到另一边。这并不保证一个规则的正方形网格，水平和垂直方向上的间隔都是相同的。它只是意味着你将拥有看起来像是背景图像的列和行。虽然不会裁剪任何图像，除非连一个迭代都没有足够的空间（这在非常大的背景图像上可能发生），但这个值通常会导致水平和垂直分隔不同。图[8-26](#cab_fig37)展示了一些例子。'
+- en: '![css5 0826](assets/css5_0826.png)'
+  id: totrans-247
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0826](assets/css5_0826.png)'
+- en: 'Figure 8-26\. Tiling with different intervals showing `background-repeat: space`
+    on elements of different sizes'
+  id: totrans-248
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: '图 8-26\. 使用不同间隔平铺显示`background-repeat: space`在不同大小元素上的效果'
+- en: Note
+  id: totrans-249
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Keep in mind that any background color, or the “backdrop” of the element (that
+    is, the combined backgrounds of the element’s ancestors) will show through the
+    gaps between `space`-separated background images.
+  id: totrans-250
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，任何背景颜色或元素的“背景”（即元素祖先的组合背景）都会显示在通过`space`分隔的背景图像之间的空隙中。
+- en: 'What happens if you have a really big image that won’t fit more than once,
+    or even once, along the given axis? That image is drawn once, placed as determined
+    by the value of `background-position`, and clipped as necessary. The flip side
+    is that if more than one repetition of the image will fit along an axis, the value
+    of `background-position` is ignored along that axis. The following code, for example,
+    displays [Figure 8-27](#cab_fig38):'
+  id: totrans-251
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果有一张很大的图像，在给定的轴线上不能重复超过一次，甚至一次，会发生什么情况？该图像将根据`background-position`的值绘制一次，并根据需要进行裁剪。反之，如果在某个轴线上可以容纳多次图像重复，那么`background-position`的值在该轴线上将被忽略。例如，以下代码显示[图
+    8-27](#cab_fig38)：
+- en: '[PRE36]'
+  id: totrans-252
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: '![css5 0827](assets/css5_0827.png)'
+  id: totrans-253
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0827](assets/css5_0827.png)'
+- en: Figure 8-27\. Spacing along one axis but not the other
+  id: totrans-254
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-27\. 沿一个轴线间隔但不沿另一个轴线间隔
+- en: Notice that the images are spaced horizontally, and thus override the `center`
+    position along that axis, but are centered vertically and not spaced (because
+    there isn’t enough room to do so). That’s the effect of `space` overriding `center`
+    along one axis but not the other.
+  id: totrans-255
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意图像在水平方向上的间距，因此覆盖了沿该轴的 `center` 位置，但在垂直方向上居中且没有间距（因为没有足够的空间来这样做）。这是 `space`
+    在一个轴上覆盖 `center` 而在另一个轴上不覆盖的效果。
+- en: By contrast, the value `round` will most likely result in scaling of the background
+    image as it is repeated, *and* (strangely enough) will not override `background-position`.
+    If an image won’t quite repeat so that it goes from edge to edge of the background,
+    that image will be scaled up *or* down to make it fit a whole number of times.
+  id: totrans-256
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相比之下，值 `round` 可能会导致背景图像在重复时进行缩放，*并且* （奇怪的是）不会覆盖 `background-position`。如果一张图像不能完全重复以适应背景的边缘，那么这张图像将被放大
+    *或者* 缩小以使其适合整数倍。
+- en: 'Furthermore, the images can be scaled differently along each axis. The `round`
+    value is the only background property value that can alter an image’s intrinsic
+    aspect ratio automatically if needed. While `background-size` can also lead to
+    a change in the aspect ratio, distorting the image, this happens only by explicit
+    direction from the author. You can see an example in [Figure 8-28](#cab_fig39),
+    which is the result of the following code:'
+  id: totrans-257
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，图像可以沿每个轴向不同比例缩放。 `round` 值是唯一可以根据需要自动改变图像固有纵横比的背景属性值。虽然 `background-size`
+    也可以导致纵横比发生变化，从而扭曲图像，但这只有在作者明确指示时才会发生。你可以在 [图 8-28](#cab_fig39) 中看到一个示例，这是以下代码的结果：
+- en: '[PRE37]'
+  id: totrans-258
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: '![css5 0828](assets/css5_0828.png)'
+  id: totrans-259
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0828](assets/css5_0828.png)'
+- en: Figure 8-28\. Tiling the background image with scaling
+  id: totrans-260
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-28\. 带有缩放的背景图像平铺
+- en: Note that if you have a background 850 pixels wide and a horizontally rounded
+    image that’s 300 pixels wide, a browser can decide to use three images and scale
+    them down to fit three across into the 850-pixel area (thus making each instance
+    of the image 283.333 pixels wide). With `space`, the browser would have to use
+    two images and put 250 pixels of space between them, but `round` is not so constrained.
+  id: totrans-261
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，如果你有一个宽度为 850 像素的背景和一个水平圆角图像宽度为 300 像素，浏览器可以决定使用三张图像，并将它们缩小以适应 850 像素区域中的三张图像（因此每个图像实例宽度为
+    283.333 像素）。使用 `space`，浏览器将使用两张图像并在它们之间放置 250 像素的空间，但 `round` 没有这种限制。
+- en: 'Here’s the interesting wrinkle: while `round` will resize the images so that
+    you can fit a whole number of them into the background, it will *not* move them
+    to make sure that they actually touch the edges of the background. The only way
+    to make sure your repeating pattern fits and no background images are clipped
+    is to put the origin image in a corner. If the origin image is anywhere else,
+    clipping will occur. The following code shows an example, illustrated in [Figure 8-29](#cab_fig40):'
+  id: totrans-262
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个有趣的变化：虽然 `round` 会调整图像大小，使其能够整数倍地适应背景，但它 *不会* 移动图像以确保它们实际触及背景的边缘。确保重复图案适合且没有背景图像被裁剪的唯一方法是将原始图像放在一个角落。如果原始图像在其他地方，将会发生裁剪。以下代码展示了一个例子，详见
+    [图 8-29](#cab_fig40)：
+- en: '[PRE38]'
+  id: totrans-263
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: '![css5 0829](assets/css5_0829.png)'
+  id: totrans-264
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0829](assets/css5_0829.png)'
+- en: Figure 8-29\. Rounded background images that are clipped
+  id: totrans-265
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-29\. 被剪切的圆角背景图像
+- en: The images are still scaled so that they would fit into the background positioning
+    area a whole number of times. They just aren’t repositioned to actually do so.
+    Thus, if you’re going to use `round` and don’t want to have any clipped background
+    tiles, make sure you’re starting from one of the four corners (and make sure the
+    background positioning and painting areas are the same; see [“Tiling and clipping
+    repeated backgrounds”](#tiling-and-clipping) for more).
+  id: totrans-266
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 图像仍然按比例缩放，以便它们能够整数倍地适应背景定位区域。它们只是没有重新定位以实际做到这一点。因此，如果你打算使用 `round`，并且不想有任何被裁剪的背景图块，请确保你从四个角落之一开始（并确保背景定位和绘制区域相同；更多信息请参见
+    [“平铺和剪切重复的背景”](#tiling-and-clipping)）。
+- en: Tiling and clipping repeated backgrounds
+  id: totrans-267
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 平铺和剪切重复的背景
+- en: As you may recall, `background-clip` can alter the area in which the background
+    is drawn, and `background-origin` determines the placement of the origin image.
+    So what happens when you’ve made the clipping area and the origin area different,
+    *and* you’re using either `space` or `round` for the tiling pattern?
+  id: totrans-268
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你可能记得的，`background-clip` 可以改变背景绘制的区域，而 `background-origin` 决定了原始图像的放置位置。那么当你将剪切区域和原始区域设置为不同，*并且*
+    使用 `space` 或 `round` 作为平铺模式时会发生什么呢？
+- en: The basic answer is that if your values for `background-origin` and `background-clip`
+    aren’t the same, clipping will happen. This is because `space` and `round` are
+    calculated with respect to the background positioning area, not the painting area.
+    [Figure 8-30](#cab_fig41) shows some examples of what can happen.
+  id: totrans-269
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本答案是，如果`background-origin`和`background-clip`的值不同，就会发生剪切。这是因为`space`和`round`是相对于背景定位区域而不是绘制区域计算的。[图
+    8-30](#cab_fig41) 显示了可能发生的一些示例。
+- en: '![css5 0830](assets/css5_0830.png)'
+  id: totrans-270
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0830](assets/css5_0830.png)'
+- en: Figure 8-30\. Clipping due to mismatched clip and origin values
+  id: totrans-271
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-30\. 由于剪切和原点值不匹配而导致的剪切
+- en: As for the best combination of values to use, that’s a matter of opinion and
+    circumstance. In most cases, setting both `background-origin` and `background-clip`
+    to `padding-box` will likely get you the results you desire. If you plan to have
+    borders with see-through bits, though, `border-box` might be a better choice.
+  id: totrans-272
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 至于使用的最佳值组合，这是一个见仁见智的问题。在大多数情况下，将`background-origin`和`background-clip`都设置为`padding-box`可能会得到你想要的结果。但如果你打算有透明部分的边框，那么`border-box`可能是一个更好的选择。
+- en: Getting Attached
+  id: totrans-273
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 获得附件
+- en: Now you know how to place the origin image for the background anywhere in the
+    background of an element, and you know how to control (to a large degree) the
+    way it tiles. As you may have realized already, placing an image in the center
+    of the `<body>` element could mean, given a sufficiently long document, that the
+    background image won’t be initially visible to the reader. After all, a browser
+    is a viewport providing a window onto the document. If the document is too long
+    to be completely shown in the viewport, the user can scroll back and forth through
+    the document. The center of the body could be two or three “screens” below the
+    beginning of the document, or just far enough down to push most of the origin
+    image beyond the bottom of the browser window.
+  id: totrans-274
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你知道如何在元素背景的任何位置放置原始图像，也知道如何（在很大程度上）控制其平铺方式。你可能已经意识到，将图像放在`<body>`元素的中心可能意味着，如果文档足够长，背景图像对于读者来说可能一开始是不可见的。毕竟，浏览器是一个视口，提供对文档的窗口。如果文档太长而无法完全显示在视口中，用户可以通过文档来回滚动。身体的中心可能比文档的开始低两到三个“屏幕”，或者足够远以将大部分原始图像推到浏览器窗口底部之外。
+- en: 'Furthermore, if the origin image is initially visible, by default it scrolls
+    with the document—vanishing when the user scrolls beyond the location of the image.
+    Never fear: CSS provides a way to prevent the background image from scrolling
+    out of view.'
+  id: totrans-275
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，如果初始时可见原始图像，默认情况下，它会随文档一起滚动——当用户滚动超出图像位置时消失。不用担心：CSS 提供了一种方法防止背景图像滚出视野。
+- en: 'Using the property `background-attachment`, you can declare the origin image
+    to be fixed with respect to the viewing area and therefore immune to the effects
+    of scrolling:'
+  id: totrans-276
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用属性`background-attachment`，可以声明原始图像固定在视区，因此不受滚动影响：
+- en: '[PRE39]'
+  id: totrans-277
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: Doing this has two immediate effects. First, the origin image does not scroll
+    along with the document. Second, the placement of the origin image is determined
+    by the size of the viewport, not the size (or placement within the viewport) of
+    the element that contains it. [Figure 8-31](#cab_fig43) shows the image still
+    sitting in the center of the viewport, even though the document has been scrolled
+    partway through the text.
+  id: totrans-278
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这样做有两个直接的影响。首先，原始图像不会随文档一起滚动。其次，原始图像的放置由视口的大小决定，而不是包含它的元素的大小（或在视口内的放置）。[图 8-31](#cab_fig43)
+    显示即使文档部分滚动到文本中间，图像仍然位于视口中心。
+- en: '![css5 0831](assets/css5_0831.png)'
+  id: totrans-279
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0831](assets/css5_0831.png)'
+- en: Figure 8-31\. The centering continues to hold
+  id: totrans-280
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-31\. 中心对齐继续保持
+- en: 'The element-specific version of `fixed` is `local`. In this case, though, the
+    effect is seen only when an element’s content (rather than the whole document)
+    has to be scrolled. This is tricky to grasp at first. Consider the following,
+    where `background-attachment` is defaulting to `scroll`:'
+  id: totrans-281
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`fixed`的元素特定版本是`local`。然而，在这种情况下，效果仅在需要滚动元素内容（而不是整个文档）时可见。这一点起初可能有些难以理解。考虑以下情况，其中`background-attachment`默认为`scroll`：'
+- en: '[PRE40]'
+  id: totrans-282
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: In this situation, if the content of an `aside` is taller than 20 em, the overflowed
+    content is not visible but can be accessed using a scrollbar. The background image,
+    however, will *not* scroll with the content. It will instead stay in the top-right
+    corner of the element box.
+  id: totrans-283
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，如果`aside`的内容高度超过 20 em，则溢出的内容不可见，但可以通过滚动条访问。然而，背景图像不会随内容滚动，而是会停留在元素框的右上角。
+- en: 'By adding `background-attachment: local`, the image is attached to the local
+    context. The visual effect is rather like an `iframe`, if you have any experience
+    with those. [Figure 8-32](#cbag_css4_background-attachment-local) shows the results
+    of the previous code sample and the following code side by side:'
+  id: totrans-284
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '通过添加`background-attachment: local`，图像附加到本地上下文。如果您有使用`iframe`的经验，视觉效果就像`iframe`。[图 8-32](#cbag_css4_background-attachment-local)
+    显示了先前代码示例和下面的代码并排的结果：'
+- en: '[PRE41]'
+  id: totrans-285
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: '![css5 0832](assets/css5_0832.png)'
+  id: totrans-286
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0832](assets/css5_0832.png)'
+- en: Figure 8-32\. Default scroll attachment versus local attachment
+  id: totrans-287
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-32\. 默认滚动附件与本地附件的比较
+- en: One other value for `background-attachment` is the default value `scroll`. As
+    you might expect, this causes the background image to scroll along with the rest
+    of the document when viewed in a web browser, and it doesn’t necessarily change
+    the position of the origin image as the window is resized. If the document width
+    is fixed (perhaps by assigning an explicit `width` to the `<body>` element), resizing
+    the viewing area won’t affect the placement of a scroll-attachment origin image
+    at all.
+  id: totrans-288
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`background-attachment`的另一个值是默认值`scroll`。正如您所料，这会导致在Web浏览器中查看文档时，背景图像随着文档的其余部分滚动，并且在调整窗口大小时不一定会更改原始图像的位置。如果文档宽度固定（例如通过为`<body>`元素分配显式`width`），调整视图区域的大小不会影响滚动附加原始图像的放置。'
+- en: Useful side effects of attached backgrounds
+  id: totrans-289
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 附加背景的有用副作用
+- en: In technical terms, when a background image has been fixed, it is positioned
+    with respect to the viewing area, not the element that contains it. However, the
+    background will be visible only within its containing element. Aligning images
+    to the viewport, rather than the element, can be used to our advantage.
+  id: totrans-290
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在技术术语中，当背景图像被固定时，它相对于视口进行定位，而不是包含它的元素。然而，背景只会在其包含的元素内可见。将图像与视口对齐，而不是元素，可以利用我们的优势。
+- en: 'Let’s say you have a document with a tiled background that actually looks like
+    it’s tiled, and both `<h1>` and `<h2>` elements with the same pattern, only in
+    a different color. You set both the `<body>` and heading elements to have fixed
+    backgrounds as follows, resulting in [Figure 8-33](#cab_fig44):'
+  id: totrans-291
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您有一个文档，具有实际上看起来像平铺的背景，并且`<h1>`和`<h2>`元素都具有相同的模式，只是颜色不同。您可以将`<body>`和标题元素都设置为具有固定背景，如下所示，导致[图 8-33](#cab_fig44)：
+- en: '[PRE42]'
+  id: totrans-292
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: This neat trick is made possible because when a background’s attachment is `fixed`,
+    the origin element is positioned with respect to the *viewport*. Thus, both background
+    patterns begin tiling from the top-left corner of the viewport, not from the individual
+    elements. For the `<body>`, you can see the entire repeat pattern. For the `<h1>`,
+    however, the only place you can see its background is in the padding and content
+    of the `<h1>` itself. Since both background images are the same size and have
+    precisely the same origin, they appear to line up, as shown in [Figure 8-33](#cab_fig44).
+  id: totrans-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个巧妙的技巧是因为当背景附件为`fixed`时，原始元素相对于*视口*定位。因此，两个背景模式从视口的左上角开始平铺，而不是从各个元素开始。对于`<body>`，您可以看到整个重复图案。然而，对于`<h1>`，您唯一可以看到其背景的地方是在`<h1>`本身的填充和内容中。由于两个背景图像大小相同并且具有完全相同的起源，它们看起来是对齐的，如[图 8-33](#cab_fig44)所示。
+- en: '![css5 0833](assets/css5_0833.png)'
+  id: totrans-294
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0833](assets/css5_0833.png)'
+- en: Figure 8-33\. Perfect alignment of backgrounds
+  id: totrans-295
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-33\. 背景完美对齐
+- en: This capability can be used to create sophisticated effects. One of the most
+    famous examples is the [“complexspiral distorted” demonstration](https://meyerweb.com/eric/css/edge/complexspiral/glassy.html),
+    shown in [Figure 8-34](#cab_fig45).
+  id: totrans-296
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种能力可以用来创建复杂的效果。其中一个最著名的例子是[“复杂螺旋变形”演示](https://meyerweb.com/eric/css/edge/complexspiral/glassy.html)，如[图 8-34](#cab_fig45)所示。
+- en: '![css5 0834](assets/css5_0834.png)'
+  id: totrans-297
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0834](assets/css5_0834.png)'
+- en: Figure 8-34\. The complexspiral distorted
+  id: totrans-298
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-34\. 复杂螺旋变形
+- en: The visual effects are caused by assigning different fixed-attachment background
+    images to non-`<body>` elements. The entire demo is driven by one HTML document,
+    four JPEG images, and a stylesheet. Because all four images are positioned in
+    the top-left corner of the browser window but are visible only where they intersect
+    with their elements, the images line up to create the illusion of translucent
+    rippled glass. (Now we can use SVG filters for these sorts of special effects,
+    but fixed-attachment backgrounds made creating faux filters possible back in 2002.)
+  id: totrans-299
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些视觉效果是通过将不是`<body>`元素的不同固定附加背景图像分配给它们来实现的。整个演示由一个HTML文档、四张JPEG图像和一个样式表驱动。因为所有四张图像都位于浏览器窗口的左上角，但只有在与其元素交集的地方可见，这些图像排列起来创建了半透明波纹玻璃的幻觉。（现在我们可以使用SVG滤镜来实现这些特效，但是固定附加背景曾在2002年创造了虚假的滤镜效果。）
+- en: It is also the case that in paged media, such as printouts, every page generates
+    its own viewport. Therefore, a fixed-attachment background should appear on every
+    page of the printout. This could be used for effects such as watermarking all
+    the pages in a document.
+  id: totrans-300
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有一个情况，在页面媒体中（如打印品）每页都会生成自己的视口。因此，固定附加背景应出现在打印品的每一页上。这可以用于诸如在文档的所有页面上打水印等效果。
+- en: Sizing Background Images
+  id: totrans-301
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置背景图像大小
+- en: Thus far, we’ve taken images of varying sizes and dropped them into element
+    backgrounds to be repeated (or not), positioned, clipped, and attached. In every
+    case, we just took the image at whatever intrinsic size it was (with the automated
+    exception of `round` repeating). Ready to actually change the size of the origin
+    image and all the tiled images that spawn from it?
+  id: totrans-302
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们已经获取了各种大小的图像，并将它们放入元素背景中进行重复（或不重复）、定位、裁剪和附加。在每种情况下，我们只是采用了图像的固有尺寸（除了自动例外的`round`重复）。准备好实际更改原始图像的大小以及由此产生的所有平铺图像吗？
+- en: 'Let’s start by explicitly resizing a background image. We’ll drop in an image
+    that’s 200 × 200 pixels and then resize it to be twice as big. The following code
+    results in [Figure 8-35](#cab_fig46):'
+  id: totrans-303
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们从明确调整背景图像开始。我们将插入一张200 × 200像素的图像，然后将其调整为两倍大小。以下代码将得到[图8-35](#cab_fig46)的结果：
+- en: '[PRE43]'
+  id: totrans-304
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: '![css5 0835](assets/css5_0835.png)'
+  id: totrans-305
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0835](assets/css5_0835.png)'
+- en: Figure 8-35\. Resizing the origin image
+  id: totrans-306
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图8-35\. 调整原始图像大小
+- en: With `background-size`, we can resize the origin image to be smaller. We can
+    size it using ems, pixels, viewport widths, any length unit, or a combination
+    thereof.
+  id: totrans-307
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`background-size`，我们可以将原始图像调整为更小的尺寸。我们可以使用ems、像素、视口宽度、任何长度单位或它们的组合来设置其大小。
+- en: 'We can even distort the image by changing its size. [Figure 8-36](#cab_fig47)
+    illustrates the results when changing the previous code sample to use `background-size:
+    400px 4em`, with both repeated and nonrepeated backgrounds.'
+  id: totrans-308
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '我们甚至可以通过改变其大小来扭曲图像。当将上述代码示例更改为使用`background-size: 400px 4em`时，[图8-36](#cab_fig47)展示了其结果，包括重复和非重复背景。'
+- en: '![css5 0836](assets/css5_0836.png)'
+  id: totrans-309
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0836](assets/css5_0836.png)'
+- en: Figure 8-36\. Distorting the origin image by resizing it
+  id: totrans-310
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图8-36\. 通过调整大小来扭曲原始图像
+- en: As you can see, when `background-size` has two values, the first is the horizontal
+    size and the second is the vertical. If you allow the image to repeat, all the
+    repeated images will be the same size as the origin image.
+  id: totrans-311
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，当`background-size`有两个值时，第一个是水平大小，第二个是垂直大小。如果允许图像重复，所有重复的图像将与原始图像相同大小。
+- en: 'Percentages are a little more interesting. If you declare a percentage value,
+    it’s calculated with respect to the background positioning area—that is, the area
+    defined by `background-origin`, and *not* by `background-clip`. Suppose you want
+    an image that’s half as wide and half as tall as its background positioning area;
+    the following code results in [Figure 8-37](#cab_fig48):'
+  id: totrans-312
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 百分比更有趣。如果声明百分比值，则其计算是相对于背景定位区域来进行的，即由`background-origin`而不是`background-clip`定义的区域。假设您希望图像的宽度和高度为其背景定位区域的一半，则以下代码将得到[图8-37](#cab_fig48)的结果：
+- en: '[PRE44]'
+  id: totrans-313
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: '![css5 0837](assets/css5_0837.png)'
+  id: totrans-314
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0837](assets/css5_0837.png)'
+- en: Figure 8-37\. Resizing the origin image with percentages
+  id: totrans-315
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图8-37\. 使用百分比调整原始图像大小
+- en: 'And yes, you can mix lengths and percentages:'
+  id: totrans-316
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是的，您可以混合长度和百分比：
+- en: '[PRE45]'
+  id: totrans-317
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: Negative length and percentage values are not permitted for `background-size`.
+  id: totrans-318
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不允许为`background-size`使用负长度和百分比值。
+- en: Maintaining the background image’s aspect ratio
+  id: totrans-319
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 保持背景图像的宽高比
+- en: 'Now, what about the default value of `auto`? First off, when only one value
+    is provided, it’s taken for the horizontal size, and the vertical size is set
+    to `auto`. (Thus `background-size: auto` is equivalent to `background-size: auto
+    auto`.) If you want to size the origin image vertically and leave the horizontal
+    size to be automatic, thus preserving the intrinsic aspect ratio of the image,
+    you have to write it explicitly, like this:'
+  id: totrans-320
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '现在，对于 `auto` 的默认值是什么？首先，当只提供一个值时，它被视为水平尺寸，而垂直尺寸则设置为 `auto`。（因此 `background-size:
+    auto` 等同于 `background-size: auto auto`。）如果你想要垂直尺寸自适应而保留图像的固有宽高比，你必须明确地写出来，像这样：'
+- en: '[PRE46]'
+  id: totrans-321
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: 'In many ways, `auto` in `background-size` acts a lot like the `auto` values
+    of `height` and `width` (also `block-size` and `inline-size`) when applied to
+    replaced elements such as images. That is to say, you’d expect roughly similar
+    results from the following two rules, if they were applied to the same image in
+    different contexts:'
+  id: totrans-322
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在许多方面，`background-size` 中的 `auto` 表现得像是应用于替换元素（例如图像）的 `height` 和 `width`（也是
+    `block-size` 和 `inline-size`）的 `auto` 值。也就是说，如果它们被应用于不同上下文中相同的图像，你会期望从以下两个规则中得到大致相似的结果：
+- en: '[PRE47]'
+  id: totrans-323
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: Covering and containing
+  id: totrans-324
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 覆盖和包含
+- en: 'Now for some real fun! Suppose you want to cover the entire background of an
+    element with an image, and you don’t care if parts of it stick outside the background
+    painting area. In this case, you can use `cover`:'
+  id: totrans-325
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们来玩得更开心点！假设你想要用一张图像覆盖元素的整个背景，并且不在乎部分图像超出背景绘制区域。在这种情况下，你可以使用 `cover`：
+- en: '[PRE48]'
+  id: totrans-326
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: 'This scales the origin image so that it completely covers the background positioning
+    area while still preserving its intrinsic aspect ratio, assuming it has one. You
+    can see an example in [Figure 8-38](#cab_fig50), where a 200 × 200 pixel image
+    is scaled up to cover the background of an 800 × 400 pixel element. The following
+    code provides this result:'
+  id: totrans-327
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这会缩放原始图像，使其完全覆盖背景定位区域，同时仍保持其固有宽高比，假设它有一个。你可以在 [图 8-38](#cab_fig50) 中看到一个例子，其中一个
+    200 × 200 像素的图像被放大以覆盖一个 800 × 400 像素元素的背景。以下代码提供了这个结果：
+- en: '[PRE49]'
+  id: totrans-328
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: Note that there is no `background-repeat` in this example. That’s because we
+    expect the image to fill out the entire background, so whether it’s repeated or
+    not doesn’t really matter.
+  id: totrans-329
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，这个示例中没有 `background-repeat`。这是因为我们期望图像填满整个背景，所以是否重复并不重要。
+- en: You can also see that `cover` is very different from `100% 100%`. If we’d used
+    `100% 100%`, the origin image would have been stretched to be 800 pixels wide
+    by 400 pixels tall. Instead, `cover` made it 800 pixels wide and tall, then centered
+    the image inside the background positioning area. This is the same as if we’d
+    said `100% auto` in this particular case, but the beauty of `cover` is that it
+    works regardless of whether your element is wider than it is tall, or taller than
+    it is wide.
+  id: totrans-330
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你还可以看到 `cover` 与 `100% 100%` 是非常不同的。如果我们使用了 `100% 100%`，原始图像将会被拉伸至 800 像素宽 ×
+    400 像素高。而 `cover` 让它变成了 800 像素宽和高，并将图像居中显示在背景定位区域内。在这种特定情况下，它与 `100% auto` 的效果相同，但
+    `cover` 的美妙之处在于它无论元素是宽还是高都能工作。
+- en: '![css5 0838](assets/css5_0838.png)'
+  id: totrans-331
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0838](assets/css5_0838.png)'
+- en: Figure 8-38\. Covering the background with the origin image
+  id: totrans-332
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-38\. 用原始图像覆盖背景
+- en: 'By contrast, `contain` will scale the image so that it fits exactly inside
+    the background positioning area, even if that leaves some of the rest of the background
+    showing around it. This is illustrated in [Figure 8-39](#cab_fig51), which is
+    the result of the following code:'
+  id: totrans-333
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相比之下，`contain` 将会缩放图像，使其恰好适应背景定位区域内部，即使这样会留下一些背景显示在它周围。这在 [图 8-39](#cab_fig51)
+    中有所展示，这是以下代码的结果：
+- en: '[PRE50]'
+  id: totrans-334
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: '![css5 0839](assets/css5_0839.png)'
+  id: totrans-335
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0839](assets/css5_0839.png)'
+- en: Figure 8-39\. Containing the origin image within the background
+  id: totrans-336
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-39\. 包含原始图像在背景内
+- en: In this case, since the element is shorter than it is tall, the origin image
+    is scaled so it is as tall as the background positioning area, and the width is
+    scaled to match, just as if we’d declared `auto 100%`. If an element is taller
+    than it is wide, `contain` acts like `100% auto`.
+  id: totrans-337
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，由于元素的高度小于宽度，原始图像被缩放至与背景定位区域一样高，并且宽度也被缩放以匹配，就像我们声明了 `auto 100%` 一样。如果一个元素比它宽，则
+    `contain` 的行为类似于 `100% auto`。
+- en: You’ll note that we brought `no-repeat` back to the example so the visual result
+    wouldn’t become too visually confusing. Removing that declaration would cause
+    the background to repeat, which is no big deal if that’s what you want. [Figure 8-40](#cab_fig52)
+    shows the result.
+  id: totrans-338
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，我们在示例中重新引入了 `no-repeat`，以防视觉效果过于混乱。如果删除该声明，背景将重复，如果这是您想要的话，也没什么大不了的。[图 8-40](#cab_fig52)
+    显示了结果。
+- en: '![css5 0840](assets/css5_0840.png)'
+  id: totrans-339
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0840](assets/css5_0840.png)'
+- en: Figure 8-40\. Repeating a contained origin image
+  id: totrans-340
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-40\. 重复包含原点图像
+- en: 'Always remember: the sizing of `cover` and `contain` images is always with
+    respect to the background positioning area, which is defined by `background-origin`.
+    This is true even if the background painting area defined by `background-clip`
+    is different! Consider the following rules, which are depicted in [Figure 8-41](#cab_fig53):'
+  id: totrans-341
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 始终记住：`cover` 和 `contain` 图片的大小始终与背景定位区域有关，这由 `background-origin` 定义。即使由 `background-clip`
+    定义的背景绘制区域不同，这也是真实的！考虑下面的规则，这些规则在 [图 8-41](#cab_fig53) 中描述：
+- en: '[PRE51]'
+  id: totrans-342
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: '![css5 0841](assets/css5_0841.png)'
+  id: totrans-343
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0841](assets/css5_0841.png)'
+- en: Figure 8-41\. Covering and containing with `background-clip` and `background-origin`
+  id: totrans-344
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-41\. 使用 `background-clip` 和 `background-origin` 进行覆盖和包含
+- en: Yes, you can see background color around the edges of some of these, and others
+    get clipped. That’s the difference between the painting area and the positioning
+    area. You’d think that `cover` and `contain` would be sized with respect to the
+    painting area, but they aren’t, as depicted in the last examples in [Figure 8-41](#cab_fig53).
+    Keep that firmly in mind whenever you use these values.
+  id: totrans-345
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是的，您可以看到某些图像周围的背景色，而其他图像则被裁剪了。这是绘制区域和定位区域之间的区别。您可能认为 `cover` 和 `contain` 的大小应该与绘制区域有关，但实际上并非如此，正如
+    [图 8-41](#cab_fig53) 中的最后几个示例所示。每当您使用这些值时，请牢记这一点。
+- en: If you have more than one background image, with different values for position,
+    repeat, or size, include a comma-separated list of values. Each value in a list
+    will be associated with the image in that position in the list. If there are more
+    values than images, the extra values are ignored. If there are fewer, the list
+    is repeated. You can set only one background color, though.
+  id: totrans-346
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有多个背景图像，并具有不同的位置、重复或大小值，请包含一个逗号分隔的值列表。列表中的每个值将与列表中该位置的图像相关联。如果值比图像多，则额外的值将被忽略。如果值比图像少，则列表将重复。您只能设置一种背景颜色。
+- en: Note
+  id: totrans-347
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: In this section, we used raster images (GIFs, to be precise) even though they
+    tend to look horrible when scaled up and represent a waste of network resources
+    when scaled down. (We did this so that it would be extra obvious when lots of
+    up-scaling was happening.) This is an inherent risk in scaling background raster
+    images. On the other hand, you can just as easily use SVGs as background images,
+    and they scale up or down with no loss of quality or waste of bandwidth. If you’re
+    going to be scaling a background image and it doesn’t have to be a photograph,
+    strongly consider using SVG or CSS gradients.
+  id: totrans-348
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这一部分，我们使用了光栅图像（准确地说是GIF），即使在放大时它们看起来很糟糕，在缩小时也会浪费网络资源。（我们这样做是为了在大量放大发生时更加明显。）这是在缩放背景光栅图像时的固有风险。另一方面，您可以轻松地使用SVG作为背景图像，它们在放大或缩小时不会失真或浪费带宽。如果您要缩放背景图像并且它不必是照片，强烈考虑使用SVG或CSS渐变。
+- en: Bringing It All Together
+  id: totrans-349
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 全部综合起来
+- en: 'As is often the case with thematic areas of CSS, the background properties
+    can all be brought together in a single shorthand property: `background`. Whether
+    you might want to do that is another question entirely.'
+  id: totrans-350
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像CSS的主题领域经常发生的情况一样，所有背景属性都可以合并为一个单独的简写属性：`background`。您是否想要这样做是另一个完全不同的问题。
+- en: This syntax can get a little confusing. Let’s start simple and work our way
+    up.
+  id: totrans-351
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种语法可能有点令人困惑。让我们从简单的开始，逐步深入。
+- en: 'First off, the following statements are all equivalent to one another and will
+    have the effect shown in [Figure 8-42](#cab_fig54):'
+  id: totrans-352
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，以下语句都是相互等价的，并将产生 [图 8-42](#cab_fig54) 中所示的效果：
+- en: '[PRE52]'
+  id: totrans-353
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: '![css5 0842](assets/css5_0842.png)'
+  id: totrans-354
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0842](assets/css5_0842.png)'
+- en: Figure 8-42\. Using shorthand
+  id: totrans-355
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-42\. 使用简写
+- en: 'You can mostly mix up the order of the values however you like, with three
+    restrictions. First, any `background-size` value *must* come immediately after
+    the `background-position` value, and must be separated from it by a forward slash
+    (`/`). Second, within those values, the usual restrictions apply: the horizontal
+    value comes first, and the vertical value follows, assuming that you’re supplying
+    axis-derived values (as opposed to, say, `cover`).'
+  id: totrans-356
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以根据自己的喜好大多混合排列值的顺序，但有三个限制。首先，任何`background-size`值必须紧跟在`background-position`值后面，并且用斜杠(`/`)分隔开。其次，在这些值内部，通常的限制仍然适用：水平值先，然后是垂直值，假设你提供的是轴派生的值（而不是例如`cover`）。
+- en: 'Third, if you supply values for both `background-origin` and `background-clip`,
+    the first of the two you list will be assigned to `background-origin`, and the
+    second to `background-clip`. Therefore, the following two rules are functionally
+    identical:'
+  id: totrans-357
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三，如果你为`background-origin`和`background-clip`同时提供值，那么你列出的两个中的第一个将被分配给`background-origin`，第二个将被分配给`background-clip`。因此，以下两个规则在功能上是相同的：
+- en: '[PRE53]'
+  id: totrans-358
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: 'Related to that, if you supply only one such value, it sets both `background-origin`
+    and `background-clip`. Thus, the following shorthand sets both the background
+    positioning area and the background painting area to the padding box:'
+  id: totrans-359
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与此相关，如果你只提供一个这样的值，它将同时设置`background-origin`和`background-clip`。因此，下面的简写将背景定位区域和背景绘画区域都设置为填充框：
+- en: '[PRE54]'
+  id: totrans-360
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: 'As is the case for shorthand properties, if you leave out any values, the defaults
+    for the relevant properties are filled in automatically. Thus, the following two
+    are equivalent:'
+  id: totrans-361
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像简写属性一样，如果你省略了任何值，相关属性的默认值将自动填充。因此，以下两个是等价的：
+- en: '[PRE55]'
+  id: totrans-362
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE55]'
+- en: 'Even better, `background` has no required values—as long as you have at least
+    one value present, you can omit the rest. It’s possible to set just the background
+    color using the shorthand property, which is a very common practice:'
+  id: totrans-363
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更好的是，`background` 没有必需的值——只要有至少一个值存在，就可以省略其余的。使用这个简写属性只设置背景颜色是一个非常常见的做法：
+- en: '[PRE56]'
+  id: totrans-364
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE56]'
+- en: 'On that note, remember that `background` is a shorthand property, and, as such,
+    its default values can obliterate previously assigned values for a given element.
+    For example:'
+  id: totrans-365
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，`background`是一个简写属性，因此它的默认值可以覆盖给定元素的先前分配的值。例如：
+- en: '[PRE57]'
+  id: totrans-366
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE57]'
+- en: 'Given these rules, `<h1>` elements will be styled according to the first rule.
+    And `<h2>` elements will be styled according to the second, which means they’ll
+    just have a flat silver background. No image will be applied to `<h2>` backgrounds,
+    let alone centered and repeated horizontally. It is more likely that the author
+    meant to do this:'
+  id: totrans-367
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据这些规则，`<h1>`元素将根据第一条规则进行样式设置。而`<h2>`元素将根据第二条进行样式设置，这意味着它们将只有一个平坦的银色背景。不会应用任何图像到`<h2>`的背景上，更别说水平居中并重复了。作者更可能是想要这样做：
+- en: '[PRE58]'
+  id: totrans-368
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE58]'
+- en: This lets the background color be changed without wiping out all the other values.
+  id: totrans-369
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让背景颜色变化而不会清除所有其他值。
+- en: 'One more restriction will lead us very neatly into the next section: you can
+    supply a background color to only the final background layer. No other background
+    layer can have a solid color declared. What the heck does that mean? So glad you
+    asked.'
+  id: totrans-370
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个限制将把我们很好地带入下一节：你只能为最后一个背景层提供背景颜色。没有其他背景层可以声明固体颜色。这是什么意思？很高兴你问。
+- en: Working with Multiple Backgrounds
+  id: totrans-371
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用多重背景
+- en: 'Throughout most of this chapter, we’ve only briefly mentioned that almost all
+    the background properties accept a comma-separated list of values. For example,
+    if you wanted to have three different background images, you could do this:'
+  id: totrans-372
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本章的大部分内容中，我们只简要提到几乎所有背景属性都接受逗号分隔的值列表。例如，如果你想要三种不同的背景图像，可以这样做：
+- en: '[PRE59]'
+  id: totrans-373
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE59]'
+- en: Seriously. It will look like [Figure 8-43](#cab_fig55).
+  id: totrans-374
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 真的。它会看起来像[图 8-43](#cab_fig55)。
+- en: '![css5 0843](assets/css5_0843.png)'
+  id: totrans-375
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0843](assets/css5_0843.png)'
+- en: Figure 8-43\. Multiple background images
+  id: totrans-376
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图8-43。多重背景图像
+- en: This creates three background layers, one for each image, with the last being
+    the final, bottom background layer.
+  id: totrans-377
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这样创建了三个背景层，每个图像一个层，最后一个是最终的底部背景层。
+- en: 'The three images are piled into the top-left corner of the element and don’t
+    repeat. The lack of repetition occurs because we declared `background-repeat:
+    no-repeat`. We declared it only once, and there are three background images.'
+  id: totrans-378
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这三张图片叠放在元素的左上角，且不重复。不重复的原因是我们声明了`background-repeat: no-repeat`。我们只声明了一次，并且有三张背景图片。'
+- en: 'When a mismatch occurs between the number of values in a background-related
+    property and the `background-image` property, the missing values are derived by
+    repeating the sequence in the property with a value undercount. Thus, in the previous
+    example, it was as though we had said this:'
+  id: totrans-379
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当与背景相关的属性和`background-image`属性中的值数量不匹配时，缺少的值将通过在值不足的属性中重复序列来派生。因此，在前面的例子中，我们就像是这样说的：
+- en: '[PRE60]'
+  id: totrans-380
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE60]'
+- en: 'Now, suppose we want to put the first image at the top right, put the second
+    at the center of the left side, and put the last layer at the center of the bottom.
+    We can layer `background-position` as follows, resulting in [Figure 8-44](#cab_fig56):'
+  id: totrans-381
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，假设我们想把第一张图像放在右上角，把第二张放在左侧中心，并把最后一层放在底部中心。我们可以如下层叠`background-position`，导致[图 8-44](#cab_fig56)：
+- en: '[PRE61]'
+  id: totrans-382
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE61]'
+- en: '![css5 0844](assets/css5_0844.png)'
+  id: totrans-383
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0844](assets/css5_0844.png)'
+- en: Figure 8-44\. Individually positioning background images
+  id: totrans-384
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-44\. 单独定位背景图像
+- en: 'Similarly, say we want to keep the first two layers from repeating, but horizontally
+    repeat the third:'
+  id: totrans-385
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样地，假设我们想要保持前两层不重复，但水平重复第三层：
+- en: '[PRE62]'
+  id: totrans-386
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE62]'
+- en: Nearly every background property can be comma-listed this way. You can have
+    different origins, clipping boxes, sizes, and just about everything else for each
+    background layer you create. Technically, there is no limit to the number of layers
+    you can have, though at a certain point it’s just going to get silly.
+  id: totrans-387
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 几乎每个背景属性都可以用逗号列表方式列出。您可以为每个创建的背景层设置不同的起源、裁剪框、大小以及几乎所有其他属性。从技术上讲，您可以拥有任意数量的背景层，尽管在某个时刻，这只会变得愚蠢起来。
+- en: 'Even the shorthand `background` can be comma-separated. The following example
+    is exactly equivalent to the previous one, and the result is shown in [Figure 8-45](#cab_fig57):'
+  id: totrans-388
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使是缩写的`background`也可以用逗号分隔。以下示例与前一个示例完全等效，结果显示在[图 8-45](#cab_fig57)中：
+- en: '[PRE63]'
+  id: totrans-389
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE63]'
+- en: '![css5 0845](assets/css5_0845.png)'
+  id: totrans-390
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0845](assets/css5_0845.png)'
+- en: Figure 8-45\. Multiple background layers via shorthand
+  id: totrans-391
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-45\. 通过缩写添加多个背景层
+- en: 'The only real restriction on multiple backgrounds is that `background-color`
+    does *not* repeat in this manner, and if you provide a comma-separated list for
+    the `background` shorthand, the color can appear on only the last background layer.
+    If you add a color to any other layer, the entire `background` declaration is
+    made invalid. Thus, if we want to have a green background fill for the previous
+    example, we’d do it in one of the following two ways:'
+  id: totrans-392
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于多个背景，唯一的真正限制是`background-color`不能像这样重复，并且如果您为`background`的缩写提供逗号分隔的列表，颜色只能出现在最后的背景层上。如果您将颜色添加到任何其他层上，整个`background`声明将无效。因此，如果我们想为前面的例子添加绿色背景填充，可以通过以下两种方式之一完成：
+- en: '[PRE64]'
+  id: totrans-393
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE64]'
+- en: The reason for this restriction is pretty straightforward. Imagine if you were
+    able to add a full background color to the first background layer. It would fill
+    in the whole background and obscure all the background layers behind it! So if
+    you do supply a color, it can be on only the last layer, which is “bottommost.”
+  id: totrans-394
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种限制的原因非常简单。想象一下，如果您能够将完整的背景颜色添加到第一层背景中。它将填充整个背景并遮挡所有背景层后面的内容！因此，如果您提供了颜色，它只能出现在最后一层，即“最底层”。
+- en: 'This ordering is important to internalize as soon as possible, because it runs
+    counter to the instincts you’ve likely built up in the course of using CSS. After
+    all, you know what will happen here—the `<h1>` background will be green:'
+  id: totrans-395
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽快内化这种排序是很重要的，因为它与您在使用CSS过程中建立的直觉恰恰相反。毕竟，您知道这里会发生什么——`<h1>`的背景将是绿色：
+- en: '[PRE65]'
+  id: totrans-396
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE65]'
+- en: 'Contrast that with this multiple-background rule, which will make the `<h1>`
+    background red:'
+  id: totrans-397
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与此形成对比的是这个多背景规则，将使`<h1>`的背景变成红色：
+- en: '[PRE66]'
+  id: totrans-398
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE66]'
+- en: Yes, red. The red GIF is tiled to cover the entire background area, as is the
+    green GIF, but the red GIF is “on top of” the green GIF. It’s closer to you. And
+    the effect is exactly backward from the “last one wins” rules built into the cascade.
+  id: totrans-399
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是的，红色。红色的GIF图像平铺在整个背景区域，绿色的也是如此，但红色的GIF图像“覆盖”在绿色的上方。它离你更近。而效果恰好与内置级联“最后一个胜出”规则完全相反。
+- en: 'You can visualize it like this: when there are multiple backgrounds, they’re
+    listed like the layers in a drawing program such as Adobe Photoshop or Illustrator.
+    In the layer palette of a drawing program, layers at the top of the palette are
+    drawn over the layers at the bottom. The same process plays out here: the layers
+    listed at the top of the list are drawn over the layers at the bottom of the list.'
+  id: totrans-400
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以这样想象：当存在多个背景时，它们像Adobe Photoshop或Illustrator等绘图程序中的图层一样列出。在绘图程序的图层面板中，顶部的图层会覆盖底部的图层。同样的过程也适用于这里：列表顶部的图层会覆盖列表底部的图层。
+- en: The odds are pretty good that you will, at some point, set up a bunch of background
+    layers in the wrong order, because your cascade-order reflexes will kick in. (This
+    error still occasionally trips up the authors even to this day, so don’t get down
+    on yourself if it gets you too.)
+  id: totrans-401
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某个时候，你很有可能会因为下意识按照级联顺序设置错误的一堆背景层次，因为你的反射弧会被激活。（即使到了今天，这个错误有时候也会让作者们感到困惑，所以如果你也遇到了，不要太沮丧。）
+- en: 'Another fairly common mistake when you’re getting started with multiple backgrounds
+    is to use the `background` shorthand and forget to explicitly turn off background
+    tiling for your background layers by letting the `background-repeat` value default
+    to `repeat`, thus obscuring all but the top layer. See [Figure 8-46](#cab_fig59),
+    for example, which is the result of the following code:'
+  id: totrans-402
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你刚开始使用多个背景时，另一个相当常见的错误是使用`background`简写，并忘记通过让`background-repeat`的值默认为`repeat`来显式关闭背景层的平铺，从而遮蔽除顶部层以外的所有内容。例如，参见[图
+    8-46](#cab_fig59)，这是以下代码的结果：
+- en: '[PRE67]'
+  id: totrans-403
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE67]'
+- en: 'We can see only the top layer because it’s tiling infinitely, thanks to the
+    default value of `background-repeat`. That’s why the example at the beginning
+    of this section used `background-repeat: no-repeat`.'
+  id: totrans-404
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '我们只能看到顶部层，因为它在无限平铺，这要归功于`background-repeat`的默认值。这就是为什么本节开头的例子使用了`background-repeat:
+    no-repeat`。'
+- en: '![css5 0846](assets/css5_0846.png)'
+  id: totrans-405
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0846](assets/css5_0846.png)'
+- en: Figure 8-46\. Obscuring layers with repeated images
+  id: totrans-406
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-46\. 用重复的图像遮蔽层
+- en: Using the Background Shorthand
+  id: totrans-407
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用背景简写
+- en: 'One way to avoid these sorts of situations is to use the `background` shorthand,
+    like so:'
+  id: totrans-408
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 避免这些情况的一种方法是使用`background`简写，如下所示：
+- en: '[PRE68]'
+  id: totrans-409
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE68]'
+- en: That way, when you add or subtract background layers, the values you meant to
+    apply specifically to them will come in or go out with them.
+  id: totrans-410
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，当你添加或删除背景层时，你希望专门应用于它们的值也会随之而来或随之而去。
+- en: 'This can mean some annoying repetition if all the backgrounds should have the
+    same value of a given property, like `background-origin`. If that’s the situation,
+    you can blend the two approaches, like so:'
+  id: totrans-411
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果所有的背景都应该具有同一个给定属性的值（如`background-origin`），这可能意味着一些恼人的重复。如果情况如此，你可以混合这两种方法，如下所示：
+- en: '[PRE69]'
+  id: totrans-412
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE69]'
+- en: This works just as long as you don’t need to make any exceptions. The minute
+    you decide to change the origin of one of those background layers, you’ll need
+    to explicitly list them, whether you do it in `background` or with the separate
+    `background-origin` declaration.
+  id: totrans-413
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只要你不需要做任何异常情况，这种方法就可以工作。一旦你决定改变其中一个背景层的起源，你将需要显式列出它们，无论是在`background`中还是使用单独的`background-origin`声明。
+- en: 'Remember that the number of layers is determined by the number of background
+    images, and so, by definition, `background-image` values are *not* repeated to
+    equal the number of comma-separated values given for other properties. You might
+    want to put the same image in all four corners of an element and think you could
+    do it like this:'
+  id: totrans-414
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住，层的数量由背景图像的数量决定，因此，根据定义，`background-image`的值并不重复以等于其他属性的逗号分隔值的数量。你可能想把同一张图像放在元素的四个角落，并认为你可以这样做：
+- en: '[PRE70]'
+  id: totrans-415
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE70]'
+- en: 'The result, however, would be to place a single red box in the top-left corner
+    of the element. To get images in all four corners, as shown in [Figure 8-47](#cab_fig60),
+    you’ll have to list the same image four times:'
+  id: totrans-416
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，结果将是将一个单独的红色框放置在元素的左上角。要像[图 8-47](#cab_fig60)中显示的那样在四个角落放置图像，你将需要四次列出同一张图像：
+- en: '[PRE71]'
+  id: totrans-417
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE71]'
+- en: '![css5 0847](assets/css5_0847.png)'
+  id: totrans-418
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0847](assets/css5_0847.png)'
+- en: Figure 8-47\. Placing the same image in all four corners
+  id: totrans-419
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-47\. 将相同的图像放置在四个角落
+- en: Creating Box Shadows
+  id: totrans-420
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建盒子阴影
+- en: 'You have learned about border images, outlines, and background images. CSS
+    has another property that can decorate both the inside and outside of an element
+    without impacting the box model: `box-shadow`.'
+  id: totrans-421
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你已经了解了边框图像、轮廓和背景图像。CSS 还有另一个属性，可以在不影响盒模型的情况下装饰元素的内部和外部：`box-shadow`。
+- en: It might seem a little out of place to talk about shadows in a chapter mostly
+    concerned with backgrounds, but you’ll understand our reasoning in a moment.
+  id: totrans-422
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在一个主要关注背景的章节中讨论阴影似乎有些不合时宜，但稍后您将理解我们的理由。
+- en: 'Let’s consider a simple box drop shadow: one that’s 10 pixels down and 10 pixels
+    to the right of an element box, and a half-opaque black. Behind it we’ll put a
+    repeating background on the `<body>` element. All of this is illustrated in [Figure 8-48](#Asimpleboxshadow)
+    and created with the following code:'
+  id: totrans-423
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们考虑一个简单的框投影阴影：一个距离元素框向下和向右各10像素，并且是半不透明的黑色。在它后面，我们将在`<body>`元素上放置一个重复的背景。所有这些都在[图 8-48](#Asimpleboxshadow)中有所说明，并使用以下代码创建：
+- en: '[PRE72]'
+  id: totrans-424
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE72]'
+- en: '![css5 0848](assets/css5_0848.png)'
+  id: totrans-425
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0848](assets/css5_0848.png)'
+- en: Figure 8-48\. A simple box shadow
+  id: totrans-426
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-48\. 一个简单的框投影阴影
+- en: We can see that the `<body>`’s background is visible through the half-opaque
+    (or half-transparent, if you prefer) drop shadow. Because no blur or spread distances
+    are defined, the drop shadow exactly mimics the outer shape of the element box
+    itself—at least it appears to do so.
+  id: totrans-427
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以看到`<body>`的背景通过半不透明（或者您更喜欢的半透明）的投影阴影可见。因为未定义模糊或扩展距离，所以投影阴影确实完全仿效了元素框本身的外形——至少表面上是这样的。
+- en: 'The reason it only appears to mimic the shape of the box is that the shadow
+    is visible only outside the outer border edge of the element. We couldn’t really
+    see that in the previous figure, because the element had an opaque background.
+    You might have just assumed that the shadow extended all the way under the element,
+    but it doesn’t. Consider the following, illustrated in [Figure 8-49](#Boxshadowsareincomplete):'
+  id: totrans-428
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这只是看上去仿效盒子形状的原因，因为阴影只在元素的外边框边缘之外可见。我们在前面的图中实际上看不到这一点，因为元素有不透明的背景。你可能只是假设阴影延伸到元素的整个下方，但实际上并非如此。请考虑以下内容，如[图 8-49](#Boxshadowsareincomplete)所示：
+- en: '[PRE73]'
+  id: totrans-429
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE73]'
+- en: '![css5 0849](assets/css5_0849.png)'
+  id: totrans-430
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0849](assets/css5_0849.png)'
+- en: Figure 8-49\. Box shadows are incomplete
+  id: totrans-431
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-49\. 盒子阴影是不完整的
+- en: So it looks as though the element’s content (and padding and border) area “knocks
+    out” part of the shadow. In truth, it’s just that the shadow was never drawn there,
+    because of the way box shadows are defined in the specification. This does mean,
+    as [Figure 8-49](#Boxshadowsareincomplete) demonstrates, that any background “behind” the
+    box with a drop shadow can be visible through the element itself. This (perhaps
+    bizarre-seeming) interaction with the backgrounds and borders is why `box-shadow`
+    is covered here, instead of at an earlier point in the text.
+  id: totrans-432
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 看起来好像元素的内容（以及填充和边框）区域“挖空”了阴影的一部分。事实上，仅仅是因为阴影从未在那里绘制，这是由规范中盒子阴影定义的方式决定的。正如[图 8-49](#Boxshadowsareincomplete)所示，这意味着任何位于具有投影阴影的框后面的背景都可以通过元素本身看到。这种与背景和边框的（可能看起来有些奇怪的）交互是为什么在这里介绍`box-shadow`，而不是在文本的早些时候。
+- en: So far, we’ve seen box shadows defined with two length values. The first defines
+    a horizontal offset, and the second a vertical offset. Positive numbers move the
+    shadow down and to the right, and negative numbers move the shadow up and to the
+    left.
+  id: totrans-433
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们已经看到使用两个长度值定义的框投影阴影。第一个定义了水平偏移量，第二个定义了垂直偏移量。正数使阴影向下和向右移动，负数使阴影向上和向左移动。
+- en: 'If a third length is given, it defines a blur distance, which determines how
+    much space is given to blurring. A fourth length defines a spread distance, which
+    changes the size of the shadow. Positive length values make the shadow expand
+    before blurring happens; negative values cause the shadow to shrink. The following
+    has the results shown in [Figure 8-50](#Variousblurredandspreadshadows):'
+  id: totrans-434
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果给出第三个长度，它定义了模糊距离，这决定了模糊给出多少空间。第四个长度定义了扩展距离，它改变了阴影的大小。正长度值使阴影在模糊发生之前扩展；负值使阴影收缩。以下是[图 8-50](#Variousblurredandspreadshadows)中显示的结果：
+- en: '[PRE74]'
+  id: totrans-435
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE74]'
+- en: '![css5 0850](assets/css5_0850.png)'
+  id: totrans-436
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0850](assets/css5_0850.png)'
+- en: Figure 8-50\. Various blurred and spread shadows
+  id: totrans-437
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-50\. 各种模糊和扩展阴影
+- en: You may have noticed that some of these boxes have rounded corners (via `border-radius`),
+    and that their shadows are curved to match. This is the defined behavior, fortunately.
+  id: totrans-438
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能已经注意到一些框具有圆角（通过`border-radius`），并且它们的阴影也是弯曲的以匹配。这是定义的行为，幸运的是。
+- en: 'We have yet to cover one aspect of `box-shadow`, which is the `inset` keyword.
+    If `inset` is added to the value of `box-shadow`, the shadow is rendered inside
+    the box, as if the box were a punched-out hole in the canvas rather than floating
+    above it (visually speaking). Let’s take the previous set of examples and redo
+    them with inset shadows. This will have the result shown in [Figure 8-51](#Variousinsetshadows):'
+  id: totrans-439
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们尚未涵盖`box-shadow`的一个方面，即`inset`关键字。如果在`box-shadow`的值中添加`inset`，则阴影会渲染在盒子内部，就好像盒子是画布上的凹坑，而不是悬浮在其上（视觉上）。让我们重新使用前面的示例集，并使用插入阴影进行重新设置。这将导致[图 8-51](#Variousinsetshadows)中显示的结果：
+- en: '[PRE75]'
+  id: totrans-440
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE75]'
+- en: '![css5 0851](assets/css5_0851.png)'
+  id: totrans-441
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0851](assets/css5_0851.png)'
+- en: Figure 8-51\. Various inset shadows
+  id: totrans-442
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 8-51\. 各种插入阴影
+- en: Note that the `inset` keyword can appear before the rest of the value, or after,
+    but *not* in the middle of the lengths and colors. A value like `0 0 0.1em inset
+    gray` would be ignored as invalid because of the placement of the `inset` keyword.
+  id: totrans-443
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`inset`关键字可以出现在值的开头或结尾，但*不*可以出现在长度和颜色的中间。像`0 0 0.1em inset gray`这样的值将被视为无效，因为`inset`关键字的位置不正确。
+- en: 'The last point to note is that you can apply to an element a list of as many
+    comma-separated box shadows as you like, just as with text shadows. Some could
+    be inset, and some outset. The following rules are just two of the infinite possibilities:'
+  id: totrans-444
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后需要注意的一点是，您可以向元素应用任意数量的逗号分隔盒阴影，就像文本阴影一样。有些可以是插入的，有些可以是外部的。以下规则仅仅是无限可能性中的两个：
+- en: '[PRE76]'
+  id: totrans-445
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE76]'
+- en: 'Multiple shadows are drawn back to front, just as background layers are, so
+    the first shadow in the comma-separated list will be “on top” of all the others.
+    Consider the following:'
+  id: totrans-446
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多个阴影按照从后到前的顺序绘制，就像背景图层一样，因此逗号分隔列表中的第一个阴影将位于所有其他阴影的“顶部”。考虑以下情况：
+- en: '[PRE77]'
+  id: totrans-447
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE77]'
+- en: The green is drawn first, then the blue on top of the green, and the red drawn
+    last, on top of the blue. While box shadows can be infinitely wide, they do not
+    contribute to the box model and take up no space. Because of this, make sure to
+    include enough space, especially if you’re doing large offsets or blur distances.
+  id: totrans-448
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先绘制绿色，然后在绿色上方绘制蓝色，最后绘制红色，位于蓝色之上。虽然盒子阴影可以无限宽，但它们不会影响盒模型并且不占用空间。因此，请确保留足够的空间，特别是在进行大偏移或模糊距离时。
+- en: Tip
+  id: totrans-449
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 提示
+- en: The `filter` property is another way to create element drop shadows, although
+    it is much closer in behavior to `text-shadow` than `box-shadow`, albeit applying
+    to the entire element box and text. See [Chapter 20](ch20.html#filters-compositing)
+    for details.
+  id: totrans-450
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`filter`属性是创建元素阴影的另一种方法，虽然它在行为上更接近`text-shadow`而不是`box-shadow`，但应用于整个元素框和文本。详见[第20章](ch20.html#filters-compositing)。'
+- en: Summary
+  id: totrans-451
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 总结
+- en: Adding backgrounds to elements, whether with colors or images, gives you a great
+    deal of power over the total visual presentation. The advantage of CSS over older
+    methods is that colors and backgrounds can be applied to any element in a document,
+    and manipulated in surprisingly complex ways.
+  id: totrans-452
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 向元素添加背景（无论是颜色还是图像），可以极大地控制总体视觉呈现效果。与旧方法相比，CSS的优势在于可以将颜色和背景应用于文档中的任何元素，并以令人惊讶的复杂方式进行操作。

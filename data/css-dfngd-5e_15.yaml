@@ -1,0 +1,3897 @@
+- en: Chapter 15\. Text Properties
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第15章。文本属性
+- en: 'Because text is so important, many CSS properties affect it in one way or another.
+    But didn’t we just cover that in [Chapter 14](ch14.html#fonts)? Not exactly: we
+    covered only fonts—the importing and usage of typefaces. Text styles are different.'
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为文本如此重要，许多CSS属性在一定程度上影响它。但我们在[第14章](ch14.html#fonts)只是介绍了字体的部分。不完全一样：我们只是讨论了字体——引入和使用字体。文本样式是不同的。
+- en: OK, so what is the difference between text and fonts? At the simplest level,
+    *text* is the content, and *fonts* are used to display that content. Fonts provide
+    the shape for the letters. Text is the styling around those shapes. Using text
+    properties, you can affect the position of text in relation to the rest of the
+    line, superscript it, underline it, and change the capitalization. You can affect
+    the size, color, and placement of text decorations.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么，文本和字体之间有什么区别？在最简单的层面上，*文本*是内容，*字体*用于显示该内容。字体提供了字母的形状。文本是围绕这些形状的样式。使用文本属性，你可以影响文本与行的其余部分的位置关系，上标、下划线和更改大小写。你可以影响文本装饰的大小、颜色和位置。
+- en: Indentation and Inline Alignment
+  id: totrans-3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 缩进和内联对齐
+- en: Let’s start with a discussion of how you can affect the inline positioning of
+    text within a line. Think of these basic actions as the same types of steps you
+    might take to create a newsletter or write a report.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们先讨论一下如何影响文本在一行内的内联定位。可以把这些基本操作看作是创建通讯或撰写报告的步骤。
+- en: Originally, CSS was based on concepts of *horizontal* and *vertical*. To better
+    support all languages and writing directions, CSS now uses the terms *block direction*
+    and *inline direction*. If your primary language is Western-derived, you’re accustomed
+    to a block direction of top to bottom, and an inline direction of left to right.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最初，CSS是基于*水平*和*垂直*的概念。为了更好地支持所有语言和写作方向，CSS现在使用术语*块方向*和*内联方向*。如果你的母语是西方语言衍生的，你习惯于从上到下的块方向和从左到右的内联方向。
+- en: The *block direction* is the direction in which block elements are placed by
+    default in the current writing mode. In English, for example, the block direction
+    is top to bottom, or vertical, as one paragraph (or other text element) is placed
+    beneath the one before. Some languages have vertical text, like Mongolian. When
+    text is vertical, the block direction is horizontal.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*块方向*是在当前书写模式中块元素的默认放置方向。例如，在英语中，块方向是从上到下的，即垂直方向，一个段落（或其他文本元素）位于前一个段落的下方。有些语言有垂直文本，比如蒙古语。当文本是垂直的时，块方向是水平的。'
+- en: The *inline direction* is the direction in which inline elements are written
+    within a block. To again take English as an example, the inline direction is left
+    to right, or horizontal. In languages like Arabic and Hebrew, the inline direction
+    is right to left instead. To reuse the example from the preceding paragraph, Mongolian’s
+    inline direction is top to bottom.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*内联方向*是内联元素在块内书写的方向。以英语为例，内联方向是从左到右，即水平方向。在阿拉伯语和希伯来语等语言中，内联方向则是从右到左。再以前面段落中的例子来说明，蒙古语的内联方向是从上到下。'
+- en: Let’s reconsider English for a moment. A plain page of English text, displayed
+    on a screen, has a vertical block direction (from top to bottom) and a horizontal
+    inline direction (from left to right). But if the page is rotated 90 degrees counterclockwise
+    by using CSS Transforms, suddenly the block direction is horizontal and the inline
+    direction is vertical. (And bottom to top, at that.)
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们再考虑一下英语。在屏幕上显示的普通英文页面具有垂直的块方向（从上到下）和水平的内联方向（从左到右）。但是，如果通过使用CSS转换使页面逆时针旋转90度，突然之间块方向是水平的，而内联方向是垂直的（而且是从下到上的）。
+- en: Tip
+  id: totrans-9
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 提示
+- en: You can still find a lot of English-centric blog posts and other CSS-related
+    documentation on the web using the terms *vertical* and *horizontal* when talking
+    about writing directions. When you do, mentally translate them to *block* and
+    *inline* as needed.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你在网络上仍然可以找到许多关于写作方向的英文中心博客文章和其他与CSS相关的文档，使用*垂直*和*水平*这些术语。在必要时，将它们心理转化为*块*和*内联*。
+- en: Indenting Text
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本缩进
+- en: Most paper books we read in Western languages format paragraphs of text with
+    the first line indented, and no blank line between paragraphs. If you want to
+    re-create that look, CSS provides the property `text-indent`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数西方语言的纸质书籍的文字段落格式为首行缩进，段落之间没有空行。如果你想重新创建这种外观，CSS提供了`text-indent`属性。
+- en: 'Using `text-indent`, the first line of any element can be indented by a given
+    length, even if that length is negative. A common use for this property is to
+    indent the first line of a paragraph:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `text-indent`，可以缩进任何元素的第一行，即使长度为负数。这个属性的常见用法是缩进段落的第一行：
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This rule will cause the first line of any paragraph to be indented 3 ems, as
+    shown in [Figure 15-1](#text_indenting).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这条规则将导致任何段落的第一行缩进 3 个 ems，如[图 15-1](#text_indenting)所示。
+- en: '![css5 1501](assets/css5_1501.png)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1501](assets/css5_1501.png)'
+- en: Figure 15-1\. Text indenting
+  id: totrans-17
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-1\. 文本缩进
+- en: In general, you can apply `text-indent` to any element that generates a block
+    box, and the indentation will occur along the inline direction. You can’t apply
+    it to inline elements or replaced elements such as images. However, if you have
+    an image within the first line of a block-level element, it will be shifted over
+    with the rest of the text in the line.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，您可以将 `text-indent` 应用于生成块级盒子的任何元素，缩进将沿着内联方向发生。您不能将其应用于内联元素或替换元素（如图片）。但是，如果在块级元素的第一行中有一张图片，该图片将会随着文本一起向右移动。
+- en: Note
+  id: totrans-19
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: If you want to “indent” the first line of an inline element, you can create
+    the effect with left padding or a margin.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想“缩进”内联元素的第一行，可以通过左内边距或外边距来实现这种效果。
+- en: 'You can also set negative values for `text-indent` to create a *hanging indent*,
+    where the first line hangs out to one side of the rest of the element:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您也可以为 `text-indent` 设置负值，以创建悬挂缩进，其中第一行超出其余元素的一侧：
+- en: '[PRE1]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Be careful when setting a negative value for `text-indent`; the first few words
+    may be chopped off by the edge of the browser window if you aren’t careful. To
+    avoid display problems, we recommend you use a margin or padding to accommodate
+    the negative indentation:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当设置 `text-indent` 的负值时，请注意，如果不小心，前几个单词可能会被浏览器窗口的边缘截断。为避免显示问题，建议您使用外边距或内边距来适应负缩进：
+- en: '[PRE2]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Any unit of length, including percentage values, may be used with `text-indent`.
+    In the following case, the percentage refers to the width of the parent element
+    of the element being indented. In other words, if you set the indent value to
+    `10%`, the first line of an affected element will be indented by 10% of its parent
+    element’s width, as shown in [Figure 15-2](#text_indenting_with_percentages):'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用任何长度单位，包括百分比值，与 `text-indent` 一起使用。在以下情况下，百分比是指被缩进元素的父元素宽度。换句话说，如果将缩进值设置为
+    `10%`，则受影响元素的第一行将缩进其父元素宽度的 10%，如[图 15-2](#text_indenting_with_percentages)所示：
+- en: '[PRE3]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '[PRE4]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '![css5 1502](assets/css5_1502.png)'
+  id: totrans-28
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1502](assets/css5_1502.png)'
+- en: Figure 15-2\. Text indenting with percentages
+  id: totrans-29
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-2\. 百分比文本缩进
+- en: 'Note that because `text-indent` is inherited, some browsers, like the Yandex
+    browser, inherit the computed values, while Safari, Firefox, Edge, and Chrome
+    inherit the declared value. In the following, both bits of text will be indented
+    5 ems in Yandex and 10% of the current element’s width in other browsers, because
+    the value of `5em` is inherited by the paragraph from its parent `<div>` in Yandex
+    and older versions of WebKit, whereas most evergreen browsers inherit the declared
+    value of 10%:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，由于 `text-indent` 是继承的，一些浏览器（如 Yandex 浏览器）会继承计算值，而 Safari、Firefox、Edge 和
+    Chrome 则继承声明的值。在以下示例中，因为 `5em` 的值在 Yandex 和旧版本的 WebKit 中从其父级 `<div>` 继承到段落中，所以在
+    Yandex 中两段文本都将缩进 5 个 em，而在其他浏览器中，文本将按当前元素宽度的 10% 缩进：
+- en: '[PRE5]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '[PRE6]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'As of late 2022, two keywords are being considered for addition to `text-indent`:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至 2022 年末，有两个关键词正在考虑添加到 `text-indent` 中：
+- en: '`hanging`'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`hanging`'
+- en: 'Inverts the indentation effect; that is, `text-indent: 3em hanging` would indent
+    all the lines of text *except* the first line. This is similar to the negative-value
+    indentation discussed previously, but without risking cutting off text, because
+    instead of pulling the first line out of the content box, all the lines but the
+    first are indented away from the edge of the content box.'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '反转缩进效果；即 `text-indent: 3em hanging` 会缩进除第一行之外的所有文本行。这类似于之前讨论过的负值缩进，但不会因为将第一行拉出内容框而导致文本被截断，因为除第一行外的所有行都会从内容框的边缘缩进。'
+- en: '`each-line`'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`each-line`'
+- en: Indents the first line of the element plus any line that starts after a forced
+    line break, such as that caused by a `<br>`, but not lines that follow a soft
+    line break.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 缩进元素的第一行，以及由 `<br>` 引起的强制换行后开始的任何行，但不包括跟随软换行的行。
+- en: 'When supported, either keyword can be used in conjunction with a length or
+    percentage, such as the following:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在支持的情况下，可以与长度或百分比一起使用，例如：
+- en: '[PRE7]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Aligning Text
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 对齐文本
+- en: Even more basic than `text-indent` is the property `text-align`, which affects
+    the way the lines of text in an element are aligned with respect to one another.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 比 `text-indent` 更基础的是 `text-align` 属性，它影响元素内文本行的相互对齐方式。
+- en: The quickest way to understand how these values work is to examine [Figure 15-3](#selected_behaviors_of_the_text-align_pro),
+    which demonstrates the most widely used values. The values `left`, `right`, and
+    `center` cause the text within elements to be aligned exactly as described by
+    these words in horizontal languages like English or Arabic, regardless of the
+    language’s inline direction.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 理解这些值如何工作的最快方法是查看 [图 15-3](#selected_behaviors_of_the_text-align_pro)，展示了最常使用的值。`left`、`right`
+    和 `center` 这些值会使元素内的文本在水平语言（如英语或阿拉伯语）中完全按照这些词描述的方式对齐，无论语言的内联方向如何。
+- en: '![css5 1503](assets/css5_1503.png)'
+  id: totrans-43
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1503](assets/css5_1503.png)'
+- en: Figure 15-3\. Selected behaviors of the `text-align` property
+  id: totrans-44
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-3\. `text-align` 属性的选定行为
+- en: The default value of `text-align` is `start`, which is the equivalent of `left`
+    in LTR languages, and `right` in RTL languages. In vertical languages. `left`
+    and `right` are mapped to the start or end edge, respectively. This is illustrated
+    in [Figure 15-4](#left_comma_right_comma_and_center_in_ver).
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`text-align` 的默认值是 `start`，在从左到右（LTR）的语言中等同于 `left`，在从右到左（RTL）的语言中等同于 `right`。在竖排文字中，`left`
+    和 `right` 分别映射到起始或结束边缘。详见 [图 15-4](#left_comma_right_comma_and_center_in_ver)。'
+- en: Because `text-align` applies only to block-level elements such as paragraphs,
+    there’s no way to center an anchor within its line without aligning the rest of
+    the line (nor would you want to, since that would likely cause text overlap).
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为 `text-align` 仅适用于段落等块级元素，因此没有办法在其行内居中锚点而不影响其余文本行（也不应该这样做，因为那可能导致文本重叠）。
+- en: 'As you may expect, `center` causes each line of text to be centered within
+    the element. If you’ve ever come across the long-ago deprecated `<CENTER>` element,
+    you may be tempted to believe that `text-align: center` is the same. It is actually
+    quite different. The `<CENTER>` element affected not only text, but also centered
+    whole elements, such as tables. The `text-align` property does not control the
+    alignment of elements, only their inline content.'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如您所料，`center` 使文本每行居中于元素内。如果您曾遇到过早已废弃的 `<CENTER>` 元素，则可能认为 `text-align: center`
+    与其相同。实际上它们有很大不同。`<CENTER>` 元素不仅影响文本，还居中整个元素，比如表格。而 `text-align` 属性仅控制内联内容的对齐，不影响元素的对齐。'
+- en: '![css5 1504](assets/css5_1504.png)'
+  id: totrans-48
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1504](assets/css5_1504.png)'
+- en: Figure 15-4\. Left, right, and center in vertical writing modes
+  id: totrans-49
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-4\. 垂直书写模式中的左、右和中心对齐
+- en: Start and end alignment
+  id: totrans-50
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 起始和结束对齐
+- en: 'Remembering that CSS was based on concepts of *horizontal* and *vertical*,
+    the initial default value was originally “a nameless value that acts as *left*
+    if *direction* is *ltr*, *right* if *direction* is *rtl*.” The default value now
+    has a name: `start`, which is the equivalent of `left` in LTR languages, and `right`
+    in RTL languages.'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住 CSS 最初是基于 *水平* 和 *垂直* 概念，初始默认值曾是“一个无名值，若 *direction* 是 *ltr*，则表现为 *left*，若
+    *direction* 是 *rtl*，则表现为 *right*”。现在默认值已有名字：`start`，在从左到右（LTR）的语言中等同于 `left`，在从右到左（RTL）的语言中等同于
+    `right`。
+- en: The default value of `start` means that text is aligned to the start edge of
+    its line box. In LTR languages like English, that’s the left edge; in RTL languages
+    such as Arabic, it’s the right edge. In vertical languages, it will be the top
+    or bottom, depending on the writing direction. The upshot is that the default
+    value is much more aware of the document’s language direction while leaving the
+    default behavior the same in the vast majority of existing cases.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`start` 的默认值意味着文本对齐到其行框的起始边缘。在英语等从左到右（LTR）的语言中，这是左边缘；在阿拉伯语等从右到左（RTL）的语言中，这是右边缘。在竖排文字中，这将是顶部或底部，具体取决于书写方向。总之，该默认值在意识到文档语言方向的同时，保持了现有情况中的默认行为一致。'
+- en: In a like manner, `end` aligns text with the end edge of each line box—the right
+    edge in LTR languages, the left edge in RTL languages, and so forth. [Figure 15-5](#start_and_end_alignment-id1)
+    shows the effects of these values.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，`end` 使文本与每个行框的结束边缘对齐 —— 在从左到右（LTR）的语言中是右边缘，在从右到左（RTL）的语言中是左边缘，以此类推。图 15-5\.
+    展示了这些值的效果。
+- en: '![css5 1505](assets/css5_1505.png)'
+  id: totrans-54
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1505](assets/css5_1505.png)'
+- en: Figure 15-5\. Start and end alignment
+  id: totrans-55
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-5\. 起始和结束对齐
+- en: Justified text
+  id: totrans-56
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 两端对齐的文本
+- en: An often-overlooked alignment value is `justify`, which raises some issues of
+    its own. In justified text, both ends of a line of text (except the last line,
+    which can be set with `text-align-last`) are placed at the inner edges of the
+    parent element, as shown in [Figure 15-6](#justified_text-id1). Then, the spacing
+    between words and letters is adjusted so that the words are distributed evenly
+    throughout the line. Justified text is common in the print world (for example,
+    in this book), but under CSS, a few extra considerations come into play.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 常被忽视的对齐值是 `justify`，它本身引发了一些问题。在两端对齐的文本中，一行文本的两端（除了最后一行，可以使用 `text-align-last`
+    设置）放置在父元素的内边缘，如 [图 15-6](#justified_text-id1) 所示。然后，调整单词和字母之间的间距，使单词均匀分布在行中。两端对齐的文本在印刷界很常见（例如在本书中），但在CSS下，还有一些额外的考虑因素。
+- en: '![css5 1506](assets/css5_1506.png)'
+  id: totrans-58
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1506](assets/css5_1506.png)'
+- en: Figure 15-6\. Justified text
+  id: totrans-59
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-6\. 两端对齐的文本
+- en: The user agent determines how justified text should be stretched or distributed
+    to fill the space between the left and right edges of the parent. Some browsers,
+    for example, might add extra space only between words, while others might distribute
+    the extra space between letters (although the CSS specification states that “user
+    agents may not further increase or decrease the inter-character space” if the
+    property `letter-spacing` has been assigned a length value). Other user agents
+    may reduce space on some lines, thus mashing the text together a bit more than
+    usual.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户代理确定如何拉伸或分配两端对齐文本以填充父元素的左右边缘之间的空间。例如，某些浏览器可能只在单词之间添加额外空间，而其他浏览器可能在字母之间分配额外空间（尽管CSS规范规定如果属性
+    `letter-spacing` 被指定为长度值，则“用户代理可能不会进一步增加或减少字符间距”）。其他用户代理可能会在某些行上减少空间，从而使文本比通常更紧凑。
+- en: The value `justify-all` sets full justification for both `text-align` and `text-align-last`
+    (covered in an upcoming section).
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值 `justify-all` 设置了 `text-align` 和 `text-align-last` 的完全两端对齐（在即将介绍的部分中涵盖）。
+- en: Warning
+  id: totrans-62
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: 'As of mid-2022, the `justify-all` value is not supported by any browser, even
+    though nearly all of them support `text-align: justify` and `text-align-last:
+    justify`. This gap in support remains a mystery as of press time, but is solved
+    in most browsers with the following:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '截至2022年中期，即使几乎所有浏览器都支持 `text-align: justify` 和 `text-align-last: justify`，但是没有任何浏览器支持
+    `justify-all` 值。截至出版时仍然存在这种支持差距，但在大多数浏览器中通过以下方式解决：'
+- en: '[PRE8]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Parent matching
+  id: totrans-65
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 父匹配
+- en: 'We have one more value to cover: `match-parent`. If you declare `text-align:
+    match-parent`, and the inherited value of `text-align` is `start` or `end`, the
+    alignment of the `match-parent` element will be calculated with respect to the
+    parent element’s horizontal or vertical, rather than inline, direction.'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '我们还有一个值需要介绍：`match-parent`。如果声明 `text-align: match-parent`，并且 `text-align`
+    的继承值为 `start` 或 `end`，则 `match-parent` 元素的对齐将根据父元素的水平或垂直方向计算，而不是内联方向。'
+- en: For example, you could force any English element’s text alignment to match the
+    alignment of a parent element, regardless of its writing direction, as in the
+    following example.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，您可以强制任何英文元素的文本对齐方式与父元素的对齐方式匹配，而不考虑其书写方向，如下例所示。
+- en: '[PRE9]'
+  id: totrans-68
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Aligning the Last Line
+  id: totrans-69
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 对齐最后一行
+- en: 'At times you might want to align the text in the very last line of an element
+    differently than you did the rest of the content. For example, with `text-align:
+    justify`, the last line defaults to `text-align: start`. You might ensure a left-aligned
+    last line in an otherwise fully justified block of text, or choose to swap from
+    left to center alignment. For those situations, you can use `text-align-last`.'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '有时，您可能希望将元素最后一行的文本与其余内容不同地对齐。例如，使用 `text-align: justify` 时，最后一行默认为 `text-align:
+    start`。您可以确保左对齐最后一行，而其他部分则完全两端对齐，或者选择从左对齐切换到居中对齐。对于这些情况，您可以使用 `text-align-last`。'
+- en: As with `text-align`, the quickest way to understand how these values work is
+    to examine [Figure 15-7](#differently_aligned_last_lines).
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如同 `text-align` 一样，理解这些值的最快方法是查看 [图 15-7](#differently_aligned_last_lines)。
+- en: '![css5 1507](assets/css5_1507.png)'
+  id: totrans-72
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1507](assets/css5_1507.png)'
+- en: Figure 15-7\. Differently aligned last lines
+  id: totrans-73
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-7\. 不同对齐的最后一行
+- en: The last lines of the elements are aligned independently of the rest of the
+    elements, according to the elements’ `text-align-last` values.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素的最后一行根据元素的 `text-align-last` 值独立对齐，与其他元素无关。
+- en: A close study of [Figure 15-7](#differently_aligned_last_lines) will reveal
+    that there’s more at play than just the last lines of block-level elements. In
+    fact, `text-align-last` applies to any line of text that immediately precedes
+    a forced line break, whether or not that line break is triggered by the end of
+    an element. Thus, a line break created by a `<br>` tag will make the line of text
+    immediately before that break use the value of `text-align-last`.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 仔细研究 [图 15-7](#differently_aligned_last_lines) 将揭示比块级元素的最后一行更多的影响因素。事实上，`text-align-last`
+    适用于任何文本行，这些文本行紧跟在强制换行之前，无论该换行是否由元素的结尾触发。因此，由 `<br>` 标签创建的换行将使紧随其前的文本行使用 `text-align-last`
+    的值。
+- en: 'An interesting wrinkle arises with `text-align-last`: if the first line of
+    text in an element is also the last line of text in the element, the value of
+    `text-align-last` takes precedence over the value of `text-align`. Thus, the following
+    styles will result in a centered paragraph, not a start-aligned paragraph:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`text-align-last`时会出现一个有趣的问题：如果元素中的第一行文本也是元素中的最后一行文本，则`text-align-last`的值优先于`text-align`的值。因此，以下样式将导致段落居中，而不是起始对齐：
+- en: '[PRE10]'
+  id: totrans-77
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '[PRE11]'
+  id: totrans-78
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Word Spacing
+  id: totrans-79
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 单词间距
+- en: The `word-spacing` property is used to modify interword spacing, accepting a
+    positive or negative length. This length is *added* to the standard space between
+    words. Therefore, the default value of `normal` is the same as setting a value
+    of `0`.
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`word-spacing` 属性用于修改单词之间的间距，接受正或负的长度。这个长度被 *添加* 到标准单词间的空格中。因此，默认值 `normal`
+    等同于设置值 `0`。'
+- en: 'If you supply a positive length value, the space between words will increase.
+    Setting a negative value for `word-spacing` brings words closer together:'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果提供正长度值，单词之间的空间将增加。设置 `word-spacing` 的负值会使单词更接近：
+- en: '[PRE12]'
+  id: totrans-82
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: '[PRE13]'
+  id: totrans-83
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Manipulating these settings has the effect shown in [Figure 15-8](#changing_the_space_between_words).
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调整这些设置会产生 [图 15-8](#changing_the_space_between_words) 中显示的效果。
+- en: '![css5 1508](assets/css5_1508.png)'
+  id: totrans-85
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1508](assets/css5_1508.png)'
+- en: Figure 15-8\. Changing the space between words
+  id: totrans-86
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-8。改变单词间的空间
+- en: In CSS terms, a *word* is any string of nonwhitespace characters that is surrounded
+    by whitespace of some kind. This means `word-spacing` is unlikely to work in any
+    languages that employ pictographs, or non-Roman writing styles. This is also why
+    the em dashes in the previous example’s text don’t get space around them. From
+    the CSS point of view, “spaces—as” is a single word.
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在CSS术语中，*单词* 是由某种形式的空格包围的任何非空格字符串。这意味着 `word-spacing` 在任何使用象形文字或非罗马书写风格的语言中都不太可能起作用。这也是为什么前面示例文本中的破折号周围没有空格的原因。从CSS的角度来看，“spaces—as”
+    是一个单词。
+- en: Use caution. The `word-spacing` property allows you to create very unreadable
+    documents, as [Figure 15-9](#really_wide_word_spacing) illustrates.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用时要小心。 `word-spacing` 属性允许创建非常难读的文档，正如 [图 15-9](#really_wide_word_spacing)
+    所示。
+- en: '![css5 1509](assets/css5_1509.png)'
+  id: totrans-89
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1509](assets/css5_1509.png)'
+- en: Figure 15-9\. Really wide word spacing
+  id: totrans-90
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-9。真正宽的单词间距
+- en: Letter Spacing
+  id: totrans-91
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 字母间距
+- en: Many of the issues you encounter with `word-spacing` also occur with `letter-spacing`.
+    The only real difference between the two is that `letter-spacing` modifies the
+    space between characters or letters.
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多与 `word-spacing` 相关的问题也会出现在 `letter-spacing` 中。两者之间唯一的真正区别在于，`letter-spacing`
+    修改的是字符或字母之间的间距。
+- en: As with the `word-spacing` property, the permitted values of `letter-spacing`
+    include any length, though character-relative lengths like `em` (rather than root-relative
+    lengths like `rem`) are recommended to ensure that the spacing is proportional
+    to the font size.
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 `word-spacing` 属性一样，`letter-spacing` 的允许值包括任何长度，尽管建议使用字符相关长度（如 `em`）而不是根相关长度（如
+    `rem`），以确保间距与字体大小成比例。
+- en: 'The default keyword is `normal`, which has the same effect as `letter-spacing:
+    0`. Any length value you enter will increase or decrease the space between letters
+    by that amount. [Figure 15-10](#various_kinds_of_letter_spacing) shows the results
+    of the following markup:'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '默认关键字是 `normal`，其效果与 `letter-spacing: 0` 相同。输入的任何长度值都会增加或减少字母之间的间距。[图 15-10](#various_kinds_of_letter_spacing)
+    展示了以下标记的结果：'
+- en: '[PRE14]'
+  id: totrans-95
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: '[PRE15]'
+  id: totrans-96
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: '![css5 1510](assets/css5_1510.png)'
+  id: totrans-97
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1510](assets/css5_1510.png)'
+- en: Figure 15-10\. Various kinds of letter spacing
+  id: totrans-98
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-10。不同种类的字母间距
+- en: Warning
+  id: totrans-99
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: If a page uses fonts with features like ligatures, and those features are enabled,
+    altering letter or word spacing can effectively disable them. Browsers will not
+    recalculate ligatures or other joins when letter spacing is altered.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果页面使用具有连字等特性的字体，并且启用了这些特性，改变字母或单词间距可能会有效地禁用它们。当字母间距被改变时，浏览器不会重新计算连字或其他连接。
+- en: Spacing and Alignment
+  id: totrans-101
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 间距与对齐
+- en: It’s important to remember that space between words may be altered by the value
+    of the property `text-align`. If an element is justified, the spaces between letters
+    and words may be altered to fit the text along the full width of the line. This
+    may in turn alter the spacing declared using `word-spacing`.
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意单词之间的空间可能会受到`text-align`属性值的影响。如果一个元素被调整为两端对齐，字母和单词之间的空格可能会被调整以适应行的整体宽度。这可能会进一步影响使用`word-spacing`声明的间距。
+- en: 'If a length value is assigned to `letter-spacing`, that value cannot be changed
+    by `text-align`; but if the value of `letter-spacing` is `normal`, inter-character
+    spacing may be changed to justify the text. CSS does not specify how the spacing
+    should be calculated, so user agents use their own algorithms. To prevent `text-align`
+    from altering letter spacing while keeping the default letter spacing, declare
+    `letter-spacing: 0`.'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果将长度值分配给`letter-spacing`，那么该值不能被`text-align`改变；但如果`letter-spacing`的值是`normal`，则可以通过调整字母间距来使文本两端对齐。CSS
+    没有规定如何计算间距，因此用户代理使用自己的算法。为了防止`text-align`改变字母间距，同时保持默认的字母间距，请声明`letter-spacing:
+    0`。'
+- en: 'Note that computed values are inherited, so child elements with larger or smaller
+    text will have the same word or letter spacing as their parent element. You cannot
+    define a scaling factor for `word-spacing` or `letter-spacing` to be inherited
+    in place of the computed value (in contrast with `line-height`). As a result,
+    you may run into problems such as those shown in [Figure 15-11](#inherited_letter_spacing):'
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，计算值是继承的，因此具有较大或较小文本的子元素将具有与其父元素相同的单词或字母间距。您无法定义一个缩放因子，使`word-spacing`或`letter-spacing`继承到计算值（与`line-height`相反）。因此，您可能会遇到如[图 15-11](#inherited_letter_spacing)所示的问题：
+- en: '[PRE16]'
+  id: totrans-105
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: '[PRE17]'
+  id: totrans-106
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: '![css5 1511](assets/css5_1511.png)'
+  id: totrans-107
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1511](assets/css5_1511.png)'
+- en: Figure 15-11\. Inherited letter spacing
+  id: totrans-108
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-11\. 继承的字母间距
+- en: 'As `inherit` inherits the ancestor’s letter-spacing computed length, the only
+    way to achieve letter spacing that’s in proportion to the size of the text is
+    to set it explicitly on each element, as follows:'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`inherit`继承了祖先的字母间距计算长度，要实现与文本大小成比例的字母间距，唯一的方法是在每个元素上显式设置它，如下所示：
+- en: '[PRE18]'
+  id: totrans-110
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: And the same goes for word spacing.
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于单词间距也是一样的。
+- en: Vertical Alignment
+  id: totrans-112
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 垂直对齐
+- en: Now that we’ve covered alignment along the inline direction, let’s move on to
+    the vertical alignment of inline elements along the block direction—things like
+    superscripting and vertical alignment (vertical with respect to the line of text,
+    if the text is laid out horizontally). Since the construction of lines is a complex
+    topic that merits its own small book, we’ll just stick to a quick overview here.
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们已经讨论了沿内联方向的对齐，让我们继续讨论沿块方向的内联元素的垂直对齐——比如上标和垂直对齐（相对于文本行，如果文本是水平布局的话）。由于行的构造是一个值得一本小书来详细讨论的复杂主题，我们在这里只是简要概述。
+- en: Adjusting the Height of Lines
+  id: totrans-114
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 调整行高
+- en: The distance between lines can be affected by changing the height of a line.
+    Note that *height* here is with respect to the line of text itself, assuming that
+    the longer axis of a line is *width*, even if it’s written vertically. The property
+    names we cover from here will reveal a strong bias toward Western languages and
+    their writing directions; this is an artifact of the early days of CSS, when Western
+    languages were the only ones that could be easily represented.
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行之间的距离可以通过改变行高来影响。请注意，在这里“高度”是相对于文本行本身的，假设行的长轴是“宽度”，即使是垂直书写的情况也是如此。从这里我们涵盖的属性名称将显示对西方语言及其书写方向的强烈偏见；这是
+    CSS 早期的一个副产品，当时只有西方语言可以轻松表示。
+- en: The `line-height` property refers to the distance between the baselines of lines
+    of text rather than the size of the font, and it determines the amount by which
+    the height of each element’s box is increased or decreased. In the most basic
+    cases, specifying `line-height` is a way to increase (or decrease) the vertical
+    space between lines of text, but this is a misleadingly simple way of looking
+    at how `line-height` works. This property controls the *leading*, which is the
+    extra space between lines of text above and beyond the font’s size. In other words,
+    the difference between the value of `line-height` and the size of the font is
+    the leading.
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`line-height` 属性是指文本行基线之间的距离，而不是字体的大小，并确定每个元素框的高度增加或减少的量。在最基本的情况下，指定 `line-height`
+    是增加（或减少）文本行之间垂直间距的一种方式，但这是看待 `line-height` 工作方式的一个误导性简单方式。此属性控制*行间距*，即文本行之间额外的空间，超出字体大小。换句话说，`line-height`
+    的值与字体大小的差异即是行间距。'
+- en: When applied to a block-level element, `line-height` defines the *minimum* distance
+    between text baselines within that element. Note that it defines a minimum, not
+    an absolute value. Baselines of text can wind up being pushed farther apart than
+    the value of `line-height`, for example, if a line contains an inline image or
+    form control that is taller than the declared line height. The `line-height` property
+    does not affect layout for replaced elements like images, but it still applies
+    to them.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当应用于块级元素时，`line-height` 定义了该元素内文本基线之间的*最小*距离。请注意，它定义了一个最小值，而不是一个绝对值。例如，如果一行包含的内联图像或表单控件比声明的行高更高，文本基线可能会被推开超出
+    `line-height` 的值。`line-height` 属性不影响替换元素（如图像）的布局，但仍然适用于它们。
+- en: Constructing a line
+  id: totrans-118
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 构建一行
+- en: As you learned in [Chapter 6](ch06.html#basic-visual-formatting), every element
+    in a line of text generates a *content area*, which is determined by the size
+    of the font. This content area, in turn, generates an *inline box* that is, in
+    the absence of any other factors, exactly equal to the content area. The leading
+    generated by `line-height` is one of the factors that increase or decrease the
+    height of each inline box.
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您在 [第 6 章](ch06.html#basic-visual-formatting) 中学到的，文本行中的每个元素都生成一个*内容区域*，其大小由字体大小确定。这个内容区域又生成一个*内联框*，在没有其他因素的情况下，与内容区域完全相等。由
+    `line-height` 生成的行间距是增加或减少每个内联框高度的因素之一。
+- en: To determine the leading for a given element, subtract the computed value of
+    `font-size` from the computed value of `line-height`. That value is the total
+    amount of leading. And remember, it can be a negative number. The leading is then
+    divided in half, and each half-leading is applied to the top and bottom of the
+    content area. The result is the inline box for that element. In this way, each
+    line of text is centered within the line height as long as the height of the line
+    isn’t forced beyond its minimum height by a replaced element or other factor.
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要确定给定元素的行间距，从 `font-size` 的计算值中减去 `line-height` 的计算值。这个值就是总的行间距量。请记住，它可以是负数。然后，将行间距分成两半，每半行间距应用于内容区域的顶部和底部。结果就是该元素的内联框。通过这种方式，只要行的高度没有被替换元素或其他因素强制超出其最小高度，每行文本都会居中于行高之内。
+- en: As an example, let’s say `font-size` (and therefore the content area) is 14
+    pixels tall, and `line-height` is computed to 18 pixels. The difference (4 pixels)
+    is divided in half, and each half is applied to the top and bottom of the content
+    area. This effectively centers the content by creating an inline box that is 18
+    pixels tall, with 2 extra pixels above and below the content area. This sounds
+    like a roundabout way to describe how `line-height` works, but there are excellent
+    reasons for the description.
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 举例来说，假设 `font-size`（因此内容区域）为 14 像素高，而 `line-height` 计算为 18 像素。差值（4 像素）被分成两半，每一半应用于内容区域的顶部和底部。这有效地通过创建一个高度为
+    18 像素的内联框，使内容居中，顶部和底部各增加了 2 像素的空白。这听起来像是描述 `line-height` 如何工作的一个绕圈子的方式，但是这种描述有其优秀的理由。
+- en: Once all of the inline boxes have been generated for a given line of content,
+    they are then considered in the construction of the line box. A line box is exactly
+    as tall as needed to enclose the top of the tallest inline box and the bottom
+    of the lowest inline box. [Figure 15-12](#line_box_diagram) shows a diagram of
+    this process.
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦给定行内容的所有内联框都已生成，它们将被考虑在行框的构建中。行框的高度正好足以包含最高内联框的顶部和最低内联框的底部。[图 15-12](#line_box_diagram)
+    展示了此过程的示意图。
+- en: '![css5 1512](assets/css5_1512.png)'
+  id: totrans-123
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1512](assets/css5_1512.png)'
+- en: Figure 15-12\. Line-box diagram
+  id: totrans-124
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-12\. 行框图示
+- en: Assigning values to line-height
+  id: totrans-125
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 分配 `line-height` 的值
+- en: Let’s now consider the possible values of `line-height`. If you use the default
+    value of `normal`, the user agent must calculate the space between lines. Values
+    can vary by user agent, but the `normal` default is generally around 1.2 times
+    the size of the font, which makes line boxes taller than the value of `font-size`
+    for a given element.
+  id: totrans-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们考虑 `line-height` 的可能值。如果您使用 `normal` 的默认值，用户代理必须计算行间距。不同的用户代理可能会有不同的值，但
+    `normal` 的默认值通常是字体大小的1.2倍，这使得行框比给定元素的 `font-size` 值更高。
+- en: Many values are simple length measures (e.g., `18px` or `2em` ), but <*`number`*>
+    values with no length unit are preferable in many situations.
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多值是简单的长度度量（例如 `18px` 或 `2em`），但在许多情况下，没有长度单位的 `<number>` 值更可取。
+- en: Warning
+  id: totrans-128
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: Be aware that even if you use a valid length measurement, such as `4cm`, the
+    browser (or the operating system) may be using an incorrect metric for real-world
+    measurements, so the line height may not show up as exactly 4 centimeters on your
+    monitor.
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，即使您使用有效的长度测量，例如 `4cm`，浏览器（或操作系统）可能会使用不正确的度量标准来测量真实世界的测量值，因此线高可能在您的显示器上不会显示为确切的4厘米。
+- en: 'The `em`, `ex`, and percentage values are calculated with respect to the `font-size`
+    of the element. The results of the following CSS and HTML are shown in [Figure 15-13](#simple_calculations_with_the_line-height):'
+  id: totrans-130
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`em`、`ex` 和百分比值是相对于元素的 `font-size` 计算的。以下CSS和HTML的结果显示在[图 15-13](#simple_calculations_with_the_line-height)中：'
+- en: '[PRE19]'
+  id: totrans-131
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: '[PRE20]'
+  id: totrans-132
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: '![css5 1513](assets/css5_1513.png)'
+  id: totrans-133
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1513](assets/css5_1513.png)'
+- en: Figure 15-13\. Simple calculations with the `line-height` property
+  id: totrans-134
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-13\. 使用 `line-height` 属性进行简单计算
+- en: Understanding line-height and inheritance
+  id: totrans-135
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 理解 `line-height` 和继承
+- en: 'When the `line-height` is inherited by one block-level element from another,
+    things get a bit trickier. The `line-height` values inherit from the parent element
+    as computed from the parent, not the child. The results of the following markup
+    are shown in [Figure 15-14](#small_line-height_comma_large_font-size). It probably
+    wasn’t what the author had in mind:'
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当一个块级元素从另一个元素那里继承了 `line-height` 时，事情会变得有些棘手。`line-height` 的值是从父元素计算的，而不是从子元素继承的。以下标记的结果显示在[图 15-14](#small_line-height_comma_large_font-size)中。这可能不是作者所想要的结果：
+- en: '[PRE21]'
+  id: totrans-137
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: '[PRE22]'
+  id: totrans-138
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: '![css5 1514](assets/css5_1514.png)'
+  id: totrans-139
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1514](assets/css5_1514.png)'
+- en: Figure 15-14\. Small line-height, large font-size, slight problem
+  id: totrans-140
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-14\. 小 `line-height`，大 `font-size`，轻微问题
+- en: 'Why are the lines so close together? Because the computed `line-height` value
+    of `10px` was inherited by the paragraph from its parent `<div>`. One solution
+    to the small `line-height` problem depicted in [Figure 15-14](#small_line-height_comma_large_font-size)
+    is to set an explicit `line-height` for every element, but that’s not very practical.
+    A better alternative is to specify a number, which actually sets a scaling factor:'
+  id: totrans-141
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为什么行之间如此紧凑？因为段落从其父级 `<div>` 继承了计算的 `line-height` 值为 `10px`。解决[图 15-14](#small_line-height_comma_large_font-size)所示的小
+    `line-height` 问题的一个解决方案是为每个元素设置显式的 `line-height`，但这并不是很实际。一个更好的选择是指定一个数字，实际上设置一个缩放因子：
+- en: '[PRE23]'
+  id: totrans-142
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: 'When you specify a number with no length unit, you cause the scaling factor
+    to be an inherited value instead of a computed value. The number will be applied
+    to the element and all of its child elements so that each element has a `line-height`
+    calculated with respect to its own `font-size` (see [Figure 15-15](#using_line-height_factors_to_overcome_in)):'
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您指定一个没有长度单位的数字时，会导致缩放因子成为继承值而不是计算值。该数字将应用于元素及其所有子元素，以便每个元素的 `line-height` 都是相对于其自身的
+    `font-size` 计算的（见[图 15-15](#using_line-height_factors_to_overcome_in)）：
+- en: '[PRE24]'
+  id: totrans-144
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: '[PRE25]'
+  id: totrans-145
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: '![css5 1515](assets/css5_1515.png)'
+  id: totrans-146
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1515](assets/css5_1515.png)'
+- en: Figure 15-15\. Using `line-height` factors to overcome inheritance problems
+  id: totrans-147
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-15\. 使用 `line-height` 因子来克服继承问题
+- en: Now that you have a basic grasp of how lines are constructed, let’s talk about
+    vertically aligning elements relative to the line box—that is, displacing them
+    along the block direction.
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您已经基本了解了行如何构建，请让我们讨论相对于行框垂直对齐元素的基本概念——即沿块方向位移它们。
+- en: Vertically Aligning Text
+  id: totrans-149
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 垂直对齐文本
+- en: If you’ve ever used the elements `<sup>` and `<sub>` (the superscript and subscript
+    elements), or used the deprecated `align` attribute with an image, you’ve done
+    some rudimentary vertical alignment.
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您曾经使用过元素 `<sup>` 和 `<sub>`（上标和下标元素），或者使用了带有图像的废弃的 `align` 属性，您就已经做了一些基本的垂直对齐。
+- en: Note
+  id: totrans-151
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Because of the property name `vertical-align`, this section will use the terms
+    *vertical* and *horizontal* to refer to the block and inline directions of the
+    text.
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于属性名 `vertical-align`，本节将使用“垂直”和“水平”来指代文本的块级和行内方向。
+- en: 'The `vertical-align` property accepts any one of eight keywords, a percentage
+    value, or a length value. The keywords are a mix of the familiar and unfamiliar:
+    `baseline` (the default value), `sub`, `super`, `bottom`, `text-bottom`, `middle`,
+    `top`, and `text-top`. We’ll examine how each keyword works in relation to inline
+    elements.'
+  id: totrans-153
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`vertical-align` 属性接受八个关键字中的任意一个，百分比值或长度值。这些关键字有些熟悉，有些不熟悉：`baseline`（默认值）、`sub`、`super`、`bottom`、`text-bottom`、`middle`、`top`
+    和 `text-top`。我们将研究每个关键字在行内元素中的工作方式。'
+- en: Note
+  id: totrans-154
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: 'Remember: `vertical-align` does *not* affect the alignment of content within
+    a block-level element, just the alignment of inline content within a line of text
+    or a table cell. This may change in the future, but as of mid-2022, proposals
+    to widen its scope have yet to move forward.'
+  id: totrans-155
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住：`vertical-align` 不会影响块级元素内内容的对齐，只会影响行内内容在文本行或表格单元格中的对齐。这一点可能会在未来发生变化，但截至2022年中期，扩展其作用范围的提案尚未推进。
+- en: Baseline alignment
+  id: totrans-156
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 基线对齐
+- en: 'Using `vertical-align: baseline` forces the baseline of an element to align
+    with the baseline of its parent. Browsers, for the most part, do this anyway,
+    since you’d probably expect the bottoms of all text elements in a line to be aligned.'
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '使用 `vertical-align: baseline` 强制元素的基线与其父元素的基线对齐。大多数情况下，浏览器都会这样做，因为您可能希望一行中所有文本元素的底部对齐。'
+- en: 'If a vertically aligned element doesn’t have a baseline—that is, if it’s an
+    image, a form input, or another replaced element—then the bottom of the element
+    is aligned with the baseline of its parent, as [Figure 15-16](#baseline_alignment_of_an_image)
+    shows:'
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果垂直对齐的元素没有基线——即它是图片、表单输入或其他替换元素——那么元素的底部将与其父元素的基线对齐，如[图15-16](#baseline_alignment_of_an_image)所示：
+- en: '[PRE26]'
+  id: totrans-159
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: '[PRE27]'
+  id: totrans-160
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: '![css5 1516](assets/css5_1516.png)'
+  id: totrans-161
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1516](assets/css5_1516.png)'
+- en: Figure 15-16\. Baseline alignment of an image
+  id: totrans-162
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-16\. 图像的基线对齐
+- en: This alignment rule is important because it causes some web browsers to always
+    put a replaced element’s bottom edge on the baseline, even if the line includes
+    no other text. For example, let’s say you have an image in a table cell all by
+    itself. The image may actually be on a baseline, but in some browsers, the space
+    below the baseline causes a gap to appear beneath the image. Other browsers will
+    “shrink-wrap” the image with the table cell, and no gap will appear. The gap behavior
+    is correct, despite its lack of appeal to most authors.
+  id: totrans-163
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种对齐规则很重要，因为它会导致某些网页浏览器始终将替换元素的底边放在基线上，即使行中没有其他文本。例如，假设您在表格单元格中只有一张图片。在某些浏览器中，图片实际上可能处于基线上，但是基线下方的空间会导致图片下方出现间隙。其他浏览器会将图片与表格单元格“包裹”在一起，不会出现间隙。尽管大多数作者不太喜欢间隙的表现，但间隙的行为是正确的。
+- en: Note
+  id: totrans-164
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: See the deeply aged and yet somehow still relevant article [“Images, Tables,
+    and Mysterious Gaps”](https://meyerweb.com/eric/articles/devedge/img-table-gaps)
+    (2002) for a more detailed explanation of gap behavior and ways to work around
+    it.
+  id: totrans-165
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参见深度老化但仍然相关的文章 [“Images, Tables, and Mysterious Gaps”](https://meyerweb.com/eric/articles/devedge/img-table-gaps)（2002）以获取更详细的间隙行为解释及其解决方法。
+- en: Superscripting and subscripting
+  id: totrans-166
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 上标和下标
+- en: 'The declaration `vertical-align: sub` causes an element to be subscripted,
+    meaning that its baseline (or bottom, if it’s a replaced element) is lowered with
+    respect to its parent’s baseline. The specification doesn’t define the distance
+    the element is lowered, so it may vary depending on the user agent.'
+  id: totrans-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '声明 `vertical-align: sub` 会使元素被置于下标位置，意味着其基线（或底部，如果它是替换元素）相对于父元素的基线被降低。规范并未定义元素被降低的距离，因此可能会因用户代理而异。'
+- en: The `super` value is the opposite of `sub`; it raises the element’s baseline
+    (or bottom of a replaced element) with respect to the parent’s baseline. Again,
+    the distance the text is raised depends on the user agent.
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`super` 值与 `sub` 相反；它会使元素的基线（或替换元素的底部）相对于父元素的基线提升。同样，文本被提升的距离取决于用户代理。'
+- en: 'Note that the values `sub` and `super` do *not* change the element’s font size,
+    so subscripted or superscripted text will not become smaller (or larger). Instead,
+    any text in the sub- or superscripted element will, by default, be the same size
+    as text in the parent element, as illustrated by [Figure 15-17](#superscript_and_subscript_alignment):'
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`sub` 和 `super` 这些值*不*会改变元素的字体大小，因此，下标或上标文本不会变小（或变大）。相反，默认情况下，上标或下标元素中的任何文本都与父元素中的文本大小相同，如[图 15-17](#superscript_and_subscript_alignment)所示：
+- en: '[PRE28]'
+  id: totrans-170
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: '[PRE29]'
+  id: totrans-171
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: '![css5 1517](assets/css5_1517.png)'
+  id: totrans-172
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1517](assets/css5_1517.png)'
+- en: Figure 15-17\. Superscript and subscript alignment
+  id: totrans-173
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-17\. 上标和下标对齐
+- en: Note
+  id: totrans-174
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: If you wish to make super- or subscripted text smaller than the text of its
+    parent element, you can do so by using the `font-size` property.
+  id: totrans-175
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您希望使上标或下标文本比其父元素的文本小，可以使用 `font-size` 属性来实现。
+- en: Top and bottom alignment
+  id: totrans-176
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 顶部和底部对齐
+- en: 'The `vertical-align: top` option aligns the top of the element’s inline box
+    with the top of the line box. Similarly, `vertical-align: bottom` aligns the bottom
+    of the element’s inline box with the bottom of the line box. Thus, the following
+    markup results in [Figure 15-18](#top_and_bottom_alignment):'
+  id: totrans-177
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`vertical-align: top` 选项将元素的行内框顶部与行框顶部对齐。类似地，`vertical-align: bottom` 将元素的行内框底部与行框底部对齐。因此，以下标记的结果如[图 15-18](#top_and_bottom_alignment)所示：'
+- en: '[PRE30]'
+  id: totrans-178
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: '[PRE31]'
+  id: totrans-179
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: '![css5 1518](assets/css5_1518.png)'
+  id: totrans-180
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1518](assets/css5_1518.png)'
+- en: Figure 15-18\. Top and bottom alignment
+  id: totrans-181
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-18\. 顶部和底部对齐
+- en: 'The second line of the first paragraph contains two inline elements whose top
+    edges are aligned with each other. They’re also well above the baseline of the
+    text. The second paragraph shows the inverted case: two images whose bottoms are
+    aligned and are well below the baseline of their line. This is because in both
+    cases, the sizes of the elements in the line have increased the line’s height
+    beyond what the font’s size would normally create.'
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一段的第二行包含两个内联元素，它们的顶部边缘对齐。它们也远远高于文本基线。第二段显示了相反的情况：两个图像，它们的底部对齐并且远低于其行的基线。这是因为在这两种情况下，行中元素的大小增加了行的高度，超出了字体大小通常创建的高度。
+- en: 'If you want instead to align elements with the top or bottom edge of just the
+    text in the line, `text-top` and `text-bottom` are the values you seek. For the
+    purposes of these values, replaced elements, or any other kinds of nontext elements,
+    are ignored. Instead, a *default* text box is considered. This default box is
+    derived from the `font-size` of the parent element. The bottom of the aligned
+    element’s inline box is then aligned with the bottom of the default text box.
+    Thus, given the following markup, you get a result like the one shown in [Figure 15-19](#text-top_and_bottom_alignment):'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想要将元素与行中文本的顶部或底部对齐，`text-top` 和 `text-bottom` 就是您要寻找的值。对于这些值，替换元素或任何其他类型的非文本元素都会被忽略。而是考虑一个*默认*文本框。这个默认框源自父元素的
+    `font-size`。然后，对齐元素行内框的底部与默认文本框的底部对齐。因此，给定以下标记，您将获得类似于[图 15-19](#text-top_and_bottom_alignment)所示的结果：
+- en: '[PRE32]'
+  id: totrans-184
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: '[PRE33]'
+  id: totrans-185
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: '![css5 1519](assets/css5_1519.png)'
+  id: totrans-186
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1519](assets/css5_1519.png)'
+- en: Figure 15-19\. Text-top and -bottom alignment
+  id: totrans-187
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-19\. 文本顶部和底部对齐
+- en: Middle alignment
+  id: totrans-188
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 中间对齐
+- en: The value `middle` is usually (but not always) applied to images. It does not
+    have the exact effect you might assume, given its name. The `middle` value aligns
+    the middle of an inline element’s box with a point that is `0.5ex` above the baseline
+    of the parent element, where `1ex` is defined relative to the `font-size` for
+    the parent element. [Figure 15-20](#precise_detail_of_middle_alignment) shows
+    this in more detail.
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`middle` 值通常（但并非总是）应用于图像。它不会产生您可能期望的确切效果，因为其名称。`middle` 值将一个内联元素框的中间与父元素的基线上方
+    `0.5ex` 的点对齐，其中 `1ex` 相对于父元素的 `font-size` 定义。[图 15-20](#precise_detail_of_middle_alignment)更详细地显示了这一点。'
+- en: '![css5 1520](assets/css5_1520.png)'
+  id: totrans-190
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1520](assets/css5_1520.png)'
+- en: Figure 15-20\. Precise detail of middle alignment
+  id: totrans-191
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-20\. 中间对齐的精确细节
+- en: Since most user agents treat `1ex` as one-half em, `middle` usually aligns the
+    vertical midpoint of an element with a point one-quarter em above the parent’s
+    baseline, though this is not a defined distance and so can vary from one user
+    agent to another.
+  id: totrans-192
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于大多数用户代理将 `1ex` 视为半个 em，`middle` 通常将一个元素的垂直中点与父元素基线上方四分之一 em 的点对齐，尽管这不是一个确定的距离，因此可能因用户代理而异。
+- en: Percentages
+  id: totrans-193
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 百分比
+- en: Percentages don’t let you simulate `align="middle"` for images. Instead, setting
+    a percentage value for `vertical-align` raises or lowers the baseline of the element
+    (or the bottom edge of a replaced element) by the amount declared, with respect
+    to the parent’s baseline. (The percentage you specify is calculated as a percentage
+    of `line-height` for the element, *not* its parent.) Positive percentage values
+    raise the element, and negative values lower it.
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 百分比不允许您模拟图像的`align="middle"`。相反，为`vertical-align`设置百分比值会根据父元素的基线将元素的基线（或替换元素的底边）提高或降低指定的量。（您指定的百分比是相对于元素的`line-height`计算的，而不是其父元素。）正百分比值会提升元素，负值则会降低它。
+- en: 'Depending on how the text is raised or lowered, it can appear to be placed
+    in adjacent lines, as shown in [Figure 15-21](#percentages_and_fun_effects), so
+    take care when using percentage values:'
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据文本是如何提升或降低的，它可以看起来被放置在相邻的行中，如[图 15-21](#percentages_and_fun_effects)所示，因此在使用百分比值时要小心：
+- en: '[PRE34]'
+  id: totrans-196
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: '[PRE35]'
+  id: totrans-197
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: '![css5 1521](assets/css5_1521.png)'
+  id: totrans-198
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1521](assets/css5_1521.png)'
+- en: Figure 15-21\. Percentages and fun effects
+  id: totrans-199
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-21\. 百分比和有趣的效果
+- en: Length alignment
+  id: totrans-200
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 长度对齐
+- en: 'Finally, let’s consider vertical alignment with a specific length. The `vertical-align`
+    option is very basic: it shifts an element up or down by the declared distance.
+    Thus, `vertical-align: 5px;` will shift an element upward 5 pixels from its unaligned
+    placement. Negative length values shift the element downward.'
+  id: totrans-201
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '最后，让我们考虑使用特定长度的垂直对齐。`vertical-align`选项非常基础：它通过声明的距离向上或向下移动元素。因此，`vertical-align:
+    5px;`将使元素从未对齐的位置向上移动5像素。负长度值会将元素向下移动。'
+- en: It’s important to realize that vertically aligned text does not become part
+    of another line, nor does it overlap text in other lines. Consider [Figure 15-22](#inline_alignments_can_cause_lines_to),
+    in which some vertically aligned text appears in the middle of a paragraph.
+  id: totrans-202
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 需要意识到的重要一点是，垂直对齐的文本不会成为另一行的一部分，也不会重叠在其他行的文本之上。考虑[图 15-22](#inline_alignments_can_cause_lines_to)，其中一些垂直对齐的文本出现在段落中间。
+- en: '![css5 1522](assets/css5_1522.png)'
+  id: totrans-203
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1522](assets/css5_1522.png)'
+- en: Figure 15-22\. Vertical alignments can cause lines to get taller
+  id: totrans-204
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-22\. 垂直对齐可能导致行高变高
+- en: As you can see, any vertically aligned element can affect the height of the
+    line. Recall the description of a line box, which is exactly as tall as necessary
+    to enclose the top of the tallest inline box and the bottom of the lowest inline
+    box. This includes inline boxes that have been shifted up or down by vertical
+    alignment.
+  id: totrans-205
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，任何垂直对齐的元素都会影响行的高度。回想一下行框的描述，它正好与必要的高度相同，以包含最高内联框的顶部和最低内联框的底部。这包括通过垂直对齐向上或向下移动的内联框。
+- en: Text Transformation
+  id: totrans-206
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文本转换
+- en: With the alignment properties covered, let’s look at ways to manipulate the
+    capitalization of text by using the property `text-transform`.
+  id: totrans-207
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在介绍了对齐属性后，让我们看看如何通过属性`text-transform`来操作文本的大写。
+- en: The default value `none` leaves the text alone and uses whatever capitalization
+    exists in the source document. As their names imply, `uppercase` and `lowercase`
+    convert text into all upper- or lowercase characters. The `full-width` value forces
+    the writing of a character inside a square, as if on a typographical grid.
+  id: totrans-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值`none`保留文本并使用源文档中存在的任何大写。正如它们的名称所示，`uppercase`和`lowercase`将文本转换为全大写或全小写字符。值为`full-width`会强制在方框内书写字符，就像在排版网格上一样。
+- en: Warning
+  id: totrans-209
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: 'Accessibility note: some screen readers will read all-uppercase text one letter
+    at a time, as if spelling out an acronym, even if the source text is lowercase
+    or mixed-case and the uppercasing is only enforced via CSS. For this reason, uppercasing
+    text via CSS should be approached with caution.'
+  id: totrans-210
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可访问性提示：一些屏幕阅读器会逐字母读取所有大写文本，就像拼写首字母缩写一样，即使源文本是小写或混合大小写，并且大写仅通过CSS强制。因此，通过CSS进行大写文本处理应谨慎对待。
+- en: 'Finally, the `capitalize` value capitalizes only the first letter of each word
+    (where a *word* is defined as a string of adjacent characters surrounded by whitespace).
+    [Figure 15-23](#various_kinds_of_text_transformation) illustrates each of these
+    settings in a variety of ways:'
+  id: totrans-211
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，`capitalize`值仅大写每个单词的第一个字母（其中*单词*被定义为由空格包围的一系列相邻字符）。[图 15-23](#various_kinds_of_text_transformation)以各种方式展示了这些设置：
+- en: '[PRE36]'
+  id: totrans-212
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: '[PRE37]'
+  id: totrans-213
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: '![css5 1523](assets/css5_1523.png)'
+  id: totrans-214
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1523](assets/css5_1523.png)'
+- en: Figure 15-23\. Various kinds of text transformation
+  id: totrans-215
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-23\. 各种文本转换方式
+- en: Note
+  id: totrans-216
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: As noted in [Chapter 6](ch06.html#basic-visual-formatting), *CJK* stands for
+    *Chinese/Japanese/Korean*. CJK characters take up the majority of the entire Unicode
+    code space, including approximately 70,000 Han characters. You may sometimes come
+    across the abbreviation *CJKV*, which adds *Vietnamese* to the mix.
+  id: totrans-217
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如在 [第 6 章](ch06.html#basic-visual-formatting) 中所指出的，*CJK* 表示 *中文/日文/韩文*。CJK
+    字符占据了整个 Unicode 代码空间的大部分，包括大约 70,000 个汉字。有时您可能会遇到 *CJKV* 的缩写，它加入了 *越南语*。
+- en: 'Different user agents may have different ways of deciding where words begin
+    and, as a result, which letters are capitalized. For example, the text “heading-one”
+    in the `<h1>` element, shown in [Figure 15-23](#various_kinds_of_text_transformation),
+    could be rendered in one of two ways: “Heading-one” or “Heading-One.” CSS does
+    not say which is correct, so either is possible.'
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不同的用户代理可能有不同的决定单词起始位置的方式，因此哪些字母大写也会不同。例如，在 `<h1>` 元素中显示的 “heading-one” 文本，在
+    [图 15-23](#various_kinds_of_text_transformation) 中，可以以两种方式呈现：“Heading-one” 或 “Heading-One”。CSS
+    没有规定哪种是正确的，因此两种都可能。
+- en: 'You may have also noticed that the last letter in the `<h1>` element in [Figure 15-23](#various_kinds_of_text_transformation)
+    is still uppercase. This is correct: when applying a `text-transform` of `capitalize`,
+    CSS requires user agents to make sure only the first letter of each word is capitalized.
+    They can ignore the rest of the word.'
+  id: totrans-219
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '您可能还注意到，在 [图 15-23](#various_kinds_of_text_transformation) 中 `<h1>` 元素的最后一个字母仍然是大写的。这是正确的：当应用
+    `text-transform: capitalize` 时，CSS 要求用户代理确保每个单词的第一个字母大写，可以忽略其余部分。'
+- en: 'As a property, `text-transform` may seem minor, but it’s very useful if you
+    suddenly decide to capitalize all your `<h1>` elements. Instead of individually
+    changing the content of all your `<h1>` elements, you can just use `text-transform`
+    to make the change for you:'
+  id: totrans-220
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为一种属性，`text-transform` 可能看起来不重要，但如果您突然决定将所有 `<h1>` 元素大写，它非常有用。您可以使用 `text-transform`
+    来为您进行更改，而不是单独更改所有 `<h1>` 元素的内容：
+- en: '[PRE38]'
+  id: totrans-221
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: '[PRE39]'
+  id: totrans-222
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: 'The advantages of using `text-transform` are twofold. First, you need to write
+    only a single rule to make this change, rather than changing the `<h1>` itself.
+    Second, if you decide later to switch from all capitals back to initial capitals,
+    the change is even easier:'
+  id: totrans-223
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `text-transform` 的优点是双重的。首先，您只需编写一个规则即可进行此更改，而不是更改 `<h1>` 本身。其次，如果以后决定从全大写切换回首字母大写，这种更改甚至更容易：
+- en: '[PRE40]'
+  id: totrans-224
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: Remember that `capitalize` is a simple letter substitution at the beginning
+    of each “word.” CSS doesn’t check for grammar, so common headline-capitalization
+    conventions, such as leaving articles (*a*, *an*, *the*) all lowercase, won’t
+    be enforced.
+  id: totrans-225
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，`capitalize` 仅是在每个“单词”的开头进行的简单字母替换。CSS 不检查语法，因此常见的标题大写约定，如将冠词 (*a*, *an*,
+    *the*) 全部小写，不会被强制执行。
+- en: Different languages have different rules for which letters should be capitalized.
+    The `text-transform` property takes into account language-specific case mappings.
+  id: totrans-226
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不同的语言有不同的规则决定哪些字母应该大写。`text-transform` 属性考虑了特定语言的大小写映射。
+- en: The `full-width` option forces the writing of a character inside a square. Most
+    characters you can type on a keyboard come in both normal width and full width,
+    with different Unicode code points. The full-width version is used when `full-width`
+    is set and supported to mix them smoothly with Asian ideographic characters, allowing
+    ideograms and Latin scripts to be aligned.
+  id: totrans-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`full-width` 选项强制将字符写入一个方块内。您可以在键盘上输入的大多数字符都有正常宽度和全宽度两种形式，具有不同的 Unicode 代码点。当设置和支持
+    `full-width` 时，使用全宽度版本可以将其与亚洲表意字符平滑混合，允许表意字符和拉丁脚本对齐。'
+- en: Generally used with `<ruby>` annotation text, `full-size-kana` converts all
+    small Kana characters to the equivalent full-size Kana, to compensate for legibility
+    issues at the small font sizes typically used in Ruby.
+  id: totrans-228
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常与 `<ruby>` 注释文本一起使用，`full-size-kana` 将所有小假名字符转换为等效的全尺寸假名，以弥补通常在 Ruby 中使用的小字体大小的可读性问题。
+- en: Text Decoration
+  id: totrans-229
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文本装饰
+- en: Next we come to the topic of text decorations, and how we can affect them with
+    various properties. The simplest text decoration, and the one that can be controlled
+    the most, is an underline. CSS also supports overlines, line-throughs, and even
+    the wavy underlines you see in word processing programs to flag errors of spelling
+    or grammar.
+  id: totrans-230
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来我们来讨论文本装饰的主题，以及如何使用各种属性影响它们。最简单的文本装饰是下划线，并且可以通过各种属性进行控制。CSS 还支持上划线、穿过线，甚至是您在文字处理程序中看到的波浪下划线，用于标记拼写或语法错误。
+- en: We’ll start with the various individual properties, and then tie it all up with
+    a shorthand property, `text-decoration`, that covers them all.
+  id: totrans-231
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将从各个单独的属性开始，然后用一个简写属性`text-decoration`来统一它们。
+- en: Setting Text Decoration Line Placement
+  id: totrans-232
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置文本装饰线位置
+- en: With the property `text-decoration-line`, you can set the location of one or
+    more line decorations on a run of text. The most familiar decoration may be underlining,
+    thanks to all the hyperlinks out there, but CSS has three possible visible decoration
+    line values (plus an unsupported fourth that wouldn’t draw a line at all even
+    if it *was* supported).
+  id: totrans-233
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用属性`text-decoration-line`，可以设置文本串中一个或多个线条装饰的位置。最熟悉的装饰可能是下划线，多亏了所有的超链接，但 CSS
+    有三个可能的可见装饰线值（还有一个不支持的第四个，即使它被支持了也不会画出任何线条）。
+- en: 'The values are relatively self-documenting: `underline` places a line under
+    the text, where *under* means “below the text in the block direction.” The `overline`
+    value is the mirror image, putting the line above the text in the block direction.
+    The `line-through` value draws a line through the middle of the text.'
+  id: totrans-234
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些值相对而言具有自解释性：`underline`在文本下方画一条线，其中*under*的意思是“在块方向的文本下方”。`overline`值是其镜像，将线放在文本的块方向上方。`line-through`值在文本中间画一条线。
+- en: 'Let’s see what these decorations look like in practice. The following code
+    is illustrated in [Figure 15-24](#various_kinds_of_text_decoration):'
+  id: totrans-235
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看这些装饰在实践中是什么样子。以下代码在[图 15-24](#various_kinds_of_text_decoration)中进行了说明：
+- en: '[PRE41]'
+  id: totrans-236
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: '![css5 1524](assets/css5_1524.png)'
+  id: totrans-237
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1524](assets/css5_1524.png)'
+- en: Figure 15-24\. Various kinds of text decoration
+  id: totrans-238
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-24\. 各种文本装饰
+- en: 'The value `none` turns off any decoration that might otherwise have been applied
+    to an element. For example, links are usually underlined by default. If you want
+    to suppress the underlining of hyperlinks, you can use the following CSS rule
+    to do so:'
+  id: totrans-239
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值为`none`会关闭元素上可能已经应用的任何装饰。例如，链接通常默认带有下划线。如果你想要取消超链接的下划线，可以使用以下 CSS 规则来实现：
+- en: '[PRE42]'
+  id: totrans-240
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: If you explicitly turn off link underlining with this sort of rule, the only
+    visual difference between the anchors and normal text will be their color (at
+    least by default, though there’s no ironclad guarantee that there will be a difference
+    in their colors). Relying on color alone as the difference between regular text
+    and links within that text is not enough to differentiate links from the rest
+    of the text, negatively impacting user experience and making your content inaccessible
+    to many users.
+  id: totrans-241
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你通过这种规则显式地关闭了链接的下划线，锚点和普通文本之间唯一的视觉区别将是它们的颜色（至少默认情况下，尽管不能保证它们的颜色会有差异）。仅依靠颜色作为区分正常文本和文本内的链接的唯一标识是不够的，这会对用户体验产生负面影响，并使你的内容对许多用户无法访问。
+- en: Note
+  id: totrans-242
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Bear in mind that many users will be annoyed when they realize you’ve turned
+    off link underlining, especially within blocks of text. If your links aren’t underlined,
+    users will have a hard time finding hyperlinks in your documents, and finding
+    them can be next to impossible for users with one form or another of color blindness.
+  id: totrans-243
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，许多用户会因为你关闭了链接下划线而感到恼火，尤其是在文本块中。如果你的链接没有下划线，用户将很难在文档中找到超链接，对于某些色盲用户来说，这几乎是不可能的。
+- en: That’s really all there is to `text-decoration-line`. The more veteran among
+    you may recognize this is what `text-decoration` itself used to do, but times
+    have moved on and there’s much, much more we can do with decorations besides just
+    place them, so these values were shifted to `text-decoration-line`.
+  id: totrans-244
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这就是`text-decoration-line`的全部内容。你们中的老手可能会认识到这正是`text-decoration`本身过去所做的事情，但时代在变化，我们在装饰方面可以做的事情远不止放置它们，因此这些值被转移到了`text-decoration-line`。
+- en: Setting Text Decoration Color
+  id: totrans-245
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置文本装饰颜色
+- en: By default, the color of a text decoration will match the color of the text.
+    If you need to change that, `text-decoration-color` is here to help.
+  id: totrans-246
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，文本装饰的颜色将与文本的颜色相匹配。如果需要更改，`text-decoration-color`来帮助你。
+- en: 'You can use any valid color value for `text-decoration-color`, including the
+    keyword `currentcolor` (which is the default). Suppose you want to make it clear
+    that stricken text really is stricken. That would go something like this:'
+  id: totrans-247
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用任何有效的颜色值作为`text-decoration-color`，包括关键字`currentcolor`（这是默认值）。假设你想要清楚地表明删除的文本确实是删除的。那就会像这样：
+- en: '[PRE43]'
+  id: totrans-248
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: Thus, not only will the elements shown get a line-through decoration, but the
+    line will also be colored red. The text itself will not be red unless you change
+    that as well by using the `color` property.
+  id: totrans-249
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，显示的元素不仅将获得删除线装饰，而且线条颜色也将变成红色。除非你也使用`color`属性改变了文本本身的颜色，否则文本本身不会变成红色。
+- en: Note
+  id: totrans-250
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Remember to keep the color contrast between decorations and the base text sufficiently
+    high to remain accessible. It’s also generally a bad idea to use color alone to
+    convey meaning, as in “check the links with red underlines for more information!”
+  id: totrans-251
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住，要保持装饰物与基础文本之间的颜色对比足够高，以保持可访问性。通常单独使用颜色来传达含义是不明智的，比如“检查带有红色下划线的链接获取更多信息！”
+- en: Setting Text Decoration Thickness
+  id: totrans-252
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置文本装饰的粗细
+- en: With the property `text-decoration-thickness`, you can change the stroke thickness
+    of a text decoration to something beefier, or possibly less beefy, than usual.
+  id: totrans-253
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用属性`text-decoration-thickness`，你可以将文本装饰的线条粗细调整为比通常更粗或可能更细的值。
+- en: 'Supplying a length value sets the thickness of the decoration to that length;
+    thus, `text-decoration-thickness: 3px` sets the decoration to be 3 pixels thick,
+    no matter how big or small the text itself might be. A better approach is generally
+    to use an em-based value or jump straight to using a percentage value, since percentages
+    are calculated with respect to the value of `1em` for the element. Thus, `text-decoration-thickness:
+    10%` would yield a decoration thickness of 1.6 pixels in a font whose computed
+    font size is 16 pixels, but 4 pixels for a 40-pixel font size. The following code
+    shows a few examples, which are illustrated in [Figure 15-25](#various_decoration_thicknesses):'
+  id: totrans-254
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '提供一个长度值将装饰的粗细设置为该长度；因此，`text-decoration-thickness: 3px`将装饰线条设置为3像素厚，无论文本本身有多大或多小。通常更好的方法是使用基于em的值或直接使用百分比值，因为百分比是相对于元素的`1em`值计算的。因此，`text-decoration-thickness:
+    10%`在计算的字体大小为16像素的字体中将产生1.6像素的装饰厚度，但在40像素字体大小中将产生4像素的装饰厚度。下面的代码展示了一些示例，这些示例在[图15-25](#various_decoration_thicknesses)中有详细说明：'
+- en: '[PRE44]'
+  id: totrans-255
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: '![css5 1525](assets/css5_1525.png)'
+  id: totrans-256
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1525](assets/css5_1525.png)'
+- en: Figure 15-25\. Various decoration thicknesses
+  id: totrans-257
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-25\. 不同装饰的粗细
+- en: The keyword `from-font` is interesting because it allows the browser to consult
+    the font file to see whether it defines a preferred decoration thickness; if it
+    does, the browser uses that thickness. If the font file doesn’t recommend a thickness,
+    the browser falls back to the `auto` behavior and picks whatever thickness it
+    thinks appropriate, using inscrutable reasoning known only to itself.
+  id: totrans-258
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关键字`from-font`很有意思，因为它允许浏览器查看字体文件，看看它是否定义了首选的装饰线条粗细；如果有，浏览器将使用该粗细。如果字体文件没有建议的粗细，浏览器则退回到`auto`行为，并使用它认为合适的粗细，使用的推理只有浏览器自己知道。
+- en: Setting Text Decoration Style
+  id: totrans-259
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置文本装饰的样式
+- en: Thus far, we’ve shown a lot of straight, single lines. If you’re yearning for
+    something beyond that hidebound approach, `text-decoration-style` provides alternatives.
+  id: totrans-260
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们展示了许多简单的单线装饰。如果你渴望超越传统的方法，`text-decoration-style`提供了一些替代方案。
+- en: 'The exact result will depend on the value you pick and the browser you use
+    to view the results, but the renderings of these decoration styles should be at
+    least similar to those shown in [Figure 15-26](#various_decoration_styles), which
+    is the output of the following code:'
+  id: totrans-261
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 具体的结果将取决于你选择的值和用于查看结果的浏览器，但这些装饰风格的渲染至少应该与[图15-26](#various_decoration_styles)中显示的类似，这是以下代码的输出：
+- en: '[PRE45]'
+  id: totrans-262
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: '![css5 1526](assets/css5_1526.png)'
+  id: totrans-263
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1526](assets/css5_1526.png)'
+- en: Figure 15-26\. Various decoration styles
+  id: totrans-264
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-26\. 各种装饰风格
+- en: We increased the decoration thickness for [Figure 15-26](#various_decoration_styles)
+    in order to improve legiblility; the default sizing can make some of the more
+    complex decorations, like `dotted`, difficult to see.
+  id: totrans-265
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们增加了[图15-26](#various_decoration_styles)的装饰线条粗细，以提高可读性；默认大小可能使得某些较复杂的装饰风格（如`dotted`）难以看清。
+- en: Using the Text Decoration Shorthand Property
+  id: totrans-266
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用文本装饰的简写属性
+- en: When you just want to set a text decoration’s position, color, thickness, and
+    style in one handy declaration, `text-decoration` is the way to go.
+  id: totrans-267
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你只想在一个便捷的声明中设置文本装饰的位置、颜色、粗细和样式时，`text-decoration`就是最佳选择。
+- en: 'With the `text-decoration` shorthand property, you can bring everything into
+    one place, like so:'
+  id: totrans-268
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`text-decoration`简写属性，你可以将所有内容整合到一起，如下所示：
+- en: '[PRE46]'
+  id: totrans-269
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: 'Be careful, though: if you have two different decorations matched to the same
+    element, the value of the rule that wins out will completely replace the value
+    of the loser. Consider the following:'
+  id: totrans-270
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但要小心：如果将两种不同的装饰匹配到同一个元素，则获胜的规则的值将完全替换输掉的值。考虑以下情况：
+- en: '[PRE47]'
+  id: totrans-271
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: Given these rules, any `<h2>` element with a class of `stricken` will have only
+    a wavy line-through decoration. The doubled underline and overline decorations
+    are lost, since shorthand values replace one another instead of accumulating.
+  id: totrans-272
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据这些规则，任何具有`stricken`类的`<h2>`元素将只有一条波浪线穿过装饰。双下划线和overline装饰将丢失，因为简写值会相互替换而不是累积。
+- en: 'Note also that because of the way the decoration properties work, you can set
+    the color and style only once per element, even if you have multiple decorations.
+    For example, the following is valid, setting both the under- and overlines to
+    be green and dotted:'
+  id: totrans-273
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还要注意，由于装饰属性的工作方式，即使有多个装饰，您也只能设置一次颜色和样式。例如，以下内容是有效的，将下划线和overline都设置为绿色和虚线：
+- en: '[PRE48]'
+  id: totrans-274
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: 'If you instead want the overline to be a different color than the underline,
+    or set each to have its own style, you’d need to apply each to a separate element,
+    something like this:'
+  id: totrans-275
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您希望overline与underline具有不同的颜色，或者设置每个具有自己的样式，则需要将每个应用于单独的元素，类似于以下示例：
+- en: '[PRE49]'
+  id: totrans-276
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: '[PRE50]'
+  id: totrans-277
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: Offsetting Underlines
+  id: totrans-278
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 下划线偏移
+- en: 'Along with all the `text-decoration` properties, a related property allows
+    you to change the distance between an underline (and *only* an underline) and
+    the text that the underline decorates: `text-underline-offset`.'
+  id: totrans-279
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了所有`text-decoration`属性外，一个相关的属性允许您改变下划线（仅限下划线）与装饰的文本之间的距离：`text-underline-offset`。
+- en: 'You might wish that, say, underlines on hyperlinks were a little farther away
+    from the text’s baseline, so that they’re a little more obvious to the user. Setting
+    a length value like `3px` will put the underline 3 pixels below the text’s baseline.
+    See [Figure 15-27](#various_underline_offsets) for the results of the following
+    CSS:'
+  id: totrans-280
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能希望，例如，超链接上的下划线与文本基线有一定的距离，以便用户更容易注意到。设置像`3px`这样的长度值将使下划线位于文本基线以下3像素处。请参见[图15-27](#various_underline_offsets)以查看以下CSS的结果：
+- en: '[PRE51]'
+  id: totrans-281
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: '![css5 1527](assets/css5_1527.png)'
+  id: totrans-282
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1527](assets/css5_1527.png)'
+- en: Figure 15-27\. Various underline offsets
+  id: totrans-283
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-27\. 各种下划线偏移
+- en: As illustrated in [Figure 15-27](#various_underline_offsets), the value defines
+    an offset from the text’s baseline, either positive (downward along the block
+    axis) or negative (upward along the block axis).
+  id: totrans-284
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[图15-27](#various_underline_offsets)所示，该值定义了距离文本基线的偏移量，可以是正值（沿着块轴向下）或负值（沿着块轴向上）。
+- en: 'As with `text-decoration-thickness`, percentage values for `text-underline-offset`
+    are calculated with respect to the value of `1em` for the element. Thus, `text-underline-offset:
+    10%` would cause an offset of 1.6 pixels in a font whose computed font size is
+    16 pixels.'
+  id: totrans-285
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '与`text-decoration-thickness`一样，`text-underline-offset`的百分比值是相对于元素的1em计算的。因此，`text-underline-offset:
+    10%`会导致在计算的字体大小为16像素的字体中产生1.6像素的偏移量。'
+- en: Warning
+  id: totrans-286
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: As of late 2022, only Firefox supports percentage values for `text-underline-offset`,
+    which is odd given that percentage values are a percent of 1 em in the element’s
+    font. The workaround is to use em length values, such as 0.1em for 10%.
+  id: totrans-287
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2022年末，只有Firefox支持`text-underline-offset`的百分比值，这很奇怪，因为百分比值是元素字体中1 em的百分比。解决方法是使用em长度值，例如0.1em代表10%。
+- en: Skipping Ink
+  id: totrans-288
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 跳墨
+- en: 'An unaddressed aspect of the past few sections has been: how exactly do browsers
+    draw decorations over text, and more precisely, decide when to “skip over” parts
+    of the text? This is known as *skipping ink*, and the approach a browser takes
+    can be altered with the property `text-decoration-skip-ink`.'
+  id: totrans-289
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 过去几节中未解决的一个方面是：浏览器如何精确地在文本上绘制装饰，更准确地说是如何决定何时“跳过”文本的部分？这就是所谓的*跳墨*，浏览器采用的方法可以通过属性`text-decoration-skip-ink`进行改变。
+- en: When ink skipping is turned on, the decoration is interrupted wherever it would
+    cross over the shapes of the text. Usually, this means a small gap between the
+    decoration and the text glyphs. See [Figure 15-28](#ink-skipping_approaches) for
+    a close-up illustration of the differences in ink-skipping approaches.
+  id: totrans-290
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当开启跳墨时，装饰会在跨越文本形状的地方中断。通常，这意味着装饰与文本字形之间的小间隙。请参见[图15-28](#ink-skipping_approaches)以查看跳墨方法的差异的近距离插图。
+- en: '![css5 1528](assets/css5_1528.png)'
+  id: totrans-291
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1528](assets/css5_1528.png)'
+- en: Figure 15-28\. Ink-skipping approaches
+  id: totrans-292
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-28\. 跳墨方法
+- en: 'The three values are defined as follows:'
+  id: totrans-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这三个值的定义如下：
+- en: '`auto` (the default)'
+  id: totrans-294
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`auto`（默认）'
+- en: The browser *may* interrupt under- and overlines where the line would cross
+    the text glyphs, with a little space between the line and the glyphs. Furthermore,
+    browsers *should* consider the glyphs used for the text, since some glyphs may
+    call for ink skipping while others may not.
+  id: totrans-295
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 浏览器*可能*会在线条穿过文本字形的地方中断下划线和上划线，线条与字形之间留有一点空间。此外，浏览器*应该*考虑文本使用的字形，因为某些字形可能会导致墨水跳过，而其他字形则不会。
+- en: '`all`'
+  id: totrans-296
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`all`'
+- en: Browsers *must* interrupt under- and overlines where the line would cross the
+    text glyphs, with a little space between the line and the glyphs. However, as
+    of mid-2022, only Firefox supports this value.
+  id: totrans-297
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 浏览器*必须*在线条穿过文本字形的地方中断下划线和上划线，并在线条与字形之间留有一点空间。然而，截至2022年中期，只有Firefox支持这个值。
+- en: '`none`'
+  id: totrans-298
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`none`'
+- en: The browser *must not* interrupt under- and overlines where the line would cross
+    the text glyphs, but instead draw a continuous line even though it may be drawn
+    over parts of the text glyphs.
+  id: totrans-299
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 浏览器*不得*在线条穿过文本字形的地方中断下划线和上划线，而是绘制一条连续的线，尽管可能会在文本字形的某些部分上绘制。
+- en: As shown in [Figure 15-28](#ink-skipping_approaches), `auto` can sometimes mean
+    differences depending on the language, font, or based on other factors. You’re
+    really just telling the browser to do whatever it thinks is best.
+  id: totrans-300
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[图15-28](#ink-skipping_approaches)所示，`auto`有时可能根据语言、字体或其他因素而有所不同。实际上，你只是告诉浏览器做它认为最好的事情。
+- en: Note
+  id: totrans-301
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: While this property’s name begins with the label `text-decoration-`, it is *not*
+    a property covered by the `text-decoration` shorthand property. That’s why it’s
+    being discussed here, after the shorthand, and not before.
+  id: totrans-302
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管此属性的名称以`text-decoration-`开头，但它*不*是`text-decoration`简写属性所涵盖的属性。这就是为什么在简写之后而不是之前讨论它的原因。
+- en: Understanding Weird Decorations
+  id: totrans-303
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解奇怪的装饰
+- en: 'Now, let’s look into the unusual side of `text-decoration`. The first oddity
+    is that `text-decoration` is *not* inherited. No inheritance implies that any
+    decoration lines drawn with the text—whether under, over, or through it—will always
+    be the same color. This is true even if the descendant elements are a different
+    color, as depicted in [Figure 15-29](#color_consistency_in_underlines):'
+  id: totrans-304
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，让我们来看看`text-decoration`的不寻常之处。第一个奇怪之处在于`text-decoration`*不*被继承。没有继承意味着文本上绘制的任何装饰线（无论是下划线、上划线还是穿过文本）的颜色始终相同。即使后代元素是不同的颜色，也是如此，如[图15-29](#color_consistency_in_underlines)所示：
+- en: '[PRE52]'
+  id: totrans-305
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: '[PRE53]'
+  id: totrans-306
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: '![css5 1529](assets/css5_1529.png)'
+  id: totrans-307
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1529](assets/css5_1529.png)'
+- en: Figure 15-29\. Color consistency in underlines
+  id: totrans-308
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-29\. 下划线中的颜色一致性
+- en: 'Why is this so? Because the value of `text-decoration` is not inherited, the
+    `<strong>` element assumes a default value of `none`. Therefore, the `<strong>`
+    element has *no* underline. Now, there is very clearly a line under the `<strong>`
+    element, so it seems silly to say that it has none. Nevertheless, it doesn’t.
+    What you see under the `<strong>` element is the paragraph’s underline, which
+    is effectively “spanning” the `<strong>` element. You can see it more clearly
+    if you alter the styles for the boldfaced element, like this:'
+  id: totrans-309
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为什么会这样？因为`text-decoration`的值不会被继承，`<strong>`元素假设默认值为`none`。因此，`<strong>`元素没有*下划线*。现在，在`<strong>`元素下面明显有一条线，所以说它没有似乎很愚蠢。尽管如此，它确实没有。你在`<strong>`元素下看到的是段落的下划线，实际上是“跨越”了`<strong>`元素。如果你改变粗体元素的样式，就可以更清楚地看到这一点，就像这样：
+- en: '[PRE54]'
+  id: totrans-310
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: '[PRE55]'
+  id: totrans-311
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE55]'
+- en: The result is identical to the one shown in [Figure 15-29](#color_consistency_in_underlines),
+    since all you’ve done is to explicitly declare what was already the case. In other
+    words, there is no way to “turn off” the decoration generated by a parent element.
+  id: totrans-312
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结果与[图15-29](#color_consistency_in_underlines)中显示的相同，因为你所做的只是显式声明已经存在的情况。换句话说，没有办法“关闭”由父元素生成的装饰。
+- en: 'There is a way to change the color of a decoration without violating the specification.
+    As you’ll recall, setting a text decoration on an element means that the entire
+    element has the same color decoration, even if child elements have different colors.
+    To match the decoration color with an element, you must explicitly declare its
+    decoration, as follows:'
+  id: totrans-313
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有一种方法可以在不违反规范的情况下改变装饰的颜色。正如你记得的那样，在元素上设置文本装饰意味着整个元素具有相同的颜色装饰，即使子元素有不同的颜色。要使装饰颜色与元素匹配，必须显式声明其装饰，如下所示：
+- en: '[PRE56]'
+  id: totrans-314
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE56]'
+- en: '[PRE57]'
+  id: totrans-315
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE57]'
+- en: In [Figure 15-30](#overcoming_the_default_behavior_of_under), the `<strong>`
+    element is set to be gray and to have an underline. The gray underline visually
+    “overwrites” the parent’s black underline, so the decoration’s color matches the
+    color of the `<strong>` element. The black underline is still there; the gray
+    underline is just hiding it. If you move the gray underline with `text-underline-offset`
+    or make the parent’s `text-decoration-thickness` wider than its child, both underlines
+    will be visible.
+  id: totrans-316
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[图 15-30](#overcoming_the_default_behavior_of_under)中，`<strong>` 元素被设置为灰色并具有下划线。灰色下划线在视觉上“覆盖”了父元素的黑色下划线，使装饰的颜色与
+    `<strong>` 元素的颜色匹配。黑色下划线仍然存在；灰色下划线只是隐藏它。如果您使用 `text-underline-offset` 将灰色下划线移动或使父元素的
+    `text-decoration-thickness` 宽度超过其子元素，则两条下划线都将可见。
+- en: '![css5 1530](assets/css5_1530.png)'
+  id: totrans-317
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1530](assets/css5_1530.png)'
+- en: Figure 15-30\. Overcoming the default behavior of underlines
+  id: totrans-318
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-30\. 克服下划线的默认行为
+- en: 'When `text-decoration` is combined with `vertical-align`, even stranger things
+    can happen. [Figure 15-31](#correct_comma_although_strange_comma_dec) shows one
+    of these oddities. Since the `<sup>` element has no decoration of its own, but
+    it is elevated within an overlined element, the overline should cut through the
+    middle of the `<sup>` element:'
+  id: totrans-319
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当 `text-decoration` 与 `vertical-align` 结合时，甚至会发生更奇怪的事情。[图 15-31](#correct_comma_although_strange_comma_dec)展示了其中一些奇特之处。由于
+    `<sup>` 元素本身没有装饰，但它在一个上划线元素内被提升，上划线应该穿过 `<sup>` 元素的中间：
+- en: '[PRE58]'
+  id: totrans-320
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE58]'
+- en: '![css5 1531](assets/css5_1531.png)'
+  id: totrans-321
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1531](assets/css5_1531.png)'
+- en: Figure 15-31\. Correct, although strange, decorative behavior
+  id: totrans-322
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-31\. 正确，尽管奇怪，装饰行为
+- en: But not all browsers do this. As of mid-2022, Chrome pushes the overline up
+    so it is drawn across the top of the superscript, whereas others do not.
+  id: totrans-323
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但并非所有浏览器都会这样做。截至2022年中期，Chrome会将上划线向上推动，使其横跨在上标的顶部，而其他浏览器则不会。
+- en: Text Rendering
+  id: totrans-324
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文本呈现
+- en: A recent addition to CSS is `text-rendering`, which is actually an SVG property
+    that’s treated as CSS by supporting user agents. It lets you indicate what the
+    user agent should prioritize when displaying text.
+  id: totrans-325
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 的最新补充是 `text-rendering`，实际上是一个SVG属性，在支持的用户代理中被视为CSS。它允许您指示用户代理在显示文本时应优先考虑什么。
+- en: The values `optimizeSpeed` and `optimizeLegibility` indicate that drawing speed
+    should be favored over the use of legibility features like kerning and ligatures
+    (for `optimizeSpeed`) or that such legibility features should be used even if
+    that slows text rendering (for `optimizeLegibility`).
+  id: totrans-326
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值 `optimizeSpeed` 和 `optimizeLegibility` 指示应优先考虑绘制速度而不是像调整和连字这样的可读性特征（对于 `optimizeSpeed`），或者即使这会减慢文本呈现，也应使用这些可读性特征（对于
+    `optimizeLegibility`）。
+- en: The precise legibility features that are used with `optimizeLegibility` are
+    not explicitly defined, and the text rendering often depends on the operating
+    system on which the user agent is running, so the exact results may vary. [Figure 15-32](#optimized_legibility)
+    shows text optimized for speed and then optimized for legibility.
+  id: totrans-327
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `optimizeLegibility` 的确切可读性特征未被明确定义，文本呈现通常取决于用户代理运行的操作系统，因此确切的结果可能有所不同。[图 15-32](#optimized_legibility)显示了针对速度优化然后针对可读性优化的文本。
+- en: '![css5 1532](assets/css5_1532.png)'
+  id: totrans-328
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1532](assets/css5_1532.png)'
+- en: Figure 15-32\. Different optimizations
+  id: totrans-329
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-32\. 不同的优化
+- en: As you can see in [Figure 15-32](#optimized_legibility), the differences between
+    the two optimizations are objectively rather small, but they can have a noticeable
+    impact on readability.
+  id: totrans-330
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您在[图 15-32](#optimized_legibility)中所见，这两种优化之间的差异在客观上相当小，但它们对可读性可能会产生显著影响。
+- en: Note
+  id: totrans-331
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: Some user agents will always optimize for legibility, even when optimizing for
+    speed. This is likely an effect of rendering speeds having gotten so fast in the
+    past few years.
+  id: totrans-332
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些用户代理在优化速度时仍然会始终优化可读性。这可能是过去几年中呈现速度变得如此快的影响。
+- en: The value `geometricPrecision`, on the other hand, directs the user agent to
+    draw the text as precisely as possible, such that it could be scaled up or down
+    with no loss of fidelity. You might think that this is always the case, but not
+    so. Some fonts change kerning or ligature effects at different text sizes, for
+    example, providing more kerning space at smaller sizes and tightening up the kerning
+    space as the size is increased. With `geometricPrecision`, those hints are ignored
+    as the text size changes. If it helps, think of it as the user agent drawing the
+    text as though all the text is a series of SVG paths, not font glyphs.
+  id: totrans-333
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，`geometricPrecision`指示用户代理尽可能精确地绘制文本，以便可以放大或缩小而无损失。您可能认为这总是如此，但并非如此。例如，某些字体在不同的文本大小下会改变字距或连字效果，例如，在较小的大小下提供更多的字距空间，并在增大大小时紧缩字距空间。使用`geometricPrecision`，这些提示在文本大小变化时被忽略。如果有帮助，可以将其视为用户代理绘制文本，就像所有文本都是一系列SVG路径而不是字形。
+- en: 'Even by the usual standard of web standards, the value `auto` is pretty vaguely
+    defined in SVG:'
+  id: totrans-334
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使按照通常的网页标准，`auto`值在SVG中的定义也相当模糊：
+- en: The user agent shall make appropriate trade-offs to balance speed, legibility
+    and geometric precision, but with legibility given more importance than speed
+    and geometric precision.
+  id: totrans-335
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 用户代理应做出适当的权衡来平衡速度、可读性和几何精度，但是可读性比速度和几何精度更重要。
+- en: 'That’s it: user agents get to do what they think is appropriate, leaning toward
+    legibility.'
+  id: totrans-336
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就是这样：用户代理可以做他们认为适合的事情，倾向于可读性。
+- en: Text Shadows
+  id: totrans-337
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文本阴影
+- en: Sometimes you just really need your text to cast a shadow, like when text overlaps
+    a multicolored background. That’s where `text-shadow` comes in. The syntax might
+    look a little wacky at first, but it should become clear enough with just a little
+    practice.
+  id: totrans-338
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时候您确实需要文本投射阴影，比如当文本与多彩背景重叠时。这就是`text-shadow`的用处所在。语法可能一开始看起来有些古怪，但只需稍加练习就会变得足够清晰。
+- en: The default is to not have a drop shadow for text. Otherwise, you can define
+    one or more shadows. Each shadow is defined by an optional color and three length
+    values, the last of which is also optional.
+  id: totrans-339
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，文本不会有阴影。否则，您可以定义一个或多个阴影。每个阴影由一个可选的颜色和三个长度值定义，最后一个长度值也是可选的。
+- en: The color sets the shadow’s color so it’s possible to define green, purple,
+    or even white shadows. If the color is omitted, the shadow defaults to the color
+    keyword `currentcolor`, making it the same color as the text itself.
+  id: totrans-340
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 颜色设置了阴影的颜色，因此可以定义绿色、紫色，甚至白色的阴影。如果省略颜色，则阴影默认为颜色关键字`currentcolor`，使其与文本本身相同的颜色。
+- en: Using `currentcolor` as a default color may seem counterintuitive, as you might
+    think shadows are purely decorative, but shadows can be used to improve legibility.
+    A small shadow can make very thin text more legible. Defaulting to `currentcolor`
+    allows adding thickness via a shadow that will always match the color of the text.
+  id: totrans-341
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管使用`currentcolor`作为默认颜色可能看起来反直觉，因为您可能认为阴影纯粹是装饰性的，但阴影可以用于提高可读性。一个小的阴影可以使非常细的文本更易读。通过默认使用`currentcolor`，可以通过阴影增加厚度，该阴影始终与文本的颜色相匹配。
+- en: In addition to improving accessibility by making thin text thicker, shadows
+    can be used to improve color contrast with a multicolored background. For example,
+    if you have white text on a mostly dark black-and-white photo, adding a black
+    shadow to the white text makes the edges of the white text visible even if the
+    text is laid over white portions of the image.
+  id: totrans-342
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了通过增加薄文本的粗度来改善可访问性外，阴影还可用于在多色背景上增强颜色对比度。例如，如果您在大部分为黑白的照片上有白色文本，为白色文本添加黑色阴影即使文本覆盖在图像的白色部分上，也能使白色文本的边缘可见。
+- en: 'The first two length values determine the offset distance of the shadow from
+    the text; the first is the horizontal offset, and the second is the vertical offset.
+    To define a solid, unblurred green shadow offset 5 pixels to the right and half
+    an em down from the text, as shown in [Figure 15-33](#simple_shadows), you could
+    write either of the following:'
+  id: totrans-343
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前两个长度值确定阴影相对于文本的偏移距离；第一个是水平偏移量，第二个是垂直偏移量。要定义一个实心、未模糊的绿色阴影，偏移距离为文本向右5像素，向下半个字母高度，如[图15-33](#simple_shadows)所示，您可以写以下任意一种：
+- en: '[PRE59]'
+  id: totrans-344
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE59]'
+- en: 'Negative lengths cause the shadow to be offset to the left and upward from
+    the original text. The following, also shown in [Figure 15-33](#simple_shadows),
+    places a light-blue shadow 5 pixels to the left and half an em above the text:'
+  id: totrans-345
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 负长度会使阴影相对于原始文本向左和向上偏移。以下示例，同样显示在[图15-33](#simple_shadows)中，将一个浅蓝色阴影偏移5像素向左和半个字母高度向上：
+- en: '[PRE60]'
+  id: totrans-346
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE60]'
+- en: '![css5 1533](assets/css5_1533.png)'
+  id: totrans-347
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1533](assets/css5_1533.png)'
+- en: Figure 15-33\. Simple shadows
+  id: totrans-348
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-33\. 简单阴影
+- en: While the offset may make the text take more visual space, shadows have no effect
+    on line height and therefore no impact on the box model.
+  id: totrans-349
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管偏移可能使文本占据更多视觉空间，但阴影对行高没有影响，因此对框模型没有影响。
+- en: 'The optional third length value defines a blur radius for the shadow. The *blur
+    radius* is defined as the distance from the shadow’s outline to the edge of the
+    blurring effect. A radius of 2 pixels would result in blurring that fills the
+    space between the shadow’s outline and the edge of the blurring. The exact blurring
+    method is not defined, so different user agents might employ different effects.
+    As an example, the following styles are rendered as shown in [Figure 15-34](#dropping_shadows_all_over):'
+  id: totrans-350
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可选的第三长度值定义了阴影的模糊半径。*模糊半径* 定义为从阴影轮廓到模糊效果边缘的距离。例如，2 像素的半径将导致模糊填充阴影轮廓和模糊边缘之间的空间。具体的模糊方法没有定义，因此不同的用户代理可能采用不同的效果。例如，以下样式渲染如
+    [图 15-34](#dropping_shadows_all_over) 所示：
+- en: '[PRE61]'
+  id: totrans-351
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE61]'
+- en: '![css5 1534](assets/css5_1534.png)'
+  id: totrans-352
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1534](assets/css5_1534.png)'
+- en: Figure 15-34\. Dropping shadows all over
+  id: totrans-353
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-34\. 到处都是阴影
+- en: Warning
+  id: totrans-354
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: Large numbers of text shadows, or text shadows with very large blur values,
+    can create performance slowdowns, particularly when animated in low-power and
+    CPU-constrained situations such as mobile devices. Test thoroughly before deploying
+    public designs that use text shadows.
+  id: totrans-355
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大量的文字阴影或者带有非常大模糊值的文字阴影可能会导致性能下降，特别是在低功率和 CPU 受限的情况下，例如移动设备上的动画。在使用文字阴影的公共设计发布之前，请进行彻底测试。
+- en: Text Emphasis
+  id: totrans-356
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文本强调
+- en: Another way to call out text is by adding emphasis marks to each character.
+    This is more common in ideographic languages like Chinese or Mongolian, but these
+    marks can be added to any language’s text with CSS. CSS has three text-emphasis
+    properties similar to those for text decorations, and then a shorthand that conflates
+    two of them.
+  id: totrans-357
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种突出文本的方法是为每个字符添加强调标记。这在象形文字语言如汉语或蒙古语中更为常见，但可以通过 CSS 添加到任何语言的文本中。CSS 有三个类似于文本装饰的文本强调属性，还有一个将两者合并的简写。
+- en: Setting Emphasis Style
+  id: totrans-358
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置强调样式
+- en: The most important of the three properties sets the type of emphasis mark, allowing
+    you to pick from a list of common types or supply your own mark as a text string.
+  id: totrans-359
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 三个属性中最重要的一个设置了强调标记的类型，允许您从常见类型列表中选择或提供自定义标记作为文本字符串。
+- en: 'By default, text has no emphasis marks, or `none`. Alternatively, emphasis
+    marks can be one of five shapes: `dot`, `circle`, `double-circle`, `triangle`,
+    or `sesame`. Those shapes can be set as `filled`, which is the default; or `open`,
+    which renders them as unfilled outlines. These are summarized in [Table 15-1](#predefined_emphasis_marks),
+    and examples are shown in [Figure 15-35](#various_emphasis_marks).'
+  id: totrans-360
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，文本没有强调标记，或者是 `none`。另外，强调标记可以是五种形状之一：`dot`、`circle`、`double-circle`、`triangle`
+    或 `sesame`。这些形状可以设置为 `filled`，这是默认值；或 `open`，这会将它们呈现为未填充的轮廓。这些内容在 [表 15-1](#predefined_emphasis_marks)
+    中总结，并在 [图 15-35](#various_emphasis_marks) 中显示示例。
+- en: Table 15-1\. The predefined emphasis marks
+  id: totrans-361
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 15-1\. 预定义的强调标记
+- en: '| Shape | `filled` | `open` |'
+  id: totrans-362
+  prefs: []
+  type: TYPE_TB
+  zh: '| 形状 | `filled` | `open` |'
+- en: '| --- | --- | --- |'
+  id: totrans-363
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- |'
+- en: '| Sesame | ![](assets/sesame_filled.png) (U+FE45) | ![](assets/sesame_open.png)
+    (U+FE46) |'
+  id: totrans-364
+  prefs: []
+  type: TYPE_TB
+  zh: '| 芝麻 | ![](assets/sesame_filled.png) (U+FE45) | ![](assets/sesame_open.png)
+    (U+FE46) |'
+- en: '| Dot | • (U+2022) | ◦ (U+25E6) |'
+  id: totrans-365
+  prefs: []
+  type: TYPE_TB
+  zh: '| 点 | • (U+2022) | ◦ (U+25E6) |'
+- en: '| Circle | ● (U+25CF) | ○ (U+25CB) |'
+  id: totrans-366
+  prefs: []
+  type: TYPE_TB
+  zh: '| 圆形 | ● (U+25CF) | ○ (U+25CB) |'
+- en: '| Double-circle | ◉ (U+25C9) | ◎ (U+25CE) |'
+  id: totrans-367
+  prefs: []
+  type: TYPE_TB
+  zh: '| 双圆形 | ◉ (U+25C9) | ◎ (U+25CE) |'
+- en: '| Triangle | ▲ (U+25B2) | △ (U+25B3) |'
+  id: totrans-368
+  prefs: []
+  type: TYPE_TB
+  zh: '| 三角形 | ▲ (U+25B2) | △ (U+25B3) |'
+- en: The sesame is the most common mark used in vertical writing modes; the circle
+    is the usual default in horizontal writing modes.
+  id: totrans-369
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 芝麻在竖排书写模式中是最常见的标记；圆形在横排书写模式中通常是默认值。
+- en: If the emphasis marks will not fit into the current text line’s height, they
+    will cause the height of that line of text to be increased until they fit without
+    overlapping other lines. Unlike text decorations and text shadows, text emphasis
+    marks *do* affect the line height.
+  id: totrans-370
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果强调标记不能适应当前文本行的高度，则会增加该文本行的高度，直到它们适合而不重叠其他行。与文本装饰和文字阴影不同，文本强调标记确实会影响行高。
+- en: 'If none of the predefined marks work in your specific situation, you can supply
+    your own character as a string (a single character in single or double quotes).
+    However, be careful: if the string is more than a single character, it may be
+    reduced to the first character in the string by the browser. Thus, `text-emphasis-style:
+    ''cool''` may result in the browser displaying only the `c` as a mark, as shown
+    in [Figure 15-35](#various_emphasis_marks). Furthermore, the string symbols may
+    or may not be rotated to match writing direction in vertical languages.'
+  id: totrans-371
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果在你的特定情况下没有预定义的标记适用，你可以提供自己的字符作为字符串（单引号或双引号中的单个字符）。但要小心：如果字符串超过一个字符，浏览器可能会将其缩减为字符串中的第一个字符。因此，`text-emphasis-style:
+    ''cool''` 可能导致浏览器仅显示 `c` 作为标记，如[图 15-35](#various_emphasis_marks)所示。此外，在垂直语言的书写方向中，字符串符号可能会旋转或不旋转。'
+- en: 'Here are some examples of setting emphasis marks:'
+  id: totrans-372
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是设置强调标记的一些示例：
+- en: '[PRE62]'
+  id: totrans-373
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE62]'
+- en: A key difference between text emphasis and text decoration is that unlike decoration,
+    emphasis is inherited. In other words, if you set a style of `filled sesame` on
+    a paragraph, and that paragraph has child elements like links, those child elements
+    will inherit the `filled sesame` value.
+  id: totrans-374
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文本强调与文本装饰的一个关键区别是，与装饰不同，强调是继承的。换句话说，如果你在段落上设置了 `filled sesame` 风格，并且该段落有像链接这样的子元素，那些子元素将继承
+    `filled sesame` 的值。
+- en: Another difference is that every glyph (character or other symbol) gets its
+    own mark, and these marks are centered on the glyph. Thus, in proportional fonts
+    like those seen in [Figure 15-35](#various_emphasis_marks), the marks will have
+    different separations between them depending on which two glyphs are next to each
+    other.
+  id: totrans-375
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个区别是每个字形（字符或其他符号）都有自己的标记，并且这些标记居中于字形上。因此，在像[图 15-35](#various_emphasis_marks)中所见的比例字体中，标记之间的间距会根据相邻的两个字形不同而不同。
+- en: '![css5 1535](assets/css5_1535.png)'
+  id: totrans-376
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1535](assets/css5_1535.png)'
+- en: Figure 15-35\. Various emphasis marks
+  id: totrans-377
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-35\. 各种强调标记
+- en: 'The CSS specification recommends that emphasis marks be half the size of the
+    text’s font size, as if they were given `font-size: 50%`. They should otherwise
+    use the same text styles as the text; thus, if the text is boldfaced, the emphasis
+    marks should be as well. They should also use the text’s color, unless overridden
+    with the next property we’ll cover.'
+  id: totrans-378
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 'CSS 规范建议强调标记的大小应为文本字体大小的一半，就像给予了 `font-size: 50%`。除此之外，它们应该使用与文本相同的文本样式；因此，如果文本是粗体，强调标记也应是粗体。它们还应该使用文本的颜色，除非通过接下来要讨论的属性进行了覆盖。'
+- en: Changing Emphasis Color
+  id: totrans-379
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 改变强调颜色
+- en: If you wish to have emphasis marks be a different color than the text they’re
+    marking, `text-emphasis-color` is here for you.
+  id: totrans-380
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你希望强调标记的颜色与其标记的文本不同，`text-emphasis-color` 就是为你准备的。
+- en: 'The default value, as is often the case with color-related properties, is `currentcolor`.
+    That ensures that emphasis marks will match the color of the text by default.
+    To change it, you can do things like the following:'
+  id: totrans-381
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值通常与颜色相关的属性一样是 `currentcolor`。这确保了强调标记默认与文本颜色匹配。要进行更改，你可以像下面这样操作：
+- en: '[PRE63]'
+  id: totrans-382
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE63]'
+- en: Placing Emphasis Marks
+  id: totrans-383
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 放置强调标记
+- en: 'Thus far, we’ve shown emphasis marks in specific positions: above each glyph
+    in horizontal text, and to the right of each glyph in vertical text. These are
+    the default CSS values, but not always the preferred placement. The `text-emphasis-position`
+    property allows you to change where marks are placed.'
+  id: totrans-384
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们展示了特定位置的强调标记：在水平文本中每个字形的上方，以及在垂直文本中每个字形的右侧。这些是默认的 CSS 值，但不一定是首选的位置。`text-emphasis-position`
+    属性允许你改变标记的放置位置。
+- en: The values `over` and `under` are applied only when the typographic mode is
+    horizontal. Similarly, `right` and `left` are used only when the typographic mode
+    is vertical.
+  id: totrans-385
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当排版模式为水平时，`over` 和 `under` 值只适用于上述情况。类似地，当排版模式为垂直时，`right` 和 `left` 值仅适用于右侧和左侧。
+- en: 'This can be important in some Eastern languages. For example, Chinese, Japanese,
+    Korean, and Mongolian all prefer to have marks to the right when the text is written
+    vertically. They diverge on horizontal text: Chinese prefers marks below the text,
+    and the rest prefer above the text, when it’s horizontal. Thus you might write
+    something like this in a stylesheet:'
+  id: totrans-386
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这在一些东方语言中可能很重要。例如，中文、日文、韩文和蒙古文在垂直书写时更喜欢将标记放在右侧。它们在水平文本上有所不同：中文更喜欢在文本下方放置标记，而其他语言则更喜欢在文本上方放置标记。因此，你可能会在样式表中写类似以下的内容：
+- en: '[PRE64]'
+  id: totrans-387
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE64]'
+- en: This would override the default `over right` when the text is marked as being
+    Chinese, applying `under right` instead.
+  id: totrans-388
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当文本标记为中文时，这将覆盖默认的`over right`，应用`under right`。
+- en: Using the text-emphasis Shorthand
+  id: totrans-389
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用文本强调速记法
+- en: A shorthand option exists for the `text-emphasis` properties, but it brings
+    together only style and color.
+  id: totrans-390
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`text-emphasis`属性存在一个速记选项，但仅汇集了样式和颜色。'
+- en: The reason `text-emphasis-position` is not included in the `text-emphasis` shorthand
+    is so that it can (indeed must) be inherited separately. Therefore, the style
+    and color of the marks can be changed via `text-emphasis` without overriding the
+    position in the process.
+  id: totrans-391
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 之所以`text-emphasis-position`没有包含在`text-emphasis`速记法中，是因为它可以（实际上必须）单独继承。因此，可以通过`text-emphasis`更改标记的样式和颜色，而无需在此过程中覆盖位置。
+- en: 'As stated earlier, each character or ideogram or other glyph—what CSS calls
+    a *typographic character unit*—gets its own emphasis mark. That is roughly correct,
+    but exceptions occur. The following character units do *not* get emphasis marks:'
+  id: totrans-392
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如前面所述，每个字符、表意字符或其他字形——CSS称之为*排印字符单元*——都有其自己的强调标记。这大致是正确的，但也有例外。以下字符单元*不*获得强调标记：
+- en: Word separators such as spaces, or any other Unicode separator character
+  id: totrans-393
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 字词分隔符，如空格或任何其他Unicode分隔符字符
+- en: Punctuation characters, such as commas, full stops, and parentheses
+  id: totrans-394
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 标点符号，例如逗号、句号和括号
+- en: Unicode symbols corresponding to control codes, or any unassigned characters
+  id: totrans-395
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 与控制代码对应的Unicode符号，或任何未分配的字符
+- en: Setting Text Drawing Order
+  id: totrans-396
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置文本绘制顺序
+- en: 'Browsers are supposed to use a specific order to draw the text decorations,
+    shadows, and emphasis marks we’ve discussed previously, along with the text itself.
+    These are drawn in the following order, from bottommost (furthest away from the
+    user) to topmost (closest to the user):'
+  id: totrans-397
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 浏览器应该按照特定顺序绘制我们之前讨论过的文本装饰、阴影和强调标记，以及文本本身。这些按照从最底部（离用户最远）到最顶部（最靠近用户）的顺序绘制：
+- en: Shadows (`text-shadow`)
+  id: totrans-398
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 阴影（`text-shadow`）
+- en: Underlines (`text-decoration`)
+  id: totrans-399
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 下划线（`text-decoration`）
+- en: Overlines (`text-decoration`)
+  id: totrans-400
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 顶线（`text-decoration`）
+- en: The actual text
+  id: totrans-401
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 实际文本
+- en: Emphasis marks (`text-emphasis`)
+  id: totrans-402
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 强调标记（`text-emphasis`）
+- en: Line-through (`text-decoration`)
+  id: totrans-403
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 删除线（`text-decoration`）
+- en: Thus, the drop shadows of the text are placed behind everything else. Underlines
+    and overlines go behind the text. Emphasis marks and line-throughs go on top of
+    the text. Note that if you have top text-emphasis marks and an overline, the emphasis
+    marks will be drawn on top of the overline, obfuscating the overline where they
+    overlap.
+  id: totrans-404
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，文本的阴影被放置在其他所有内容的后面。下划线和顶线在文本后面。强调标记和删除线在文本顶部。请注意，如果您同时拥有顶部文本强调标记和顶线，则强调标记将绘制在顶线之上，重叠部分将遮蔽顶线。
+- en: Whitespace
+  id: totrans-405
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 空格
+- en: Now that we’ve covered a variety of ways to style, decorate, and otherwise enhance
+    the text, let’s talk about the property `white-space`, which affects the user
+    agent’s handling of space, newline, and tab characters within the document source.
+  id: totrans-406
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们已经涵盖了各种样式、装饰和其他增强文本的方式，让我们来谈谈`white-space`属性，它影响用户代理处理文档源中的空格、换行和制表符的方式。
+- en: 'By using the `white-space` property, you can affect how a browser treats the
+    whitespace between words and lines of text. To a certain extent, default HTML
+    handling already does this: it collapses any whitespace down to a single space.
+    So given the following markup, the rendering in a web browser would show only
+    one space between each word and ignore the line feed in the elements:'
+  id: totrans-407
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过使用`white-space`属性，您可以影响浏览器处理单词和文本行之间空白的方式。在某种程度上，默认的HTML处理已经实现了这一点：它将任何空白都折叠为单个空格。因此，给定以下标记，网页浏览器中的呈现将在每个单词之间显示一个空格，并忽略元素中的换行：
+- en: '[PRE65]'
+  id: totrans-408
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE65]'
+- en: 'You can explicitly set this default behavior with the following declaration:'
+  id: totrans-409
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用以下声明显式设置此默认行为：
+- en: '[PRE66]'
+  id: totrans-410
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE66]'
+- en: 'This rule tells the browser to do as browsers have always done: discard extra
+    whitespace. Given this value, line-feed characters (carriage returns) are converted
+    into spaces, and any sequence of more than one space in a row is converted to
+    a single space.'
+  id: totrans-411
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此规则告诉浏览器要像浏览器一直以来所做的那样：丢弃额外的空白。根据这个值，换行字符（回车符）被转换为空格，并且连续超过一个空格的序列被转换为单个空格。
+- en: 'Should you set `white-space` to `pre`, however, the whitespace in an affected
+    element is treated as though the elements were HTML `<pre>` elements; whitespace
+    is *not* ignored, as shown in [Figure 15-36](#honoring_the_spaces_in_markup):'
+  id: totrans-412
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，如果将 `white-space` 设置为 `pre`，受影响元素中的空白会被视为 HTML `<pre>` 元素；空白不会被忽略，如图 [15-36](#honoring_the_spaces_in_markup)
+    所示：
+- en: '[PRE67]'
+  id: totrans-413
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE67]'
+- en: '[PRE68]'
+  id: totrans-414
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE68]'
+- en: '![css5 1536](assets/css5_1536.png)'
+  id: totrans-415
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1536](assets/css5_1536.png)'
+- en: Figure 15-36\. Honoring the spaces in markup
+  id: totrans-416
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-36\. 在标记中保留空格
+- en: With a `white-space` value of `pre`, the browser will pay attention to extra
+    spaces and even carriage returns. In this respect, any element can be made to
+    act like a `<pre>` element.
+  id: totrans-417
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `white-space` 值为 `pre`，浏览器将注意到额外的空格甚至回车。在这方面，任何元素都可以被制作成 `<pre>` 元素。
+- en: 'The opposite value is `nowrap`, which prevents text from wrapping within an
+    element, except wherever you use a `<br>` element. When text can’t wrap and it
+    gets too wide for its container, a horizontal scrollbar will appear by default
+    (this can be changed using the `overflow` property). The effects of the following
+    markup are shown in [Figure 15-37](#suppressing_line_wrapping_with_the_white):'
+  id: totrans-418
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反的值是 `nowrap`，它防止文本在元素内部换行，除非使用 `<br>` 元素。当文本无法换行并且过宽时，会默认出现水平滚动条（可以使用 `overflow`
+    属性更改）。以下标记的效果显示在图 [15-37](#suppressing_line_wrapping_with_the_white) 中：
+- en: '[PRE69]'
+  id: totrans-419
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE69]'
+- en: '![css5 1537](assets/css5_1537.png)'
+  id: totrans-420
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1537](assets/css5_1537.png)'
+- en: Figure 15-37\. Suppressing line wrapping with the `white-space` property
+  id: totrans-421
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-37\. 使用 `white-space` 属性抑制换行
+- en: If an element is set to `pre-wrap`, text within that element has whitespace
+    sequences preserved, but text lines are wrapped normally. With this value, generated
+    linebreaks as well as those found in the source markup are both honored.
+  id: totrans-422
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个元素被设置为 `pre-wrap`，那么元素内的文本会保留空白序列，但文本行会正常换行。使用此值，生成的换行以及源标记中的换行都会被保留。
+- en: The `pre-line` value is the opposite of `pre-wrap` and causes whitespace sequences
+    to collapse as in normal text but honors new lines.
+  id: totrans-423
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`pre-line` 值与 `pre-wrap` 相反，导致空白序列像普通文本一样折叠，但保留新行。'
+- en: The `break-spaces` value is similar to `pre-wrap`, except that all whitespace
+    is preserved, even at the end of the line, with a line-break opportunity after
+    each whitespace character. These spaces take up space and do not hang, and thus
+    affect the box’s intrinsic sizes (min-content size and max-content size).
+  id: totrans-424
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`break-spaces` 值与 `pre-wrap` 类似，但所有空白都会被保留，即使在行末也会有换行机会。这些空格占据空间，不会悬挂，从而影响框的固有尺寸（最小内容大小和最大内容大小）。'
+- en: '[Table 15-2](#white-space_properties) summarizes the behaviors of the various
+    `white-space` properties.'
+  id: totrans-425
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 [15-2](#white-space_properties) 总结了各种 `white-space` 属性的行为。
+- en: Table 15-2\. `white-space` properties
+  id: totrans-426
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表15-2\. `white-space` 属性
+- en: '| Value | Whitespace | Line feeds | Auto line wrapping | Trailing whitespace
+    |'
+  id: totrans-427
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 空白 | 换行 | 自动换行 | 结尾空白 |'
+- en: '| --- | --- | --- | --- | --- |'
+  id: totrans-428
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- |'
+- en: '| `pre-line` | Collapsed | Honored | Allowed | Removed |'
+  id: totrans-429
+  prefs: []
+  type: TYPE_TB
+  zh: '| `pre-line` | 折叠 | 保留 | 允许 | 移除 |'
+- en: '| `normal` | Collapsed | Ignored | Allowed | Removed |'
+  id: totrans-430
+  prefs: []
+  type: TYPE_TB
+  zh: '| `normal` | 折叠 | 忽略 | 允许 | 移除 |'
+- en: '| `nowrap` | Collapsed | Ignored | Prevented | Removed |'
+  id: totrans-431
+  prefs: []
+  type: TYPE_TB
+  zh: '| `nowrap` | 折叠 | 忽略 | 阻止 | 移除 |'
+- en: '| `pre` | Preserved | Honored | Prevented | Preserved |'
+  id: totrans-432
+  prefs: []
+  type: TYPE_TB
+  zh: '| `pre` | 保留 | 保留 | 阻止 | 保留 |'
+- en: '| `pre-wrap` | Preserved | Honored | Allowed | Hanging |'
+  id: totrans-433
+  prefs: []
+  type: TYPE_TB
+  zh: '| `pre-wrap` | 保留 | 保留 | 允许 | 悬挂 |'
+- en: '| `break-spaces` | Preserved | Honored | Allowed | Wrap |'
+  id: totrans-434
+  prefs: []
+  type: TYPE_TB
+  zh: '| `break-spaces` | 保留 | 保留 | 允许 | 悬挂 |'
+- en: 'Consider the following markup, which has line-feed (e.g., return) characters
+    to break lines, plus the end of each line has several extra space characters that
+    aren’t visible in the markup. The results are illustrated in [Figure 15-38](#three_different_ways_to_handle_whitespace):'
+  id: totrans-435
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下标记，其中包含换行（例如，回车）字符来断开行，每行结尾有多个看不见的额外空格字符。结果如图 [15-38](#three_different_ways_to_handle_whitespace)
+    所示：
+- en: '[PRE70]'
+  id: totrans-436
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE70]'
+- en: '![css5 1538](assets/css5_1538.png)'
+  id: totrans-437
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1538](assets/css5_1538.png)'
+- en: Figure 15-38\. Three ways to handle whitespace
+  id: totrans-438
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-38\. 处理空白的三种方法
+- en: Notice that the third paragraph has a blank line between the first and second
+    lines of text. This is because a line wrap was performed between two adjacent
+    blank spaces at the end of the line in the source markup. This didn’t happen for
+    `pre-wrap` or `pre-line`, because those `white-space` values don’t allow hanging
+    space to create line-wrap opportunities. The `break-spaces` value does.
+  id: totrans-439
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意第三段落在第一行和第二行之间有一个空行。这是因为源标记中的行尾两个相邻空格之间进行了换行。但在`pre-wrap`或`pre-line`中并未发生，因为这些`white-space`值不允许空格挂起以创建换行机会。`break-spaces`值则可以。
+- en: Whitespace impacts several properties, including `tab-size`, which has no effect
+    when the `white-space` property is set to a value in which whitespace is not maintained;
+    and `overflow-wrap`, which has an effect only when `white-space` allows wrapping.
+  id: totrans-440
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 空白字符影响多个属性，包括`tab-size`。当`white-space`属性设置为不维护空格的值时，它将不会起作用；而`overflow-wrap`仅在`white-space`允许换行时才有效。
+- en: Setting Tab Sizes
+  id: totrans-441
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置制表位大小
+- en: Since whitespace is preserved in some values of `white-space`, it stands to
+    reason that tabs (i.e., Unicode code point 0009) will be displayed as, well, tabs.
+    But how many spaces should each tab equal? That’s where `tab-size` comes in.
+  id: totrans-442
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于在某些`white-space`值中保留了空格，因此理所当然地制表位（即Unicode代码点0009）将显示为制表符。但每个制表符应等于多少空格？这就是`tab-size`发挥作用的地方。
+- en: 'By default, when whitespace is preserved, as with `white-space` values of `pre`,
+    `pre-wrap`, and `break-spaces`, any tab character will be treated the same as
+    eight spaces in a row, including any effects from `letter-spacing` and `word-spacing`.
+    You can alter that by using a different integer value. Thus, `tab-size: 4` will
+    cause each tab to be rendered as if it were four spaces in a row. Negative values
+    are not allowed for `tab-size`.'
+  id: totrans-443
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '默认情况下，当保留空白字符时（如`white-space`值为`pre`、`pre-wrap`和`break-spaces`时），任何制表符字符都将被视为连续八个空格，包括`letter-spacing`和`word-spacing`的任何效果。您可以通过使用不同的整数值来改变这一点。因此，`tab-size:
+    4`将导致每个制表符被呈现为连续四个空格。`tab-size`不允许负值。'
+- en: 'If a length value is supplied, each tab is rendered using that length. For
+    example, `tab-size: 10px` will cause a sequence of three tabs to be rendered as
+    30 pixels of whitespace. Some effects of `tab-size` are illustrated in [Figure 15-39](#differing_tab_lengths).'
+  id: totrans-444
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果提供了长度值，则每个制表符都将使用该长度进行渲染。例如，`tab-size: 10px`将导致三个制表符序列呈现为30像素的空白。`tab-size`的一些效果在图15-39中有所说明。'
+- en: '![css5 1539](assets/css5_1539.png)'
+  id: totrans-445
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1539](assets/css5_1539.png)'
+- en: Figure 15-39\. Differing tab lengths
+  id: totrans-446
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图15-39\. 不同的制表位长度
+- en: Remember that `tab-size` is effectively ignored when the value of `white-space`
+    causes whitespace to be collapsed (see [Table 15-2](#white-space_properties)).
+    The value will still be computed in such cases, but there will be no visible effect
+    no matter how many tabs appear in the source.
+  id: totrans-447
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，当`white-space`属性的值导致空格被折叠时，`tab-size`实际上会被忽略。在这种情况下，计算出来的值仍然存在，但无论源代码中出现多少制表符，都不会有可见效果。
+- en: Wrapping and Hyphenation
+  id: totrans-448
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 换行和连字符化
+- en: Handling whitespace is all well and good, but it’s a lot more common to want
+    to influence the way the visible characters are handled when it comes to line
+    wrapping. A few properties can influence where line wrapping is allowed, as well
+    as enable hyphenation support.
+  id: totrans-449
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 处理空白字符当然很好，但更常见的是希望影响可见字符在换行时的处理方式。有几个属性可以影响换行的位置，并支持连字符化。
+- en: Hyphenation
+  id: totrans-450
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 连字符化
+- en: Hyphens can be very useful when displaying long words and short line lengths,
+    such as blog posts on mobile devices and portions of *The Economist*. Authors
+    can always insert their own hyphenation hints by using the Unicode character *U+00AD
+    SOFT HYPHEN* (or, in HTML, `&shy;`), but CSS also offers a way to enable hyphenation
+    without littering up the document with hints.
+  id: totrans-451
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当在移动设备上显示博客文章或《经济学人》部分时，连字符可以非常有用。作者们可以通过使用Unicode字符*U+00AD软连字符*（或在HTML中使用`&shy;`）来插入自己的连字符提示，但CSS也提供了一种在不用提示混乱文档的情况下启用连字符的方法。
+- en: With the default value of `manual`, hyphens are inserted only where manually
+    inserted hyphenation markers occur in the document, such as U+00AD or `&shy;`.
+    Otherwise, no hyphenation occurs. The value `none`, on the other hand, suppresses
+    any hyphenation, even if manual break markers are present; thus, U+00AD and `&shy;`
+    are ignored.
+  id: totrans-452
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`manual`的默认值时，只有在文档中手动插入连字符标记时才插入连字符，例如U+00AD或`&shy;`。否则，不会发生任何连字符。另一方面，`none`的值则抑制了任何连字符，即使手动换行标记存在；因此，U+00AD和`&shy;`会被忽略。
+- en: Tip
+  id: totrans-453
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 提示
+- en: The `<wbr>` element does not introduce a hyphen at the line-break point. To
+    make a hyphen appear only at the end of a line, use the soft hyphen character
+    entity (`&shy;`) instead.
+  id: totrans-454
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<wbr>` 元素不会在换行点引入连字符。若要仅在行末显示连字符，请使用软连字符实体 (`&shy;`)。'
+- en: 'The far more interesting (and potentially inconsistent) value is `auto`, which
+    permits the browser to insert hyphens and break words at “appropriate” places
+    inside words, even where no manually inserted hyphenation breaks exist. But what
+    constitutes a *word*? And, under what circumstances is it appropriate to hyphenate
+    a word? Both are language dependent. User agents are supposed to prefer manually
+    inserted hyphen breaks to automatically determined breaks, but there are no guarantees.
+    An illustration of hyphenation, or the suppression thereof, in the following example
+    is shown in [Figure 15-40](#hyphenation_results):'
+  id: totrans-455
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更为有趣（且潜在不一致）的值是 `auto`，它允许浏览器在单词内的“适当”位置插入连字符和断字，即使没有手动插入的连字符断字也会执行。但是什么构成一个*单词*？以及在什么情况下插入连字符是合适的？这两者都依赖于语言。用户代理应优先考虑手动插入的连字符断字而不是自动确定的断字，但这并非保证。下面的示例展示了连字符化或抑制连字符化的插图，详见
+    [图 15-40](#hyphenation_results)。
+- en: '[PRE71]'
+  id: totrans-456
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE71]'
+- en: '[PRE72]'
+  id: totrans-457
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE72]'
+- en: '![css5 1540](assets/css5_1540.png)'
+  id: totrans-458
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1540](assets/css5_1540.png)'
+- en: Figure 15-40\. Hyphenation results
+  id: totrans-459
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-40\. 连字符化结果
+- en: Because hyphenation is language dependent, and because the CSS specifications
+    do not define precise (or even vague) rules for user agents, hyphenation may differ
+    by browser.
+  id: totrans-460
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于连字符化依赖语言，并且 CSS 规范未定义用户代理的确切（甚至模糊）规则，因此在不同浏览器中可能会有所不同。
+- en: 'If you do choose to hyphenate, be careful about the elements to which you apply
+    the hyphenation. The `hyphens` property is inherited, so declaring `body {hyphens:
+    auto;}` will apply hyphenation to everything in your document—including text areas,
+    code samples, block quotes, and so on. Blocking automatic hyphenation at the level
+    of those elements is probably a good idea, using rules that are something like
+    this:'
+  id: totrans-461
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果决定进行连字符化，请注意应用连字符化的元素。`hyphens` 属性是继承的，因此声明 `body {hyphens: auto;}` 将在文档中的所有内容（包括文本区域、代码示例、块引用等）上应用连字符化。在这些元素级别上阻止自动连字符化可能是个好主意，使用类似以下的规则：'
+- en: '[PRE73]'
+  id: totrans-462
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE73]'
+- en: It’s usually a good idea to suppress hyphenation in code samples and code blocks,
+    especially in languages that use hyphens in things like property and value names.
+    (Ahem.) Similar logic holds for keyboard input text—you likely don’t want a stray
+    dash getting into your Unix command-line examples! And so on down the line. If
+    you decide that you want to hyphenate some of these elements, just remove them
+    from the selector.
+  id: totrans-463
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，建议在代码示例和代码块中抑制连字符化，特别是在使用连字符作为属性和值名称的语言中。类似的逻辑适用于键盘输入文本，您可能不希望杂乱的破折号出现在
+    Unix 命令行示例中！如果您决定要对其中一些元素进行连字符化，请将其从选择器中移除。
+- en: Note
+  id: totrans-464
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: It is strongly advised to set the `lang` attribute on HTML elements to enable
+    hyphenation support and improve accessibility. As of mid-2022, `hyphens` is supported
+    in Firefox for 30+ languages, Safari supports many European languages, but Chrome-related
+    browsers support only English.
+  id: totrans-465
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 强烈建议在 HTML 元素上设置 `lang` 属性，以启用连字符支持并提高可访问性。截至 2022 年中期，`hyphens` 在 Firefox 支持
+    30 多种语言，Safari 支持多种欧洲语言，但 Chrome 相关浏览器仅支持英语。
+- en: Hyphens can be suppressed by the effects of other properties. For example, `word-break`
+    affects the way soft wrapping of text is calculated in various languages, determining
+    whether line breaks appear where text would otherwise overflow its content box.
+  id: totrans-466
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 连字符可以通过其他属性的影响来抑制。例如，`word-break` 影响各种语言中文本软换行的计算方式，决定文本在超出内容框时是否换行。
+- en: Word Breaking
+  id: totrans-467
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 单词分隔
+- en: When a run of text is too long to fit into a single line, it is *soft wrapped*.
+    This is in contrast to *hard wraps*, which include line-feed characters and `<br>`
+    elements. Where the text is soft wrapped is determined by the user agent, but
+    `word-break` lets authors influence that decision making.
+  id: totrans-468
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当一段文本过长无法放入单行时，会进行*软换行*。这与*硬换行*相对，后者包括换行字符和 `<br>` 元素。用户代理决定文本软换行的位置，但 `word-break`
+    允许作者影响该决策。
+- en: The default value of `normal` means that text should be wrapped as it always
+    has been. In practical terms, this means that text is broken between words, though
+    the definition of a word varies by language. In Latin-derived languages like English,
+    this is almost always a space between letter sequences (e.g., words) or at hyphens.
+    In ideographic languages like Japanese, each symbol can be a complete word, so
+    breaks can occur between any two symbols. In other ideographic languages, though,
+    the soft-wrap points may be limited to appear between sequences of symbols that
+    are not space separated. Again, that’s all by default and is the way browsers
+    have handled text for years.
+  id: totrans-469
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`normal`的默认值意味着文本应按照其一贯的方式换行。在实际操作中，这意味着文本在单词之间断开，尽管单词的定义因语言而异。在像英语这样的拉丁衍生语言中，这几乎总是在字母序列（例如单词）之间或连字符处断开。在像日语这样的表意语言中，每个符号可以是一个完整的单词，因此断点可以出现在任意两个符号之间。然而，在其他表意语言中，软换行点可能仅限于出现在未空格分隔的符号序列之间。再次强调，默认情况下这是浏览器多年来处理文本的方式。'
+- en: If you apply the value `break-all`, soft wrapping can (and will) occur between
+    any two characters, even if they are in the middle of a word. With this value,
+    no hyphens are shown, even if the soft wrapping occurs at a hyphenation point
+    (see [“Hyphenation”](#hyphenation)). Note that values of the `line-break` property
+    (described next) can affect the behavior of `break-all` in ideographic text.
+  id: totrans-470
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果应用`break-all`值，软换行可以（并且将）出现在任意两个字符之间，即使它们位于单词中间的分隔点上也是如此。使用这个值时，即使软换行发生在连字符处（参见[“连字符”](#hyphenation)），也不会显示连字符。请注意，`line-break`属性的值（接下来描述）可能会影响在表意文字中的`break-all`行为。
+- en: 'The `keep-all` value, on the other hand, suppresses soft wrapping between characters,
+    even in ideographic languages where each symbol is a word. Thus, in Japanese,
+    a sequence of symbols with no whitespace will not be soft wrapped, even if this
+    means the text line will exceed the length of its element. (This behavior is similar
+    to `white-space: pre`.)'
+  id: totrans-471
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '另一方面，`keep-all`值抑制字符之间的软换行，即使在每个符号都是一个单词的表意语言中也是如此。因此，在日语中，没有空白的符号序列不会软换行，即使这意味着文本行将超过其元素的长度。（这种行为类似于`white-space:
+    pre`。）'
+- en: '[Figure 15-41](#altering_word_breaking_behavior) shows a few examples of `word-break`
+    values, and [Table 15-3](#word-breaking_behavior) summarizes the effects of each
+    value.'
+  id: totrans-472
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 15-41](#altering_word_breaking_behavior)展示了一些`word-break`值的示例，而[表 15-3](#word-breaking_behavior)总结了每个值的效果。'
+- en: '![css5 1541](assets/css5_1541.png)'
+  id: totrans-473
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1541](assets/css5_1541.png)'
+- en: Figure 15-41\. Altering word-breaking behavior
+  id: totrans-474
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-41\. 修改断词行为
+- en: Table 15-3\. Word-breaking behavior
+  id: totrans-475
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 15-3\. 断词行为
+- en: '| Value | Non-CJK | CJK | Hyphenation permitted |'
+  id: totrans-476
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 非CJK | CJK | 允许连字符 |'
+- en: '| --- | --- | --- | --- |'
+  id: totrans-477
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
+- en: '| `normal` | As usual | As usual | Yes |'
+  id: totrans-478
+  prefs: []
+  type: TYPE_TB
+  zh: '| `normal` | 如常 | 如常 | 是 |'
+- en: '| `break-all` | After any character | After any character | No |'
+  id: totrans-479
+  prefs: []
+  type: TYPE_TB
+  zh: '| `break-all` | 在任何字符后 | 在任何字符后 | 否 |'
+- en: '| `keep-all` | As usual | Around sequences | Yes |'
+  id: totrans-480
+  prefs: []
+  type: TYPE_TB
+  zh: '| `keep-all` | 如常 | 在序列周围 | 是 |'
+- en: 'As noted previously, the value `break-word` has been deprecated, although it
+    is supported by all known browsers as of mid-2022\. When used, it has the same
+    effect as `{word-break: normal; overflow-wrap: anywhere;}`, even if `overflow-wrap`
+    has a different value. (We’ll cover `overflow-wrap` in [“Wrapping Text”](#wrapping_text).)'
+  id: totrans-481
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '正如前面所述，尽管到2022年中期所有已知的浏览器都支持`break-word`值，但它已被弃用。当使用时，即使`overflow-wrap`具有不同的值，它也具有相同的效果（`{word-break:
+    normal; overflow-wrap: anywhere;}`）。 （我们将在[“文本换行”](#wrapping_text)中涵盖`overflow-wrap`。）'
+- en: Line Breaking
+  id: totrans-482
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 换行处理
+- en: If your interests run to CJK text, then in addition to `word-break`, you will
+    also want to get to know `line-break`.
+  id: totrans-483
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您对CJK文本感兴趣，除了`word-break`之外，您还需要了解`line-break`。
+- en: As you just saw, `word-break` can affect the way lines of text are soft wrapped
+    in CJK text. The `line-break` property also affects such soft wrapping, specifically
+    how wrapping is handled around CJK-specific symbols and around non-CJK punctuation
+    (such as exclamation points, hyphens, and ellipses) that appears in text declared
+    to be CJK.
+  id: totrans-484
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您刚才看到的，`word-break`可以影响CJK文本中文本行的软换行方式。`line-break`属性也会影响此类软换行，特别是在处理围绕CJK特定符号和非CJK标点（如感叹号、连字符和省略号）出现在声明为CJK文本中的情况时。
+- en: In other words, `line-break` applies to certain CJK characters all the time,
+    regardless of the content’s declared language. If you throw some CJK characters
+    into a paragraph of English text, `line-break` will still apply to them, but not
+    to anything else in the text. Conversely, if you declare content to be in a CJK
+    language, `line-break` will continue to apply to those CJK characters *plus* a
+    number of non-CJK characters within the CJK text. These include punctuation marks,
+    currency symbols, and a few other symbols.
+  id: totrans-485
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 换句话说，`line-break`始终适用于某些CJK字符，而不管内容声明的语言是什么。如果你在英文文本段落中加入一些CJK字符，`line-break`仍然会适用于它们，但不适用于文本中的其他任何内容。相反，如果声明内容为CJK语言，`line-break`将继续适用于该CJK文本中的这些CJK字符，*以及*CJK文本中的一些非CJK字符。这些包括标点符号、货币符号和其他一些符号。
+- en: No authoritative list exists of which characters are affected and which are
+    not, but [the specification](http://w3.org/TR/css3-text/#line-break) provides
+    a list of recommended symbols and behaviors around those symbols.
+  id: totrans-486
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 没有权威的字符受影响和不受影响的列表，但[规范](http://w3.org/TR/css3-text/#line-break)提供了一份推荐符号及其周围行为的列表。
+- en: The default value `auto` allows user agents to soft wrap text as they like,
+    and more importantly lets user agents vary line breaking based on the situation.
+    For example, the user agent can use looser line-breaking rules for short lines
+    of text and stricter rules for long lines. In effect, `auto` allows the user agent
+    to switch among the `loose`, `normal`, and `strict` values as needed, possibly
+    even on a line-by-line basis within a single element.
+  id: totrans-487
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值`auto`允许用户代理根据需要自由换行文本，并且更重要的是让用户代理根据情况变化线路断开。例如，用户代理可以对短文本使用较松的换行规则，对长文本使用较严格的规则。实际上，`auto`允许用户代理在需要时在`loose`、`normal`和`strict`值之间切换，甚至可能在单个元素内逐行切换。
+- en: 'You can perhaps infer that those other values have the following general meanings:'
+  id: totrans-488
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也许你可以推断出其他值有以下一般含义：
+- en: '`loose`'
+  id: totrans-489
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`loose`'
+- en: This value imposes the “least restrictive” rules for wrapping text, and is meant
+    for use when line lengths are short, such as in newspapers.
+  id: totrans-490
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个值施加了“最不限制性”的文本换行规则，适用于行长度较短的情况，例如报纸。
+- en: '`normal`'
+  id: totrans-491
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`normal`'
+- en: This value imposes the “most common” rules for wrapping text. What exactly “most
+    common” means is not precisely defined, though there is the aforementioned list
+    of recommended behaviors.
+  id: totrans-492
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个值施加了“最常见”的文本换行规则。什么是“最常见”并没有明确定义，尽管有前面提到的推荐行为列表。
+- en: '`strict`'
+  id: totrans-493
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`strict`'
+- en: This value imposes the “most stringent” rules for wrapping text. Again, this
+    is not precisely defined.
+  id: totrans-494
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个值施加了“最严格”的文本换行规则。再次强调，这并没有明确定义。
+- en: '`anywhere`'
+  id: totrans-495
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`anywhere`'
+- en: This value creates a line-breaking opportunity around every typographic unit,
+    including whitespace and punctuation marks. A soft wrap can even happen in the
+    middle of a word, and hyphenation is not applied in such circumstances.
+  id: totrans-496
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个值在每个排版单元周围创建一个换行机会，包括空格和标点符号。软换行甚至可以发生在一个单词的中间，并且在这种情况下不会应用连字符。
+- en: Wrapping Text
+  id: totrans-497
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本换行
+- en: After all that information about hyphenation and soft wrapping, what happens
+    when text overflows its container anyway? That’s what `overflow-wrap` addresses.
+  id: totrans-498
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在讨论了连字符和软换行的所有信息之后，如果文本仍然溢出其容器会发生什么？这就是`overflow-wrap`要解决的问题。
+- en: Originally called `word-wrap`, the `overflow-wrap` property applies to inline
+    elements, setting whether the browser should insert line breaks within otherwise
+    unbreakable strings in order to prevent text from overflowing its line box. In
+    contrast to `word-break`, `overflow-wrap` will create a break only if an entire
+    word cannot be placed on its own line without overflowing.
+  id: totrans-499
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最初被称为`word-wrap`，`overflow-wrap`属性适用于内联元素，设置浏览器是否应插入换行符以防止文本溢出其行框。与`word-break`相反，`overflow-wrap`仅在整个单词无法单独放置在一行上而不溢出时才会创建换行。
+- en: This property is less straightforward than it first appears, because its primary
+    effect is to change how word wrapping and minimum-content sizing (which we haven’t
+    even had a chance to discuss yet) interact in trying to avoid overflow at the
+    ends of text lines.
+  id: totrans-500
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个属性不像它表面看起来的那么直接，因为它的主要效果是改变单词换行和最小内容大小（我们甚至还没有讨论过）在尝试避免文本行末溢出时的交互作用。
+- en: Note
+  id: totrans-501
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: The `overflow-wrap` property can operate only if the value of `white-space`
+    allows line wrapping. If it does not (e.g., with the value `pre`), `overflow-wrap`
+    has no effect.
+  id: totrans-502
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只有当`white-space`的值允许换行时，`overflow-wrap`属性才能起作用。如果不允许（例如，值为`pre`），`overflow-wrap`就没有效果。
+- en: If the default value of `normal` is in effect, wrapping happens as normal—between
+    words or as directed by the language. If a word is longer than the width of the
+    element containing it, the word will “spill out” of the element box, just as on
+    the classic CSS IS AWESOME coffee mug. (Google it if you haven’t seen it before.
+    It’s worth the chuckle.)
+  id: totrans-503
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果生效的是默认值`normal`，则换行会按照正常方式进行——在单词之间或者按语言指示进行。如果单词比包含它的元素的宽度更长，则单词将“溢出”元素框，就像经典的
+    CSS IS AWESOME 咖啡杯上一样。（如果你之前没见过，去谷歌一下。这值得一笑。）
+- en: If the `break-word` value is applied, wrapping can happen in the middle of words,
+    with no hyphen placed at the site of the wrapping, but this will happen so that
+    line lengths will be as wide as the element’s width. In other words, if the `width`
+    property of the element is given the value `min-content`, the “minimum content”
+    calculations will assume that content strings must be as long as possible.
+  id: totrans-504
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果应用了`break-word`值，单词可以在中间换行，而不会在换行处放置连字符，但这将导致行长与元素的宽度一样。换句话说，如果元素的`width`属性给定了`min-content`的值，那么“最小内容”计算将假设内容字符串必须尽可能长。
+- en: By contrast, when `anywhere` is set, the “minimum content” calculations will
+    take line-wrapping opportunities into account. This means, in effect, that the
+    minimum-content width will be the width of the widest character in the element’s
+    content. Only when two skinny characters are next to each other will they have
+    a chance to be on the same line together, and in a monospace font every line of
+    text will be a single character. [Figure 15-42](#overflow_wrapping) illustrates
+    the difference between these three values.
+  id: totrans-505
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相比之下，当设置`anywhere`时，会考虑到换行的机会来进行“最小内容”计算。这意味着，实际上，最小内容宽度将是元素内容中最宽字符的宽度。只有当两个细字符挨在一起时，它们才有机会在同一行上，而在等宽字体中，每行文本都将是一个单独的字符。[图 15-42](#overflow_wrapping)说明了这三个值之间的区别。
+- en: '![css5 1542](assets/css5_1542.png)'
+  id: totrans-506
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1542](assets/css5_1542.png)'
+- en: 'Figure 15-42\. Overflow wrapping for `width: min-content`'
+  id: totrans-507
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: '图 15-42\. `width: min-content`的溢出换行'
+- en: If the value of `width` is something other than `min-content`, then `break-word`
+    and `anywhere` will have the same results. Really, the only difference between
+    the two values is that with `anywhere`, soft-wrap opportunities introduced by
+    the word break are considered when calculating min-content intrinsic sizes. With
+    `break-word`, they are not considered.
+  id: totrans-508
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`width`的值不是`min-content`，那么`break-word`和`anywhere`将会有相同的结果。实际上，这两个值唯一的区别在于，对于`anywhere`，由单词断开引入的软换行机会在计算最小内容内在大小时被考虑。而对于`break-word`，则不会考虑这些机会。
+- en: 'While `overflow-wrap: break-word` may appear very similar to `word-break: break-all`,
+    they are not the same. To see why, compare the second box in [Figure 15-42](#overflow_wrapping)
+    to the top-middle box in [Figure 15-41](#altering_word_breaking_behavior). As
+    it shows, `overflow-wrap` kicks in only if content actually overflows; thus, when
+    there is an opportunity to use whitespace in the source to wrap lines, `overflow-wrap`
+    will take it. By contrast, `word-break: break-all` will cause wrapping when content
+    reaches the wrapping edge, regardless of any whitespace that comes earlier in
+    the line.'
+  id: totrans-509
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '尽管`overflow-wrap: break-word`看起来非常类似于`word-break: break-all`，但它们并不相同。要理解原因，请比较[图 15-42](#overflow_wrapping)中的第二个框和[图 15-41](#altering_word_breaking_behavior)的顶部中间框。正如显示的那样，只有当内容实际溢出时，`overflow-wrap`才会生效；因此，当有机会使用源中的空白字符来换行时，`overflow-wrap`会利用它。相比之下，`word-break:
+    break-all`会在内容到达换行边缘时引起换行，无论该行中之前是否有任何空白字符。'
+- en: Once upon a time there was a property called `word-wrap` that did exactly what
+    `overflow-wrap` does. The two are so identical that the specification explicitly
+    states that user agents “must treat `word-wrap` as an alternate name for the `overflow-wrap`
+    property, as if it were a shorthand of `overflow-wrap`.”
+  id: totrans-510
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 曾经有一个叫做`word-wrap`的属性，它与`overflow-wrap`完全相同。它们如此相似，以至于规范明确指出用户代理“必须将`word-wrap`视为`overflow-wrap`属性的替代名称，就好像它是`overflow-wrap`的简写一样。”
+- en: Writing Modes
+  id: totrans-511
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 写作模式
+- en: Earlier, we discussed inline direction and introduced the topic of reading direction.
+    You’ve already seen numerous benefits of including the `lang` attribute in your
+    HTML, from being able to style based on language selectors, to allowing the user
+    agent to hyphenate. Generally, you should let the user agent handle the direction
+    of text based on the language attribute, but CSS does provide properties for the
+    rare occasions when an override is necessary.
+  id: totrans-512
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 之前，我们讨论了内联方向，并介绍了阅读方向的主题。您已经看到了在 HTML 中包含 `lang` 属性的诸多好处，从能够基于语言选择器进行样式设置，到允许用户代理进行连字。通常情况下，应该让用户代理根据语言属性处理文本的方向，但是
+    CSS 提供了在必要时进行覆盖的属性。
+- en: Setting Writing Modes
+  id: totrans-513
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置书写模式
+- en: The property used for specifying one of five available writing modes is, of
+    all things, `writing-mode`. This property sets the block-flow direction of the
+    element, which determines how boxes are stacked together.
+  id: totrans-514
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于指定五种可用书写模式之一的属性是 `writing-mode`。此属性设置元素的块流方向，确定了如何堆叠框。
+- en: The default value, `horizontal-tb`, means “a horizontal inline direction, and
+    a top-to-bottom block direction.” This covers all Western and some Middle Eastern
+    languages, which may differ in the direction of their horizontal writing. The
+    other two values offer a vertical inline direction, and either an RTL or LTR block
+    direction.
+  id: totrans-515
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值 `horizontal-tb` 意味着“水平内联方向和从上到下的块方向”。这涵盖了所有西方和一些中东语言，它们在水平书写方向上可能有所不同。另外两个值提供了竖直内联方向和RTL或LTR块方向。
+- en: The `sideways-rl` and `sideways-lr` values take horizontal text and turn its
+    flow “sideways,” with the direction the text runs either going right to left (for
+    `sidewyas-rl`) or left to right (for `sideways-lr`). The difference between these
+    values and the vertical values is that the text is turned whichever way is necessary
+    to make the text read naturally.
+  id: totrans-516
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`sideways-rl` 和 `sideways-lr` 值将水平文本转向“侧面”，文本流动的方向要么从右到左（对于 `sideways-rl`）要么从左到右（对于
+    `sideways-lr`）。与竖排值的区别在于，文本被调整到使其自然阅读的方向。'
+- en: '[Figure 15-43](#writing_modes) illustrates all five values.'
+  id: totrans-517
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 15-43](#writing_modes) 描述了所有五个值。'
+- en: '![css5 1543](assets/css5_1543.png)'
+  id: totrans-518
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1543](assets/css5_1543.png)'
+- en: Figure 15-43\. Writing modes
+  id: totrans-519
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-43\. 书写模式
+- en: Notice how the lines are strung together in the two `vertical-` examples. If
+    you tilt your head to the right, the text in `vertical-rl` is at least readable.
+    The text in `vertical-lr`, on the other hand, is difficult to read because it
+    appears to flow from bottom to top, at least when arranging English text. This
+    is not a problem in languages that use `vertical-lr` flow, such as forms of Japanese.
+  id: totrans-520
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意两个 `vertical-` 示例中的行是如何串联在一起的。如果你把头向右倾斜，`vertical-rl` 中的文本至少还能读得通。另一方面，在 `vertical-lr`
+    中的文本很难读，因为看起来是从底部向上流动的，至少在排列英文文本时是这样。但在使用 `vertical-lr` 流动的语言，如某些日语形式，这并不是问题。
+- en: In vertical writing modes, the block direction is horizontal, which means vertical
+    alignment of inline elements causes them to move horizontally. This is illustrated
+    in [Figure 15-44](#writing_modes_vertical_align).
+  id: totrans-521
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在竖排书写模式中，块方向是水平的，这意味着内联元素的竖直对齐会导致它们在水平方向上移动。这在 [图 15-44](#writing_modes_vertical_align)
+    中有所说明。
+- en: '![css5 1544](assets/css5_1544.png)'
+  id: totrans-522
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1544](assets/css5_1544.png)'
+- en: Figure 15-44\. Writing modes and “vertical” alignment
+  id: totrans-523
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-44\. 书写模式与“竖直”对齐
+- en: All the super- and subscript elements cause horizontal shifts, both of themselves
+    and the placement of the lines they occupy, even though the property used to move
+    them is `vertical-align`. As described earlier, the vertical displacement is with
+    respect to the line box, where the box’s baseline is defined as horizontal—even
+    when it’s being drawn vertically.
+  id: totrans-524
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有的上标和下标元素都会导致水平位移，包括它们自身和所占据的行的位置，尽管用于移动它们的属性是 `vertical-align`。如前所述，垂直位移是相对于行框而言的，其中框的基线被定义为水平的，即使在竖直绘制时也是如此。
+- en: Confused? It’s OK. Writing modes are likely to confuse you, because they’re
+    such a different way of thinking *and* because old assumptions in the CSS specification
+    clash with the new capabilities. If vertical writing modes had been supported
+    from the outset, `vertical-align` would likely have a different name—`inline-align`
+    or something like that. (Maybe one day that will happen.)
+  id: totrans-525
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 感到困惑了吗？没关系。书写模式可能会让你感到困惑，因为它们是一种完全不同的思维方式，*并且*因为旧版 CSS 规范中的假设与新的能力发生了冲突。如果从一开始就支持了竖排书写模式，`vertical-align`
+    可能会有不同的名字——比如 `inline-align` 或类似的名称。（也许有一天会发生这种情况。）
+- en: Changing Text Orientation
+  id: totrans-526
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 改变文本方向
+- en: Once you’ve settled on a writing mode, you may decide you want to change the
+    orientation of characters within those lines of text. You might want to do this
+    for various reasons, not the least of which is using different writing systems
+    that are commingled, such as Japanese text with English words or numbers mixed
+    in. In these cases, `text-orientation` is the answer.
+  id: totrans-527
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦确定了写入模式，您可能会决定更改这些文本行中字符的方向。您可能因为各种原因而这样做，其中之一就是使用不同的混合写入系统，如包含英语单词或混合数字的日语文本。在这些情况下，`text-orientation`
+    是答案。
+- en: 'The `text-orientation` property affects the way characters are oriented. What
+    that means is best illustrated by the following styles, rendered in [Figure 15-45](#writing_modes_text_orientation):'
+  id: totrans-528
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`text-orientation` 属性影响字符的方向。这意味着最佳效果如下样式所示，在 [图 15-45](#writing_modes_text_orientation)
+    中呈现：'
+- en: '[PRE74]'
+  id: totrans-529
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE74]'
+- en: '![css5 1545](assets/css5_1545.png)'
+  id: totrans-530
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1545](assets/css5_1545.png)'
+- en: Figure 15-45\. Text orientation
+  id: totrans-531
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-45\. 文本方向
+- en: 'Across the top of [Figure 15-45](#writing_modes_text_orientation) is a basically
+    unstyled paragraph of mixed Japanese and English text. Below that are three copies
+    of that paragraph, using the writing mode `vertical-lr`. In the first, `text-orientation:
+    mixed` writes the horizontal-script characters (the English) sideways, and the
+    vertical-script characters (the Japanese) upright. In the second, all characters
+    are `upright`, including the English characters. In the third, all characters
+    are `sideways`, including the Japanese characters.'
+  id: totrans-532
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在 [图 15-45](#writing_modes_text_orientation) 的顶部是一个基本未经样式化的混合日语和英语文本段落。在此之下是三个副本，使用写入模式
+    `vertical-lr`。在第一个副本中，`text-orientation: mixed` 将横向脚本字符（英语）显示为侧向，将竖向脚本字符（日语）显示为直立。在第二个副本中，所有字符都是
+    `upright`，包括英语字符。在第三个副本中，所有字符都是 `sideways`，包括日语字符。'
+- en: Warning
+  id: totrans-533
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: As of mid-2022, `sideways` is not supported by Chromium browsers.
+  id: totrans-534
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2022年中期，Chromium 浏览器不支持 `sideways`。
+- en: Combining Characters
+  id: totrans-535
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 组合字符
+- en: Only relevant to vertical writing modes, the `text-combine-upright` property
+    enables displaying a subset of characters upright within vertical text. This can
+    be useful when mixing languages or pieces of languages, such as embedding Arabic
+    numerals in CJK text, but may have other applications.
+  id: totrans-536
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只与垂直写入模式相关的 `text-combine-upright` 属性允许在垂直文本中将一部分字符直立显示。当混合语言或语言片段时，比如在CJK文本中嵌入阿拉伯数字时，这可能会很有用，但也可能有其他应用。
+- en: Essentially, this property lets you say whether characters may sit next to each
+    other horizontally while being part of a vertical line of text. Your choices are
+    whether to allow this for all characters or for only a few numeric digits.
+  id: totrans-537
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本质上，此属性允许您指定字符在垂直文本的情况下是否可以水平排列在一起。您可以选择是否允许所有字符或仅对几个数字字符执行此操作。
+- en: 'Here’s how it works: as a line of vertical text is laid out, the browser can
+    consider whether the width of two characters, sitting next to each other, is less
+    than or equal to the value of `1em` for the text. If so, they may be placed next
+    to each other, effectively putting two characters into the space of one. If not,
+    the first character is placed alone, and the process continues.'
+  id: totrans-538
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 工作原理如下：在布局垂直文本行时，浏览器可以考虑两个相邻字符的宽度是否小于或等于文本的 `1em` 值。如果是，则它们可以相邻放置，有效地将两个字符放置在一个字符的空间内。如果不是，则第一个字符独立放置，此过程继续。
+- en: 'As of mid-2022, this can lead to characters being very, very squished. For
+    an example, consider the following markup and CSS:'
+  id: totrans-539
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2022年中期，这可能导致字符非常非常挤压。例如，请考虑以下标记和CSS：
+- en: '[PRE75]'
+  id: totrans-540
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE75]'
+- en: '[PRE76]'
+  id: totrans-541
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE76]'
+- en: 'All of the paragraphs are written using `writing-mode: vertical-rl`, but some
+    are set to `text-combine-upright: all`, and others are not. The last paragraph
+    is not set to `all`, but the `<span>` elements within it have been. [Figure 15-46](#various_types_of_upright_combination)
+    shows the result.'
+  id: totrans-542
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '所有段落均使用 `writing-mode: vertical-rl` 编写，但某些段落设置为 `text-combine-upright: all`，而其他段落则没有。最后一个段落未设置为
+    `all`，但其中的 `<span>` 元素已经设置了。[图 15-46](#various_types_of_upright_combination) 展示了结果。'
+- en: '![css5 1546](assets/css5_1546.png)'
+  id: totrans-543
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 1546](assets/css5_1546.png)'
+- en: Figure 15-46\. Various types of upright combination
+  id: totrans-544
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 15-46\. 各种类型的直立组合
+- en: Lest you think a bug is at work here, the results are consistent across browsers
+    (as of mid-2022). The second and fourth columns have every single character, whether
+    Chinese ideographs or Arabic numerals, squished horizontally to fit on a single
+    line.
+  id: totrans-545
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以防你认为这里有 bug，结果在各个浏览器中（截至2022年中期）都是一致的。第二和第四列将每个字符，无论是中文汉字还是阿拉伯数字，水平挤压以适应单行。
+- en: A way around this is to break up the text with child elements, as shown in the
+    fifth and sixth columns. In the first, numbers are surrounded with `<span>` elements,
+    which break up the fitting process. This works as long as no run of text has too
+    many characters; beyond two or three symbols, the text becomes progressively more
+    difficult to comprehend.
+  id: totrans-546
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 绕过这个问题的方法是使用子元素分隔文本，就像第五和第六列中所示。在第一个示例中，数字被`<span>`元素包围，这些元素打破了适合过程。只要没有文本运行有太多字符，超过两到三个符号，文本就会变得越来越难理解。
+- en: 'The sixth column shows a way to hack around the problem: apply `text-combine-upright:
+    all` to only the `<span>` elements, which are already used to wrap the Arabic
+    numerals, by giving each `<span>` a `class` value of `combine`. In that case,
+    the `.combine` rule will apply only to the `<span>` elements, not all the text
+    in the paragraph.'
+  id: totrans-547
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '第六列展示了解决问题的一种方法：将`text-combine-upright: all`应用于仅有`<span>`元素的段落中，这些元素已经用于包装阿拉伯数字，通过给每个`<span>`赋予`class`值`combine`。在这种情况下，`.combine`规则将仅适用于`<span>`元素，而不是段落中的所有文本。'
+- en: 'This is what the `digits` value is supposed to make possible without the need
+    for all the extra markup. Theoretically, you could get the same result as that
+    shown in the sixth column of [Figure 15-46](#various_types_of_upright_combination)
+    by applying the following CSS to the paragraph that has no `<span>` elements in
+    it:'
+  id: totrans-548
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这就是`digits`值理论上应该做到的，而无需所有额外的标记。理论上，你可以通过将以下CSS应用于没有`<span>`元素的段落，获得与[Figure 15-46](#various_types_of_upright_combination)第六列显示的相同结果：
+- en: '[PRE77]'
+  id: totrans-549
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE77]'
+- en: Sadly, as of mid-2022, no browser supports this behavior, unless you count Internet
+    Explorer 11 using the alternate property name `-ms-text-combine-horizontal`.
+  id: totrans-550
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不幸的是，截至2022年中期，除非你计算使用另一个属性名`-ms-text-combine-horizontal`的Internet Explorer
+    11，否则没有浏览器支持此行为。
+- en: Declaring Direction
+  id: totrans-551
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 声明方向
+- en: 'Harking back to the days of CSS2, a pair of properties could be used to affect
+    the direction of text by changing the inline baseline direction: `direction` and
+    `unicode-bidi`. These should generally not be used today, but are covered here
+    in case you come across them in legacy code.'
+  id: totrans-552
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 回顾到CSS2的时代，一对属性可以通过改变内联基线方向来影响文本的方向：`direction`和`unicode-bidi`。今天通常不应该使用它们，但是在这里覆盖它们以防你在遗留代码中遇到它们。
+- en: Warning
+  id: totrans-553
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: 'The CSS specification explicitly warns *against* using `direction` and `unicode-bidi`
+    in CSS when applied to HTML documents. To quote: “Because HTML [user agents] can
+    turn off CSS styling, we recommend…the HTML `dir` attribute and `<bdo>` element
+    to ensure correct bidirectional layout in the absence of a style sheet.”'
+  id: totrans-554
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS规范明确警告*不要*在应用于HTML文档时使用CSS中的`direction`和`unicode-bidi`。引用一句：“因为HTML [用户代理]可以关闭CSS样式，我们建议…使用HTML
+    `dir`属性和`<bdo>`元素，在没有样式表的情况下确保正确的双向布局。”
+- en: The `direction` property affects the writing direction of text in a block-level
+    element, the direction of table-column layout, the direction in which content
+    horizontally overflows its element box, and the position of the last line of a
+    fully justified element. For inline elements, direction applies only if the property
+    `unicode-bidi` is set to either `embed` or `bidi-override` (see the following
+    description of `unicode-bidi`).
+  id: totrans-555
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性`direction`影响块级元素中文本的书写方向，表格列布局的方向，内容在水平溢出其元素框时的方向，以及完全两端对齐元素的最后一行位置。对于内联元素，只有在属性`unicode-bidi`设置为`embed`或`bidi-override`时，`direction`才会应用（请参阅`unicode-bidi`的描述）。
+- en: 'Although `ltr` is the default, it is expected that if a browser is displaying
+    RTL text, the value will be changed to `rtl`. Thus, a browser might carry an internal
+    rule stating something like the following:'
+  id: totrans-556
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然`ltr`是默认值，但预期如果浏览器显示RTL文本，则该值将被更改为`rtl`。因此，浏览器可能会携带一个内部规则，类似于以下内容：
+- en: '[PRE78]'
+  id: totrans-557
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE78]'
+- en: The real rule would be longer and encompass all RTL languages, not just Arabic
+    and Hebrew, but it illustrates the point.
+  id: totrans-558
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际规则将更长，并包括所有RTL语言，而不仅仅是阿拉伯语和希伯来语，但它说明了问题的要点。
+- en: While CSS attempts to address writing direction, Unicode has a much more robust
+    method for handling directionality. With the property `unicode-bidi`, CSS authors
+    can take advantage of some of Unicode’s capabilities.
+  id: totrans-559
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管CSS试图解决书写方向问题，Unicode拥有更强大的处理方向性的方法。通过属性`unicode-bidi`，CSS作者可以利用Unicode的一些能力。
+- en: 'Here we’ll simply quote the value descriptions from the CSS 2.1 specification,
+    which do a good job of capturing the essence of each value:'
+  id: totrans-560
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里我们将简单地引用CSS 2.1规范中的值描述，这些描述很好地捕捉了每个值的本质：
+- en: '`normal`'
+  id: totrans-561
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`normal`'
+- en: The element does not open an additional level of embedding with respect to the
+    bidirectional algorithm. For inline-level elements, implicit reordering works
+    across element boundaries.
+  id: totrans-562
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素不会相对于双向算法打开额外的嵌套级别。对于内联级别元素，隐式重新排序在元素边界之间工作。
+- en: '`embed`'
+  id: totrans-563
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`embed`'
+- en: 'If the element is inline-level, this value opens an additional level of embedding
+    with respect to the bidirectional algorithm. The direction of this embedding level
+    is given by the `direction` property. Inside the element, reordering is done implicitly.
+    This corresponds to adding a “left-to-right embedding” character (U+202A; for
+    `direction: ltr`) or a “right-to-left embedding” character (U+202B; for `direction:
+    rtl`) at the start of the element and a “pop directional formatting” character
+    (U+202C) at the end of the element.'
+  id: totrans-564
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果元素是内联级别的，则此值在双向算法中相对于嵌套打开了一个额外级别。此嵌套级别的方向由`direction`属性指定。在元素内部，重新排序是隐式完成的。这对应于在元素开头添加“左到右嵌入”字符（U+202A；对于`direction:
+    ltr`）或“右到左嵌入”字符（U+202B；对于`direction: rtl`），并在元素末尾添加“弹出方向格式化”字符（U+202C）。'
+- en: '`bidi-override`'
+  id: totrans-565
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`bidi-override`'
+- en: 'This creates an override for inline-level elements. For block-level elements,
+    this creates an override for inline-level descendants not within another block.
+    This means that, inside the element, reordering is strictly in sequence according
+    to the `direction` property; the implicit part of the bidirectional algorithm
+    is ignored. This corresponds to adding a “left-to-right override” character (U+202D;
+    for `direction: ltr`) or “right-to-left override” character (U+202E; for `direction:
+    rtl`) at the start of the element and a “pop directional formatting” character
+    (U+202C) at the end of the element.'
+  id: totrans-566
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这为内联级别元素创建了一个覆盖。对于块级元素，这为不在另一个块内的内联级别后代创建了一个覆盖。这意味着，在元素内部，重新排序严格按照`direction`属性的顺序进行；双向算法的隐含部分被忽略。这对应于在元素开头添加“左到右覆盖”字符（U+202D；对于`direction:
+    ltr`）或“右到左覆盖”字符（U+202E；对于`direction: rtl`），并在元素末尾添加“弹出方向格式化”字符（U+202C）。'
+- en: Summary
+  id: totrans-567
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 摘要
+- en: Even without altering the font face, we have many ways to change the appearance
+    of text. In addition to classic effects such as underlining, CSS enables you to
+    draw lines over text or through it, change the amount of space between words and
+    letters, indent the first line of a paragraph (or other block-level element),
+    align text in various ways, exert influence over the hyphenation and line breaking
+    of text, and much more. You can even alter the amount of space between lines of
+    text. CSS also supports languages other than those that are written left to right,
+    top to bottom. Given that so much of the web is text, the strength of these properties
+    makes a great deal of sense.
+  id: totrans-568
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使不改变字体，我们也有许多方法来改变文本的外观。除了经典效果如下划线之外，CSS 还允许您在文本上方或穿过文本上绘制线条，更改单词和字母之间的间距，缩进段落的第一行（或其他块级元素），以各种方式对齐文本，对文本的连字和断行施加影响，以及更多。您甚至可以改变文本行之间的间距。CSS
+    还支持除左到右、上到下书写的语言之外的其他语言。考虑到网页中有如此多的文本，这些属性的强大功能是非常合理的。

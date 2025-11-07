@@ -1,0 +1,164 @@
+- en: Appendix A. Additional Resources
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 附录A. 额外资源
+- en: 'Here’s a small collection of useful websites, resources, and documentation
+    freely available to all:'
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一小部分有用的网站、资源和文档，供所有人免费使用：
+- en: '[Can I Use support tables for HTML5, CSS3, etc.](https://caniuse.com)'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Can I Use支持表格HTML5、CSS3等](https://caniuse.com)'
+- en: A place to look up the latest support status for just about anything in HTML,
+    CSS, and JavaScript. Useful when you need to support older browsers, or to see
+    the implementation status of your favorite bleeding-edge CSS feature.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个可以查找HTML、CSS和JavaScript中几乎所有内容的最新支持状态的地方。在你需要支持旧版浏览器或查看你最喜欢的最前沿CSS特性的实现状态时非常有用。
+- en: '[Mozilla Developers Network (MDN)](https://developer.mozilla.org)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Mozilla开发者网络（MDN）](https://developer.mozilla.org)'
+- en: Often referred to as “the web’s developer manual,” MDN documents and provides
+    support information for nearly every aspect of every web API—HTML, CSS, JavaScript,
+    SVG, XML, and on and on. The hub for all things CSS is found at *[*https://developer.mozilla.org/en-US/docs/Web/CSS*](https://developer.mozilla.org/en-US/docs/Web/CSS)*.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常被称为“网络开发人员手册”的MDN记录并提供几乎每个Web API的支持信息 — HTML、CSS、JavaScript、SVG、XML等等。所有CSS相关内容的中心都可以在[*https://developer.mozilla.org/en-US/docs/Web/CSS*](https://developer.mozilla.org/en-US/docs/Web/CSS)找到。
+- en: '[Web Accessibility for Seizures and Physical Reactions](https://developer.mozilla.org/en-US/docs/Web/Accessibility/Seizure_disorders)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[用于癫痫和身体反应的Web无障碍性](https://developer.mozilla.org/en-US/docs/Web/Accessibility/Seizure_disorders)'
+- en: An excellent coverage of various kinds of disorders that your design could potentially
+    trigger if you overdo features like animation, parallax scrolling, flashing colors,
+    and more. Should be required reading for all new web designers and developers.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 详细介绍了设计中可能会触发的各种障碍，如果你过度使用动画、视差滚动、闪烁颜色等功能，可能会引发的各种障碍。对于所有新的网页设计师和开发者来说，这都应该是必读的内容。
+- en: '[CSS SpecifiFISHity](http://specifishity.com)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[CSS SpecifiFISHity](http://specifishity.com)'
+- en: A chart illustrating specificity, using adorable fish (and plankton) and the
+    occasional shark. Suitable for printing and hanging up next to your monitor!
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一张使用可爱的鱼类（和浮游生物）以及偶尔的鲨鱼来说明特异性的图表。适合打印并挂在你的显示器旁边！
+- en: '[Color.js](https://colorjs.io)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Color.js](https://colorjs.io)'
+- en: A JavaScript library to provide support for advanced CSS color syntax. It includes
+    several useful JavaScript methods, including calculating the midpoint between
+    two colors. If you’re doing a lot of work with color manipulation, this is worth
+    a look.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个JavaScript库，为高级CSS颜色语法提供支持。它包含几种有用的JavaScript方法，包括计算两种颜色之间的中点。如果你经常处理颜色操作，这值得一试。
+- en: '[Arkandis Digital Foundry](https://www.arkandis.tuxfamily.org/openfonts.html)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Arkandis数字铸造厂](https://www.arkandis.tuxfamily.org/openfonts.html)'
+- en: A set of free web fonts available to use in personal projects. It’s the source
+    of SwitzeraADF, which is mentioned a lot in [Chapter 14](ch14.html#fonts).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一套免费的网页字体，可供个人项目使用。这是SwitzeraADF的来源，SwitzeraADF在[第14章](ch14.html#fonts)中有详细提及。
+- en: '[Font Squirrel Webfont Generator](https://www.fontsquirrel.com/tools/webfont-generator)'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Font Squirrel网页字体生成器](https://www.fontsquirrel.com/tools/webfont-generator)'
+- en: An online tool to take a font that you have the right to use on the web, and
+    turn it into a web font complete with the correct `@font-face` commands you’ll
+    need to use the font in your web designs.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个在线工具，可以将你有权在网络上使用的字体转换为完整的网络字体，并附带正确的`@font-face`命令，这样你就可以在网页设计中使用这种字体。
+- en: '[Microsoft Typography Registered Features (OpenType 1.9)](https://learn.microsoft.com/en-us/typography/opentype/spec/featurelist)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Microsoft Typography Registered Features（OpenType 1.9）](https://learn.microsoft.com/en-us/typography/opentype/spec/featurelist)'
+- en: All of the possible registered features available in OpenType fonts. Useful
+    if you want to invoke any OpenType features by using the `font-feature-settings`
+    property, for example.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有可用于OpenType字体的注册功能。如果你想通过使用`font-feature-settings`属性调用任何OpenType功能，这将非常有用。
+- en: '[A Single Div](https://a.singlediv.com)'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[单个div](https://a.singlediv.com)'
+- en: An [illustration gallery by Lynn Fisher](https://lynnandtonic.com) in which
+    every illustration is made up of a single `<div>` element and a lot of CSS. It’s
+    worth exploring and view-sourcing to see just what bits of mad genius Lynn used
+    to create a given effect.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Lynn Fisher的插图画廊](https://lynnandtonic.com)，其中每幅插图都由单个`<div>`元素和大量CSS组成。值得探索和查看源码，看看Lynn是如何用疯狂的天才创造出特定效果的。'
+- en: '[CSS conic-gradient() Polyfill](https://projects.verou.me/conic-gradient)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[CSS conic-gradient() Polyfill](https://projects.verou.me/conic-gradient)'
+- en: If you really want to use conic gradients but also need to support old browsers
+    that don’t support conic gradients, this polyfill has you covered.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你真的想使用圆锥渐变但又需要支持不支持圆锥渐变的老浏览器，这个polyfill能够解决你的问题。
+- en: '[Cubic-Bézier](https://cubic-bezier.com)'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[立方贝塞尔曲线](https://cubic-bezier.com)'
+- en: A tool for creating cubic Bézier curves for use in your animations.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建立方贝塞尔曲线以供动画使用的工具。
+- en: '[Easing Functions Cheat Sheet](https://easings.net)'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[缓动函数速查表](https://easings.net)'
+- en: A collection of easing curves, complete with `cubic-bezier()` values, demonstrations
+    of how they operate, and more.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个包含`cubic-bezier()`值、演示它们操作方式等内容的缓动曲线集合。
+- en: '[Color equivalents table](https://meyerweb.com/eric/css/colors)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[颜色对照表](https://meyerweb.com/eric/css/colors)'
+- en: A table showing the 148 CSS color keywords (such as `orange` or `forestgreen`)
+    and the equivalent values expressed in RGB, HSL, and hexadecimal notation. As
+    of early 2023, it does not include more modern formats like HSL, HWB, and so on.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一张显示148个CSS颜色关键字（如`orange`或`forestgreen`）及其在RGB、HSL和十六进制表示法中的等效值的表格。截至2023年初，尚未包括HSL、HWB等更现代的格式。

@@ -1,0 +1,4480 @@
+- en: Chapter 6\. Basic Visual Formatting
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第6章\. 基本视觉格式化
+- en: You’ve likely experienced the frustration of having your intended layout not
+    render as expected. After adding 27 style rules to get it perfect, you still might
+    not know which rule solved your problem. With a model as open and powerful as
+    that contained within CSS, no book could hope to cover every possible way of combining
+    properties and effects. You will undoubtedly go on to discover new ways of using
+    CSS. With a thorough grasp of how the visual rendering model works, however, you’ll
+    be better able to determine whether a behavior is a correct (if unexpected) consequence
+    of the rendering engine CSS defines.
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能经历过打算的布局未按预期渲染的沮丧。即使添加了27条样式规则使其完美，您可能仍然不知道哪条规则解决了您的问题。由于CSS中包含的模型如此开放且强大，没有一本书能够涵盖每种组合属性和效果的可能方式。您无疑会继续发现新的CSS使用方式。然而，通过彻底掌握视觉渲染模型的工作原理，您将更能够确定某种行为是否是渲染引擎CSS定义的正确（尽管意外的）结果。
+- en: Basic Boxes
+  id: totrans-2
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 基本框
+- en: At its core, CSS assumes that every element generates one or more rectangular
+    boxes, called *element boxes*. (Future versions of the specification may allow
+    for nonrectangular shapes, and indeed changes have been proposed, but for now
+    all boxes are still rectangular.)
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在其核心，CSS 假设每个元素生成一个或多个称为*元素框*的矩形框。（规范的未来版本可能允许非矩形形状，实际上已经提出了更改，但目前所有框仍然是矩形的。）
+- en: Each element box has a *content area* at its center. This content area is surrounded
+    by optional amounts of padding, borders, outlines, and margins. These areas are
+    considered optional because they could all be set to a size of 0, effectively
+    removing them from the element box. [Figure 6-1](#bvf_fig01) shows an example
+    content area, along with the surrounding regions of padding, borders, and margins.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个元素框在其中心具有一个*内容区域*。该内容区域周围可选的填充、边框、轮廓和边距。这些区域被视为可选，因为它们都可以设置为0大小，有效地将它们从元素框中移除。[图6-1](#bvf_fig01)展示了一个内容区域示例，以及填充、边框和边距的周围区域。
+- en: '![css5 0601](assets/css5_0601.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0601](assets/css5_0601.png)'
+- en: Figure 6-1\. The content area and its surroundings
+  id: totrans-6
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-1\. 内容区域及其周围
+- en: Before looking at the properties that can alter the space taken up by elements,
+    let’s cover the vocabulary needed to fully understand how elements are laid out
+    and take up space.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在查看可以改变元素占用空间的属性之前，让我们先了解完全理解如何布局元素和占用空间所需的词汇。
+- en: A Quick Primer
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 快速入门
+- en: 'First, we’ll quickly review the kinds of boxes we’ll be discussing, as well
+    as some important terms that are needed to understand the explanations to come:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，我们将快速回顾我们将讨论的框类型，以及需要理解接下来的解释所需的一些重要术语：
+- en: Block flow direction
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 块流方向
+- en: Also known as the *block axis*, this is the direction along which block-level
+    element boxes are stacked. In many languages, including all European and European-derived
+    languages, this direction is from top to bottom. In Chinese/Japanese/Korean (CJK)
+    languages, this can be either right to left or top to bottom. The actual block
+    flow direction is set by the writing mode, which is discussed in [Chapter 15](ch15.html#text_properties).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也称为*块轴*，这是堆叠块级元素框的方向。在包括所有欧洲和欧洲衍生语言在内的许多语言中，这个方向是从上到下的。在中文/日文/韩文（CJK）语言中，这可以是从右到左或从上到下。实际的块流方向由书写模式设置，这在[第15章](ch15.html#text_properties)中讨论。
+- en: Inline base direction
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内联基本方向
+- en: Also known as the *inline axis*, this is the direction along which lines of
+    text are written. In Romanic languages, among others, this is left to right. In
+    languages such as Arabic or Hebrew, the inline base direction is right to left.
+    In CJK languages, this can be either top to bottom or left to right. As with block
+    flow, the inline base direction is set by the writing mode.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也被称为*内联轴*，这是文本行书写的方向。在罗曼语言等语言中，这是从左到右。在阿拉伯语或希伯来语等语言中，内联基本方向是从右到左。在CJK语言中，这可以是从上到下或从左到右。与块流方向一样，内联基本方向由书写模式设置。
+- en: Normal flow
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正常流
+- en: The default system by which elements are placed inside the browser’s viewport,
+    based on the parent’s writing mode. Most elements are in the normal flow, and
+    the only way for an element to leave the normal flow is to be floated, positioned,
+    or made into a flexible box, grid layout, or table element. The discussions in
+    this chapter cover elements in the normal flow, unless otherwise stated.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素在浏览器视口内放置的默认系统，基于父元素的书写模式。大多数元素都处于正常流中，元素离开正常流的唯一方法是浮动、定位或转变为弹性盒、网格布局或表格元素。本章讨论的内容涵盖正常流中的元素，除非另有说明。
+- en: Block box
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 块框
+- en: 'This is a box generated by an element such as a paragraph, heading, or `<div>`.
+    These boxes generate blank spaces both before and after their boxes when in the
+    normal flow so that block boxes in the normal flow stack along the block flow
+    axis, one after another. Pretty much any element can be made to generate a block
+    box by declaring `display: block`, though there are other ways to make elements
+    generate block boxes (e.g., float them or make them flex items).'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这是由段落、标题或 `<div>` 等元素生成的框盒。这些框在正常流中的前后都生成空白空间，以便块框在块流轴上依次堆叠。几乎任何元素都可以通过声明 `display:
+    block` 来生成块框，尽管还有其他使元素生成块框的方法（例如浮动它们或使它们成为弹性项目）。'
+- en: Inline box
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行内框
+- en: 'This is a box generated by an element such as `<strong>` or `<span>`. These
+    boxes are laid out along the inline base direction, and do not generate line breaks
+    before or after themselves. An inline box longer than the inline size of its element
+    will (by default, if it’s nonreplaced) wrap to multiple lines. Any element can
+    be made to generate an inline box by declaring `display: inline`.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这是由 `<strong>` 或 `<span>` 等元素生成的框。这些框沿着行内基本方向布局，不会在其前后生成换行。默认情况下，长度超过元素行内尺寸的行内框（如果它是非替换的）将换行成多行。通过声明
+    `display: inline`，任何元素都可以生成行内框。'
+- en: Nonreplaced element
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 非替换元素
+- en: This is an element whose content is contained within the document. For example,
+    a paragraph (`<p>`) is a nonreplaced element because its textual content is found
+    within the element itself.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是其内容包含在文档中的元素。例如，段落（`<p>`）是非替换元素，因为其文本内容位于元素本身内部。
+- en: Replaced element
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 替换元素
+- en: This is an element that serves as a placeholder for something else. The classic
+    example of a replaced element is `<img>`, which simply points to an image file
+    that is inserted into the document’s flow at the point where the `<img>` element
+    itself is found. Most form elements are also replaced (e.g., `<input type="radio">`).
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个用作其他内容占位符的元素。替换元素的经典示例是 `<img>`，它简单地指向一个图像文件，该文件被插入到文档流中 `<img>` 元素所在的位置。大多数表单元素也是替换元素（例如
+    `<input type="radio">`）。
+- en: Root element
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根元素
+- en: 'This is the element at the top of the document tree. In HTML documents, this
+    is the element `<html>`. In XML documents, it can be whatever the language permits:
+    for example, the root element of RSS files is `<rss>`, whereas in an SVG document,
+    the root element is `<svg>`.'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是文档树顶部的元素。在HTML文档中，这是 `<html>` 元素。在XML文档中，它可以是语言允许的任何元素：例如，RSS文件的根元素是 `<rss>`，而在SVG文档中，根元素是
+    `<svg>`。
+- en: The Containing Block
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 包含块
+- en: 'We need to examine one more kind of box in detail, and in this case enough
+    detail that it merits its own section: the *containing block*.'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们需要详细研究另一种盒子，足够详细以至于它值得拥有自己的部分：*包含块*。
+- en: Every element’s box is laid out with respect to its containing block. In a very
+    real way, the containing block is the *layout context* for a box. CSS defines
+    a series of rules for determining a box’s containing block.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个元素的框盒都是根据其包含块布局的。在实际情况中，包含块是盒子的*布局上下文*。CSS定义了一系列规则来确定盒子的包含块。
+- en: 'For a given element, the containing block forms from the *content edge* of
+    the nearest ancestor element that generates a list item or block box, which includes
+    all table-related boxes (e.g., those generated by table cells). Consider the following:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于给定的元素，包含块从生成列表项或块框的最近祖先元素的*内容边缘*形成，其中包括所有与表格相关的框（例如由表格单元格生成的框）。考虑以下内容：
+- en: '[PRE0]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In this simple markup, the containing block for the `<p>` element’s block box
+    is the `<div>` element’s block box, as that is the closest ancestor element box
+    that has a block or a list item box (in this case, it’s a block box). Similarly,
+    the `<div>`’s containing block is the `<body>`’s box. Thus, the layout of the
+    `<p>` is dependent on the layout of the `<div>`, which is in turn dependent on
+    the layout of the `<body>` element.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个简单的标记中，`<p>` 元素块框的包含块是 `<div>` 元素的块框，因为它是最近的具有块或列表项框的祖先元素框（在这种情况下，它是一个块框）。类似地，`<div>`
+    的包含块是 `<body>` 的框。因此，`<p>` 的布局取决于 `<div>` 的布局，而 `<div>` 的布局又取决于 `<body>` 元素的布局。
+- en: And above that in the document tree, the layout of the `<body>` element is dependent
+    on the layout of the `<html>` element, whose box creates what is called the *initial
+    containing block*. It’s unique in that the viewport—the browser window in screen
+    media, or the printable area of the page in print media—determines the dimensions
+    of the initial containing block, not the size of the content of the root element.
+    This matters because the content can be shorter, and usually longer, than the
+    size of the viewport. Most of the time it doesn’t make a difference, but when
+    it comes to things such as fixed positioning or viewport units, the difference
+    is real.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 而在文档树中更高的位置，`<body>` 元素的布局取决于 `<html>` 元素的布局，其框创建了所谓的*初始包含块*。这在视口单位中非常重要，视口决定了初始包含块的尺寸，而不是根元素内容的尺寸。这很重要，因为内容可能短于或长于视口的尺寸。大多数情况下这没有影响，但对于固定定位或视口单位等情况，差异是真实的。
+- en: Now that you understand some of the terminology, we can address the properties
+    that make up [Figure 6-1](#bvf_fig01). The various margin, border, and padding
+    features, such as `border-style`, can be set using various side-specific longhand
+    properties, such as `margin-inline-start` or `border-bottom-width`. (The outline
+    properties do not have side-specific properties; a change to an outline property
+    affects all four sides.)
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您理解了一些术语，我们可以讨论构成[图6-1](#bvf_fig01)的属性。各种边距、边框和填充功能，如`border-style`，可以使用各种特定于边的长手属性进行设置，例如`margin-inline-start`或`border-bottom-width`。（轮廓属性没有特定于边的属性；对轮廓属性的更改会影响所有四个边。）
+- en: The content’s background—a color or tiled image, for example—is applied within
+    the padding and border areas by default, but this can be changed. The margins
+    are always transparent, allowing the background(s) of any parent element(s) to
+    be visible. Padding and borders cannot be of a negative length, but margins can.
+    We’ll explore the effects of negative margins in [“Negative Margins and Collapsing”](#negative-margins-and-collapsing).
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，内容的背景（例如颜色或平铺图像）应用于填充和边框区域，但这是可以更改的。边距始终是透明的，允许任何父元素的背景可见。填充和边框不能为负长度，但边距可以为负。我们将在[“负边距和折叠”](#negative-margins-and-collapsing)中探讨负边距的效果。
+- en: 'Borders are most often generated using defined styles, with a `border-style`
+    such as `solid`, `dotted`, or `inset`, and their colors are set using the `border-color`
+    property. If no color is set, the value defaults to `currentcolor`. Borders can
+    also be generated from images. If a border style has gaps of some type, as with
+    `border-style: dashed` or with a border generated from a partially transparent
+    image, then the element’s background is visible through those gaps by default,
+    though it is possible to clip the background to stay inside the border (or the
+    padding).'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '边框通常使用定义的样式生成，例如`solid`、`dotted`或`inset`作为`border-style`属性，并使用`border-color`属性设置其颜色。如果未设置颜色，则默认值为`currentcolor`。边框也可以由图像生成。如果边框样式具有某种类型的间隙，例如`border-style:
+    dashed`或从部分透明图像生成的边框，则默认情况下元素的背景可通过这些间隙看到，尽管可以剪切背景以保持在边框（或填充）内。'
+- en: Altering Element Display
+  id: totrans-36
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 修改元素显示
+- en: You can affect the way a user agent displays by setting a value for the `display`
+    property.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过设置`display`属性的值，可以影响用户代理程序的显示方式。
+- en: We’re going to ignore the `ruby`- and `table`-related values, since they’re
+    far too complex for this chapter. We’ll also temporarily ignore the value `list-item`,
+    since it’s very similar to block boxes and is explored in detail in [Chapter 16](ch16.html#lists-and-generated-content).
+    For now, we’ll spend a moment talking about how altering an element’s display
+    role can alter layout.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将忽略 `ruby` 和 `table` 相关的值，因为它们对于本章节来说过于复杂。我们也会暂时忽略值 `list-item`，因为它与块级框非常相似，并且在
+    [第 16 章](ch16.html#lists-and-generated-content) 中有详细探讨。现在，让我们花点时间谈谈如何改变元素的显示角色会改变布局。
+- en: Changing Roles
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更改角色
+- en: 'When it comes to styling a document, it’s sometimes handy to be able to change
+    the type of box an element generates. For example, suppose we have a series of
+    links in a `<nav>` that we’d like to lay out as a vertical sidebar:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在样式化文档时，有时候能够改变元素生成的框的类型是很方便的。例如，假设我们有一系列链接在 `<nav>` 中，我们希望将它们布局为垂直边栏：
+- en: '[PRE1]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'By default, the links will generate inline boxes, and thus get sort of mushed
+    together into what looks like a short paragraph of nothing but links. We could
+    put all the links into their own paragraphs or list items, or we could just make
+    them all block-level elements, like this:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，链接将生成内联框，并且会被压缩成一个看起来像是仅包含链接的短段落。我们可以将所有链接放入它们自己的段落或列表项中，或者我们可以将它们都转换为块级元素，就像这样：
+- en: '[PRE2]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This will make every `<a>` element within the navigation element `<nav>` generate
+    a block box, instead of its usual inline box. If we add on a few more styles,
+    we could have a result like that shown in [Figure 6-2](#bvf_fig02).
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将使导航元素 `<nav>` 内的每个 `<a>` 元素生成一个块级框，而不是通常的内联框。如果我们添加一些额外的样式，我们可以得到类似于 [图 6-2](#bvf_fig02)
+    所示的结果。
+- en: '![css5 0602](assets/css5_0602.png)'
+  id: totrans-45
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0602](assets/css5_0602.png)'
+- en: Figure 6-2\. Changing the display role from inline to block
+  id: totrans-46
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-2\. 将显示角色从内联更改为块级
+- en: Changing display roles can be useful when you want the navigation links to be
+    inline elements if the CSS isn’t available (perhaps by failing to load), but to
+    lay out the same links as block-level elements in CSS-aware contexts. You could
+    also present the links as inline on desktop displays and block on mobile devices,
+    or vice versa. With the links laid out as blocks, you can style them as you would
+    `<div>` or `<p>` elements, with the advantage that the entire element box becomes
+    part of the link.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你希望导航链接在没有 CSS 支持时（可能因为加载失败），将其作为内联元素显示，但在有 CSS 的环境中将它们作为块级元素布局时，更改显示角色会非常有用。你还可以在桌面显示器上将链接显示为内联元素，在移动设备上显示为块级元素，反之亦然。将链接布局为块级元素后，你可以像对待
+    `<div>` 或 `<p>` 元素那样对其进行样式设置，整个元素框都成为链接的一部分。
+- en: 'You may also want to take elements and make them inline. Suppose we have an
+    unordered list of names:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能还想将元素变成内联元素。假设我们有一个无序姓名列表：
+- en: '[PRE3]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Given this markup, say we want our display to show a series of inline names
+    with vertical bars between them (and on each end of the list). The only way to
+    do so is to change their display role. The following rules will have the effect
+    shown in [Figure 6-3](#bvf_fig03):'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给定这个标记，假设我们希望我们的显示中显示一系列内联姓名，并在它们之间（以及列表的每一端）加上垂直条。唯一的方法是改变它们的显示角色。以下规则将会产生
+    [图 6-3](#bvf_fig03) 所示的效果：
+- en: '[PRE4]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '![css5 0603](assets/css5_0603.png)'
+  id: totrans-52
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0603](assets/css5_0603.png)'
+- en: Figure 6-3\. Changing the display role from `list-item` to `inline`
+  id: totrans-53
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-3\. 将显示角色从 `list-item` 更改为 `inline`
+- en: Understand that you are, for the most part, changing the display role of elements—not
+    changing their inherent nature. In other words, causing a paragraph to generate
+    an inline box does *not* turn that paragraph into an inline element. In HTML,
+    for example, some elements are block while others are inline. While a `<span>`
+    can easily be placed inside a paragraph, a `<span>` should not be wrapped around
+    a paragraph.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请理解，大部分情况下，你改变的是元素的显示角色，而不是它们固有的性质。换句话说，使段落生成内联框并不会将该段落转变为内联元素。例如，在 HTML 中，某些元素是块级的，而其他元素是内联的。尽管可以轻松地将
+    `<span>` 放置在段落内，但不应该将 `<span>` 围绕在段落周围。
+- en: We say “for the most part” because while CSS mostly impacts presentation and
+    not content, CSS properties can impact accessibility in more ways than just color
+    contrast. For example, changing the `display` value can impact the way an element
+    is perceived by assistive technologies. Setting an element’s `display` property
+    to `none` removes the element from the accessibility tree. Setting the `display`
+    property on a `<table>` to `grid` may cause the table to be interpreted as something
+    other than a data table, removing normal table keyboard navigation, and making
+    the table inaccessible as a data table to screen-reader users. (This shouldn’t
+    happen, but it does in some browsers.)
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们说“大部分情况”，因为虽然 CSS 主要影响呈现而不是内容，但 CSS 属性可能影响辅助功能的方式不仅限于颜色对比。例如，更改`display`值可能会影响辅助技术对元素的感知方式。将元素的`display`属性设置为`none`会从辅助功能树中移除该元素。将
+    `<table>` 的`display`属性设置为`grid`可能会导致该表被解释为不同于数据表的东西，从而移除正常的表键盘导航，使得屏幕阅读器用户无法访问该表作为数据表。（这本不应该发生，但在某些浏览器中确实发生了。）
+- en: This can be mitigated by setting the Accessible Rich Internet Applications (ARIA)
+    `role` attribute for the table and all its descendants. However, in general, anytime
+    a change you make in CSS forces you to make changes in ARIA roles, you should
+    take a moment to consider whether there isn’t a better way to accomplish your
+    goal.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以通过为表及其所有后代设置可访问的富互联网应用（ARIA）`role`属性来减轻这种情况。然而，通常情况下，每当您在 CSS 中做出更改强制您在 ARIA
+    角色中做出更改时，您都应该花时间考虑是否有更好的方法来实现您的目标。
+- en: Handling Block Boxes
+  id: totrans-57
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理块框
+- en: Block boxes behave in predictable, yet sometimes surprising, ways. The handling
+    of box placement along the block and inline axes can differ, for example. To fully
+    understand how block boxes are handled, you must clearly understand several aspects
+    of these boxes. They are shown in detail in [Figure 6-4](#css5_07box), which illustrates
+    placement in two different writing modes.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 块框在可预测的，但有时令人惊讶的方式下运作。例如，沿着块和内联轴的框放置处理可以有所不同。要完全理解块框的处理方式，您必须清楚理解这些框的几个方面。这些详细显示在
+    [图 6-4](#css5_07box)，展示了在两种不同书写模式下的放置方式。
+- en: '![css5 0604](assets/css5_0604.png)'
+  id: totrans-59
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0604](assets/css5_0604.png)'
+- en: Figure 6-4\. The complete box model in two different writing modes
+  id: totrans-60
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-4\. 两种不同书写模式下的完整框模型
+- en: As shown in [Figure 6-4](#css5_07box), CSS deals with the block directions and
+    inline directions, as well as block sizes and inline sizes. Block and inline sizes
+    are descriptions of the size of the content area (by default) along the block
+    and inline axes.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如 [图 6-4](#css5_07box) 所示，CSS 处理块方向和内联方向，以及块大小和内联大小。块大小和内联大小是描述内容区域（默认情况下）在块和内联轴上的大小的描述。
+- en: By contrast, the *width* (sometimes referred to as the *physical width*) of
+    a block box is defined as the distance between the inner edges of the content
+    area (again, by default) along the horizontal axis (left to right), regardless
+    of the writing direction, and the *height* (*physical height*) is the distance
+    along the vertical axis (top to bottom). Properties are available to set all these
+    sizes, which we’ll talk about shortly.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相比之下，*宽度*（有时称为*物理宽度*）是指在水平轴（从左到右）上内容区域内部边缘之间的距离，不考虑书写方向，而*高度*（*物理高度*）是垂直轴（从上到下）上的距离。我们很快会讨论可以设置所有这些尺寸的属性。
+- en: Something important to note in [Figure 6-4](#css5_07box) is the use of *start* and
+    *end* to describe various parts of the element box. For example, you’ll see a
+    block-start margin and a block-end margin. The *start edge* is the edge that you
+    come to first as you move along an axis.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 [图 6-4](#css5_07box) 中需要注意的重要事项是使用 *start* 和 *end* 来描述元素框的各个部分。例如，您将看到块开始边距和块结束边距。*开始边*
+    是您沿轴移动时首先遇到的边缘。
+- en: This may be clearer if you look at [Figure 6-5](#css5_07block-inline-axes) and
+    trace your finger along each axis from arrow tail to tip. As you move along a
+    block axis, the first edge you come to for each element is that element’s block-start
+    edge. As you pass out of the element, you move through the block-end edges. Similarly,
+    as you move along an inline axis, you go through the inline-start edges, across
+    the inline dimension of the content, and then out the inline-end edges. Try it
+    for each of the three examples.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你查看[图6-5](#css5_07block-inline-axes)，沿着每个轴从箭头尾部到箭头尖端追踪，这可能更加清晰。沿着块轴移动时，你遇到的每个元素的第一个边缘是该元素的块起始边缘。当你离开元素时，你穿过块结束边缘。同样，当你沿着行内轴移动时，你经过行内起始边缘，横穿内容的行内维度，然后穿过行内结束边缘。尝试对三个示例分别进行操作。
+- en: '![css5 0605](assets/css5_0605.png)'
+  id: totrans-65
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0605](assets/css5_0605.png)'
+- en: Figure 6-5\. The block- and inline-axis directions for three common writing
+    modes
+  id: totrans-66
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-5。三种常见书写模式的块轴和行内轴方向
+- en: Logical Element Sizing
+  id: totrans-67
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 逻辑元素大小
+- en: Because CSS recognizes block and inline axes for elements, it provides properties
+    that let you set an explicit element size along each axis.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为CSS识别元素的块轴和行内轴，它提供了属性，让你能够沿着每个轴设置显式的元素大小。
+- en: 'These properties allow you to set the size of an element along its block axis,
+    or to constrain the lengths of lines of text along the inline axis, regardless
+    of the direction of text flow. If you write `block-size: 500px`, the element’s
+    block size will be 500 pixels wide, even if that leads to content spilling out
+    of the element box. (We’ll discuss that in more detail later in the chapter.)'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这些属性允许你沿着块轴设置元素的大小，或者沿着行内轴约束文本行的长度，不管文本流的方向如何。如果你写`block-size: 500px`，元素的块大小将是500像素宽，即使这导致内容溢出元素框。我们将在本章节的后面更详细地讨论这一点。'
+- en: 'Consider the following, which has the results shown in [Figure 6-6](#sizing-elements-inline-axis)
+    when applied in various writing modes:'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下内容，在应用于各种书写模式时，其结果显示在[图6-6](#sizing-elements-inline-axis)中：
+- en: '[PRE5]'
+  id: totrans-71
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '![css5 0606](assets/css5_0606.png)'
+  id: totrans-72
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0606](assets/css5_0606.png)'
+- en: Figure 6-6\. Sizing elements along their inline axis
+  id: totrans-73
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-6。沿着其行内轴调整元素大小
+- en: As seen in [Figure 6-6](#sizing-elements-inline-axis), the elements are sized
+    consistently along their inline axis, regardless of the writing direction. If
+    you tilt your head to the side, you can see that the lines wrap in exactly the
+    same places. This yields a consistent line length across all writing modes.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[图6-6](#sizing-elements-inline-axis)所示，元素沿其行内轴一致调整大小，不论书写方向如何。如果你侧着头看，你会发现行在完全相同的地方换行。这在所有书写模式中保持了一致的行长。
+- en: 'Similarly, you can set a block size for elements. This is used a bit more often
+    for replaced elements like images, but it can be used in any circumstance that
+    makes sense. Take this as an example:'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，你可以为元素设置一个块大小。这在替换元素如图像中更常用一些，但在任何有意义的情况下都可以使用。举个例子：
+- en: '[PRE6]'
+  id: totrans-76
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'Having done that, any `<img>` element found inside a `<p>` element will have
+    its block size set to one and a half times the size of the surrounding text. (This
+    works on images because they’re inline replaced elements; it wouldn’t work on
+    inline nonreplaced elements.) You could also use `block-size` to constrain the
+    block length of grid layout items to be a minimum or maximum size, such as this:'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 完成这些后，任何 `<img>` 元素在 `<p>` 元素内部被发现时，其块大小将设置为周围文本大小的1.5倍。这适用于图像，因为它们是行内替换元素；对于行内非替换元素，这种方法是行不通的。你也可以使用
+    `block-size` 来约束网格布局项的块长度为最小或最大尺寸，例如这样：
+- en: '[PRE7]'
+  id: totrans-78
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: It should be said that usually block size is determined automatically, because
+    elements in the normal flow often don’t have an explicitly set block size. For
+    example, if an element’s block flow is top to bottom and it’s 8 lines long, and
+    each line is 1/8th of an inch tall, then its block size will be 1 inch. If it’s
+    10 lines tall, the block size is instead 1.25 inches. In either case, as long
+    as `block-size` is `auto`, the block size is determined by the content of the
+    element, not by the author. This is usually what you want, particularly for elements
+    containing text. When `block-size` is explicitly set and there isn’t enough content
+    to fill the box, empty space will appear inside the box; if there is more content
+    than can fit, the content may overflow the box or scrollbars may appear.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 需要说明的是，通常块大小是自动确定的，因为正常流中的元素通常没有显式设置的块大小。例如，如果一个元素的块流是从上到下，有 8 行，每行高 1/8 英寸，则其块大小将为
+    1 英寸。如果是 10 行高，则块大小将是 1.25 英寸。在任何情况下，只要`block-size`是`auto`，块大小就由元素的内容确定，而不是由作者确定。这通常是您想要的，特别是对于包含文本的元素。当显式设置`block-size`并且没有足够的内容填充框时，框内会出现空白空间；如果内容超过框的容纳能力，则内容可能会溢出框或出现滚动条。
+- en: Content-Based Sizing Values
+  id: totrans-80
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 基于内容的尺寸值
+- en: 'Beyond the lengths and percentages you saw previously for setting block and
+    inline sizes, a few keywords provide content-based sizing:'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了您之前在设置块和内联大小中看到的长度和百分比外，还有一些关键字提供基于内容的大小调整：
+- en: '`max-content`'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`max-content`'
+- en: Take up the most space possible to fit in the content, even suppressing line
+    wrapping in the case of text content.
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽可能占据最大的空间以适应内容，甚至在文本内容的情况下抑制换行。
+- en: '`min-content`'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`min-content`'
+- en: Take up the least space possible to fit in the content.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽可能占据最少的空间以适应内容。
+- en: '`fit-content`'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`fit-content`'
+- en: Take up the amount of space determined by calculating the values of `max-content`,
+    `min-content`, and regular content sizing, taking the maximum of `min-content`
+    and regular sizing, and then taking the minimum of `max-content` and whichever
+    value was the greater of `min-content` and regular sizing. Yes, that all sounds
+    a bit confusing, but we’ll explain it in a moment.
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 占据由计算`max-content`、`min-content`和常规内容大小值确定的空间量，取`min-content`和常规大小的最大值，然后取`max-content`和先前两者中较大值的最小值。是的，这听起来有点混乱，但我们稍后会解释清楚。
+- en: If you’ve worked at all with CSS Grid (covered in [Chapter 12](ch12.html#grid-layout)),
+    you may recognize these keywords, as they were originally defined as ways to size
+    grid items. Now they’re making their way into other areas of CSS. Let’s consider
+    the first two keywords, which are demonstrated in [Figure 6-7](#content-sizing).
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您曾经使用过CSS Grid（在[第12章](ch12.html#grid-layout)介绍），您可能会认出这些关键字，因为它们最初被定义为调整网格项大小的一种方式。现在它们正开始应用到CSS的其他领域。让我们来考虑前两个关键字，它们在[图6-7](#content-sizing)中有演示。
+- en: '![css5 0607](assets/css5_0607.png)'
+  id: totrans-89
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0607](assets/css5_0607.png)'
+- en: Figure 6-7\. Content sizing
+  id: totrans-90
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-7\. 内容大小
+- en: 'The paragraph on the left is set to `max-content`, and that’s what happens:
+    the paragraph is made as wide as needed to fit all of the content. It’s as narrow
+    as it is only because there isn’t much content. Had we added another three sentences,
+    the single line of text would have just kept going and going with no line wrapping,
+    even if it ran right off the page (or out of the browser window).'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 左侧的段落设置为`max-content`，效果如下：段落的宽度会根据需要调整以适应所有内容。之所以宽度如此狭窄，仅因内容不多。如果再添加三句话，单行文本将继续延伸，甚至可能一直延伸到页面之外（或浏览器窗口之外），而不会换行。
+- en: In the paragraph on the right, the content is as narrow as possible without
+    forcing breaks or hyphens inside words. In this particular case, the element is
+    *just* wide enough to fit the word “paragraph,” which is the longest word in the
+    content. For every other line of text in the example, the browser places as many
+    words as will fit into the space needed for “paragraph,” and goes to the next
+    line when it runs out of room. If we added “antidisestablishmentarianism” to the
+    text, the element would become just wide enough to fit *that* word, and every
+    other line of text would very likely contain multiple words.
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在右侧的段落中，内容尽可能窄，而不会在单词内部强制换行或使用连字符。在这种特定情况下，元素的宽度*刚刚*足够容纳“段落”这个最长的单词。在示例中的每一行文本中，浏览器会尽可能多地放置适合“段落”所需空间的单词，并在空间不足时换行。如果我们在文本中加入“反对清教会主义”，元素的宽度将刚好足够容纳*那个*单词，而且每行文本很可能包含多个单词。
+- en: Notice that, at the end of the `min-content` example in [Figure 6-7](#content-sizing),
+    the browser took advantage of the presence of the hyphen in `min-content` to trigger
+    a line wrap there. Had it not made that choice, `min-content` would almost certainly
+    have been the longest piece of content in the paragraph, and the element’s width
+    would have been set to that length. This means that if your content contains symbols
+    that browsers understand to be natural line-wrapping points (e.g., spaces and
+    hyphens), they’ll likely be considered in the `min-content` calculations. If you
+    want to squeeze the element width even further, you can enable auto-hyphenating
+    of words with the `hyphens` property (see [Chapter 15](ch15.html#text_properties)).
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，在[图6-7](#content-sizing)的`min-content`示例结束时，浏览器利用了`min-content`中存在连字符的情况，触发了一次换行。如果没有做出这个选择，`min-content`几乎肯定会成为段落中最长的内容片段，并且元素的宽度将设置为该长度。这意味着，如果您的内容包含浏览器认为是自然换行点的符号（例如空格和连字符），它们很可能会被考虑在`min-content`计算中。如果您希望进一步缩小元素的宽度，可以使用`hyphens`属性启用单词的自动连字符（参见[第15章](ch15.html#text_properties)）。
+- en: For some more examples of `min-content` sizing, see [Figure 6-8](#minimum-content-sizing).
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 想了解更多关于`min-content`大小的示例，请参见[图6-8](#minimum-content-sizing)。
+- en: '![css5 0608](assets/css5_0608.png)'
+  id: totrans-95
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0608](assets/css5_0608.png)'
+- en: Figure 6-8\. Minimum content sizing
+  id: totrans-96
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-8\. 最小内容大小
+- en: The third keyword, `fit-content`, is interesting in that it does its best to
+    fit the element to the content. What that means in practice is that if you have
+    only a little content, the element’s inline size (usually its width) will be just
+    big enough to enclose it, as if `max-content` were used. If there’s enough content
+    to wrap to multiple lines or otherwise threaten to overflow the element’s container,
+    the inline size stops there. This is illustrated in [Figure 6-9](#fit-content-sizing).
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三个关键词`fit-content`很有趣，因为它尽力使元素适应内容。实际上，这意味着如果您只有少量内容，元素的内联尺寸（通常是宽度）将足够大以包含它，就像使用`max-content`一样。如果有足够多的内容以至于可以换行到多行或以其他方式威胁到溢出元素的容器，则内联尺寸就会停在那里。这在[图6-9](#fit-content-sizing)中有所说明。
+- en: '![css5 0609](assets/css5_0609.png)'
+  id: totrans-98
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0609](assets/css5_0609.png)'
+- en: Figure 6-9\. Fit-content sizing
+  id: totrans-99
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-9\. 适应内容大小
+- en: In each case, the element is fit to the content without overspilling the element’s
+    container. At least, that’s what happens with elements in the normal flow. The
+    behavior can be quite different in flexbox and grid contexts, and is further explored
+    in later chapters.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在每种情况下，元素都适应内容而不会溢出元素的容器。至少在正常流中的元素是这样。在flexbox和grid上下文中，行为可能会有所不同，并且在后续章节中进一步探讨。
+- en: Minimum and Maximum Logical Sizing
+  id: totrans-101
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 最小和最大逻辑大小
+- en: If you’d like to set minimum and maximum bounds on block or inline sizes, CSS
+    has some properties to help you out.
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您希望为块或行内大小设置最小和最大限制，CSS有一些属性可以帮助您。
+- en: 'These properties can be very useful when you know you want upper and lower
+    bounds on the sizing of an element’s box, and are willing to allow the browser
+    to do whatever it wants as long as it obeys those restrictions. As an example,
+    you might set part of a layout like so:'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您知道要为元素框的大小设置上限和下限，并且愿意允许浏览器在遵守这些限制的同时执行任何操作时，这些属性可能非常有用。例如，您可以像这样设置布局的一部分：
+- en: '[PRE8]'
+  id: totrans-104
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: That keeps the `<main>` element from getting any narrower than the widest bit
+    of inline content, whether that’s a long word or an illustration or something
+    else. It also keeps the `<main>` element from getting any wider than around 75
+    characters, thus keeping line lengths to a readable amount.
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这保持了`<main>`元素不比行内内容的最宽部分更窄，无论是长单词、插图还是其他内容。它还保持了`<main>`元素的宽度不超过约75个字符，从而保持行长度可读。
+- en: 'It’s also possible to set bounds on block sizing. A good example is limiting
+    any image embedded in the normal flow to be its intrinsic size up to a certain
+    point. The following CSS would have the effects shown in [Figure 6-10](#maximum-block-sizing):'
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还可以设置块大小的限制。一个很好的例子是将正常流中嵌入的任何图像限制为其固有大小，直到某个点为止。以下CSS将产生[图6-10](#maximum-block-sizing)中显示的效果：
+- en: '[PRE9]'
+  id: totrans-107
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '![css5 0610](assets/css5_0610.png)'
+  id: totrans-108
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0610](assets/css5_0610.png)'
+- en: Figure 6-10\. Maximum block sizing
+  id: totrans-109
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-10\. 最大块大小
+- en: Height and Width
+  id: totrans-110
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 高度和宽度
+- en: 'If you’ve used CSS for a while or are maintaining legacy code, you’re probably
+    used to thinking of “top margin” and “bottom margin.” That’s because, originally,
+    all box model aspects were described in terms of their physical directions: top,
+    right, bottom, and left. You can still work with the physical directions! CSS
+    has simply added new directions to the mix.'
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你已经使用CSS一段时间或在维护遗留代码，你可能习惯于思考“上边距”和“下边距”。这是因为最初，所有框模型方面都是以其物理方向描述的：上、右、下和左。你仍然可以使用物理方向！CSS只是在混合中添加了新的方向。
+- en: If you were to change `inline-size` to `width` in the previous code example,
+    you’d get a result more like that shown in [Figure 6-11](#sizing-elements-width)
+    (in which the vertical writing modes are clipped off well short of their full
+    height).
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你在前面的代码示例中将`inline-size`改为`width`，你会得到一个更接近于[图 6-11](#sizing-elements-width)所示的结果（其中垂直书写模式会被截短至其完整高度的一小部分）。
+- en: '![css5 0611](assets/css5_0611.png)'
+  id: totrans-113
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0611](assets/css5_0611.png)'
+- en: Figure 6-11\. Sizing elements’ width
+  id: totrans-114
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-11\. 调整元素宽度
+- en: These elements are made `40ch` wide horizontally, regardless of their writing
+    mode. Each element’s height has been automatically determined by the content,
+    the specifics of the writing mode, and so on.
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些元素在水平方向上都被制作为`40ch`宽，不管其书写方式如何。每个元素的高度已根据内容、书写模式的具体情况等自动确定。
+- en: Tip
+  id: totrans-116
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 提示
+- en: If you use block and inline properties like `block-size` instead of physical
+    directions like `height`, and your design is applied to content translated to
+    other languages, the layout will automatically adjust to your intentions.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你使用类似`block-size`这样的块和行内属性而不是类似`height`这样的物理方向，并且你的设计应用到翻译成其他语言的内容上，布局将会自动调整到你的意图。
+- en: The `height` and `width` properties are known as *physical properties*. They
+    refer to physical directions, as opposed to the writing-dependent directions of
+    block size and inline size. Thus, `height` really does refer to the distance from
+    the top to the bottom of the element’s inner edge, regardless of the direction
+    of the block axis.
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`height`和`width`属性被称为*物理属性*。它们指的是物理方向，与依赖书写的块大小和行内大小相对。因此，`height`确实指的是从元素内边缘顶部到底部的距离，而不管块轴的方向如何。'
+- en: In writing with a horizontal inline axis, such as English or Arabic, if both
+    `inline-size` and `width` are set on the same element, the one declared later
+    will take precedence over the first one declared. The same is true if `block-size`
+    and `height` are both declared; if origin, layer, and specificity are the same,
+    the one declared last takes precedence. In vertical writing modes, `inline-size`
+    corresponds to `height`, and `block-size` to `width`.
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在具有水平行内轴（如英语或阿拉伯语）的书写中，如果在同一元素上同时设置了`inline-size`和`width`，则后声明的属性会覆盖首次声明的属性。如果同时声明了`block-size`和`height`，并且起源、层和特异性都相同，则后声明的属性会优先。在垂直书写模式中，`inline-size`对应于`height`，`block-size`对应于`width`。
+- en: 'Setting a block box’s height or width as a <*`length`*> means it will be that
+    length tall or wide, regardless of the content within it. If you set an element
+    that generates a block box to `width: 200px`, it will be 200 pixels wide, even
+    if it has a 500-pixel-wide image inside it.'
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '将块框的高度或宽度设置为<*`length`*>意味着它将是那个长度的高或宽，不管其内部内容如何。如果你将生成块框的元素设置为`width: 200px`，那么它将是200像素宽，即使其内部有一个500像素宽的图像。'
+- en: 'Setting the value of `width` to a <*`percentage`*> means the width of the element
+    will be that percentage of its containing block’s width. If you set a paragraph
+    to `width: 50%` and its containing block is 1,024 pixels wide, then the paragraph’s
+    `width` will be computed to 512 pixels.'
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '将`width`的值设置为<*`percentage`*>意味着元素的宽度将是其包含块宽度的那个百分比。如果你将段落设置为`width: 50%`，其包含块宽度为1,024像素，则段落的`width`将计算为512像素。'
+- en: Setting `height` to a <*`percentage`*> works similarly, except this works only
+    if the containing block has an explicitly set height. If the containing block’s
+    height is automatically set, a percentage value is treated as `auto` instead,
+    as seen in the `#cb4` example in [Figure 6-12](#heights-and-widths).
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将`height`设置为<*`percentage`*>的工作方式类似，除非包含块已显式设置高度。如果包含块的高度是自动设置的，则百分比值会被视为`auto`，如[图 6-12](#heights-and-widths)中`#cb4`示例所示。
+- en: Note
+  id: totrans-123
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: The handling of `auto` top and bottom margins is different for positioned elements,
+    as well as flexible-box and grid elements. The differences are covered in Chapters
+    [11](ch11.html#flexbox) and [12](ch12.html#grid-layout).
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于定位元素、弹性盒和网格元素，`auto`上下边距的处理方式是不同的。这些差异在第[11](ch11.html#flexbox)章和第[12](ch12.html#grid-layout)章中有详细介绍。
+- en: 'Here are some examples of these values and combinations, with the result shown
+    in [Figure 6-12](#heights-and-widths):'
+  id: totrans-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一些这些值和组合的示例，结果显示在[图 6-12](#heights-and-widths)中：
+- en: '[PRE10]'
+  id: totrans-126
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '![css5 0612](assets/css5_0612.png)'
+  id: totrans-127
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0612](assets/css5_0612.png)'
+- en: Figure 6-12\. Heights and widths
+  id: totrans-128
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-12\. 高度和宽度
+- en: 'You can also use `max-content` and `min-content` with the `height` property,
+    but in top-to-bottom block flows, both are the same as `height: auto`. In writing
+    modes using a horizontal block axis, setting these values for `height` will have
+    similar effects as setting them for `width` in vertical block flows.'
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '您还可以使用`max-content`和`min-content`与`height`属性，但在自上而下的块流中，两者与`height: auto`相同。在使用水平块轴的书写模式中，为`height`设置这些值将产生类似于在垂直块流中为`width`设置它们的效果。'
+- en: 'In addition, these properties don’t apply to inline nonreplaced elements. For
+    example, if you try to declare a `height` and `width` for a hyperlink that’s in
+    the normal flow and generates an inline box, CSS-conformant browsers *must* ignore
+    those declarations. Assume the following rules:'
+  id: totrans-130
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另外，这些属性不适用于内联非替换元素。例如，如果尝试为正常流中生成内联框的超链接声明`height`和`width`，符合CSS的浏览器必须忽略这些声明。假设以下规则：
+- en: '[PRE11]'
+  id: totrans-131
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: You’ll end up with red unvisited links on silver backgrounds whose height and
+    width are determined by the content of the links. The links will *not* have content
+    areas that are 15 pixels tall by 60 pixels wide, as these must be ignored when
+    applied to inline nonreplaced elements. If, on the other hand, you add a `display`
+    value, such as `inline-block` or `block`, then `height` and `width` *will* set
+    the height and width of the links’ content areas.
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您最终会得到未访问的红色链接，它们的高度和宽度由链接内容决定，位于银色背景上。这些链接的内容区域不会是15像素高和60像素宽，因为这些值在应用于内联非替换元素时必须被忽略。另一方面，如果您添加`display`值，如`inline-block`或`block`，那么`height`和`width`将设置链接内容区域的高度和宽度。
+- en: Altering Box Sizing
+  id: totrans-133
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 更改盒子大小
+- en: If it seems a little weird to use `height` and `width` (and `block-size` and
+    `inline-size`) to describe the sizing of the element’s content area instead of
+    its visible area, you can make that sizing more intuitive by using the property
+    `box-sizing`.
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果使用`height`和`width`（以及`block-size`和`inline-size`）来描述元素内容区域的尺寸而不是其可见区域似乎有点奇怪，您可以通过使用属性`box-sizing`使此尺寸更直观。
+- en: This property changes what the values of the `height`, `width`, `block-size`,
+    and `inline-size` properties do.
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此属性改变了`height`、`width`、`block-size`和`inline-size`属性的值如何处理。
+- en: 'If you declare `inline-size: 400px` and don’t declare a value for `box-sizing`,
+    the element’s content area will be 400 pixels in the inline direction, and any
+    padding, borders, and so on will be added to that. If, on the other hand, you
+    declare `box-sizing: border-box`, the element box will be 400 pixels from the
+    inline-start border edge to the inline-end border edge; any inline-start or -end
+    border or padding will be placed within that distance, thus shrinking the inline
+    size of the content area. This is illustrated in [Figure 6-13](#bvf_fig05).'
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果声明`inline-size: 400px`并且不声明`box-sizing`的值，元素的内容区域将在行内方向上为400像素，任何填充、边框等都将添加到其中。另一方面，如果声明`box-sizing:
+    border-box`，元素框将从行内起始边框边缘到行内结束边框边缘为400像素；任何行内起始或结束的边框或填充将放置在该距离内，从而缩小内容区域的行内尺寸。这在[图 6-13](#bvf_fig05)中有所说明。'
+- en: '![css5 0613](assets/css5_0613.png)'
+  id: totrans-137
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0613](assets/css5_0613.png)'
+- en: Figure 6-13\. The effects of `box-sizing`
+  id: totrans-138
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-13\. `box-sizing`的效果
+- en: 'Put another way, if you declare `width: 400px` and don’t declare a value for
+    `box-sizing`, the element’s content area will be 400 pixels wide, and any padding,
+    borders, and so on will be added to that. If, on the other hand, you declare `box-sizing:
+    border-box`, the element box will be 400 pixels from the left outer border edge
+    to the right outer border edge; any left or right border or padding will be placed
+    within that distance, thus shrinking the width of the content area (again, as
+    seen in [Figure 6-13](#bvf_fig05)).'
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '换个说法，如果声明`width: 400px`并且不声明`box-sizing`的值，元素的内容区域将为400像素宽，任何填充、边框等都将添加到其中。另一方面，如果声明`box-sizing:
+    border-box`，元素框将从左外边框边缘到右外边框边缘为400像素；任何左侧或右侧的边框或填充将放置在该距离内，从而缩小内容区域的宽度（同样，如[图 6-13](#bvf_fig05)中所示）。'
+- en: We’re talking about the `box-sizing` property here because, as stated, it applies
+    to “all elements that accept `width` or `height` values” (because it was defined
+    before logical properties were commonplace). That’s most often elements generating
+    block boxes, though it also applies to replaced inline elements like images, as
+    well as inline-block boxes.
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们在这里谈论 `box-sizing` 属性，因为它适用于“接受 `width` 或 `height` 值的所有元素”（因为在逻辑属性普及之前它就被定义了）。通常情况下，这适用于生成块框的元素，尽管它也适用于替换的内联元素，比如图像，以及内联块框。
+- en: Having established how to size elements in both logical and physical ways, let’s
+    widen our scope and look at all the properties that affect block sizing.
+  id: totrans-141
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在逻辑和物理方式中已经确定了如何调整元素的尺寸后，让我们扩展范围，查看影响块大小的所有属性。
+- en: Block-Axis Properties
+  id: totrans-142
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 块轴属性
+- en: 'In total, block-axis formatting is affected by seven related properties: `margin-block-start`,
+    `border-block-start`, `padding-block-start`, `height`, `padding-block-end`, `border-block-end`,
+    and `margin-block-end`. These properties are diagrammed in [Figure 6-14](#bvf_fig20).
+    These properties are all covered in detail in [Chapter 7](ch07.html#padding-borders-outlines-and-margins);
+    here, we will talk about the general principles and behavior of these properties
+    before looking at the details of their values.'
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总体而言，块轴格式化受到七个相关属性的影响：`margin-block-start`、`border-block-start`、`padding-block-start`、`height`、`padding-block-end`、`border-block-end`
+    和 `margin-block-end`。这些属性在[图 7-14](#bvf_fig20)中有详细说明。在[第 7 章](ch07.html#padding-borders-outlines-and-margins)中，我们将详细讨论这些属性的所有内容，现在我们将先讨论这些属性的一般原则和行为，然后再查看其值的细节。
+- en: The block-start and -end padding and borders must be set to specific values,
+    or else they default to a width of 0, assuming no border style is declared. If
+    `border-style` has been set, the thickness of the borders is set to `medium`,
+    which is 3 pixels wide in all known browsers. [Figure 6-14](#bvf_fig20) depicts
+    the block-axis formatting properties in two writing modes and indicates which
+    parts of the box may have a value of `auto` and which may not.
+  id: totrans-144
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 必须将块轴的起始和结束填充以及边框设置为特定值，否则它们将默认为宽度为 `0`，假设未声明边框样式。如果已设置 `border-style`，则边框的厚度设置为
+    `medium`，在所有已知的浏览器中宽度为 3 像素。[图 7-14](#bvf_fig20)描述了两种书写模式下的块轴格式化属性，并指示框的哪些部分可能具有
+    `auto` 的值，哪些可能没有。
+- en: '![css5 0614](assets/css5_0614.png)'
+  id: totrans-145
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0614](assets/css5_0614.png)'
+- en: Figure 6-14\. The seven properties of block-axis formatting, and which can be
+    set to `auto`
+  id: totrans-146
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-14\. 块轴格式化的七个属性，以及可以设置为 `auto` 的属性
+- en: Interestingly, if either `margin-block-start` or `margin-block-end` is set to
+    `auto` for a block box in the normal flow, but not both, they both evaluate to
+    `0`. A value of `0`, unfortunately, prevents easy block-direction centering of
+    normal-flow boxes in their containing blocks (though such centering is fairly
+    straightforward in flexbox or grid layout).
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在普通流中的块级框中，`margin-block-start` 或 `margin-block-end` 中的一个设置为 `auto`，但不是两者同时设置，它们都会计算为
+    `0`。遗憾的是，值为 `0` 会阻止在包含块中轻松地使普通流框在块方向上居中（尽管在 flexbox 或 grid 布局中这样的居中相对直接）。
+- en: The `block-size` property must be set to `auto` or to a nonnegative value of
+    some type; it can never be less than 0.
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`block-size` 属性必须设置为 `auto` 或某种类型的非负值；它永远不能小于 `0`。'
+- en: Auto Block Sizing
+  id: totrans-149
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 自动块大小
+- en: 'In the simplest case, a normal-flow block box with `block-size: auto` is rendered
+    just tall enough to enclose the line boxes of its inline content (including text).
+    If an auto-block-size, normal-flow block box has only block-level children and
+    has no block-edge padding or borders, the distance from its first child’s border-start
+    edge to its last child’s border-end edge will be the box’s block size. This is
+    the case because the margins of the child elements can “stick out” of the element
+    that contains them thanks to what’s known as *margin collapsing*, which we’ll
+    talk about in [“Collapsing Block-Axis Margins”](#collapsing-block-axis-margins).'
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在最简单的情况下，具有 `block-size: auto` 的普通流块框的高度刚好足以包含其内联内容（包括文本）的行框。如果具有自动块大小的普通流块框只有块级子元素，并且没有块边缘的填充或边框，则从其第一个子元素的边框起始边到其最后一个子元素的边框结束边的距离将是框的块大小。这种情况是因为子元素的边距可以“突出”包含它们的元素，这归功于所谓的*边距折叠*，我们将在[“块轴边距折叠”](#collapsing-block-axis-margins)中讨论。'
+- en: 'However, if a block-level element has either block-start or -end padding, or
+    block-start and -end borders, its block size will be the distance from the block-start
+    margin edge of its first child to the block-end margin edge of its last child:'
+  id: totrans-151
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，如果块级元素具有块起始或块结束填充，或块起始和块结束边框，则其块大小将是其第一个子元素的块起始边缘到其最后一个子元素的块结束边缘的距离：
+- en: '[PRE12]'
+  id: totrans-152
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: '[Figure 6-15](#bvf_fig23) demonstrates both of these behaviors.'
+  id: totrans-153
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 6-15](#bvf_fig23) 展示了这两种行为。'
+- en: 'If we changed the borders in the previous example to be padding instead, the
+    effect on the block size of the `<div>` would be the same: it would still enclose
+    the paragraph’s margins within it.'
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们将前面示例中的边框改为填充，那么 `<div>` 的块大小效果将相同：它仍将包含段落的边距在内。
+- en: '![css5 0615](assets/css5_0615.png)'
+  id: totrans-155
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0615](assets/css5_0615.png)'
+- en: Figure 6-15\. Auto block sizes with block-level children
+  id: totrans-156
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-15\. 带有块级子元素的自动块大小
+- en: Percentage Heights
+  id: totrans-157
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 百分比高度
+- en: 'You saw earlier how length-value block sizes are handled, so let’s spend a
+    moment on percentages. If the block size of a normal-flow block box is set to
+    a percentage value, that value is taken as a percentage of the block size of the
+    box’s containing block, assuming the container has an explicit, non-`auto` block
+    size of its own. Given the following markup, the paragraph will be 3 em long along
+    the block axis:'
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您之前看到了如何处理长度值块大小，现在我们花一点时间讨论百分比。如果正常流块框的块大小设置为百分比值，则该值将视为其包含块的块大小的百分比，假设容器具有自己的显式非
+    `auto` 块大小。给定以下标记，段落沿块轴的长度为 3 em：
+- en: '[PRE13]'
+  id: totrans-159
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: 'If the block size of the containing block is *not* explicitly declared, percentage
+    block sizes are reset to `auto`. If we change the previous example so that the
+    `block-size` of the `<div>` is `auto`, the paragraph will now have its block size
+    determined automatically:'
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果包含块的块大小 *没有* 显式声明，则百分比块大小将重置为 `auto`。如果我们更改上一个示例，以便 `<div>` 的 `block-size`
+    是 `auto`，则段落现在将自动确定其块大小：
+- en: '[PRE14]'
+  id: totrans-161
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: '[Figure 6-16](#bvf_fig22) illustrates these two possibilities. (The spaces
+    between the paragraph borders and the `<div>` borders are the block-start and
+    -end margins on the paragraphs.)'
+  id: totrans-162
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 6-16](#bvf_fig22) 阐述了这两种可能性。（段落边框与 `<div>` 边框之间的空间是段落的块起始和结束边距。）'
+- en: '![css5 0616](assets/css5_0616.png)'
+  id: totrans-163
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0616](assets/css5_0616.png)'
+- en: Figure 6-16\. Percentage block sizes in different circumstances
+  id: totrans-164
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-16\. 不同情况下的百分比块大小
+- en: Before we move on, take a closer look at the first example in [Figure 6-16](#bvf_fig22),
+    the half-as-tall paragraph. It may be half as tall, but it isn’t centered along
+    the block axis. That’s because the containing `<div>` is 6 em tall, which means
+    the half-as-tall paragraph is 3 em tall. It has block-start and -end margins of
+    1 em thanks to the browser’s default styles, so its overall block size is 5 em.
+    That means there is actually 2 em of space between the block end of the paragraph’s
+    visible box and the `<div>`’s block-end border, not 1 em. [Figure 6-17](#block-axis-sizing-placement-in-detail)
+    illustrates this in detail.
+  id: totrans-165
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在我们继续之前，请仔细观察 [图 6-16](#bvf_fig22) 中的第一个示例，即半高的段落。它可能只有高度的一半，但沿块轴并非居中。这是因为包含的
+    `<div>` 高度为 6 em，这意味着半高的段落为 3 em。由于浏览器的默认样式，它具有 1 em 的块起始和结束边距，因此其整体块大小为 5 em。这意味着段落可见框的块结束边缘与
+    `<div>` 的块结束边框之间实际上有 2 em 的空间，而不是 1 em。 [图 6-17](#block-axis-sizing-placement-in-detail)
+    详细说明了这一点。
+- en: '![css5 0617](assets/css5_0617.png)'
+  id: totrans-166
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0617](assets/css5_0617.png)'
+- en: Figure 6-17\. Block-axis sizing and placement in detail
+  id: totrans-167
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-17\. 块轴尺寸和详细放置
+- en: Handling Content Overflow
+  id: totrans-168
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理内容溢出
+- en: Given that it’s possible to set elements to specific sizes, it becomes possible
+    to make an element too small for its content to fit inside. This is more likely
+    to arise if block sizes are explicitly defined, but it can also happen with inline
+    sizes, as you’ll see in later sections. If this sort of thing does happen, you
+    can exert some control over the situation with the `overflow` shorthand property.
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于可以将元素设置为特定大小，因此可能使元素的内容无法完全容纳。如果显式定义块大小，则更有可能出现此问题，但在后续章节中，您将看到它也可能发生在内联大小中。如果确实发生了这种情况，您可以使用
+    `overflow` 简写属性来控制情况。
+- en: 'The default value of `visible` means that the element’s content may be visible
+    outside the element’s box. Typically, this leads to the content running outside
+    its own element box, but not altering the shape of that box. The following markup
+    would result in [Figure 6-18](#overflow_methods):'
+  id: totrans-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`visible`的默认值意味着元素的内容可能在元素框外可见。通常，这会导致内容超出其自身元素框，但不会改变该框的形状。下面的标记将导致[图 6-18](#overflow_methods)的结果：'
+- en: '[PRE15]'
+  id: totrans-171
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: If `overflow` is set to `hidden`, the element’s content is clipped at the edges
+    of the element box. With the `hidden` value, there is no way to get at the parts
+    of the content that are clipped off.
+  id: totrans-172
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果将`overflow`设置为`hidden`，元素的内容将被裁剪在元素框的边缘。使用`hidden`值时，没有办法访问被裁剪掉的内容部分。
+- en: If `overflow` is set to `clip`, the element’s content is also clipped—that is,
+    hidden—at the edges of the element box, with no way to get at the parts that are
+    clipped off.
+  id: totrans-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果将`overflow`设置为`clip`，元素的内容也将被裁剪——即在元素框的边缘隐藏——没有办法访问被裁剪掉的部分。
+- en: If `overflow` is set to `scroll`, the overflowing content is clipped, but the
+    content can be made available to the user via scrolling methods, including a scrollbar
+    (or set of them). [Figure 6-18](#overflow_methods) depicts one possibility.
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果将`overflow`设置为`scroll`，溢出的内容将被裁剪，但用户可以通过滚动方法访问内容，包括滚动条（或一组滚动条）。[图 6-18](#overflow_methods)描绘了其中一种可能性。
+- en: If `scroll` is used, the panning mechanisms (e.g., scrollbars) should always
+    be rendered. To quote the specification, “this avoids any problem with scrollbars
+    appearing or disappearing in a dynamic environment.” Thus, even if the element
+    has sufficient space to display all its content, the scrollbars may still appear
+    and take up space (though they may not).
+  id: totrans-175
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果使用`scroll`，则应始终呈现平移机制（例如滚动条）。引用规范，“这样可以避免在动态环境中出现滚动条的问题。”因此，即使元素有足够的空间来显示其所有内容，滚动条仍可能出现并占据空间（尽管不一定）。
+- en: In addition, when printing a page or otherwise displaying the document in a
+    print medium, the content may be displayed as though the value of `overflow` were
+    declared to be `visible`.
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，在打印页面或以其他方式在打印介质中显示文档时，内容可能显示为`overflow`值被声明为`visible`。
+- en: '[Figure 6-18](#overflow_methods) illustrates these `overflow` values, with
+    two of them combined in a single example.'
+  id: totrans-177
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 6-18](#overflow_methods)说明了这些`overflow`值，其中两者结合在一个示例中。'
+- en: '![css5 0618](assets/css5_0618.png)'
+  id: totrans-178
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0618](assets/css5_0618.png)'
+- en: Figure 6-18\. Methods for handling overflowing content
+  id: totrans-179
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-18\. 处理溢出内容的方法
+- en: 'Finally, `overflow: auto` allows user agents to determine which of the previously
+    described behaviors to use, although user agents are encouraged to provide a scrolling
+    mechanism whenever necessary. This is a potentially useful way to use overflow,
+    since user agents could interpret it to mean “provide scrollbars only when needed.”
+    (They may not, but generally do.)'
+  id: totrans-180
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '最后，`overflow: auto`允许用户代理确定要使用先前描述的哪种行为，尽管鼓励用户代理在必要时提供滚动机制。这是一种潜在有用的溢出使用方式，因为用户代理可以将其解释为“仅在需要时提供滚动条”。（它们可能不这样做，但通常是这样的。）'
+- en: Single-axis overflow
+  id: totrans-181
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 单轴溢出
+- en: Two properties make up the `overflow` shorthand. You can define the overflow
+    behavior along the *x* (horizontal) and *y* (vertical) directions separately,
+    either by setting them both in `overflow`, or by using the `overflow-x` and `overflow-y`
+    properties.
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`overflow`的简写由两个属性组成。您可以分别设置`overflow`沿*x*（水平）和*y*（垂直）方向的溢出行为，通过设置它们两者在`overflow`中，或使用`overflow-x`和`overflow-y`属性。'
+- en: 'By setting the overflow behavior separately along each axis, you’re essentially
+    deciding where scrollbars will appear and where they won’t. Consider the following,
+    which is rendered in [Figure 6-19](#overflow_x_y):'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过单独设置每个轴线的溢出行为，你实质上是在决定滚动条将出现在哪里，哪里不出现。考虑下面的情况，在[图 6-19](#overflow_x_y)中呈现：
+- en: '[PRE16]'
+  id: totrans-184
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: '![css5 0619](assets/css5_0619.png)'
+  id: totrans-185
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0619](assets/css5_0619.png)'
+- en: Figure 6-19\. Setting overflow separately for x- and y-axes
+  id: totrans-186
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-19\. 单独为x轴和y轴设置溢出
+- en: 'In the first case, an empty scrollbar is set up for the x-axis (horizontal),
+    but none for the y-axis (vertical), even though the content overflowed along the
+    y-axis. This is the worst of both worlds: a scrollbar that’s empty because it
+    isn’t needed, and no scrollbar where it is needed.'
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一种情况下，为x轴（水平方向）设置了一个空的滚动条，但对于y轴（垂直方向）却没有，尽管内容沿y轴溢出。这是两全其美的最坏情况：因为不需要而空置的滚动条，以及在需要时却没有滚动条。
+- en: 'The second case is the much more useful inverse: no scrollbar is set along
+    the x-axis, but one is available for the y-axis, so the overflowed content can
+    be accessed by means of scrolling.'
+  id: totrans-188
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二种情况是更实用的反例：x轴上没有滚动条，但是y轴上有一个可用的滚动条，因此可以通过滚动访问溢出的内容。
+- en: 'In the third case, `scroll` is set for both axes, so access to the overflowing
+    content is available via scrolling, but we also have an unnecessary scrollbar
+    (which is empty) for the x-axis. This is equivalent to simply declaring `overflow:
+    scroll`.'
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在第三种情况下，两个轴都设置为`scroll`，因此可以通过滚动访问溢出内容，但是我们也有一个不必要的（空）x轴滚动条。这相当于简单地声明`overflow:
+    scroll`。'
+- en: 'This brings us to the true nature of `overflow`: it’s a shorthand property
+    that brings `overflow-x` and `overflow-y` together under one roof. The following
+    is exactly equivalent to the previous example and will have the same result shown
+    in [Figure 6-19](#overflow_x_y):'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这使我们了解到`overflow`的真正本质：它是一个将`overflow-x`和`overflow-y`合并到一个属性下的简写。以下内容与先前示例完全等效，并将显示与[图 6-19](#overflow_x_y)相同的结果：
+- en: '[PRE17]'
+  id: totrans-191
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: As you see, you can give `overflow` two keywords, which are always in the order
+    *x*, then *y*. If only one value is given, it’s used for both the x- and y-axes.
+    This is why `scroll` and `scroll scroll` are the same thing as values of `overflow`.
+    Similarly, `hidden` would be the same as saying `hidden hidden`.
+  id: totrans-192
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您所见，您可以为`overflow`指定两个关键字，这些关键字始终按顺序为*x*，然后*y*。如果只给出一个值，则用于x和y轴。这就是为什么`scroll`和`scroll
+    scroll`作为`overflow`的值是相同的。同样，`hidden`等同于声明`hidden hidden`。
+- en: Negative Margins and Collapsing
+  id: totrans-193
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 负边距和折叠
+- en: 'Believe it or not, negative margins are possible. The base effect is to move
+    the margin edge inward toward the center of the element’s box. Consider this:'
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 信不信由你，负边距是可能的。其基本效果是将边距边缘向元素框的中心移动。考虑以下内容：
+- en: '[PRE18]'
+  id: totrans-195
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: '[PRE19]'
+  id: totrans-196
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: As we see in [Figure 6-20](#bvf_fig28), the paragraph has been pulled upward
+    by its negative block-start margin. Note that the content of the `<div>` that
+    follows the paragraph in the markup has also been pulled up the block axis by
+    50 pixels.
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如我们在[图 6-20](#bvf_fig28)中看到的，段落被其负块起始边距向上拉动。请注意，标记中段落后面的`<div>`的内容也被沿块轴向上拉了50像素。
+- en: '![css5 0620](assets/css5_0620.png)'
+  id: totrans-198
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0620](assets/css5_0620.png)'
+- en: Figure 6-20\. The effects of a negative block-start margin
+  id: totrans-199
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-20\. 负块起始边距的效果
+- en: 'Now compare the following markup to the situation shown in [Figure 6-21](#bvf_fig29):'
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在将以下标记与[图 6-21](#bvf_fig29)中显示的情况进行比较：
+- en: '[PRE20]'
+  id: totrans-201
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: '[PRE21]'
+  id: totrans-202
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: '![css5 0621](assets/css5_0621.png)'
+  id: totrans-203
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0621](assets/css5_0621.png)'
+- en: Figure 6-21\. The effects of a negative block-end margin
+  id: totrans-204
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-21\. 负块结束边距的效果
+- en: What’s happening? The elements following the `<div>` are placed according to
+    the location of the block-end margin edge of the `<div>`, which is 50 pixels higher
+    than it would be without the negative margin. As [Figure 6-21](#bvf_fig29) shows,
+    the block-end of the `<div>` is actually *above* the visual block-end of its child
+    paragraph. The next element after the `<div>` is the appropriate distance from
+    the block-end of the `<div>`.
+  id: totrans-205
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 发生了什么？跟随`<div>`之后的元素是根据`<div>`的块结束边距边缘的位置放置的，该位置比没有负边距时高出50像素。正如[图 6-21](#bvf_fig29)所示，`<div>`的块结束位置实际上*高于*其子段落的视觉块结束位置。在`<div>`之后的下一个元素与`<div>`的块结束位置之间的距离是适当的。
+- en: Collapsing Block-Axis Margins
+  id: totrans-206
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 折叠块轴边距
+- en: An important aspect of block-axis formatting is the *collapsing* of adjacent
+    margins, which is a way of comparing adjacent margins in the block direction,
+    and then using only the largest of those margins to set the distance between the
+    adjacent block elements. Note that collapsing behavior applies only to margins.
+    Padding and borders never collapse.
+  id: totrans-207
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 块轴格式化的一个重要方面是*相邻边距的折叠*，这是一种比较块方向上相邻边距的方法，然后只使用这些边距中的最大值来设置相邻块元素之间的距离。请注意，折叠行为仅适用于边距。内边距和边框永远不会折叠。
+- en: 'An unordered list, with list items that follow one another along the block
+    axis, is a perfect environment for studying margin collapsing. Assume that the
+    following is declared for a list that contains three items:'
+  id: totrans-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无序列表，列表项沿块轴依次排列，是研究边距折叠的理想环境。假设以下声明适用于包含三个项目的列表：
+- en: '[PRE22]'
+  id: totrans-209
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: Each list item has a 10-pixel block-start margin and a 15-pixel block-end margin.
+    When the list is rendered, however, the visible distance between adjacent list
+    items is 15 pixels, not 25\. This happens because, along the block axis, adjacent
+    margins are collapsed. In other words, the smaller of the two margins is eliminated
+    in favor of the larger. [Figure 6-22](#bvf_fig24) shows the difference between
+    collapsed and uncollapsed margins.
+  id: totrans-210
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个列表项具有 10 像素的块起始边距和 15 像素的块末端边距。然而，当列表被渲染时，相邻列表项之间的可见距离是 15 像素，而不是 25 像素。这是因为在块轴上，相邻边距被折叠了。换句话说，较小的边距被舍弃，以较大的边距为准。图 6-22
+    显示了折叠与未折叠边距的区别。
+- en: '![css5 0622](assets/css5_0622.png)'
+  id: totrans-211
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0622](assets/css5_0622.png)'
+- en: Figure 6-22\. Collapsed versus uncollapsed margins
+  id: totrans-212
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-22\. 折叠与未折叠边距
+- en: User agents will collapse block-adjacent margins as shown in the first list
+    in [Figure 6-22](#bvf_fig24), so that 15-pixel spaces appear between each list
+    item. The second list shows what happens if browsers don’t collapse margins, resulting
+    in 25-pixel spaces between list items.
+  id: totrans-213
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户代理将会像图 6-22 中的第一个列表所示折叠块相邻的边距，因此每个列表项之间会出现 15 像素的间隔。第二个列表显示如果浏览器不折叠边距会发生什么，导致列表项之间的间隔为
+    25 像素。
+- en: Another word to use, if you don’t like “collapse,” is “overlap.” Although the
+    margins are not really overlapping, you can visualize what’s happening by using
+    the following analogy.
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个可以使用的词，如果你不喜欢“折叠”，是“重叠”。虽然边距实际上并没有重叠，但是你可以通过以下类比来想象正在发生的事情。
+- en: Imagine that each element, such as a paragraph, is a small piece of paper with
+    the content of the element written on it. Around each piece of paper is a certain
+    amount of clear plastic, which represents the margins. The first piece of paper
+    (say an `<h1>` piece) is laid down on the canvas. The second (a paragraph) is
+    laid below it along the block axis and then slid upward along that axis until
+    the edge of one piece’s plastic touches the edge of the other’s paper. If the
+    first piece of paper has half an inch of plastic along its block-end edge, and
+    the second has a third of an inch along its block-start, then when they slide
+    together, the first piece’s block-end plastic will touch the block-start edge
+    of the second piece of paper. The two are now done being placed on the canvas,
+    and the plastic attached to the pieces is overlapping.
+  id: totrans-215
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 想象每个元素，比如段落，都是一小张纸，上面写着元素的内容。每张纸周围都有一定数量的透明塑料，代表边距。第一张纸（比如一个 `<h1>` 纸）被放在画布上。第二张纸（一个段落）被放在它下面沿着块轴，并沿着该轴向上滑动，直到一张纸的边缘的塑料触碰另一张纸的边缘。如果第一张纸的块末端边缘有半英寸的塑料，而第二张纸的块起始有三分之一英寸的塑料，那么当它们滑动在一起时，第一张纸的块末端塑料将接触到第二张纸的块起始边缘。它们现在在画布上被放置完成，并且连接到纸上的塑料是重叠的。
+- en: 'Collapsing also occurs where multiple margins meet, such as at the end of a
+    list. Adding to the earlier example, let’s assume the following rules apply:'
+  id: totrans-216
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样会发生折叠，当多个边距相遇时，比如在列表末尾。接下来以早前的例子为例，假设以下规则适用：
+- en: '[PRE23]'
+  id: totrans-217
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: The last item in the list has a block-end margin of 20 pixels, the block-end
+    margin of the `<ul>` is 15 pixels, and the block-start margin of a succeeding
+    `<h1>` is 28 pixels. So once the margins have been collapsed, the distance between
+    the end of the last `<li>` in the list and the beginning of the `<h1>` is 28 pixels,
+    as shown in [Figure 6-23](#bvf_fig25).
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列表中的最后一项具有 20 像素的块末端边距，`<ul>` 的块末端边距为 15 像素，而后续 `<h1>` 的块起始边距为 28 像素。因此，一旦边距被折叠，列表中最后一个
+    `<li>` 结束和 `<h1>` 开始之间的距离为 28 像素，如 [图 6-23](#bvf_fig25) 所示。
+- en: '![css5 0623](assets/css5_0623.png)'
+  id: totrans-219
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0623](assets/css5_0623.png)'
+- en: Figure 6-23\. Collapsing in detail
+  id: totrans-220
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-23\. 详细的折叠过程
+- en: 'If you add a border or padding to a containing block, this causes the margins
+    of its child elements to be entirely contained within it. We can see this behavior
+    in operation by adding a border to the `<ul>` element in the previous example:'
+  id: totrans-221
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在包含块上添加边框或填充，这将导致其子元素的边距完全包含在其中。我们可以通过在前面示例的 `<ul>` 元素上添加边框来看到这种行为的运作：
+- en: '[PRE24]'
+  id: totrans-222
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: With this change, the block-end margin of the `<li>` element is now placed inside
+    its parent element (the `<ul>`). Therefore, the only margin collapsing that takes
+    place is between the `<ul>` and the `<h1>`, as illustrated in [Figure 6-24](#bvf_fig26).
+  id: totrans-223
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 随着这个改变，`<li>` 元素的块末端边距现在被放置在其父元素（`<ul>`）内。因此，唯一发生的边距折叠是在 `<ul>` 和 `<h1>` 之间，如
+    [图 6-24](#bvf_fig26) 所示。
+- en: '![css5 0624](assets/css5_0624.png)'
+  id: totrans-224
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0624](assets/css5_0624.png)'
+- en: Figure 6-24\. Collapsing (or not) with borders added to the mix
+  id: totrans-225
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-24\. 与添加边框混合（或不混合）的边距合并
+- en: Negative margin collapsing is slightly different. When a negative margin participates
+    in margin collapsing, the browser takes the absolute value of the negative margin
+    and subtracts it from any adjacent positive margins. In other words, the negative
+    length is added to the positive length(s), and the resulting value is the distance
+    between the elements, even if that distance is a negative length. [Figure 6-25](#bvf_fig27)
+    provides some concrete examples.
+  id: totrans-226
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 负边距合并略有不同。当负边距参与边距合并时，浏览器会取负边距的绝对值，并从任何相邻的正边距中减去它。换句话说，负长度会被添加到正长度中，结果值就是元素之间的距离，即使该距离是负长度。[图 6-25](#bvf_fig27)提供了一些具体的例子。
+- en: '![css5 0625](assets/css5_0625.png)'
+  id: totrans-227
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0625](assets/css5_0625.png)'
+- en: Figure 6-25\. Examples of negative block-axis margins
+  id: totrans-228
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-25\. 负块轴边距的示例
+- en: 'Now let’s consider an example where the margins of a list item, an unordered
+    list, and a paragraph are all collapsed. In this case, the unordered list and
+    paragraph are assigned negative margins:'
+  id: totrans-229
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们考虑一个示例，其中列表项、无序列表和段落的边距都被合并。在这种情况下，无序列表和段落被分配负边距：
+- en: '[PRE25]'
+  id: totrans-230
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: The negative margin of the greatest magnitude (`-18px`) is added to the largest
+    positive margin (`20px`), yielding `20px` – `18px` = `2px`. Thus, we have only
+    2 pixels between the block-end of the list item’s content and the block-start
+    of the `<h1>`’s content, as we can see in [Figure 6-26](#bvf_fig30).
+  id: totrans-231
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最大幅度的负边距（`-18px`）与最大正边距（`20px`）相加，得到 `20px` – `18px` = `2px`。因此，在列表项内容的块末端和`<h1>`内容的块开端之间，我们只有2像素的间距，正如我们在[图 6-26](#bvf_fig30)中看到的。
+- en: '![css5 0626](assets/css5_0626.png)'
+  id: totrans-232
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0626](assets/css5_0626.png)'
+- en: Figure 6-26\. Collapsing margins and negative margins, in detail
+  id: totrans-233
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-26\. 边距合并和负边距的详细信息
+- en: When elements overlap each other because of negative margins, it’s hard to tell
+    which elements are on top of others. You may also have noticed that very few of
+    the examples in this section use background colors. If they did, the background
+    color of a following element might overwrite the content of a preceding element.
+    This is expected behavior, since browsers usually render elements in order from
+    beginning to end, so a normal-flow element that comes later in the document can
+    generally be expected to overwrite an earlier element, assuming the two end up
+    overlapping.
+  id: totrans-234
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为负边距导致元素重叠，很难确定哪些元素位于其他元素之上。您可能还注意到，本节中的示例很少使用背景颜色。如果使用了背景颜色，后续元素的背景颜色可能会覆盖前面元素的内容。这是预期的行为，因为浏览器通常按顺序从开始到结束渲染元素，所以通常可以预期后来文档中的正常流元素会覆盖较早的元素。
+- en: Inline-Axis Formatting
+  id: totrans-235
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 内联轴格式化
+- en: 'Laying out elements along the inline axis can be more complex than you’d think.
+    Part of the complexity has to do with the default behavior of `box-sizing`. With
+    the default value of `content-box`, the value given for `inline-size` affects
+    the inline width of the content area, *not* the entire visible element box. Consider
+    the following example, where the inline axis runs left to right:'
+  id: totrans-236
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 沿内联轴布局元素可能比您想象的更复杂。这种复杂性的一部分与`box-sizing`的默认行为有关。在`content-box`的默认值下，给定的`inline-size`值影响内容区域的内联宽度，*而不是*整个可见元素框。考虑以下示例，其中内联轴从左到右：
+- en: '[PRE26]'
+  id: totrans-237
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: 'This makes the paragraph’s content area 200 pixels wide. If we give the element
+    a background, this will be quite obvious. However, any padding, borders, or margins
+    you specify are *added* to the width value. Suppose we do this:'
+  id: totrans-238
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这使得段落的内容区域宽度为200像素。如果我们给元素添加背景色，这将非常明显。然而，您指定的任何填充、边框或边距都会*添加*到宽度值上。假设我们这样做：
+- en: '[PRE27]'
+  id: totrans-239
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: The visible element box is now 220 pixels in inline size, since we’ve added
+    10 pixels of padding to every side of the content. The margins will now extend
+    another 20 pixels to both inline sides for an overall element inline size of 260
+    pixels. This is illustrated in [Figure 6-27](#bvf_fig06).
+  id: totrans-240
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可见的元素框现在在内联尺寸上为220像素，因为我们在内容的每一侧添加了10像素的填充。现在边距将在整个元素内联尺寸的两侧再扩展20像素。这在[图 6-27](#bvf_fig06)中有所说明。
+- en: '![css5 0627](assets/css5_0627.png)'
+  id: totrans-241
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0627](assets/css5_0627.png)'
+- en: Figure 6-27\. Additive padding and margin
+  id: totrans-242
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-27\. 添加填充和边距
+- en: 'If we change the styles to use `box-sizing: border-box`, the results will be
+    different. In that case, the visible box will be 200 pixels wide along the inline
+    axis with a content inline size of 180 pixels, and a total of 40 pixels of margin
+    on the inline sides, giving an overall box inline size of 240 pixels, as illustrated
+    in [Figure 6-28](#bvf_fig07).'
+  id: totrans-243
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果我们将样式更改为`box-sizing: border-box`，结果将会有所不同。在这种情况下，可见框沿着内联轴的宽度为200像素，内容内联尺寸为180像素，内联两侧共有40像素的边距，从而得到总体内联尺寸为240像素，如[图 6-28](#bvf_fig07)所示。'
+- en: '![css5 0628](assets/css5_0628.png)'
+  id: totrans-244
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0628](assets/css5_0628.png)'
+- en: Figure 6-28\. Subtractive padding
+  id: totrans-245
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-28\. 减法填充
+- en: 'In either case, the CSS specification has a rule that says the sum of the inline
+    components of a block box in the normal flow always equals the inline size of
+    the containing block (which is why, as you’ll see in just a bit, `margin: auto`
+    centers content in the inline direction). Let’s consider two paragraphs within
+    a `<div>` whose margins have been set to `1em`, and whose `box-sizing` value is
+    the default `content-box`. The content size (the value of `inline-size`) of each
+    paragraph in this example, plus its inline-start and -end padding, borders, and
+    margins, will always add up to the inline size of the `<div>`’s content area.'
+  id: totrans-246
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '无论哪种情况，CSS规范都有一条规则，即块级元素在正常流中的内联组件总是等于包含块的内联尺寸（这也是为什么，稍后您将看到，`margin: auto`可以在内联方向上居中内容）。让我们考虑一个`<div>`内的两个段落，其边距已设置为`1em`，并且其`box-sizing`值为默认的`content-box`。在这个例子中，每个段落的内容大小（即`inline-size`的值）、内联起始和结束填充、边框和边距的总和，将始终加起来等于`<div>`内容区域的内联尺寸。'
+- en: Let’s say the inline size of the `<div>` is `30em`. That makes the sum total
+    of the content size, padding, borders, and margins of each paragraph 30 em. In
+    [Figure 6-29](#bvf_fig08), the “blank” space around the paragraphs is actually
+    their margins. If the `<div>` had any padding, even more blank space would be
+    present, but that isn’t the case here.
+  id: totrans-247
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设`<div>`的内联尺寸是`30em`。这使得每个段落的内容大小、填充、边框和边距的总和为30 em。在[图 6-29](#bvf_fig08)中，段落周围的“空白”实际上是它们的边距。如果`<div>`有任何填充，那么将会有更多的空白空间，但这里并非如此。
+- en: '![css5 0629](assets/css5_0629.png)'
+  id: totrans-248
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0629](assets/css5_0629.png)'
+- en: Figure 6-29\. Element boxes are as wide as the inline width of their containing
+    block
+  id: totrans-249
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-29\. 元素框的宽度与其包含块的内联宽度一样宽
+- en: Inline-Axis Properties
+  id: totrans-250
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内联轴属性
+- en: The seven properties of inline formatting—`margin-inline-start`, `border-inline-start`,
+    `padding-inline-start`, `inline-size`, `padding-inline-end`, `padding-inline-end`,
+    and `padding-inline-end`—are diagrammed in [Figure 6-30](#bvf_fig09).
+  id: totrans-251
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内联轴格式化的七个属性——`margin-inline-start`、`border-inline-start`、`padding-inline-start`、`inline-size`、`padding-inline-end`、`padding-inline-end`和`padding-inline-end`——在[图 6-30](#bvf_fig09)中有详细说明。
+- en: The values of these seven properties must add up to the inline size of the element’s
+    containing block, which is usually the value of `inline-size` for a block element’s
+    parent (since block-level elements nearly always have block-level elements for
+    parents).
+  id: totrans-252
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这七个属性的值必须加起来等于元素包含块的内联尺寸，通常是块元素父级的`inline-size`的值（因为块级元素几乎总是有块级元素作为父级）。
+- en: 'Of these seven properties, only three may be set to `auto`: the inline size
+    of the element’s content, and the inline-start and -end margins. The remaining
+    properties must either be set to specific values or default to a width of 0\.
+    [Figure 6-30](#bvf_fig09) shows which parts of the box can take a value of `auto`
+    and which cannot. (That said, CSS is forgiving: if any part that can’t accept
+    `auto` is erroneously set to `auto`, it will default to `0`.)'
+  id: totrans-253
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这七个属性中，只有三个可以设置为`auto`：元素内容的内联尺寸，以及内联起始和结束边距。其余属性必须设置为具体值或默认为0。[图 6-30](#bvf_fig09)展示了框的哪些部分可以接受`auto`值，哪些不行。（不过，CSS很宽容：如果设置了任何不能接受`auto`的部分为`auto`，它将默认为`0`。）
+- en: '![css5 0630](assets/css5_0630.png)'
+  id: totrans-254
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0630](assets/css5_0630.png)'
+- en: Figure 6-30\. The seven properties of inline-axis formatting, and which can
+    be set to `auto`
+  id: totrans-255
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-30\. 内联轴格式化的七个属性及可以设置为`auto`的部分
+- en: The `inline-size` property must either be set to `auto` or a nonnegative value.
+    When you do use `auto` in inline-axis formatting, different effects can occur.
+  id: totrans-256
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`inline-size`属性必须设置为`auto`或非负值。在内联轴格式化中使用`auto`时，可能会产生不同的效果。'
+- en: Using auto
+  id: totrans-257
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用`auto`
+- en: In certain situations, it makes a lot of sense to explicitly set one or more
+    of the inline margins and size to `auto`. By default, the two inline margins are
+    set to `0`, and the inline size is set to `auto`. Let’s explore how moving the
+    `auto` around can have different effects, and why.
+  id: totrans-258
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些情况下，显式地将一个或多个内联边距和尺寸设置为 `auto` 是非常有意义的。默认情况下，两个内联边距设置为 `0`，内联尺寸设置为 `auto`。让我们探讨一下移动
+    `auto` 可以产生不同效果的原因。
+- en: Only one auto
+  id: totrans-259
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 只有一个 `auto`
+- en: If you set one of `inline-size`, `margin-inline-start`, or `margin-inline-end`
+    to a value of `auto`, and give the other two properties specific values, then
+    the property that is set to `auto` is set to the length required to make the element
+    box’s overall inline size equal to the parent element’s content inline size.
+  id: totrans-260
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您将 `inline-size`、`margin-inline-start` 或 `margin-inline-end` 中的一个设置为 `auto`，并为其他两个属性指定特定值，则设置为
+    `auto` 的属性将设置为使元素框的整体内联尺寸等于父元素的内容内联尺寸所需的长度。
+- en: 'Let’s say the sum of the seven inline-axis properties must equal 500 pixels,
+    no padding or borders are set, the inline-end margin and inline size are set to
+    `100px`, and the inline-start margin is set to `auto`. The inline-start margin
+    will thus be 300 pixels wide:'
+  id: totrans-261
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设七个内联轴属性的总和必须等于 500 像素，没有设置填充或边框，内联尺寸和内联结束边距设置为 `100px`，内联起始边距设置为 `auto`。因此，内联起始边距将宽度为
+    300 像素：
+- en: '[PRE28]'
+  id: totrans-262
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: In a sense, `auto` can be used to make up the difference between everything
+    else and the required total. However, what if all three of these properties (both
+    inline margins and the inline size) are set to `100px` and *none* of them are
+    set to `auto`?
+  id: totrans-263
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某种意义上，`auto` 可以用来填补其他所有内容和所需总和之间的差异。然而，如果这三个属性（内联边距和内联尺寸）都设置为 `100px`，并且*没有*一个设置为
+    `auto`，那会怎么样呢？
+- en: 'If all three properties are set to something other than `auto`—or, in CSS parlance,
+    when these formatting properties have been *overconstrained*—then the margin at
+    the inline end is *always* forced to be `auto`. This means that if both inline
+    margins and the inline size are set to `100px`, the user agent will reset the
+    inline-end margin to `auto`. The inline-end margin’s width will then be set according
+    to the rule that one `auto` value “fills in” the distance needed to make the element’s
+    overall inline size equal to that of its containing block’s content inline size.
+    [Figure 6-31](#bvf_fig11) shows the result of the following markup in left-to-right
+    languages like English:'
+  id: totrans-264
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果这三个属性都设置为除 `auto` 之外的其他值，或者在 CSS 术语中，当这些格式化属性已经*过度约束*时，内联结束边距将*始终*被强制为 `auto`。这意味着如果两个内联边距和内联尺寸都设置为
+    `100px`，用户代理将重置内联结束边距为 `auto`。然后，内联结束边距的宽度将根据一个 `auto` 值的规则设置，“填充”使元素的整体内联尺寸等于其包含块的内容内联尺寸。图 6-31
+    显示了类似英语这样的从左到右语言中以下标记的结果：
+- en: '[PRE29]'
+  id: totrans-265
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: '![css5 0631](assets/css5_0631.png)'
+  id: totrans-266
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0631](assets/css5_0631.png)'
+- en: Figure 6-31\. Overriding the inline-end margin’s value
+  id: totrans-267
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-31\. 覆盖内联结束边距的值
+- en: 'If both side margins are set explicitly, and `inline-size` is set to `auto`,
+    then `inline-size` will be whatever value is needed to reach the required total
+    (which is the content inline size of the parent element). The results of the following
+    markup are shown in [Figure 6-32](#bvf_fig12):'
+  id: totrans-268
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果两侧边距都明确设置，并且 `inline-size` 设置为 `auto`，那么 `inline-size` 将是达到所需总和所需的任何值（即父元素内容的内联尺寸）。以下标记的结果显示在
+    [图 6-32](#bvf_fig12) 中：
+- en: '[PRE30]'
+  id: totrans-269
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: 'This type of formatting is the most common, since it is equivalent to setting
+    the margins and not declaring anything for the `inline-size`. The result of the
+    following markup is exactly the same as that shown in [Figure 6-32](#bvf_fig12):'
+  id: totrans-270
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种类型的格式化是最常见的，因为它等同于设置边距并且不为 `inline-size` 声明任何内容。以下标记的结果与 [图 6-32](#bvf_fig12)
+    中显示的完全相同：
+- en: '[PRE31]'
+  id: totrans-271
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: '![css5 0632](assets/css5_0632.png)'
+  id: totrans-272
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0632](assets/css5_0632.png)'
+- en: Figure 6-32\. Automatic inline sizing
+  id: totrans-273
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-32\. 自动内联尺寸调整
+- en: You might be wondering what happens if `box-sizing` is set to `padding-box`.
+    In that case, all the same principles described here apply, which is why this
+    section discussed only `inline-size` and the inline-side margins without introducing
+    any padding or borders.
+  id: totrans-274
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果 `box-sizing` 设置为 `padding-box`，您可能会想知道会发生什么。在这种情况下，这里描述的所有原理都适用，这就是为什么本节仅讨论
+    `inline-size` 和内联侧边距而不引入任何填充或边框的原因。
+- en: 'In other words, the handling of `inline-size: auto` in this section and the
+    following sections is the same regardless of the value of `box-sizing`. The details
+    of what gets placed where inside the `box-sizing`-defined box may vary, but the
+    treatment of `auto` values does not, because `box-sizing` determines what `inline-size`
+    refers to, not how it behaves in relation to the margins.'
+  id: totrans-275
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '换句话说，本节和以下各节中对`inline-size: auto`的处理方式与`box-sizing`的值无关。在`box-sizing`定义的框内部放置内容的细节可能有所不同，但`auto`值的处理方式不变，因为`box-sizing`决定了`inline-size`所指的内容，而不是它与边距的关系。'
+- en: More than one auto
+  id: totrans-276
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 多个自动
+- en: 'Now let’s see what happens when two of the three properties (`inline-size`,
+    `margin-inline-start`, and `margin-inline-end`) are set to `auto`. If both margins
+    are set to `auto` but the `inline-size` is set to a specific length, then both
+    margins are set to equal lengths, thus centering the element within its parent
+    along the inline axis. The following code creates this layout, illustrated in
+    [Figure 6-33](#bvf_fig13):'
+  id: totrans-277
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们看看当三个属性中的两个（`inline-size`、`margin-inline-start`和`margin-inline-end`）都设置为`auto`时会发生什么。如果两个边距都设置为`auto`，但`inline-size`设置为特定长度，则两个边距将设置为相等的长度，从而使元素在其父元素沿内联轴居中。以下代码创建了这种布局，示例显示在[图 6-33](#bvf_fig13)中：
+- en: '[PRE32]'
+  id: totrans-278
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: '![css5 0633](assets/css5_0633.png)'
+  id: totrans-279
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0633](assets/css5_0633.png)'
+- en: Figure 6-33\. Setting an explicit inline size
+  id: totrans-280
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-33\. 设置显式内联尺寸
+- en: 'Another way of sizing elements along the inline axis is to set one of the inline
+    margins and `inline-size` to `auto`. In this case, the margin set to `auto` is
+    reduced to 0:'
+  id: totrans-281
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种沿内联轴调整元素大小的方法是将一个内联边距和`inline-size`设置为`auto`。在这种情况下，设置为`auto`的边距将被减少到0：
+- en: '[PRE33]'
+  id: totrans-282
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: The `inline-size` property is then set to the value necessary to make the element
+    fill its containing block; in the preceding example, it would be 400 pixels, as
+    shown in [Figure 6-34](#bvf_fig14).
+  id: totrans-283
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，`inline-size`属性被设置为使元素填充其包含块所需的值；在上述示例中，它将是400像素，如[图 6-34](#bvf_fig14)所示。
+- en: '![css5 0634](assets/css5_0634.png)'
+  id: totrans-284
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0634](assets/css5_0634.png)'
+- en: Figure 6-34\. What happens when both `inline-size` and the inline-start margin
+    are `auto`
+  id: totrans-285
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-34\. 当`inline-size`和内联起始边距都为`auto`时的情况
+- en: Too many autos
+  id: totrans-286
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 太多的自动
+- en: 'Finally, what happens when all three properties are set to `auto`? The answer:
+    both margins are set to 0, and the `inline-size` is made as wide as possible.
+    This result is the same as the default situation, when no values are explicitly
+    declared for margins or the inline size. In such a case, the margins default to
+    0 and `inline-size` defaults to `auto`.'
+  id: totrans-287
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，当这三个属性都设置为`auto`时会发生什么？答案是：两个边距都设置为0，而`inline-size`则尽可能宽。这个结果与默认情况相同，即当边距或内联尺寸未明确声明时。在这种情况下，边距默认为0，而`inline-size`默认为`auto`。
+- en: 'Note that since inline margins do not collapse (unlike block margins, as discussed
+    earlier), the padding, borders, and margins of a parent element can affect the
+    inline layout of its children. The effect is indirect in that the margins (and
+    so on) of an element can induce an offset for child elements. The results of the
+    following markup are shown in [Figure 6-35](#bvf_fig15):'
+  id: totrans-288
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，由于内联边距不会折叠（与前面讨论的块边距不同），父元素的填充、边框和边距可以影响其子元素的内联布局。这种影响是间接的，即一个元素的边距（等等）可以引起子元素的偏移。以下标记的结果显示在[图 6-35](#bvf_fig15)中：
+- en: '[PRE34]'
+  id: totrans-289
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: '![css5 0635](assets/css5_0635.png)'
+  id: totrans-290
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0635](assets/css5_0635.png)'
+- en: Figure 6-35\. Offset is implicit in the parent’s margins and padding
+  id: totrans-291
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-35\. 偏移在父元素的边距和填充中是隐含的
+- en: Negative Margins
+  id: totrans-292
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 负边距
+- en: As you’ve seen with block-axis margins, it’s possible to set negative values
+    for inline-axis margins. Setting negative inline margins can result in some interesting
+    effects.
+  id: totrans-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您在块轴边距中看到的那样，也可以为内联轴边距设置负值。设置负内联边距可能会导致一些有趣的效果。
+- en: 'Remember that the total of the seven inline-axis properties always equals the
+    inline size of the content area of the parent element. As long as all inline properties
+    are 0 or greater, an element’s inline size can never be greater than its parent’s
+    content area inline size. However, consider the following markup, depicted in
+    [Figure 6-36](#bvf_fig16):'
+  id: totrans-294
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，七个内联轴属性的总和始终等于父元素内容区域的内联尺寸。只要所有内联属性都是0或更大，元素的内联尺寸就永远不会大于其父元素的内容区域内联尺寸。但是，请考虑以下标记，示例显示在[图 6-36](#bvf_fig16)中：
+- en: '[PRE35]'
+  id: totrans-295
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: '![css5 0636](assets/css5_0636.png)'
+  id: totrans-296
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0636](assets/css5_0636.png)'
+- en: Figure 6-36\. Wider children through negative margins
+  id: totrans-297
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-36\. 通过负边距使子元素更宽
+- en: 'Yes indeed, the child element is wider than its parent along the inline axis!
+    This is mathematically correct. Let’s solve for inline size:'
+  id: totrans-298
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是的，确实，子元素在内联轴上比其父元素更宽！这在数学上是正确的。让我们解决内联尺寸的问题：
+- en: 10 px + 0 + 0 + 540 px + 0 + 0 – 50 px = 500 px
+  id: totrans-299
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 10 px + 0 + 0 + 540 px + 0 + 0 – 50 px = 500 px
+- en: 'The `540px` is the evaluation of `inline-size: auto`, which is the number needed
+    to balance out the rest of the values in the equation. Even though it leads to
+    a child element sticking out of its parent, it all works because the values of
+    the seven properties add up to the required total.'
+  id: totrans-300
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`540px`是`inline-size: auto`的计算结果，这是平衡方程中其余值所需的数字。即使这导致子元素超出其父元素，所有这些工作都是因为七个属性的值总和达到了所需的总和。'
+- en: 'Now, let’s add some borders to the mix:'
+  id: totrans-301
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，让我们添加一些边框：
+- en: '[PRE36]'
+  id: totrans-302
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: 'The resulting change will be a reduction in the evaluated width of `inline-size`:'
+  id: totrans-303
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结果的变化将导致`inline-size`的评估宽度减少：
+- en: 10 px + 3 px + 0 + 534 px + 0 + 3 px – 50 px = 500 px
+  id: totrans-304
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 10 px + 3 px + 0 + 534 px + 0 + 3 px – 50 px = 500 px
+- en: 'Or, we can rearrange the equation to solve for the content size instead of
+    for the width of the parent:'
+  id: totrans-305
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，我们可以重新排列方程以解决内容大小而不是父元素宽度的问题：
+- en: 500 px – 10 px – 3 px – 3 px + 50 px = 534 px
+  id: totrans-306
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 500 px – 10 px – 3 px – 3 px + 50 px = 534 px
+- en: 'If we were to introduce padding, the value of `inline-size` would drop even
+    more (assuming `box-sizing: content-box`).'
+  id: totrans-307
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果我们引入填充，`inline-size`的值将进一步下降（假设`box-sizing: content-box`）。'
+- en: 'Conversely, it’s possible to have `auto` inline-end margins evaluate to negative
+    amounts. If the values of other properties force the inline-end margin to be negative
+    in order to satisfy the requirement that elements be no wider than their containing
+    block, that’s what will happen. Consider the following:'
+  id: totrans-308
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，可以将`auto`的内联结束边距计算为负值。如果其他属性的值强制内联结束边距为负，以满足元素不超过其包含块的要求，那么就会发生这种情况。考虑以下情况：
+- en: '[PRE37]'
+  id: totrans-309
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: 'The equation works out like this:'
+  id: totrans-310
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方程如下所示：
+- en: 500 px – 10 px – 600 px – 3 px – 3 px = –116 px
+  id: totrans-311
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 500 px – 10 px – 600 px – 3 px – 3 px = –116 px
+- en: In this case, the inline-end margin evaluates to `-116px`. No matter what explicit
+    value it’s given in the CSS, this margin will still be forced to `-116px` because
+    of the rule stating that when an element’s dimensions are overconstrained, the
+    inline-end margin is reset to whatever is needed to make the numbers work out
+    correctly.
+  id: totrans-312
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，内联结束边距计算为`-116px`。无论在CSS中给定了多少显式值，由于规则规定当元素尺寸过度约束时，内联结束边距将被重置为使数字正确计算的值。
+- en: 'Let’s consider another example, illustrated in [Figure 6-37](#bvf_fig17), in
+    which the inline-start margin is set to be negative:'
+  id: totrans-313
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们考虑另一个例子，如[图6-37](#bvf_fig17)所示，其中内联起始边距设置为负：
+- en: '[PRE38]'
+  id: totrans-314
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: '![css5 0637](assets/css5_0637.png)'
+  id: totrans-315
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0637](assets/css5_0637.png)'
+- en: Figure 6-37\. Setting a negative inline-start margin
+  id: totrans-316
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-37。设置负内联起始边距
+- en: With a negative inline-start margin, the paragraph not only spills beyond the
+    borders of the `<div>`, but also spills beyond the edge of the browser window
+    itself!
+  id: totrans-317
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 具有负内联起始边距的段落不仅超出了`<div>`的边界，还超出了浏览器窗口的边缘！
+- en: 'Remember: padding, borders, and content widths (and heights) can never be negative.
+    Only margins can be less than 0.'
+  id: totrans-318
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住：填充、边框和内容宽度（和高度）永远不能为负。只有边距可以小于0。
+- en: Percentages
+  id: totrans-319
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 百分比
+- en: When it comes to percentage values for the inline size, padding, and margins,
+    the same basic rules we discussed in previous sections apply. It doesn’t really
+    matter whether the values are declared with lengths or percentages.
+  id: totrans-320
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于内联尺寸、填充和边距的百分比值，与前几节讨论的基本规则相同。值是用长度还是百分比声明的并不重要。
+- en: 'Percentages can be very useful. Suppose we want an element’s content to be
+    two-thirds the inline size of its containing block, the padding sides to be 5%
+    each, the inline-start margin to be 5%, and the inline-end margin to take up the
+    slack. That would be written something like this:'
+  id: totrans-321
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 百分比可以非常有用。假设我们希望元素的内容占其包含块的内联尺寸的三分之二，填充边为5%各自，内联起始边距为5%，而内联结束边距则充当间隙。可以这样写：
+- en: '[PRE39]'
+  id: totrans-322
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: The inline-end margin would evaluate to 18% (100% – 67% – 5% – 5% – 5%) of the
+    width of the containing block.
+  id: totrans-323
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内联结束边距将评估为包含块宽度的18%（100% – 67% – 5% – 5% – 5%）。
+- en: 'Mixing percentages and length units can be tricky, however. Consider the following
+    example:'
+  id: totrans-324
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，混合百分比和长度单位可能会很棘手。考虑以下例子：
+- en: '[PRE40]'
+  id: totrans-325
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: 'In this case, the element’s box can be defined like this:'
+  id: totrans-326
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，元素的框可以定义如下：
+- en: 5 em + 0 + 2 em + 67% + 2 em + 0 + auto = containing block width
+  id: totrans-327
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 5 em + 0 + 2 em + 67% + 2 em + 0 + auto = 包含块宽度
+- en: In order for the inline-end margin’s inline size to evaluate to 0, the element’s
+    containing block must be 27.272727 em wide (with the content area of the element
+    being 18.272727 em wide) along the inline axis. Any wider than that, and the inline-end
+    margin will evaluate to a positive value. Any narrower, and the inline-end margin
+    will be a negative value.
+  id: totrans-328
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了使内联末端边距的内联尺寸评估为0，元素的包含块必须沿内联轴宽27.272727 em（元素内容区域为18.272727 em）。如果超过这个宽度，内联末端边距将评估为正值。如果更窄，则内联末端边距将为负值。
+- en: 'The situation gets even more complicated if we start mixing length-value unity
+    types, like this:'
+  id: totrans-329
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 情况变得更加复杂，如果我们开始混合长度值单位类型，像这样：
+- en: '[PRE41]'
+  id: totrans-330
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: And, just to make things more complex, borders cannot accept percentage values,
+    only length values. The bottom line is that it isn’t really possible to create
+    a fully flexible element based solely on percentages unless you’re willing to
+    avoid using borders or use approaches such as flexible box layout. That said,
+    if you do need to mix percentages and length units, using the `calc()` and `minmax()`
+    value functions can be a life changer, or at least a layout changer.
+  id: totrans-331
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 而且，为了使事情更加复杂，边框不能接受百分比值，只能接受长度值。最后的结论是，如果你不愿意避免使用边框或使用灵活盒布局等方法，那么仅仅基于百分比来创建完全灵活的元素是不可能的。也就是说，如果确实需要混合百分比和长度单位，使用`calc()`和`minmax()`值函数可能会改变生活，或至少是布局的改变。
+- en: Replaced Elements
+  id: totrans-332
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 替换元素
+- en: 'So far, we’ve been dealing with the inline-axis formatting of nonreplaced block
+    boxes in the normal flow of text. Replaced elements are a bit simpler to manage.
+    All of the rules given for nonreplaced blocks hold true, with one exception: if
+    `inline-size` is `auto`, the `inline-size` of the element is the content’s intrinsic
+    width. (*Intrinsic* means the original size—the size of the element by default
+    when no external factors are applied to it.) The image in the following example
+    will be 20 pixels wide because that’s the width of the original image:'
+  id: totrans-333
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们一直在处理文本正常流中非替换块框的内联轴格式化。替换元素管理起来更简单一些。所有适用于非替换块的规则都成立，只有一个例外：如果`inline-size`为`auto`，则元素的`inline-size`是内容的固有宽度。（“固有”意味着原始大小——当未应用任何外部因素时元素的默认大小。）在以下示例中的图像将为20像素宽，因为这是原始图像的宽度：
+- en: '[PRE42]'
+  id: totrans-334
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: If the actual image were 100 pixels wide instead, the element (and thus the
+    image) would be laid out as 100 pixels wide.
+  id: totrans-335
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果实际图像宽度为100像素，则元素（及其图像）将布局为宽100像素。
+- en: 'We can override this rule by assigning a specific value to `inline-size`. Suppose
+    we modify the previous example to show the same image three times, each with a
+    different width value:'
+  id: totrans-336
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以通过为`inline-size`指定特定值来覆盖此规则。假设我们修改前面的示例以显示相同的图像三次，每次都有不同的宽度值：
+- en: '[PRE43]'
+  id: totrans-337
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: '[Figure 6-38](#bvf_fig18) illustrates the result.'
+  id: totrans-338
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图6-38](#bvf_fig18)说明了结果。'
+- en: '![css5 0638](assets/css5_0638.png)'
+  id: totrans-339
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0638](assets/css5_0638.png)'
+- en: Figure 6-38\. Changing replaced element inline sizes
+  id: totrans-340
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-38。更改替换元素的内联尺寸
+- en: 'Note that the block size of the elements also increases. When a replaced element’s
+    `inline-size` is changed from its intrinsic width, the value of `block-size` is
+    scaled to match, maintaining the object’s initial aspect ratio, unless `block-size`
+    has been set to an explicit value of its own. The reverse is also true: if `block-size`
+    is set, but `inline-size` is left as `auto`, then the inline size is scaled proportionately
+    to the change in block size.'
+  id: totrans-341
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，元素的块大小也会增加。当替换元素的`inline-size`从其固有宽度更改时，`block-size`的值会按比例缩放以保持对象的初始宽高比，除非`block-size`已经设置为自己的显式值。反之亦然：如果设置了`block-size`，但将`inline-size`保留为`auto`，那么内联尺寸将按比例缩放以匹配块大小的变化。
+- en: List Items
+  id: totrans-342
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 列表项
+- en: List items have a few special rules of their own. They are typically preceded
+    by a marker, such as a round bullet mark or a number.
+  id: totrans-343
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列表项有一些特殊的规则。它们通常由标记符号（如圆点标记或数字）作为前缀。
+- en: The marker attached to a list item element can be either outside the content
+    of the list item or treated as an inline marker at the beginning of the content,
+    depending on the value of the property `list-style-position`, as illustrated in
+    [Figure 6-39](#bvf_fig32).
+  id: totrans-344
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列表项元素附加的标记可以是列表项内容之外的，也可以作为内容开头的内联标记，具体取决于`list-style-position`属性的值，如[图6-39](#bvf_fig32)所示。
+- en: '![css5 0639](assets/css5_0639.png)'
+  id: totrans-345
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0639](assets/css5_0639.png)'
+- en: Figure 6-39\. Markers outside and inside the list
+  id: totrans-346
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-39。列表内外的标记
+- en: If the marker stays outside the content, it is placed a specified distance from
+    the inline-start content edge of the content. No matter how the list’s styles
+    are altered, the marker stays the same distance from the content edge.
+  id: totrans-347
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果标记留在内容外部，则放置在内容的内联起始内容边缘的指定距离处。无论如何修改列表的样式，标记始终保持与内容边缘的相同距离。
+- en: Remember that list-item boxes define containing blocks for their descendant
+    boxes, just like regular block boxes.
+  id: totrans-348
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住，列表项框为其后代框定义了包含块，就像常规块框一样。
+- en: Note
+  id: totrans-349
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: List markers are discussed in more detail, including how to create and style
+    them using the `::marker` pseudo-element, in [Chapter 16](ch16.html#lists-and-generated-content).
+  id: totrans-350
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更详细地讨论了列表标记，包括如何使用`::marker` 伪元素创建和样式化它们，请参阅[第16章](ch16.html#lists-and-generated-content)。
+- en: Box Sizing with Aspect Ratios
+  id: totrans-351
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 具有宽高比的盒模型
+- en: Sometimes you’ll want to size an element by its *aspect ratio*, which means
+    its block and inline sizes exist in a specific ratio. Old TVs used to have a 4:3
+    width-to-height ratio, for example; HD video resolutions have a 16:9 aspect ratio.
+    You might want to force elements to be square while still letting their sizes
+    flex. In these cases, the `aspect-ratio` property can help.
+  id: totrans-352
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时您可能希望通过其 *宽高比* 调整元素的大小，这意味着其块和内联尺寸存在特定的比例。例如，旧电视机的宽高比为4:3；高清视频分辨率的宽高比为16:9。您可能希望在仍允许其大小灵活的情况下强制元素为正方形。在这些情况下，`aspect-ratio`
+    属性可以帮助。
+- en: 'Let’s say we know we’ll have a bunch of elements, and we don’t know how wide
+    or tall each will be, but we want them all to be squares. First, pick an axis
+    you want to size on. We’ll use `height` here. Make sure the other axis is autosized,
+    and set an aspect ratio:'
+  id: totrans-353
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设我们知道将会有许多元素，但不知道每个元素的宽度或高度，但我们希望它们都是正方形。首先选择一个你想要尺寸的轴。我们将在这里使用`height`。确保另一个轴是自动调整大小的，并设置一个宽高比：
+- en: '[PRE44]'
+  id: totrans-354
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: '[Figure 6-40](#aspect-ratio) shows the same set of HTML, both with and without
+    the previous CSS applied.'
+  id: totrans-355
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 6-40](#aspect-ratio) 显示相同的一组HTML，应用了前述的CSS和未应用CSS的情况。'
+- en: '![css5 0640](assets/css5_0640.png)'
+  id: totrans-356
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0640](assets/css5_0640.png)'
+- en: Figure 6-40\. A gallery with and without aspect ratios defined
+  id: totrans-357
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-40\. 带有和不带有定义的宽高比的画廊
+- en: 'The ratio is maintained over the distances defined by `box-sizing` (see [“Altering
+    Box Sizing”](#altering-box-sizing)), so given the following CSS, the result will
+    be an element whose outer border distances are in an exact 2:1 ratio:'
+  id: totrans-358
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据`box-sizing`（见[“改变盒模型”](#altering-box-sizing)），距离保持比率，在以下CSS给定的情况下，结果将是一个元素，其外边框距离处于精确的2:1比率：
+- en: '[PRE45]'
+  id: totrans-359
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: The default value, `auto`, means that boxes that have an intrinsic aspect ratio—boxes
+    generated by images, for example—will use that aspect ratio. For elements that
+    don’t have an intrinsic aspect ratio, such as most HTML elements like `<div>`,
+    `<p>`, and so on, the axis sizes of the box will be determined by the content.
+  id: totrans-360
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值`auto`表示具有固有宽高比的框——例如由图像生成的框——将使用该宽高比。对于没有固有宽高比的元素，如大多数HTML元素如`<div>`、`<p>`等，框的轴尺寸将由内容决定。
+- en: Inline Formatting
+  id: totrans-361
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 内联格式化
+- en: '*Inline formatting* isn’t as simple as formatting block-level elements, which
+    just generates block boxes and usually doesn’t allow anything to coexist with
+    them. By contrast, look *inside* a block-level element, such as a paragraph. You
+    may well ask, how was the size and wrapping of each line determined? What controls
+    the lines’ arrangement? How can I affect it?'
+  id: totrans-362
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*内联格式化* 不像格式化块级元素那样简单，后者只生成块级框，并且通常不允许其他内容与之共存。相比之下，看一看 *块级元素的内部*，例如段落。您可能会问，每行的大小和换行是如何确定的？是什么控制行的排列？我如何影响它？'
+- en: Line Layout
+  id: totrans-363
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 行布局
+- en: 'To understand how lines are generated, first consider an element containing
+    one very long line of text, as shown in [Figure 6-41](#bvf_fig33). Note that we’ve
+    put a border around the line by wrapping the entire line in a `<span>` element
+    and then assigning it a border style:'
+  id: totrans-364
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要理解行是如何生成的，请首先考虑一个包含一行非常长文本的元素，如[图 6-41](#bvf_fig33) 所示。请注意，我们通过将整行文本包装在一个`<span>`元素中并为其分配边框样式来在行周围放置了边框：
+- en: '[PRE46]'
+  id: totrans-365
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: '![css5 0641](assets/css5_0641.png)'
+  id: totrans-366
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0641](assets/css5_0641.png)'
+- en: Figure 6-41\. A single-line inline element
+  id: totrans-367
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-41\. 单行内联元素
+- en: '[Figure 6-41](#bvf_fig33) shows the simplest case of an inline element contained
+    by a block-level element.'
+  id: totrans-368
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 6-41](#bvf_fig33) 显示了一个内联元素包含在块级元素中的最简单情况。'
+- en: To get from this simplified state to something more familiar, all we have to
+    do is determine how wide (along the inline axis) the element should be, and then
+    break up the line so that the resulting pieces will fit into the content inline
+    size of the element. Therefore, we arrive at the state shown in [Figure 6-42](#bvf_fig34).
+  id: totrans-369
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从这种简化状态转变为更熟悉的状态，我们只需确定元素沿着内联轴的宽度，然后将行分解，以使结果的片段适合元素的内容内联尺寸。因此，我们得到了 [第 6-42
+    图](#bvf_fig34) 所示的状态。
+- en: '![css5 0642](assets/css5_0642.png)'
+  id: totrans-370
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0642](assets/css5_0642.png)'
+- en: Figure 6-42\. A multiple-line inline element
+  id: totrans-371
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 第 6-42 图。一个多行内联元素
+- en: Nothing has really changed. All we did was take the single line and break it
+    into pieces, and then stack those pieces one after the other along the direction
+    of the block flow.
+  id: totrans-372
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事实上并没有什么改变。我们只是将单行文本分成片段，然后沿着块流方向依次堆叠这些片段。
+- en: In [Figure 6-42](#bvf_fig34), the borders for each line of text also happen
+    to coincide with the top and bottom of each line. This is true only because no
+    padding has been set for the inline text. Notice that the borders overlap each
+    other slightly; for example, the bottom border of the first line is just below
+    the top border of the second line. This is because the border is drawn on the
+    next pixel to the *outside* of each line. Since the lines are touching each other,
+    their borders overlap as shown in [Figure 6-42](#bvf_fig34).
+  id: totrans-373
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 [第 6-42 图](#bvf_fig34) 中，每行文本的边框恰好与每行的顶部和底部重合。这仅在内联文本没有设置填充时才成立。请注意，边框会略微重叠；例如，第一行的底部边框正好在第二行的顶部边框下方。这是因为边框是在每行的外部的下一个像素上绘制的。由于行相互接触，它们的边框如
+    [第 6-42 图](#bvf_fig34) 所示重叠。
+- en: Note
+  id: totrans-374
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注
+- en: For simplicity, we use terms such as *top* and *bottom* when talking about the
+    edges of line boxes. In this context, the top of a line box is the one closest
+    to the block-start, and the bottom of a line box is the one closest to the block-end.
+    Similarly, *tall* and *short* refer to the size of line boxes along the block
+    axis.
+  id: totrans-375
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了简化起见，我们在讨论线框边缘时使用诸如 *top* 和 *bottom* 等术语。在这个语境中，线框的顶部是最靠近块起始端的一侧，线框的底部是最靠近块结束端的一侧。类似地，*tall*
+    和 *short* 指的是沿着块轴的线框大小。
+- en: If we alter the span styles to have a background color, the actual placement
+    of the lines becomes clearer. Consider [Figure 6-43](#bvf_fig35), which shows
+    four paragraphs in each of two writing modes, and the effects of different values
+    of `text-align` (see [Chapter 15](ch15.html#text_properties)), by each paragraph
+    having the backgrounds of its lines filled in.
+  id: totrans-376
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们改变跨度样式以具有背景颜色，则行的实际放置变得更加清晰。考虑 [第 6-43 图](#bvf_fig35)，显示了每种写作模式中的两个段落，以及不同
+    `text-align` 值的效果（参见 [第 15 章](ch15.html#text_properties)），每个段落的行的背景都填充了。
+- en: '![css5 0643](assets/css5_0643.png)'
+  id: totrans-377
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0643](assets/css5_0643.png)'
+- en: Figure 6-43\. Showing lines in different alignments and writing modes
+  id: totrans-378
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 第 6-43 图。展示不同对齐方式和写作模式中的行
+- en: As [Figure 6-43](#bvf_fig35) shows, not every line reaches to the edge of its
+    parent paragraph’s content area, which has been denoted with a dashed gray border.
+    For the left-aligned paragraph, the lines are all pushed flush against the left
+    content edge of the paragraph, and the end of each line happens wherever the line
+    is broken. The reverse is true for the right-aligned paragraph. For the centered
+    paragraph, the centers of the lines are aligned with the center of the paragraph.
+  id: totrans-379
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如 [第 6-43 图](#bvf_fig35) 所示，并非每一行都延伸到其父段落的内容区域边缘，这已用虚线灰色边框表示。对于左对齐的段落，所有行都紧贴段落的左内容边缘，并且每行的结尾位置取决于行的断开处。右对齐段落的情况正好相反。对于居中对齐的段落，每行的中心与段落的中心对齐。
+- en: In the last case, where the value of `text-align` is `justify`, each line (except
+    the last) is forced to be as wide as the paragraph’s content area so that the
+    line’s edges touch the content edges of the paragraph. The difference between
+    the natural length of the line and the width of the paragraph’s content area is
+    made up by altering the spacing between letters and words in each line. Therefore,
+    the value of `word-spacing` can be overridden when the text is justified. (The
+    value of `letter-spacing` cannot be overridden if it is a length value.)
+  id: totrans-380
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在最后一种情况下，当 `text-align` 的值为 `justify` 时，每行（除了最后一行）被强制扩展到段落的内容区域宽度，以使行的边缘接触段落的内容边缘。行的自然长度与段落内容区域宽度之间的差异通过改变每行中字母和单词之间的间距来弥补。因此，在文本进行两端对齐时，`word-spacing`
+    的值可以被覆盖。（如果是长度值，则不能覆盖 `letter-spacing` 的值。）
+- en: That pretty well covers how lines are generated in the simplest cases. As you’re
+    about to see, however, the inline formatting model is far from simple.
+  id: totrans-381
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这基本上涵盖了最简单情况下行的生成方式。然而，正如你即将看到的，行内格式模型远非简单。
+- en: Basic Terms and Concepts
+  id: totrans-382
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 基本术语和概念
+- en: 'Before we go any further, let’s review some terms of inline layout, which will
+    be crucial in navigating the following sections:'
+  id: totrans-383
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在我们进一步讨论之前，让我们回顾一些行内布局术语，这些术语在后续章节中导航中至关重要：
+- en: Anonymous text
+  id: totrans-384
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匿名文本
+- en: Any string of characters that is not contained within an inline element. Thus,
+    in the markup `<p> I'm <em>so</em> happy!</p>`, the sequences “ I’m ” and “ happy!”
+    are anonymous text. Note that the spaces are part of the text, since a space is
+    a character like any other.
+  id: totrans-385
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何未包含在内联元素中的字符序列。因此，在标记中`<p> I'm <em>so</em> happy!</p>`，序列“I’m”和“happy!”是匿名文本。请注意，空格是文本的一部分，因为空格像其他字符一样。
+- en: Em box
+  id: totrans-386
+  prefs: []
+  type: TYPE_NORMAL
+  zh: em盒子
+- en: This is defined in the given font, otherwise known as the character box. Actual
+    glyphs can be taller or shorter than their em boxes. In CSS, the value of `font-size`
+    determines the height of each em box.
+  id: totrans-387
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是在给定字体中定义的，也称为字符框。实际字形可以比其em盒子更高或更矮。在CSS中，`font-size`的值决定了每个em盒子的高度。
+- en: Content area
+  id: totrans-388
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内容区
+- en: In nonreplaced elements, the content area can be one of two things, and the
+    CSS specification allows user agents to choose which one. The content area can
+    be the box described by the em boxes of every character in the element, strung
+    together; or it can be the box described by the character glyphs in the element.
+    In this book, we use the em box definition for simplicity, and that’s what is
+    used by most browsers. In replaced elements, the content area is the intrinsic
+    height of the element plus any margins, borders, or padding.
+  id: totrans-389
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在非替换元素中，内容区可以是两者之一，而CSS规范允许用户代理选择其中之一。内容区可以是每个字符的em盒子串在一起描述的盒子；或者可以是元素中字符字形描述的盒子。在本书中，我们为了简单起见使用em盒子的定义，这也是大多数浏览器使用的方式。在替换元素中，内容区是元素的固有高度加上任何边距、边框或填充。
+- en: Leading
+  id: totrans-390
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Leading
+- en: Leading (pronounced “led-ing”) is the difference between the values of `font-size`
+    and `line-height`. This difference is divided in half, with one half applied to
+    the top and one half to the bottom of the content area. These additions to the
+    content area are called, perhaps unsurprisingly, *half-leading*. Leading is applied
+    only to nonreplaced elements.
+  id: totrans-391
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行距（发音为“led-ing”）是`font-size`和`line-height`值之间的差异。这种差异被分成两半，一半应用于内容区的顶部，另一半应用于底部。这些添加到内容区的部分被称为*half-leading*。行距仅适用于非替换元素。
+- en: Inline box
+  id: totrans-392
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行内框
+- en: This is the box described by the addition of the leading to the content area.
+    For nonreplaced elements, the height of the inline box of an element will be exactly
+    equal to the value of the `line-height` property. For replaced elements, the height
+    of the inline box of an element will be exactly equal to the content area, since
+    leading is not applied to replaced elements.
+  id: totrans-393
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是通过将行距添加到内容区而描述的框。对于非替换元素，元素的行内框的高度将完全等于`line-height`属性的值。对于替换元素，元素的行内框的高度将完全等于内容区，因为行距不适用于替换元素。
+- en: Line box
+  id: totrans-394
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行框
+- en: This is the shortest box that bounds the highest and lowest points of the inline
+    boxes that are found in the line. In other words, the top edge of the line box
+    is placed along the top of the highest inline-box top, and the bottom of the line
+    box is placed along the bottom of the lowest inline-box bottom. Remember that
+    “top” and “bottom” are considered with respect to the block flow direction.
+  id: totrans-395
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是限定行内框的最短框，其边界包围着行中找到的最高和最低点的行内框。换句话说，行框的顶边缘位于最高行内框顶部的顶部，底边缘位于最低行内框底部的底部。请记住，“顶部”和“底部”是相对于块流方向来考虑的。
+- en: 'CSS also contains a set of behaviors and useful concepts that fall outside
+    of the preceding list of terms and definitions:'
+  id: totrans-396
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS还包含一组超出上述术语和定义范围的行为和有用概念：
+- en: The content area of an inline box is analogous to the content box of a block
+    box.
+  id: totrans-397
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 行内框的内容区类似于块框的内容框。
+- en: The background of an inline element is applied to the content area plus any
+    padding.
+  id: totrans-398
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 行内元素的背景应用于内容区加任何填充。
+- en: Any border on an inline element surrounds the content area plus any padding.
+  id: totrans-399
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 任何行内元素上的边框围绕内容区加任何填充。
+- en: Padding, borders, and margins on nonreplaced inline elements have no vertical
+    effect on the inline elements or the boxes they generate; they do *not* affect
+    the height of an element’s inline box (and thus the line box that contains the
+    element).
+  id: totrans-400
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 非替换内联元素的填充、边框和边距对内联元素或它们生成的框没有垂直影响；它们不会影响元素的内联框高度（因此也不会影响包含该元素的行框）。
+- en: Margins and borders on replaced elements *do* affect the height of the inline
+    box for that element and, by implication, the height of the line box for the line
+    that contains the element.
+  id: totrans-401
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 替换元素的边距和边框确实会影响该元素的内联框的高度，从而影响包含该元素的行的行框的高度。
+- en: 'One more thing to note: inline boxes are vertically aligned within the line
+    according to their values for the property `vertical-align` (see [Chapter 15](ch15.html#text_properties)).'
+  id: totrans-402
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有一件事要注意：内联框根据它们的 `vertical-align` 属性值在行内垂直对齐（见[第15章](ch15.html#text_properties)）。
+- en: 'Before moving on, let’s look at a step-by-step process for constructing a line
+    box, which you can use to see how the various pieces of a line fit together to
+    determine its height. Determine the height of the inline box for each element
+    in the line by following these steps:'
+  id: totrans-403
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在继续之前，让我们逐步查看构建行框的过程，您可以通过该过程查看如何将行的各个部分组合在一起以确定其高度。按照以下步骤确定每个元素在行中的内联框高度：
+- en: Find the values of `font-size` and `line-height` for each inline nonreplaced
+    element and text that is not part of a descendant inline element and combine them.
+    This is done by subtracting the `font-size` from the `line-height`, which yields
+    the leading for the box. The leading is split in half and applied to the top and
+    bottom of each em box.
+  id: totrans-404
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 找到每个内联非替换元素和不属于后代内联元素的文本的`font-size`和`line-height`的值，并结合它们。这是通过减去`font-size`从`line-height`得到的，得到盒子的
+    leading。将 leading 分成两半，分别应用于每个 em 盒子的顶部和底部。
+- en: Find the value of `height`, along with the values for the margins, padding,
+    and borders along the block-start and block-end edges of each replaced element,
+    and add them together.
+  id: totrans-405
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 找到`height`的值，以及每个替换元素的 block-start 和 block-end 边缘的边距、填充和边框的值，并将它们相加。
+- en: 'Figure out, for each content area, how much of it is above the baseline for
+    the overall line and how much of it is below the baseline. This is not an easy
+    task: you must know the position of the baseline for each element and piece of
+    anonymous text and the baseline of the line itself, and then line them all up.
+    In addition, the block-end edge of a replaced element sits on the baseline for
+    the overall line.'
+  id: totrans-406
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 确定每个内容区域，整体行基线上方和下方有多少。这并不是一件容易的事情：您必须知道每个元素和匿名文本的基线位置以及行本身的基线，然后将它们对齐。此外，替换元素的
+    block-end 边缘位于整体行的基线上。
+- en: Determine the vertical offset of any elements that have been given a value for
+    `vertical-align`. This will tell you how far up or down that element’s inline
+    box will be moved along the block axis, and that will change how much of the element
+    is above or below the baseline.
+  id: totrans-407
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 确定具有`vertical-align`值的任何元素的垂直偏移量。这将告诉您该元素的内联框在块轴上将被移动多远，这将改变元素上方或下方的部分量。
+- en: Now that you know where all of the inline boxes have come to rest, calculate
+    the final line box height. To do so, just add the distance between the baseline
+    and the highest inline-box top to the distance between the baseline and the lowest
+    inline-box bottom.
+  id: totrans-408
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 现在您知道所有内联框已经停留在哪里，请计算最终行框的高度。要做到这一点，只需将基线与最高内联框顶部之间的距离与基线与最低内联框底部之间的距离相加。
+- en: Let us consider the whole process in detail, which is the key to intelligently
+    styling inline content.
+  id: totrans-409
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们详细考虑整个过程，这是明智地为内联内容设置样式的关键。
+- en: Line Heights
+  id: totrans-410
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 行高度
+- en: First, know that all elements have a `line-height`, whether it’s explicitly
+    declared or not. This value greatly influences the way inline elements are displayed,
+    so let’s give it due attention.
+  id: totrans-411
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，要知道所有元素都有一个 `line-height`，无论是否显式声明。这个值极大地影响内联元素的显示方式，因此让我们给予它应有的关注。
+- en: 'A line’s height (or the height of a line box) is determined by the height of
+    its constituent elements and other content, such as text. It’s important to understand
+    that `line-height` affects inline elements and other inline content, *not* block-level
+    elements—at least, not directly. We can set a `line-height` value for a block-level
+    element, but the value will have a visual impact only as it’s applied to inline
+    content within that block-level element. Consider the following empty paragraph,
+    for example:'
+  id: totrans-412
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行高（或行盒的高度）由其组成元素和文本等内容的高度决定。重要的是要理解，`line-height`影响的是行内元素和其他行内内容，*而不是*直接影响块级元素。我们可以为块级元素设置`line-height`值，但该值仅在应用于该块级元素内的行内内容时才会有视觉影响。例如，考虑以下空段落：
+- en: '[PRE47]'
+  id: totrans-413
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: Without content, the paragraph won’t have anything to display, so we won’t see
+    anything. The fact that this paragraph has a `line-height` of any value—be it
+    `0.25em` or `25in`—makes no difference without some content to create a line box.
+  id: totrans-414
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 没有内容，段落将无法显示任何内容，因此我们看不到任何东西。事实上，这个段落具有任何值的`line-height`——无论是`0.25em`还是`25in`——都没有任何差别，没有内容来创建行盒。
+- en: 'We can set a `line-height` value for a block-level element and have that apply
+    to all of the content within the block, whether it’s contained in an inline element
+    or anonymous text. In a certain sense, then, each line of text contained within
+    a block-level element is its own inline element, whether or not it’s surrounded
+    by tags. If you like, picture a fictional tag sequence like this:'
+  id: totrans-415
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以为块级元素设置`line-height`值，并使其适用于块内的所有内容，无论它们是包含在行内元素中还是匿名文本中。从某种意义上说，块级元素内的每行文本都是其自己的行内元素，无论是否被标签包围。如果您愿意，可以想象一个类似以下的虚构标签序列：
+- en: '[PRE48]'
+  id: totrans-416
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: Even though the `line` tags don’t actually exist, the paragraph behaves as if
+    they did, and each line of text “inherits” styles from the paragraph. You bother
+    to create `line-height` rules for block-level elements only so you don’t have
+    to explicitly declare a `line-height` for all of their inline elements, fictional
+    or otherwise.
+  id: totrans-417
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使实际上`line`标签并不存在，段落的行为却好像它们存在一样，并且每行文本都从段落中继承样式。您只需要为块级元素创建`line-height`规则，以便无需显式地为其所有行内元素（无论是虚构的还是其他的）声明`line-height`。
+- en: 'The fictional `line` element clarifies the behavior that results from setting
+    `line-height` on a block-level element. According to the CSS specification, declaring
+    `line-height` on a block-level element sets a *minimum* line-box height for the
+    content of that block-level element. Declaring `p.spacious {line-height: 24pt;}`
+    means that the *minimum* height for each line box is 24 points. Technically, content
+    can inherit this line height only if an inline element does so. Most text isn’t
+    contained by an inline element. If you pretend that each line is contained by
+    the fictional `line` element, the model works out very nicely.'
+  id: totrans-418
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '虚构的`line`元素阐明了在块级元素上设置`line-height`后产生的行为。根据CSS规范，声明块级元素上的`line-height`设置了该块级元素内容的*最小*行盒高度。声明`p.spacious
+    {line-height: 24pt;}`意味着每个行盒的*最小*高度为24点。技术上，只有行内元素才能继承这个行高。大多数文本并不由行内元素包含。如果假设每行都由虚构的`line`元素包含，这个模型会非常好地工作。'
+- en: Inline Nonreplaced Elements
+  id: totrans-419
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 行内非替换元素
+- en: Building on our formatting knowledge, let’s move on to the construction of lines
+    that contain only nonreplaced elements (or anonymous text). Then you’ll be in
+    a good position to understand the differences between nonreplaced and replaced
+    elements in inline layout.
+  id: totrans-420
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在我们的格式知识基础上，让我们继续构建只包含非替换元素（或匿名文本）的行。然后，您将能够很好地理解行内布局中非替换元素和替换元素之间的区别。
+- en: Note
+  id: totrans-421
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: 'In this section, we use *top* and *bottom* to label where half-leading is placed
+    and how line boxes are placed together. Always remember that these terms are in
+    relation to the direction of block flow: the *top edge* of an inline box is the
+    one closest to the block-start edge, and the *bottom edge* of an inline box is
+    closest to its block-end edge. Similarly, *height* means the distance along the
+    inline box’s block axis, and *width* is the distance along its inline axis.'
+  id: totrans-422
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本节中，我们使用*top*和*bottom*来标记半行导向放置的位置以及如何将行盒放在一起。始终记住，这些术语是相对于块流动方向的：行内框的*顶边*是最靠近块开始边的边，行内框的*底边*是最靠近其块结束边的边。类似地，*height*意味着沿着行内框的块轴的距离，*width*是沿着其行内轴的距离。
+- en: Building the Boxes
+  id: totrans-423
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 建立方框
+- en: First, for an inline nonreplaced element or piece of anonymous text, the value
+    of `font-size` determines the height of the content area. If an inline element
+    has a `font-size` of `15px`, the content area’s height is 15 pixels because all
+    of the em boxes in the element are 15 pixels tall, as illustrated in [Figure 6-44](#bvf_fig36).
+  id: totrans-424
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，对于内联非替换元素或匿名文本片段，`font-size`的值确定了内容区域的高度。如果一个内联元素的`font-size`为`15px`，那么内容区域的高度为15像素，因为元素中所有的em框都是15像素高，如[图 6-44](#bvf_fig36)所示。
+- en: '![css5 0644](assets/css5_0644.png)'
+  id: totrans-425
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0644](assets/css5_0644.png)'
+- en: Figure 6-44\. Em boxes determine content area height
+  id: totrans-426
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-44\. Em框确定内容区域高度
+- en: The next thing to consider is the value of `line-height` for the element, and
+    the difference between it and the value of `font-size`. If an inline nonreplaced
+    element has a `font-size` of `15px` and a `line-height` of `21px`, the difference
+    is 6 pixels. The user agent splits the 6 pixels in half and applies half (3 pixels)
+    to the top and half (3 pixels) to the bottom of the content area, which yields
+    the inline box. [Figure 6-45](#bvf_fig37) illustrates this process.
+  id: totrans-427
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑的下一件事是元素的`line-height`值，以及它与`font-size`值之间的差异。如果一个内联非替换元素的`font-size`为`15px`，`line-height`为`21px`，那么差异为6像素。用户代理程序将这6像素分成两半，将其中一半（3像素）应用于内容区域的顶部，另一半（3像素）应用于底部，从而形成内联框。[图 6-45](#bvf_fig37)说明了这个过程。
+- en: '![css5 0645](assets/css5_0645.png)'
+  id: totrans-428
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0645](assets/css5_0645.png)'
+- en: Figure 6-45\. Content area plus leading equals inline box
+  id: totrans-429
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-45\. 内容区域加上行距等于内联框
+- en: 'Now, let’s break stuff so we can better understand how line height works. Assume
+    the following is true:'
+  id: totrans-430
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，让我们打破一些东西，以便更好地理解行高的工作原理。假设以下内容是真实的：
+- en: '[PRE49]'
+  id: totrans-431
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: In this example, most of the text has a `font-size` of `12px`, while the text
+    in one inline nonreplaced element has a size of `24px`. However, *all* of the
+    text has a `line-height` of `12px` since `line-height` is an inherited property.
+    Therefore, the `<strong>` element’s `line-height` is also `12px`.
+  id: totrans-432
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，大部分文本的`font-size`为`12px`，而一个内联非替换元素中的文本大小为`24px`。然而，*所有*文本的`line-height`都为`12px`，因为`line-height`是继承属性。因此，`<strong>`元素的`line-height`也为`12px`。
+- en: Thus, for each piece of text where both `font-size` and `line-height` are `12px`,
+    the content height does not change (since the difference between `12px` and `12px`
+    is 0), so the inline box is 12 pixels high. For the strong text, however, the
+    difference between `line-height` and `font-size` is `-12px`. This is divided in
+    half to determine the half-leading (`-6px`), and the half-leading is added to
+    both the top and bottom of the content height to arrive at an inline box. Since
+    we’re adding a negative number in both cases, the inline box ends up being 12
+    pixels tall. The 12-pixel inline box is centered vertically within the 24-pixel
+    content height of the element, so the inline box is smaller than the content area.
+  id: totrans-433
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，对于每个`font-size`和`line-height`都为`12px`的文本片段，内容高度不会改变（因为`12px`和`12px`之间的差异为0），因此内联框高度为12像素。然而，对于加粗文本，`line-height`和`font-size`之间的差异为`-12px`。这被分成两半来确定半行距（`-6px`），半行距被添加到内容高度的顶部和底部，得到内联框。由于我们在两种情况下都添加了负数，内联框的高度最终为12像素。12像素的内联框在元素的24像素内容高度内垂直居中，因此内联框比内容区域小。
+- en: So far, it sounds like we’ve done the same thing to each bit of text, and that
+    all the inline boxes are the same size, but that’s not quite true. The inline
+    boxes in the second line, although they’re the same size, don’t line up because
+    the text is all baseline aligned (see [Figure 6-46](#bvf_fig38)), a concept we’ll
+    discuss later in the chapter.
+  id: totrans-434
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，听起来我们对每一小段文本都做了相同的处理，所有的内联框都是相同的大小，但这并不完全正确。第二行的内联框虽然大小相同，但因为文本都是基线对齐的（见[图 6-46](#bvf_fig38)），它们并不对齐。这是我们稍后在本章讨论的一个概念。
+- en: Since inline boxes determine the height of the overall line box, their placement
+    with respect to one another is critical. The line box is defined as the distance
+    from the top of the highest inline box in the line to the bottom of the lowest
+    inline box, and the top of each line box butts up against the bottom of the line
+    box for the preceding line.
+  id: totrans-435
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于内联框决定了整体行框的高度，它们相互之间的放置至关重要。行框被定义为从行中最高内联框的顶部到最低内联框的底部的距离，并且每行框的顶部紧靠上一行框的底部。
+- en: 'In [Figure 6-46](#bvf_fig38), three boxes are being laid out for a single line
+    of text: the two anonymous text boxes to either side of the `<strong>` element,
+    and the `<strong>` element itself. Because the enclosing paragraph has a `line-height`
+    of `12px`, each of the three boxes will have a 12-pixel-tall inline box. These
+    inline boxes are centered within the content area of each box. The boxes then
+    have their baselines lined up, so the text all shares a common baseline.'
+  id: totrans-436
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 [图 6-46](#bvf_fig38) 中，一行文本中放置了三个框：两个匿名文本框位于 `<strong>` 元素两侧，以及 `<strong>`
+    元素本身。因为包围段落的 `line-height` 是 `12px`，每个框的内联框都是 12 像素高。这些内联框在每个框的内容区域内居中。然后它们的基线对齐，因此所有文本共享一个公共基线。
+- en: But because of where the inline boxes fall with respect to those baselines,
+    the inline box of the `<strong>` element is a little bit higher than the inline
+    boxes of the anonymous text boxes. Thus, the distance from the top of the `<strong>`’s
+    inline box to the bottoms of the anonymous inline boxes is more than 12 pixels,
+    while the visible content of the line isn’t completely contained within the line
+    box.
+  id: totrans-437
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是由于内联框相对于这些基线的位置，`<strong>` 元素的内联框比匿名文本框的内联框稍高。因此，从 `<strong>` 的内联框顶部到匿名内联框底部的距离超过了
+    12 像素，而行的可见内容并没有完全包含在行框内。
+- en: '![css5 0646](assets/css5_0646.png)'
+  id: totrans-438
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0646](assets/css5_0646.png)'
+- en: Figure 6-46\. Inline boxes within a line
+  id: totrans-439
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-46\. 行内框在一行中
+- en: After all that, the middle line of text is placed between two other lines of
+    text, as depicted in [Figure 6-47](#bvf_fig39). The bottom edge of the first line
+    of text is placed against the top edge of the line of text we saw in [Figure 6-46](#bvf_fig38).
+    Similarly, the top edge of the third line of text is placed against the bottom
+    edge of the middle line of text. Because the middle line of text has a slightly
+    taller line box, the result is that the lines of text look irregular, because
+    the distances between the three baselines are not consistent.
+  id: totrans-440
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 终于，在所有这些操作之后，文本的中间行放置在其他两行文本之间，如 [图 6-47](#bvf_fig39) 所示。第一行文本的底部边缘与我们在 [图 6-46](#bvf_fig38)
+    中看到的文本行的顶部边缘对齐。同样，第三行文本的顶部边缘与中间文本行的底部边缘对齐。由于中间文本行的行框略高，结果导致文本行看起来不规则，因为三个基线之间的距离不一致。
+- en: '![css5 0647](assets/css5_0647.png)'
+  id: totrans-441
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0647](assets/css5_0647.png)'
+- en: Figure 6-47\. Line boxes within a paragraph
+  id: totrans-442
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-47\. 段落内的行框
+- en: Note
+  id: totrans-443
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: 'In just a bit, we’ll explore ways to cope with this irregular separation of
+    baselines and methods for achieving consistent baseline spacing. (Spoiler: Unitless
+    values for the win!)'
+  id: totrans-444
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 稍后我们将探讨应对这种基线不规则分隔和实现一致基线间距的方法。（剧透：无单位值赢！）
+- en: Setting Vertical Alignment
+  id: totrans-445
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置垂直对齐
+- en: 'If we change the vertical alignment of the inline boxes, the same height determination
+    principles apply. Suppose that we give the `<strong>` element a vertical alignment
+    of `4px`:'
+  id: totrans-446
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们改变内联框的垂直对齐方式，相同的高度确定原则也同样适用。假设我们给 `<strong>` 元素一个垂直对齐方式为 `4px`：
+- en: '[PRE50]'
+  id: totrans-447
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: That small change raises the `<strong>` element 4 pixels, which pushes up both
+    its content area and its inline box. Because the `<strong>` element’s inline-box
+    top was already the highest in the line, this change in vertical alignment also
+    pushes the top of the line box upward by 4 pixels, as shown in [Figure 6-48](#bvf_fig40).
+  id: totrans-448
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个小改变使 `<strong>` 元素上升了 4 像素，从而将其内容区域和内联框都推高了。因为 `<strong>` 元素的内联框顶部已经是行中最高的，这种垂直对齐方式的改变也将行框的顶部向上推了
+    4 像素，如 [图 6-48](#bvf_fig40) 所示。
+- en: '![css5 0648](assets/css5_0648.png)'
+  id: totrans-449
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0648](assets/css5_0648.png)'
+- en: Figure 6-48\. Vertical alignment affects line-box height
+  id: totrans-450
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-48\. 垂直对齐影响行框高度
+- en: Note
+  id: totrans-451
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: A formal definition for `vertical-align` can be found in [Chapter 15](ch15.html#text_properties).
+  id: totrans-452
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`vertical-align` 的正式定义可以在 [第 15 章](ch15.html#text_properties) 中找到。'
+- en: 'Let’s consider another situation. Here, we have another inline element in the
+    same line as the strong text, and its alignment is other than the baseline:'
+  id: totrans-453
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们考虑另一种情况。这里，我们有另一个内联元素与强调文本在同一行，其对齐方式与基线不同：
+- en: '[PRE51]'
+  id: totrans-454
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: Now we have the same result as in our earlier example, where the middle line
+    box is taller than the other line boxes. However, notice how the “tall” text is
+    aligned in [Figure 6-49](#bvf_fig41).
+  id: totrans-455
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们得到了与早期示例中相同的结果，即中间的行框比其他行框更高。但请注意，[图 6-49](#bvf_fig41) 中“高”文本的对齐方式。
+- en: '![css5 0649](assets/css5_0649.png)'
+  id: totrans-456
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0649](assets/css5_0649.png)'
+- en: Figure 6-49\. Aligning an inline element to the line box
+  id: totrans-457
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-49\. 将内联元素对齐到行框
+- en: 'In this case, the top of the “tall” text’s inline box is aligned with the top
+    of the line box. Since the “tall” text has equal values for `font-size` and `line-height`,
+    the content height and inline box are the same. However, consider this:'
+  id: totrans-458
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，“高”文本的内联框顶部与行框的顶部对齐。由于“高”文本的 `font-size` 和 `line-height` 值相等，内容高度和内联框是一样的。但请考虑这一点：
+- en: '[PRE52]'
+  id: totrans-459
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: Since the `line-height` for the “tall” text is less than its `font-size`, the
+    inline box for that element is smaller than its content area. This tiny fact changes
+    the placement of the text itself, because the top of its inline box must be aligned
+    with the top of the line box for its line. Thus, we get the result shown in [Figure 6-50](#bvf_fig42).
+  id: totrans-460
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于“高”文本的 `line-height` 小于其 `font-size`，因此该元素的内联框小于其内容区域。这个微小的差异改变了文本本身的位置，因为其内联框的顶部必须与其行的行框顶部对齐。因此，我们得到了
+    [图 6-50](#bvf_fig42) 中显示的结果。
+- en: '![css5 0650](assets/css5_0650.png)'
+  id: totrans-461
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0650](assets/css5_0650.png)'
+- en: Figure 6-50\. Text protruding from the line box (again)
+  id: totrans-462
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-50\. 文本从行框中突出显示（再次）
+- en: 'In relation to the terms we’ve been using in this chapter, the effects of the
+    assorted keyword values of `vertical-align` are as follows:'
+  id: totrans-463
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据本章使用的术语，`vertical-align` 的各种关键字值的效果如下：
+- en: '`top`'
+  id: totrans-464
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`top`'
+- en: Aligns the top (block-start edge) of the element’s inline box with the top of
+    the containing line box.
+  id: totrans-465
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将元素内联框的顶部（块起始边缘）与包含行框的顶部对齐。
+- en: '`bottom`'
+  id: totrans-466
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`bottom`'
+- en: Aligns the bottom (block-end edge) of the element’s inline box with the bottom
+    of the containing line box.
+  id: totrans-467
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将元素内联框的底部（块结束边缘）与包含行框的底部对齐。
+- en: '`text-top`'
+  id: totrans-468
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`text-top`'
+- en: Aligns the top (block-start edge) of the element’s inline box with the top of
+    the parent’s content area.
+  id: totrans-469
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将元素内联框的顶部（块起始边缘）与父元素内容区域的顶部对齐。
+- en: '`text-bottom`'
+  id: totrans-470
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`text-bottom`'
+- en: Aligns the bottom (block-end edge) of the element’s inline box with the bottom
+    of the parent’s content area.
+  id: totrans-471
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将元素内联框的底部（块结束边缘）与父元素内容区域的底部对齐。
+- en: '`middle`'
+  id: totrans-472
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`middle`'
+- en: Aligns the vertical midpoint of the element’s inline box with `0.5ex` above
+    the baseline of the parent.
+  id: totrans-473
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将元素内联框的垂直中点与父元素基线以上 `0.5ex` 处对齐。
+- en: '`super`'
+  id: totrans-474
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`super`'
+- en: Moves the content area and inline box of the element upward along the block
+    axis. The distance is not specified and may vary by user agent.
+  id: totrans-475
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将元素的内容区域和内联框沿着块轴向上移动。距离未指定，可能会因用户代理而异。
+- en: '`sub`'
+  id: totrans-476
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`sub`'
+- en: The same as `super`, except the element is moved downward along the block axis
+    instead of upward.
+  id: totrans-477
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 `super` 相同，只是元素沿块轴向下移动而不是向上移动。
+- en: <*`percentage`*>
+  id: totrans-478
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <*`percentage`*>
+- en: Shifts the element up or down the block axis by the distance defined by taking
+    the declared percentage of the element’s value for `line-height`.
+  id: totrans-479
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将元素沿块轴上下移动，距离由以声明百分比计算的 `line-height` 值定义。
+- en: Managing the Line Height
+  id: totrans-480
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 管理行高
+- en: In previous sections, you saw that changing the `line-height` of an inline element
+    can cause text from one line to overlap another. In each case, though, the changes
+    were made to individual elements. So how can you affect the `line-height` of elements
+    in a more general way in order to keep content from overlapping?
+  id: totrans-481
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前面的章节中，您看到更改内联元素的 `line-height` 可导致一行文字与另一行重叠。不过，每种情况下都是对单个元素进行更改。那么，如何以更一般的方式影响元素的
+    `line-height` 以防止内容重叠呢？
+- en: 'One way to do this is to use the `em` unit in conjunction with an element whose
+    `font-size` has changed. For example:'
+  id: totrans-482
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一种方法是将 `em` 单位与已更改 `font-size` 的元素结合使用。例如：
+- en: '[PRE53]'
+  id: totrans-483
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: '[PRE54]'
+  id: totrans-484
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: By setting a `line-height` for the `<strong>` element, we increase the overall
+    height of the line box, providing enough room to display the `<strong>` element
+    without overlapping any other text and without changing the `line-height` of all
+    lines in the paragraph. We use a value of `1em` so that the `line-height` for
+    the `<strong>` element will be set to the same size as `<strong>`’s `font-size`.
+    Remember, `line-height` is set in relation to the `font-size` of the element itself,
+    not the parent element. [Figure 6-51](#bvf_fig43) shows the results.
+  id: totrans-485
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过为 `<strong>` 元素设置 `line-height`，我们增加了行框的总高度，提供足够的空间来显示 `<strong>` 元素，而不会与任何其他文本重叠，并且不会更改段落中所有行的
+    `line-height`。我们使用 `1em` 的值，以便 `<strong>` 元素的 `line-height` 将设置为与 `<strong>` 的
+    `font-size` 相同的大小。请记住，`line-height` 是相对于元素本身的 `font-size` 设置的，而不是父元素。[图 6-51](#bvf_fig43)
+    显示了结果。
+- en: '![css5 0651](assets/css5_0651.png)'
+  id: totrans-486
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0651](assets/css5_0651.png)'
+- en: Figure 6-51\. Assigning the `line-height` property to inline elements
+  id: totrans-487
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-51\. 将 `line-height` 属性分配给内联元素
+- en: 'Make sure you really understand the previous sections, because readable formatting
+    of the text gets trickier when we try to add borders. Let’s say we want to put
+    5-pixel borders around any hyperlink:'
+  id: totrans-488
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 确保你真正理解了前面的章节，因为当我们尝试添加边框时，文本的可读格式会变得更加棘手。假设我们想在任何超链接周围加上5像素的边框：
+- en: '[PRE55]'
+  id: totrans-489
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE55]'
+- en: If we don’t set a large-enough `line-height` to accommodate the border, it will
+    be in danger of overwriting other lines. We could increase the size of the inline
+    box for hyperlinks by using `line-height`, as we did for the `<strong>` element
+    in the earlier example; in this case, we’d just need to make the value of `line-height`
+    10 pixels larger than the value of `font-size` for those links. However, that
+    will be difficult if we don’t actually know the size of the font in pixels.
+  id: totrans-490
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们没有设置足够大的`line-height`来容纳边框，它可能会危及其他行。我们可以通过使用`line-height`来增加超链接的内联框大小，就像我们在前面的`<strong>`元素示例中所做的那样；在这种情况下，我们只需使超链接的`line-height`值比其`font-size`值大10像素即可。然而，如果我们实际上不知道字体的像素大小，这将会很困难。
+- en: 'Another solution is to increase the `line-height` of the paragraph. This will
+    affect every line in the entire element, not just the line in which the bordered
+    hyperlink appears:'
+  id: totrans-491
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个解决方案是增加段落的`line-height`。这将影响整个元素中的每一行，而不仅仅是包含边框超链接的行：
+- en: '[PRE56]'
+  id: totrans-492
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE56]'
+- en: Because extra space is added above and below each line, the border around the
+    hyperlink doesn’t impinge on any other line, as shown in [Figure 6-52](#bvf_fig44).
+  id: totrans-493
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为在每行上方和下方都添加了额外的空间，所以超链接周围的边框不会影响任何其他行，如[图6-52](#bvf_fig44)所示。
+- en: '![css5 0652](assets/css5_0652.png)'
+  id: totrans-494
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0652](assets/css5_0652.png)'
+- en: Figure 6-52\. Increasing `line-height` to leave room for inline borders
+  id: totrans-495
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图6-52。增加`line-height`以留出内联边框的空间
+- en: 'This approach works because all of the text is the same size. If the line contained
+    other elements that changed the height of the line box, our border situation might
+    also change. Consider the following:'
+  id: totrans-496
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法有效是因为所有文本大小相同。如果行中包含其他改变行框高度的元素，我们的边框情况也可能会改变。考虑以下情况：
+- en: '[PRE57]'
+  id: totrans-497
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE57]'
+- en: Given these rules, the height of the inline box of a `<strong>` element within
+    a paragraph will be 31.5 pixels (14 × 1.5 × 1.5), and that will also be the height
+    of the line box. To keep baseline spacing consistent, we must make the `<p>` element’s
+    `line-height` equal to or greater than `32px`.
+  id: totrans-498
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据这些规则，在段落中`<strong>`元素的内联框高度将为31.5像素（14 × 1.5 × 1.5），并且这也将是行框的高度。为了保持基线间距一致，我们必须使`<p>`元素的`line-height`大于或等于`32px`。
+- en: Understanding baselines and line heights
+  id: totrans-499
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 理解基线和行高
+- en: The actual height of each line box depends on the way its component elements
+    line up with one another. This alignment tends to depend very much on where the
+    baseline falls within each element (or piece of anonymous text) because that location
+    determines how the inline boxes are arranged vertically.
+  id: totrans-500
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个行框的实际高度取决于其组成元素如何垂直排列。这种对齐往往极大地依赖于基线在每个元素（或匿名文本片段）中的位置，因为这个位置决定了内联框如何垂直排列。
+- en: Consistent baseline spacing tends to be more of an art than a science. If you
+    declare all of your font sizes and line heights by using a single unit, such as
+    ems, you have a good chance of consistent baseline spacing. If you mix units,
+    however, that feat becomes a great deal more difficult, if not impossible.
+  id: totrans-501
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一致的基线间距往往更像是一门艺术而非科学。如果你使用单一单位（例如em）声明所有的字体大小和行高度，那么你有很大机会实现一致的基线间距。然而，如果你混合使用单位，这个目标将变得更加困难，甚至不可能。
+- en: As of late 2022, proposals call for properties that would let authors enforce
+    consistent baseline spacing regardless of the inline content, which would greatly
+    simplify certain aspects of online typography. None of these proposed properties
+    have been implemented, which makes their adoption a distant hope at best.
+  id: totrans-502
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2022年底，有建议提出了一些属性，可以让作者在不考虑内联内容的情况下强制实现一致的基线间距，这将极大地简化在线排版的某些方面。然而，这些建议的属性尚未实施，这使得它们的采纳最多只是一个遥远的希望。
+- en: Scaling line heights
+  id: totrans-503
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 调整行高度
+- en: 'The best way to set `line-height`, as it turns out, is to use a raw number
+    as the value. This method is best because the number becomes the *scaling factor*,
+    and that factor is an inherited, not a computed, value. Let’s say we want the
+    `line-height` of all elements in a document to be one and a half times their `font-size`.
+    We would declare the following:'
+  id: totrans-504
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置`line-height`的最佳方式是使用原始数字作为值。这种方法最好，因为数字成为*缩放因子*，而且是继承的，而不是计算的值。假设我们希望文档中所有元素的`line-height`为它们`font-size`的1.5倍。我们将声明如下：
+- en: '[PRE58]'
+  id: totrans-505
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE58]'
+- en: 'This scaling factor of 1.5 is passed down from element to element, and, at
+    each level, the factor is used as a multiplier of the `font-size` of each element.
+    Therefore, the following markup would be displayed as shown in [Figure 6-53](#bvf_fig45):'
+  id: totrans-506
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个缩放因子为1.5会从一个元素传递到另一个元素，并且在每个级别上，该因子将被用作每个元素`font-size`的乘数。因此，以下标记将显示为[图 6-53](#bvf_fig45)所示：
+- en: '[PRE59]'
+  id: totrans-507
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE59]'
+- en: 'In this example, the line height for the `<small>` element turns out to be
+    15 pixels, and for the `<strong>` element, it’s 45 pixels. If we don’t want our
+    big `<strong>` text to generate too much extra leading, we can give it its own
+    `line-height` value, which will override the inherited scaling factor:'
+  id: totrans-508
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，`<small>`元素的行高为15像素，`<strong>`元素的行高为45像素。如果我们不希望我们的大`<strong>`文本生成太多额外的行间距，我们可以给它自己的`line-height`值，这将覆盖继承的缩放因子。
+- en: '[PRE60]'
+  id: totrans-509
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE60]'
+- en: '![css5 0653](assets/css5_0653.png)'
+  id: totrans-510
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0653](assets/css5_0653.png)'
+- en: Figure 6-53\. Using a scaling factor for `line-height`
+  id: totrans-511
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-53\. 使用缩放因子设置`line-height`
+- en: Adding Box Properties to Nonreplaced Elements
+  id: totrans-512
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 向非替换元素添加框属性
+- en: As you may recall from previous discussions, while padding, margins, and borders
+    may all be applied to inline nonreplaced elements, these properties have no impact
+    on the height of the inline element’s line box.
+  id: totrans-513
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您可能记得之前的讨论，虽然内边距、边距和边框都可以应用于内联非替换元素，但这些属性对内联元素的线框高度没有影响。
+- en: The border edge of inline elements is controlled by `font-size`, not `line-height`.
+    In other words, if a `<span>` element has a `font-size` of `12px` and a `line-height`
+    of `36px`, its content area is `12px` high, and the border will surround that
+    content area.
+  id: totrans-514
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内联元素的边框边缘由`font-size`控制，而不是`line-height`。换句话说，如果一个`<span>`元素的`font-size`为`12px`，`line-height`为`36px`，那么其内容区域高度为`12px`，边框将围绕该内容区域。
+- en: 'Alternatively, we can assign padding to the inline element, which will push
+    the borders away from the text itself:'
+  id: totrans-515
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，我们可以给内联元素分配内边距，这将使边框远离文本本身：
+- en: '[PRE61]'
+  id: totrans-516
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE61]'
+- en: This padding does not alter the actual shape of the content height, and so it
+    will not affect the height of the inline box for this element. Similarly, adding
+    borders to an inline element will not affect the way line boxes are generated
+    and laid out, as illustrated in [Figure 6-54](#bvf_fig47) (both with and without
+    the 4-pixel padding).
+  id: totrans-517
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此内边距不会改变内容高度的实际形状，因此它不会影响此元素的内联框高度。类似地，向内联元素添加边框也不会影响生成和布局线框的方式，如[图 6-54](#bvf_fig47)所示（无论是否有4像素内边距）。
+- en: '![css5 0654](assets/css5_0654.png)'
+  id: totrans-518
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0654](assets/css5_0654.png)'
+- en: Figure 6-54\. Padding and borders do not alter line height
+  id: totrans-519
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-54\. 内边距和边框不会改变行高
+- en: As for margins, they do not, practically speaking, apply to the block edges
+    of an inline nonreplaced element, as they don’t affect the height of the line
+    box. The inline ends of the element are another story.
+  id: totrans-520
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 至于边距，它们在实际上并不适用于内联非替换元素的块边缘，因为它们不影响线框的高度。元素的内联结束是另一回事。
+- en: 'Recall the idea that an inline element is basically laid out as a single line
+    and then broken into pieces. So, if we apply margins to an inline element, those
+    margins will appear at its beginning and end: these are the inline-start and inline-end
+    margins, respectively. Padding also appears at these edges. Thus, although padding
+    and margins (and borders) do not affect line heights, they can still affect the
+    layout of an element’s content by pushing text away from its ends. In fact, negative
+    inline-start and -end margins can pull text closer to the inline element, or even
+    cause overlap.'
+  id: totrans-521
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住内联元素基本上是作为单行布局然后被分割成片段的概念。因此，如果我们给内联元素应用了边距，这些边距将出现在其起始和结束位置：这些分别是内联起始和内联结束边距。内边距也出现在这些边缘。因此，尽管内边距和边距（以及边框）不会影响行高，它们仍然可以通过将文本推离其端点来影响元素内容的布局。事实上，负的内联起始和结束边距可以将文本拉近至内联元素，甚至造成重叠。
+- en: 'So, what happens when an inline element has a background and enough padding
+    to cause the lines’ backgrounds to overlap? Take the following situation as an
+    example:'
+  id: totrans-522
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么，当内联元素具有背景并且有足够的内边距使得行的背景重叠时会发生什么？请看以下情况：
+- en: '[PRE62]'
+  id: totrans-523
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE62]'
+- en: All of the text within the `<span>` element will have a content area 15 pixels
+    tall, and we’ve applied 10 pixels of padding to the top and bottom of each content
+    area. The extra pixels won’t increase the height of the line box, which would
+    be fine, except there is a background color. Thus, we get the result shown in
+    [Figure 6-55](#bvf_fig48).
+  id: totrans-524
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<span>` 元素内的所有文本将具有 15 像素高的内容区域，我们已经在每个内容区域的顶部和底部应用了 10 像素的填充。额外的像素不会增加行框的高度，这通常没问题，但是有一个背景颜色。因此，我们得到了
+    [Figure 6-55](#bvf_fig48) 中显示的结果。'
+- en: '![css5 0655](assets/css5_0655.png)'
+  id: totrans-525
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0655](assets/css5_0655.png)'
+- en: Figure 6-55\. Padding and margins on inline elements
+  id: totrans-526
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-55\. 内联元素的填充和边距
+- en: 'CSS explicitly states that the line boxes are drawn in document order: “This
+    will cause the borders on subsequent lines to paint over the borders and text
+    of previous lines.” The same principle applies to backgrounds as well, as [Figure 6-55](#bvf_fig48)
+    shows.'
+  id: totrans-527
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 明确指出行框按文档顺序绘制：“这将导致后续行的边框绘制覆盖前面行的边框和文本。”相同的原则也适用于背景，如 [Figure 6-55](#bvf_fig48)
+    所示。
+- en: Changing Breaking Behavior
+  id: totrans-528
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 改变断裂行为
+- en: In the previous section, you saw that when an inline nonreplaced element is
+    broken across multiple lines, it’s treated as if it were one long single-line
+    element that’s sliced into smaller boxes, one slice per line break. That’s just
+    the default behavior, and it can be changed via the property `box-decoration-break`.
+  id: totrans-529
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前一节中，您看到当内联非替换元素跨多行断裂时，它会被视为一个长的单行元素，被切割成较小的框，每行断裂一个切片。这只是默认行为，可以通过 `box-decoration-break`
+    属性进行更改。
+- en: The default value, `slice`, is what you saw in the previous section. The other
+    value, `clone`, causes each fragment of the element to be drawn as if it were
+    a standalone box. What does that mean? Compare the two examples in [Figure 6-56](#bvf_fig50),
+    in which exactly the same markup and styles are treated as either sliced or cloned.
+  id: totrans-530
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认值 `slice` 是您在前一节中看到的内容。另一个值 `clone` 会导致元素的每个片段被绘制为独立的框。这是什么意思？比较 [Figure 6-56](#bvf_fig50)
+    中的两个示例，即使是相同的标记和样式，它们也会被视为切片或克隆处理。
+- en: Many of the differences may be apparent, but a few are perhaps more subtle.
+    Among the effects are the application of padding to each element’s fragment, including
+    at the ends where the line breaks occur. Similarly, the border is drawn around
+    each fragment individually, instead of being broken up.
+  id: totrans-531
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多差异可能显而易见，但也有一些可能更微妙。其中影响之一是在每个元素片段上应用填充，包括行断裂处的末端。类似地，边框会在每个片段周围单独绘制，而不是分割开来。
+- en: '![css5 0656](assets/css5_0656.png)'
+  id: totrans-532
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0656](assets/css5_0656.png)'
+- en: Figure 6-56\. Sliced and cloned inline fragments
+  id: totrans-533
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-56\. 内联片段的切片和克隆
+- en: More subtly, notice how the `background-image` positioning changes between the
+    two. In the sliced version, background images are sliced along with everything
+    else, meaning that only one of the fragments contains the origin image. In the
+    cloned version, however, each background acts as its own copy, so each has its
+    own origin image. This means, for example, that even if we have a nonrepeated
+    background image, it will appear once in each fragment instead of in only one
+    fragment.
+  id: totrans-534
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更微妙的是，注意在两者之间 `background-image` 的定位方式如何变化。在切片版本中，背景图像会随一切切片，这意味着只有一个片段包含原始图像。然而，在克隆版本中，每个背景都作为自己的副本，因此每个都有自己的原始图像。这意味着，例如，即使我们有一个不重复的背景图像，在每个片段中它也会出现一次，而不仅仅是一个片段中。
+- en: 'The `box-decoration-break` property will most often be used with inline boxes,
+    but it applies anytime there’s a break in an element—for example, when a page
+    break interrupts an element in paged media. In such a case, each fragment is a
+    separate slice. If we set `box-decoration-break: clone`, each box fragment will
+    be treated as a copy when it comes to borders, padding, backgrounds, and so on.
+    The same holds true in multicolumn layout: if an element is split by a column
+    break, the value of `box-decoration-break` will affect how it is rendered.'
+  id: totrans-535
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`box-decoration-break` 属性通常与内联框一起使用，但在元素中有断裂时，例如分页媒体中的页面断裂，它适用于任何时候。在这种情况下，每个片段都是单独的切片。如果我们设置
+    `box-decoration-break: clone`，那么每个框片段在边框、填充、背景等方面都将被视为副本处理。在多列布局中同样适用：如果元素被列断裂，`box-decoration-break`
+    的值将影响其呈现方式。'
+- en: Glyphs Versus Content Area
+  id: totrans-536
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 符号与内容区域
+- en: Even when you try to keep inline nonreplaced element backgrounds from overlapping,
+    it can still happen, depending on which font is in use. The problem lies in the
+    difference between a font’s em box and its character glyphs. Most fonts, as it
+    turns out, don’t have em boxes whose heights match the character glyphs.
+  id: totrans-537
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使您试图防止内联非替换元素的背景重叠，这种情况仍可能发生，这取决于所使用的字体。问题在于字体的 em 盒子与其字符字形之间的差异。事实证明，大多数字体的
+    em 盒子的高度与字符字形并不匹配。
+- en: That may sound abstract, but it has practical consequences. The “painting area”
+    of an inline nonreplaced element is left to the user agent. If a user agent takes
+    the em box to be the height of the content area, the background of an inline nonreplaced
+    element will be equal to the height of the em box (which is the value of `font-size`).
+    If a user agent uses the maximum ascender and descender of the font, the background
+    may be taller or shorter than the em box. Therefore, you could give an inline
+    nonreplaced element a `line-height` of `1em` and still have its background overlap
+    the content of other lines.
+  id: totrans-538
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这听起来可能有些抽象，但它确实有实际的影响。内联非替换元素的“绘画区域”由用户代理确定。如果用户代理将 em 盒子视为内容区域的高度，内联非替换元素的背景将等于
+    em 盒子的高度（即`font-size`的值）。如果用户代理使用字体的最大上升和下降，背景可能会比 em 盒子更高或更低。因此，您可以给内联非替换元素设定`line-height`为`1em`，仍然使其背景与其他行的内容重叠。
+- en: Inline Replaced Elements
+  id: totrans-539
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内联替换元素
+- en: 'Inline replaced elements, such as images, are assumed to have an intrinsic
+    height and width; for example, an image will be a certain number of pixels high
+    and wide. Therefore, a replaced element with an intrinsic height can cause a line
+    box to become taller than normal. This does *not* change the value of `line-height`
+    for any element in the line, *including the replaced element itself*. Instead,
+    the line box is made just tall enough to accommodate the replaced element, plus
+    any box properties. In other words, the entirety of the replaced element—content,
+    margins, borders, and padding—is used to define the element’s inline box. The
+    following styles lead to one such example, as shown in [Figure 6-57](#bvf_fig51):'
+  id: totrans-540
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内联替换元素（例如图像）被假定具有固有的高度和宽度；例如，图像将有特定数量的像素高和宽。因此，具有固有高度的替换元素可以使行框变得比正常更高。这不会改变任何行中元素的`line-height`值，包括替换元素本身。相反，行框的高度刚好足以容纳替换元素，再加上任何盒子属性。换句话说，整个替换元素——内容、边距、边框和填充——用于定义元素的内联框。下列样式导致这种情况的一个示例，如[图 6-57](#bvf_fig51)所示：
+- en: '[PRE63]'
+  id: totrans-541
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE63]'
+- en: '![css5 0657](assets/css5_0657.png)'
+  id: totrans-542
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0657](assets/css5_0657.png)'
+- en: Figure 6-57\. Replaced elements can increase the height of the line box but
+    not the value of `line-height`
+  id: totrans-543
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-57\. 替换元素可以增加行框的高度，但不会改变`line-height`的值
+- en: Despite all the blank space, the effective value of `line-height` has not changed,
+    either for the paragraph or the image itself. The `line-height` value has no effect
+    on the image’s inline box. Because the image in [Figure 6-57](#bvf_fig51) has
+    no padding, margins, or borders, its inline box is equivalent to its content area,
+    which is, in this case, 30 pixels tall.
+  id: totrans-544
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管有大量的空白空间，`line-height`的有效值对于段落或图像本身都没有变化。`line-height`的值对图像的内联框没有影响。因为图 6-57](#bvf_fig51)中的图像没有填充、边距或边框，它的内联框等同于其内容区域，在这种情况下为30像素高。
+- en: 'Nonetheless, an inline replaced element still has a value for `line-height`.
+    Why? In the most common case, it needs the value in order to correctly position
+    the element if it’s been vertically aligned. Recall that, for example, percentage
+    values for `vertical-align` are calculated with respect to an element’s `line-height`.
+    Thus:'
+  id: totrans-545
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管如此，内联替换元素仍然具有`line-height`的值。为什么呢？在最常见的情况下，它需要这个值才能正确地定位元素，如果它已经被垂直对齐。请回忆一下，例如，`vertical-align`的百分比值是相对于元素的`line-height`计算的。因此：
+- en: '[PRE64]'
+  id: totrans-546
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE64]'
+- en: '[PRE65]'
+  id: totrans-547
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE65]'
+- en: The inherited value of `line-height` causes the image to be raised 9 pixels
+    instead of some other number. Without a value for `line-height`, it wouldn’t be
+    possible to perform percentage-value vertical alignments. The height of the image
+    itself has no relevance when it comes to vertical alignment; the value of `line-height`
+    is all that matters.
+  id: totrans-548
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`line-height`的继承值导致图像上升了9像素，而不是其他数字。如果没有`line-height`的值，就不可能执行百分比值的垂直对齐。图像本身的高度对垂直对齐没有影响；只有`line-height`的值才重要。'
+- en: However, for other replaced elements, it might be important to pass on a `line-height`
+    value to descendant elements within that replaced element. An example would be
+    an SVG image, which can use CSS to style text found within the image.
+  id: totrans-549
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，对于其他替换元素而言，将 `line-height` 值传递给该替换元素内部的后代元素可能是重要的。例如，SVG 图像可以使用 CSS 样式化图像内的文本。
+- en: Adding Box Properties to Replaced Elements
+  id: totrans-550
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 向替换元素添加框属性。
+- en: After everything we’ve just been through, applying margins, borders, and padding
+    to inline replaced elements seems almost simple.
+  id: totrans-551
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 经过我们刚刚经历的一切，向行内替换元素应用外边距、边框和填充似乎几乎是简单的事情。
+- en: 'Padding and borders are applied to replaced elements as usual; padding inserts
+    space around the actual content, and the border surrounds the padding. What’s
+    unusual about the process is that the padding and border actually influence the
+    height of the line box because they are part of the inline box of an inline replaced
+    element (unlike with inline nonreplaced elements). Consider [Figure 6-58](#bvf_fig52),
+    which results from the following styles:'
+  id: totrans-552
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 填充和边框像往常一样应用于替换元素；填充在实际内容周围插入空间，而边框则围绕填充。此过程的不寻常之处在于，填充和边框实际上会影响行框的高度，因为它们是行内替换元素的行内框的一部分（与行内非替换元素不同）。考虑
+    [图 6-58](#bvf_fig52)，其结果由以下样式产生：
+- en: '[PRE66]'
+  id: totrans-553
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE66]'
+- en: Note that the first line box is made tall enough to contain the image, whereas
+    the second is tall enough to contain the image, its padding, and its border.
+  id: totrans-554
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，第一行框被调整高度足以容纳图像，而第二行框则足以容纳图像、其填充和边框。
+- en: '![css5 0658](assets/css5_0658.png)'
+  id: totrans-555
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0658](assets/css5_0658.png)'
+- en: Figure 6-58\. Adding padding, borders, and margins to an inline replaced element
+    increases its inline box
+  id: totrans-556
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-58\. 向行内替换元素添加填充、边框和外边距会增加其行内框。
+- en: 'Margins are also contained within the line box, but they have their own wrinkles.
+    Setting a positive margin is no mystery; it will make the inline box of the replaced
+    element taller. Setting negative margins has a similar effect: it decreases the
+    size of the replaced element’s inline box. This is illustrated in [Figure 6-59](#bvf_fig53),
+    where we can see that a negative top margin is pulling down the line above the
+    image:'
+  id: totrans-557
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 外边距也包含在行框内，但它们有自己的规则。设置正外边距并不神秘；它会使替换元素的行内框变得更高。设置负外边距具有类似效果：它会减小替换元素行内框的大小。这在
+    [图 6-59](#bvf_fig53) 中有所说明，我们可以看到，负上外边距拉低了图像上方的行：
+- en: '[PRE67]'
+  id: totrans-558
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE67]'
+- en: Negative margins operate the same way on block-level elements, as shown earlier
+    in the chapter. In this case, the negative margins make the replaced element’s
+    inline box smaller than ordinary. Negative margins are the only way to cause inline
+    replaced elements to bleed into other lines, and it’s why the boxes that replaced
+    inline elements generate are often assumed to be inline-block.
+  id: totrans-559
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 负外边距在块级元素上的操作方式与本章前面展示的相同。在这种情况下，负外边距使替换元素的行内框小于普通情况。负外边距是使行内替换元素溢出到其他行的唯一方法，这也是为什么替换行内元素生成的框通常被认为是内联块的原因。
+- en: '![css5 0659](assets/css5_0659.png)'
+  id: totrans-560
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0659](assets/css5_0659.png)'
+- en: Figure 6-59\. The effect of negative margins on inline replaced elements
+  id: totrans-561
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-59\. 负外边距对行内替换元素的影响。
+- en: Replaced Elements and the Baseline
+  id: totrans-562
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 替换元素和基线。
+- en: You may have noticed by now that, by default, inline replaced elements sit on
+    the baseline. If you add bottom (block-end) padding, a margin, or a border to
+    the replaced element, then the content area will move upward along the block axis.
+    Replaced elements do not have baselines of their own, so the next best thing is
+    to align the bottom of their inline boxes with the baseline. Thus, it is actually
+    the outer block-end margin edge that is aligned with the baseline, as illustrated
+    in [Figure 6-60](#bvf_fig54).
+  id: totrans-563
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，您可能已经注意到，默认情况下，行内替换元素位于基线上。如果您向替换元素添加底部（块端）填充、外边距或边框，则内容区域将沿块轴向上移动。替换元素本身没有基线，因此下一个最好的方法是将其行内框的底部与基线对齐。因此，实际上是外部块端边缘与基线对齐，如
+    [图 6-60](#bvf_fig54) 所示。
+- en: '![css5 0660](assets/css5_0660.png)'
+  id: totrans-564
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0660](assets/css5_0660.png)'
+- en: Figure 6-60\. Inline replaced elements sit on the baseline
+  id: totrans-565
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-60\. 行内替换元素位于基线上。
+- en: 'This baseline alignment leads to an unexpected (and unwelcome) consequence:
+    an image placed in a table cell all by itself should make the table cell tall
+    enough to contain the line box containing the image. The resizing occurs even
+    if no actual text, not even whitespace, is in the table cell with the image. Therefore,
+    the common sliced-image and spacer-GIF designs of years past can fall apart quite
+    dramatically in modern browsers. (We know that *you* don’t create such things,
+    but this is still a handy context in which to explain this behavior.) Consider
+    the simplest case:'
+  id: totrans-566
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种基线对齐导致了一个意外（和不受欢迎）的后果：放置在表格单元格中的图像本身应该使表格单元格足够高以容纳包含图像的行框。即使表格单元格中没有实际的文本，甚至没有空格，也会发生调整。因此，过去年代常见的切片图像和间隔GIF设计在现代浏览器中可能会出现显著的问题。（我们知道*你*不会创建这样的东西，但这仍然是解释此行为的一个方便的上下文。）考虑最简单的情况：
+- en: '[PRE68]'
+  id: totrans-567
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE68]'
+- en: '[PRE69]'
+  id: totrans-568
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE69]'
+- en: Under the CSS inline formatting model, the table cell will be 12 pixels tall,
+    with the image sitting on the baseline of the cell. So we might have 3 pixels
+    of space below the image and 8 above it, although the exact distances would depend
+    on the font family used and the placement of its baseline.
+  id: totrans-569
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 CSS 内联格式化模型下，表格单元格的高度将为12像素，图像位于单元格的基线上。因此，图像下方可能有3像素的空间，上方有8像素，尽管确切的距离取决于使用的字体系列和其基线的放置。
+- en: This behavior is not confined to images inside table cells; it will also happen
+    anytime an inline replaced element is the sole descendant of a block-level or
+    table-cell element. For example, an image inside a `<div>` will also sit on the
+    baseline.
+  id: totrans-570
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种行为不仅限于表格单元格内的图像；任何时候内联替换元素是块级或表格单元格元素的唯一后代时都会发生。例如，`<div>` 中的图像也会位于基线上。
+- en: 'Here’s another interesting effect of inline replaced elements sitting on the
+    baseline: if we apply a negative bottom (block-end) margin, the element will get
+    pulled downward because the bottom of its inline box will be higher than the bottom
+    of its content area. Thus, the following rule would have the result shown in [Figure 6-61](#bvf_fig55):'
+  id: totrans-571
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有另一个内联替换元素放置在基线上的有趣效果：如果我们应用负底部（块末端）边距，元素会被拉向下移动，因为其内联框的底部比内容区域的底部更高。因此，以下规则将会产生[图 6-61](#bvf_fig55)所示的结果：
+- en: '[PRE70]'
+  id: totrans-572
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE70]'
+- en: '![css5 0661](assets/css5_0661.png)'
+  id: totrans-573
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0661](assets/css5_0661.png)'
+- en: Figure 6-61\. Pulling inline replaced elements down with a negative block-end
+    margin
+  id: totrans-574
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-61\. 使用负块末端边距拉动内联替换元素
+- en: This can easily cause a replaced element to bleed into following lines of text,
+    as [Figure 6-61](#bvf_fig55) shows.
+  id: totrans-575
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这很容易导致替换元素溢出到后续文本行中，正如[图 6-61](#bvf_fig55)所示。
+- en: Inline-Block Elements
+  id: totrans-576
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内联块元素
+- en: As befits the hybrid look of the value name `inline-block`, inline-block elements
+    are indeed a hybrid of block-level and inline elements.
+  id: totrans-577
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如同其值名`inline-block`的混合外观所需，内联块元素确实是块级和内联元素的混合体。
+- en: 'An inline-block element relates to other elements and content as an inline
+    box just as an image would: inline-block elements are formatted within a line
+    as a replaced element. This means the bottom (block-end) edge of the inline-block
+    element will rest on the baseline of the text line by default and will not line
+    break within itself.'
+  id: totrans-578
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内联块元素与其他元素和内容的关系就像一个图像一样作为内联框进行格式化：内联块元素在行内被格式化为替换元素。这意味着内联块元素的底部（块末端）边缘默认会放在文本行的基线上，并且不会在自身内部换行。
+- en: Inside the inline-block element, the content is formatted as though the element
+    were block-level. The properties `width` and `height` apply to the element (and
+    thus so does `box-sizing`), as they do to any block-level or inline replaced element,
+    and those properties will increase the height of the line if they are taller than
+    the surrounding content.
+  id: totrans-579
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在内联块元素中，内容的格式就像该元素是块级元素一样。`width` 和 `height` 属性适用于该元素（因此也适用于任何块级或内联替换元素），如果它们比周围内容更高，则这些属性将增加行的高度。
+- en: 'Let’s consider some example markup that should help make this clearer:'
+  id: totrans-580
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们考虑一些可以帮助理解的示例标记：
+- en: '[PRE71]'
+  id: totrans-581
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE71]'
+- en: 'To this markup, we apply the following rules:'
+  id: totrans-582
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对这个标记应用以下规则：
+- en: '[PRE72]'
+  id: totrans-583
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE72]'
+- en: '[Figure 6-62](#bvf_fig56) depicts the result of this stylesheet.'
+  id: totrans-584
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 6-62](#bvf_fig56) 描述了这个样式表的结果。'
+- en: '![css5 0662](assets/css5_0662.png)'
+  id: totrans-585
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0662](assets/css5_0662.png)'
+- en: Figure 6-62\. The behavior of an inline-block element
+  id: totrans-586
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-62\. 内联块元素的行为
+- en: Notice that in the second `<div>`, the inline paragraph is formatted as normal
+    inline content, which means `width` and `text-align` get ignored (since they do
+    not apply to inline elements). For the third `<div>`, however, the inline-block
+    paragraph honors both properties, since it is formatted as a block-level element.
+    That paragraph’s margins also force its line of text to be much taller, since
+    it affects line height as though it were a replaced element.
+  id: totrans-587
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意第二个 `<div>` 中，内联段落被格式化为普通的内联内容，这意味着 `width` 和 `text-align` 被忽略了（因为它们不适用于内联元素）。然而，在第三个
+    `<div>` 中，内联块段落却遵循这两个属性，因为它被格式化为块级元素。这段落的边距也会使得其文本行变得更高，因为它影响了行高，就像它是一个替换元素一样。
+- en: 'If an inline-block element’s `width` is not defined or explicitly declared
+    `auto`, the element box will shrink to fit the content. The element box is exactly
+    as wide as necessary to hold the content, and no wider. Inline boxes act the same
+    way, although they can break across lines of text, whereas inline-block elements
+    cannot. Thus, we have the following rule, when applied to the previous markup
+    example:'
+  id: totrans-588
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果内联块元素的 `width` 未定义或明确声明为 `auto`，则元素框将会收缩以适应内容。元素框的宽度正好足够容纳内容，不会更宽。内联框的行为相同，尽管它们可以跨越文本的行，而内联块元素则不能。因此，我们有以下规则，适用于前面的标记示例：
+- en: '[PRE73]'
+  id: totrans-589
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE73]'
+- en: This will create a tall box that’s just wide enough to enclose the content,
+    as shown in [Figure 6-63](#bvf_fig57).
+  id: totrans-590
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将创建一个足够高以容纳内容的宽箱子，如 [图 6-63](#bvf_fig57) 所示。
+- en: '![css5 0663](assets/css5_0663.png)'
+  id: totrans-591
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0663](assets/css5_0663.png)'
+- en: Figure 6-63\. Autosizing of an inline-block element
+  id: totrans-592
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-63\. 内联块元素的自动调整大小
+- en: Flow Display
+  id: totrans-593
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 流动显示
+- en: 'The `display` values `flow` and `flow-root` deserve a moment of explanation.
+    Declaring an element to be laid out using `display: flow` means that it should
+    use block-and-inline layout, the same as normal—that is, unless it’s combined
+    with `inline`, in which case it generates an inline box.'
+  id: totrans-594
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`display` 值 `flow` 和 `flow-root` 值值得解释一下。声明一个元素使用 `display: flow` 表示它应该使用块和内联布局，与普通的布局一样——即，除非与
+    `inline` 结合使用，否则它生成一个内联框。'
+- en: 'In other words, the first two of the following rules will result in a block
+    box, whereas the third will yield an inline box:'
+  id: totrans-595
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 换句话说，前两个规则将导致一个块级框，而第三个则产生一个内联框：
+- en: '[PRE74]'
+  id: totrans-596
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE74]'
+- en: 'The reason for this pattern is that CSS is (very) slowly moving to a system
+    that supports two kinds of display: the *outer display type* and the *inner display
+    type*. Value keywords like `block` and `inline` represent the outer display type,
+    which determines how the display box interacts with its surroundings. The inner
+    display (in this case, `flow`), describes what should happen inside the element.'
+  id: totrans-597
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种模式的原因是，CSS 正（非常）缓慢地向支持两种显示方式的系统迁移：*外部显示类型* 和 *内部显示类型*。像 `block` 和 `inline`
+    这样的值关键字代表了外部显示类型，它决定了显示框如何与其周围环境交互。而内部显示类型（在这种情况下是 `flow`），描述了元素内部的行为。
+- en: 'This approach allows for declarations like `display: inline block` to indicate
+    that an element should generate a block-formatting context within, but relate
+    to its surrounding content as an inline element. (The new two-term `display` value
+    has the same effect as the fully supported `inline-block` value.)'
+  id: totrans-598
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这种方法允许声明如 `display: inline block` 的属性来指示一个元素在内部生成一个块级格式化上下文，但与其周围的内容关联作为一个内联元素。（这种新的双术语
+    `display` 值与完全支持的 `inline-block` 值具有相同的效果。）'
+- en: 'Using `display: flow-root`, on the other hand, always generates a block box,
+    with a new block formatting context inside itself. This is the sort of thing that
+    would be applied to the root element of a document, like `<html>`, to say, “This
+    is where the formatting root lies.”'
+  id: totrans-599
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '另一方面，使用 `display: flow-root` 总是生成一个块级框，在其内部生成一个新的块级格式化上下文。这类似于应用于文档的根元素 `<html>`，以表示：“这是格式化根的位置。”'
+- en: The old `display` values you may be familiar with are still available. [Table 6-1](#display_values_reference)
+    shows how the old values will be represented using the new values.
+  id: totrans-600
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能熟悉的旧 `display` 值仍然可用。[表 6-1](#display_values_reference) 展示了如何使用新值来表示旧值。
+- en: Table 6-1\. Equivalent `display` values
+  id: totrans-601
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 6-1\. 等效的 `display` 值
+- en: '| Old values | New values |'
+  id: totrans-602
+  prefs: []
+  type: TYPE_TB
+  zh: '| 旧值 | 新值 |'
+- en: '| --- | --- |'
+  id: totrans-603
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `block` | `block flow` |'
+  id: totrans-604
+  prefs: []
+  type: TYPE_TB
+  zh: '| `block` | `block flow` |'
+- en: '| `inline` | `inline flow` |'
+  id: totrans-605
+  prefs: []
+  type: TYPE_TB
+  zh: '| `inline` | `inline flow` |'
+- en: '| `inline-block` | `inline flow-root` |'
+  id: totrans-606
+  prefs: []
+  type: TYPE_TB
+  zh: '| `inline-block` | `inline flow-root` |'
+- en: '| `list-item` | `list-item block flow` |'
+  id: totrans-607
+  prefs: []
+  type: TYPE_TB
+  zh: '| `list-item` | `list-item block flow` |'
+- en: '| `inline-list-item` | `list-item inline flow` |'
+  id: totrans-608
+  prefs: []
+  type: TYPE_TB
+  zh: '| `inline-list-item` | `list-item inline flow` |'
+- en: '| `table` | `block table` |'
+  id: totrans-609
+  prefs: []
+  type: TYPE_TB
+  zh: '| `table` | `block table` |'
+- en: '| `inline-table` | `inline table` |'
+  id: totrans-610
+  prefs: []
+  type: TYPE_TB
+  zh: '| `inline-table` | `inline table` |'
+- en: '| `flex` | `block flex` |'
+  id: totrans-611
+  prefs: []
+  type: TYPE_TB
+  zh: '| `flex` | `block flex` |'
+- en: '| `inline-flex` | `inline flex` |'
+  id: totrans-612
+  prefs: []
+  type: TYPE_TB
+  zh: '| `inline-flex` | `inline flex` |'
+- en: '| `grid` | `block grid` |'
+  id: totrans-613
+  prefs: []
+  type: TYPE_TB
+  zh: '| `grid` | `block grid` |'
+- en: '| `inline-grid` | `inline grid` |'
+  id: totrans-614
+  prefs: []
+  type: TYPE_TB
+  zh: '| `inline-grid` | `inline grid` |'
+- en: Content Display
+  id: totrans-615
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内容显示
+- en: 'A fascinating new addition to `display` is the value `contents`. When applied
+    to an element, `display: contents` causes the element to be removed from page
+    formatting, and effectively “elevates” its child elements to its level. As an
+    example, consider the following basic CSS and HTML:'
+  id: totrans-616
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`display`的一个迷人新添加值是`contents`。当应用于一个元素时，`display: contents`会导致该元素从页面格式中移除，并有效地“提升”其子元素至其级别。例如，请考虑以下基本的CSS和HTML：'
+- en: '[PRE75]'
+  id: totrans-617
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE75]'
+- en: '[PRE76]'
+  id: totrans-618
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE76]'
+- en: This yields an unordered list with a red border, and three list items with silver
+    borders.
+  id: totrans-619
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这会产生一个带有红色边框的无序列表，以及带有银色边框的三个列表项。
+- en: 'If we then apply `display: contents` to the `<ul>` element, the user agent
+    will render the list as if the `<ul>` and `</ul>` lines had been deleted from
+    the document source. [Figure 6-64](#bvf_css4_display_contents) shows the difference
+    between the regular result and the `contents` result.'
+  id: totrans-620
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果我们将`display: contents`应用于`<ul>`元素，则用户代理将渲染列表，就好像从文档源中删除了`<ul>`和`</ul>`行一样。[图 6-64](#bvf_css4_display_contents)显示了常规结果与`contents`结果之间的差异。'
+- en: '![css5 0664](assets/css5_0664.png)'
+  id: totrans-621
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0664](assets/css5_0664.png)'
+- en: 'Figure 6-64\. A regular unordered list, and one with `display: contents`'
+  id: totrans-622
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: '图 6-64\. 一个常规无序列表和一个带有`display: contents`的列表'
+- en: The list items are still list items, and act like them, but visually, the `<ul>`
+    is gone, as if it had never been. Not only does the list’s border go away, but
+    also the top and bottom margins that usually separate the list from surrounding
+    content. This is why the second list in [Figure 6-64](#bvf_css4_display_contents)
+    appears higher up than the first.
+  id: totrans-623
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列表项仍然是列表项，并且像列表项一样运作，但在视觉上，`<ul>`已经消失，就好像它从未存在过一样。不仅列表的边框消失了，通常分隔列表与周围内容的顶部和底部边距也消失了。这就是为什么[图 6-64](#bvf_css4_display_contents)中的第二个列表显示比第一个列表更高的原因。
+- en: Other Display Values
+  id: totrans-624
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他显示值
+- en: We haven’t covered a great many more display values in this chapter, and won’t.
+    The various table-related values will come up in [Chapter 13](ch13.html#title-table-layout-in-css),
+    and we’ll talk about list items again in [Chapter 16](ch16.html#lists-and-generated-content).
+  id: totrans-625
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本章中，我们并没有涵盖许多其他显示值，并且不会继续讨论。各种与表格相关的值将在[第 13 章](ch13.html#title-table-layout-in-css)中出现，我们将在[第 16 章](ch16.html#lists-and-generated-content)中再次讨论列表项。
+- en: The values we won’t really talk about are the Ruby-related values, which need
+    their own book and are poorly supported as of late 2022.
+  id: totrans-626
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们不会真正讨论的值是与Ruby相关的值，这些值需要它们自己的书籍，并且截至2022年晚期支持不佳。
+- en: Element Visibility
+  id: totrans-627
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 元素可见性
+- en: In addition to everything we’ve discussed in the chapter, you can also control
+    the visibility of an entire element.
+  id: totrans-628
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了我们在本章中讨论的所有内容之外，您还可以控制整个元素的可见性。
+- en: 'If an element is set to have `visibility: visible`, it is, as you might expect,
+    visible. If an element is set to `visibility: hidden`, it is made “invisible”
+    (to use the wording in the specification). In its invisible state, the element
+    still affects the document’s layout as though it were `visible`. In other words,
+    the element is still there—you just can’t see it.'
+  id: totrans-629
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果将元素设置为`visibility: visible`，它就是可见的，正如您可能期望的那样。如果将元素设置为`visibility: hidden`，它就会被“隐藏”（使用规范中的措辞）。在其不可见状态下，该元素仍然会影响文档的布局，就像它是`visible`一样。换句话说，元素仍然存在——只是你看不到它。'
+- en: 'Note the difference between this and `display: none`. In the latter case, the
+    element is not displayed *and* is removed from the document altogether so that
+    it doesn’t have any effect on document layout. [Figure 6-65](#making_elements_invisible)
+    shows a document in which an inline element inside a paragraph has been set to
+    `hidden`, based on the following styles and markup:'
+  id: totrans-630
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '注意这与`display: none`的区别。在后一种情况下，元素不会显示*并且*会从文档中完全移除，因此不会对文档布局产生任何影响。[图 6-65](#making_elements_invisible)展示了一个文档，其中段落内的内联元素已根据以下样式和标记设置为`hidden`：'
+- en: '[PRE77]'
+  id: totrans-631
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE77]'
+- en: '[PRE78]'
+  id: totrans-632
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE78]'
+- en: '![css5 0665](assets/css5_0665.png)'
+  id: totrans-633
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0665](assets/css5_0665.png)'
+- en: Figure 6-65\. Making elements invisible without suppressing their element boxes
+  id: totrans-634
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 6-65\. 使元素在不抑制其元素框的情况下变得不可见
+- en: Everything visible about a hidden element—such as content, background, and borders—is
+    made invisible. The space is still there because the element is still part of
+    the document’s layout. We just can’t see it.
+  id: totrans-635
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于隐藏元素的所有可见部分——例如内容、背景和边框——都会变得不可见。空间仍然存在，因为该元素仍然是文档布局的一部分。我们只是看不到它。
+- en: 'We can set the descendant element of a `hidden` element to be `visible`. This
+    causes the element to appear wherever it normally would, even though the ancestor
+    is invisible. To do so, we explicitly declare the descendant element `visible`,
+    since `visibility` is inherited:'
+  id: totrans-636
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以将`hidden`元素的后代元素设置为`visible`。这会导致元素在通常情况下出现，即使祖先元素不可见。为此，我们明确声明后代元素为`visible`，因为`visibility`是继承的：
+- en: '[PRE79]'
+  id: totrans-637
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE79]'
+- en: 'As for `visibility: collapse`, this value is used in CSS table rendering and
+    flexible box layout, where it has an effect very similar to `display: none`. The
+    difference is that in table rendering, a row or column that’s been set to `visibility:
+    hidden` is hidden and the space it would have occupied is removed, but any cells
+    in the hidden row or column are used to determine the layout of intersecting columns
+    or rows. This allows you to quickly hide or show rows and columns without forcing
+    the browser to recalculate the layout of the whole table.'
+  id: totrans-638
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '至于`visibility: collapse`，这个值在CSS表格渲染和弹性盒布局中使用，其效果与`display: none`非常相似。区别在于，在表格渲染中，设置为`visibility:
+    hidden`的行或列是隐藏的，并且它本来占据的空间被移除，但任何在隐藏的行或列中的单元格用于确定相交列或行的布局。这允许您快速隐藏或显示行和列，而不会强制浏览器重新计算整个表格的布局。'
+- en: If `collapse` is applied to an element that isn’t a flex item or part of a table,
+    it has the same meaning as `hidden`.
+  id: totrans-639
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`collapse`应用于不是弹性项目或表的一部分的元素，则其具有与`hidden`相同的含义。
+- en: Animating Visibility
+  id: totrans-640
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 动画化可见性
+- en: 'If you want to animate a change from visible visibility to one of the other
+    values of `visibility`, that is possible. The catch is that you won’t see a slow
+    fade from one to the other. Instead, the browser calculates where in the animation
+    a change from `0` to `1` (or vice versa) would reach the end value, and instantly
+    changes the value of `visibility` at that point. Thus, if an element is set to
+    `visibility: hidden` and then animated to `visibility: visible`, the element will
+    be completely invisible until the end point is reached, at which time it will
+    become instantly visible. (See Chapters [18](ch18.html#x-transitions) and [19](ch19.html#animation)
+    for more information on animating CSS properties.)'
+  id: totrans-641
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果你想要将可见性从可见状态动画到`visibility`的其他值之一，是可以的。问题在于你不会看到从一个值慢慢过渡到另一个值。相反，浏览器会计算动画中从`0`到`1`（或反之）的变化点，然后立即在那一点改变`visibility`的值。因此，如果一个元素被设置为`visibility:
+    hidden`，然后动画到`visibility: visible`，该元素在达到结束点之前将完全不可见，到达结束点时立即变为可见。（详见第[18章](ch18.html#x-transitions)和第[19章](ch19.html#animation)了解有关CSS属性动画的更多信息。）'
+- en: Tip
+  id: totrans-642
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 提示
+- en: If you want to fade from being invisible to visible, don’t animate `visibility`.
+    Animate `opacity` instead.
+  id: totrans-643
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想从不可见到可见实现淡入效果，请不要动画化`visibility`。而是动画化`opacity`。
+- en: Summary
+  id: totrans-644
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 总结
+- en: Although some aspects of the CSS formatting model may seem counterintuitive
+    at first, they begin to make sense the more you work with them. In many cases,
+    rules that seem nonsensical or even idiotic turn out to exist in order to prevent
+    bizarre or otherwise undesirable document displays. Block-level elements are in
+    many ways easy to understand, and affecting their layout is typically a simple
+    task. Inline elements, on the other hand, can be trickier to manage, as multiple
+    factors come into play, not the least of which is whether the element is replaced
+    or nonreplaced.
+  id: totrans-645
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然CSS格式化模型的某些方面一开始可能看起来不符合直觉，但随着你与它们的工作越来越多，它们开始变得合理起来。在许多情况下，看似荒谬甚至愚蠢的规则实际上存在是为了防止文档显示出怪异或不良的效果。块级元素在很多方面很容易理解，并且影响它们的布局通常是一个简单的任务。另一方面，行内元素可能更难管理，因为涉及的因素更多，其中之一是元素是否被替换或非替换。

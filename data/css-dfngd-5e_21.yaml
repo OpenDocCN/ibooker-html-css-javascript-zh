@@ -1,0 +1,3682 @@
+- en: Chapter 21\. CSS At-Rules
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第21章 CSS At-Rules
+- en: For 20 chapters now, we’ve explored the properties, values, and selectors that
+    can be combined to create CSS rules. These are what we might call *normal rules*
+    or *regular rules*, and they’re powerful, but sometimes more is needed. Sometimes
+    there needs to be a way to encapsulate certain styles in conditional blocks, such
+    that styles can be applied at certain page widths or only if a given CSS feature
+    is recognized by the browser processing the stylesheet.
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在已经探讨了20章关于可以组合以创建CSS规则的属性、值和选择器。这些可以称为*普通规则*或*常规规则*，它们非常强大，但有时需要更多。有时候需要一种方式来封装某些条件块中的特定样式，以便在特定页面宽度或仅当浏览器处理样式表时识别给定的CSS特性时应用样式。
+- en: These are almost invariably enclosed in *at-rules*, so called because they start
+    with an at (`@`) symbol. You’ve seen some of these in previous chapters, such
+    as `@font-face` and `@counter-style`, but there are still more that aren’t so
+    tightly bound to specifics of styling. This chapter explores the three powerful
+    at-rules `@media`, `@container`, and `@supports`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些几乎总是包含在*at-rules*中，因为它们以at（`@`）符号开头。您在之前的章节中已经看到了一些类似的内容，如`@font-face`和`@counter-style`，但还有更多与样式具体细节不那么紧密相关的内容。本章探讨了三个强大的at-rules
+    `@media`、`@container`和`@supports`。
+- en: Media Queries
+  id: totrans-3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 媒体查询
+- en: Thanks to the mechanisms defined in HTML and CSS called *media queries*, you
+    can restrict any set of styles (including entire stylesheets) to a specific medium,
+    such as screen or print, and to a specific set of media conditions. These mechanisms
+    allow you to define a combination of media types and conditions such as display
+    size or color depth, to pick two examples. We’ll cover the basic form before exploring
+    the more complex forms.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于HTML和CSS中定义的称为*媒体查询*的机制，您可以将任何一组样式（包括整个样式表）限制为特定媒体，如屏幕或打印，并限制到特定的媒体条件集。这些机制允许您定义媒体类型和条件的组合，如显示大小或颜色深度，举两个例子。我们将首先介绍基本形式，然后探索更复杂的形式。
+- en: Basic Media Queries
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 基本媒体查询
+- en: 'For HTML-based stylesheets, you can impose medium restrictions through the
+    `media` attribute. This works the same for both the `<link>` and `<style>` elements:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于基于HTML的样式表，您可以通过`media`属性对媒体进行限制。这对`<link>`和`<style>`元素同样适用：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The `media` attribute can accept a single medium value or a comma-separated
+    list of values. Thus, to link in a stylesheet that should be used in only the
+    `screen` and `print` media, you would write this:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`media`属性可以接受单个媒体值或逗号分隔的值列表。因此，要链接仅在`screen`和`print`媒体中使用的样式表，您可以这样写：'
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'In a stylesheet itself, you can also impose medium restrictions on `@import`
+    rules:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在样式表本身中，您还可以对`@import`规则施加媒体限制：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Remember that if you don’t add medium information to a stylesheet, it will
+    be applied in *all* media. Therefore, if you want one set of styles to apply only
+    onscreen, and another to apply only in print, you need to add medium information
+    to both stylesheets. For example:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，如果您不向样式表添加媒体信息，它将在*所有*媒体中应用。因此，如果您希望一组样式仅在屏幕上应用，另一组仅在打印中应用，您需要向两个样式表都添加媒体信息。例如：
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: If you were to remove the `media` attribute from the first `<link>` element
+    in this example, the rules found in the stylesheet *article-screen.css* would
+    be applied in *all* media.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果从此示例中的第一个`<link>`元素中删除`media`属性，则将在*所有*媒体中应用样式表*article-screen.css*中找到的规则。
+- en: 'CSS also defines syntax for `@media` blocks. This allows you to define styles
+    for multiple media within the same stylesheet. Consider this basic example:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS还定义了`@media`块的语法。这允许您在同一样式表中为多个媒体定义样式。考虑这个基本例子：
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Here we see that in all media, the `<body>` element is given a white background
+    and a black foreground by the first rule. This happens because its stylesheet,
+    the one defined by the `style` attribute, has no `media` attribute and thus defaults
+    to `all`. Next, a block of rules is provided for the `screen` medium alone, followed
+    by another block of rules that applies only in the `print` medium.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在所有媒体中，第一个规则给`<body>`元素设置了白色背景和黑色前景。这是因为其样式表，即由`style`属性定义的样式表，没有`media`属性，因此默认为`all`。
+- en: Note
+  id: totrans-18
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: The indentation shown in these blocks is solely for purposes of clarity. You
+    don’t have to indent the rules found inside an `@media` block, but you’re welcome
+    to do so if it makes your CSS easier to read.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这些块中显示的缩进仅用于清晰性目的。您无需对`@media`块内的规则进行缩进，但如果这样做可以使您的CSS更易于阅读，则可以这样做。
+- en: The `@media` blocks can be any size, containing any number of rules. When authors
+    have control over a single stylesheet, such as in a shared hosting environment
+    or a CMS that restricts what users can edit, `@media` blocks may be the only way
+    to define medium-specific styles. This is also the case when CSS is used to style
+    a document using an XML language that does not contain a `media` attribute or
+    its equivalent.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`@media` 块可以是任何大小，包含任意数量的规则。当作者只能控制单个样式表时，比如在共享托管环境或 CMS 中限制用户编辑的情况下，`@media`
+    块可能是定义特定媒体样式的唯一方式。这也适用于使用 XML 语言但不包含 `media` 属性或其等效项的情况下使用 CSS 样式文档。'
+- en: 'These are the three most widely recognized media types:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是三种广泛认可的媒体类型：
+- en: '`all`'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`all`'
+- en: Use in all presentational media.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在所有呈现媒体中使用。
+- en: '`print`'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`print`'
+- en: Use when printing the document for sighted users, and also when displaying a
+    print preview of the document.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于打印给视觉用户的文档，以及显示文档打印预览时使用。
+- en: '`screen`'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`screen`'
+- en: Use when presenting the document in a screen medium like a desktop computer
+    monitor or a handheld device. All web browsers running on such systems are screen-medium
+    user agents.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在屏幕媒体（如桌面计算机显示器或手持设备）上呈现文档时使用。所有在这类系统上运行的网络浏览器都是屏幕媒体用户代理。
+- en: It’s entirely possible that new media types will be added over time, so remember
+    that this limited list may not always be so limited. It’s fairly easy to imagine
+    `augmented-reality` as a media type, for example, since text in AR displays would
+    likely need to be of higher contrast in order to stand out against the background
+    reality.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 完全有可能随着时间的推移添加新的媒体类型，因此请记住这个有限列表可能并不总是如此有限。例如，很容易想象 `augmented-reality` 作为一种媒体类型，因为增强现实显示中的文本很可能需要更高的对比度以突出显示背景现实。
+- en: HTML4 defined a list of media types that CSS originally recognized, but most
+    have been deprecated and should be avoided. These are `aural`, `braille`, `embossed`,
+    `handheld`, `projection`, `speech`, `tty`, and `tv`. If you have old stylesheets
+    that use these media types, they should almost certainly be converted to one of
+    the three recognized media types, if possible.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: HTML4 定义了一系列 CSS 最初识别的媒体类型，但大多数已被弃用，应该避免使用。这些包括 `aural`, `braille`, `embossed`,
+    `handheld`, `projection`, `speech`, `tty` 和 `tv`。如果您有使用这些媒体类型的旧样式表，几乎肯定应将其转换为三种被识别的媒体类型之一，如果可能的话。
+- en: Note
+  id: totrans-30
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: As of 2022, a couple of browsers still support `projection`, which allows a
+    document to be presented as a slideshow. Several mobile-device browsers also support
+    the `handheld` type, but not in consistent ways.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至 2022 年，仍有一些浏览器支持 `projection`，允许文档以幻灯片形式呈现。几个移动设备浏览器也支持 `handheld` 类型，但方式不一致。
+- en: 'It’s possible in some circumstances to combine media types into comma-separated
+    lists, though the rationale for doing so isn’t terribly compelling, given the
+    small number of media types currently available. For example, styles could be
+    restricted to only screen and print media in the following ways:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些情况下，可以将媒体类型组合成逗号分隔的列表，尽管这样做的理由并不是非常充分，因为目前可用的媒体类型数量很少。例如，样式可以限制为仅在屏幕和打印媒体上使用以下方式：
+- en: '[PRE5]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '[PRE6]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Complex Media Queries
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 复杂的媒体查询
+- en: 'In the previous section, you saw how multiple media types could be chained
+    together with a comma. We might call that a *compound media query*, because it
+    allows us to address multiple media at once. There is a great deal more to media
+    queries, though: it’s possible to apply styles based not just media types, but
+    also features of those media, such as display size or color depth.'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前一节中，您看到如何使用逗号将多个媒体类型链接在一起。我们可以称之为 *复合媒体查询*，因为它允许我们同时处理多种媒体。不过，媒体查询还有很多内容：不仅可以基于媒体类型应用样式，还可以基于这些媒体的特性，如显示大小或颜色深度。
+- en: This is a great deal of power, and it’s not enough to rely on commas to make
+    it all happen. Thus, CSS includes the logical operator `and` to pair media types
+    with features of those media.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一种非常强大的功能，单靠逗号并不足以实现所有这些。因此，CSS 包括逻辑运算符 `and` 来将媒体类型与这些媒体的特性配对。
+- en: 'Let’s see how this plays out in practice. Here are two essentially equivalent
+    ways of applying an external stylesheet when rendering the document on a color
+    printer:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看这在实践中如何运作。以下是在彩色打印机上渲染文档时应用外部样式表的两种基本等效方式：
+- en: '[PRE7]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '[PRE8]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'Anywhere a media type can be given, a media query can be constructed. This
+    means that, following on the examples of the previous section, it is possible
+    to list more than one query in a comma-separated list:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在可以提供媒体类型的任何地方，都可以构建媒体查询。这意味着，在前一节的示例之后，可以以逗号分隔的列表形式列出多个查询：
+- en: '[PRE9]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '[PRE10]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: If even one of the media queries evaluates to `true`, the associated stylesheet
+    is applied. Thus, given the previous `@import`, *print-color.css* will be applied
+    if rendering to a color printer *or* to a color screen environment. If printing
+    on a black-and-white printer, both queries will evaluate to `false` and *print-color.css*
+    will not be applied to the document. The same holds true in a grayscale screen
+    environment, any speech media environment, and so forth.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果多个媒体查询中的任何一个评估为`true`，则将应用关联的样式表。因此，根据先前的`@import`，如果渲染到彩色打印机*或*彩色屏幕环境，将应用*print-color.css*。如果打印到黑白打印机，则两个查询都将评估为`false`，*print-color.css*将不会应用于文档。在灰度屏幕环境、任何语音媒体环境等情况下也是如此。
+- en: 'Each media descriptor is composed of a media type and one or more listed media
+    features, with each media feature descriptor enclosed in parentheses. If no media
+    type is provided, it is assumed to be `all`, which makes the following two examples
+    equivalent:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个媒体描述符由媒体类型和一个或多个列出的媒体特性组成，每个媒体特性描述符都用括号括起来。如果未提供媒体类型，则假定为`all`，这使得以下两个示例等效：
+- en: '[PRE11]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'Generally speaking, a media feature descriptor is formatted like a property-value
+    pair in CSS, only enclosed by parentheses. A few differences exist, most notably
+    that some features can be specified without an accompanying value. For example,
+    any color-based medium will be matched using `(color)`, whereas any color medium
+    using a 16-bit color depth is matched using `(color: 16)`. In effect, the use
+    of a descriptor without a value is a true/false test for that descriptor: `(color)`
+    means “is this medium in color?”'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '一般来说，媒体特性描述符的格式与CSS中的属性值对类似，只是被括号括起来。存在一些差异，最显著的是一些特性可以在没有伴随值的情况下指定。例如，任何基于颜色的介质将使用`(color)`进行匹配，而使用16位颜色深度的任何颜色介质将使用`(color:
+    16)`进行匹配。实际上，使用没有值的描述符是对该描述符进行真/假测试的方式：`(color)`表示“这个介质是彩色的吗？”'
+- en: 'Multiple feature descriptors can be linked with the `and` logical keyword.
+    In fact, there are two logical keywords in media queries:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多个特性描述符可以使用`and`逻辑关键字链接。事实上，媒体查询中有两个逻辑关键字：
+- en: '`and`'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`and`'
+- en: 'Links together two or more media features in such a way that all of them must
+    be true for the query to be true. For example, `(color) and (orientation: landscape)
+    and (min-device-width: 800px)` means that all three conditions must be satisfied:
+    if the media environment has color, is in landscape orientation, *and* the device’s
+    display is at least 800 pixels wide, then the stylesheet is used.'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '将两个或多个媒体特性连接在一起，要求所有这些特性都必须为真才能使查询为真。例如，`(color) and (orientation: landscape)
+    and (min-device-width: 800px)`意味着必须同时满足这三个条件：如果媒体环境有颜色，处于横向方向，*且*设备的显示器宽度至少为800像素，那么样式表将被应用。'
+- en: '`not`'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`not`'
+- en: 'Negates the entire query so that if all of the conditions are true, the stylesheet
+    is not applied. For example, `not (color) and (orientation: landscape) and (min-device-width:
+    800px)` means that if the three conditions are satisfied, the statement is negated.
+    Thus, if the media environment has color, is in landscape orientation, and the
+    device’s display is at least 800 pixels wide, then the stylesheet is *not* used.
+    In all other cases, it will be used.'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '对整个查询进行否定，如果所有条件都为真，则不应用样式表。例如，`not (color) and (orientation: landscape) and
+    (min-device-width: 800px)`意味着如果三个条件都满足，则该语句被否定。因此，如果媒体环境有颜色，处于横向方向，设备的显示器宽度至少为800像素，则样式表*不*会使用。在所有其他情况下，它将被使用。'
+- en: CSS has no `or` logical keyword, as its role is served by the comma, as shown
+    previously.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS没有`or`逻辑关键字，因为其作用由逗号代替，如前所示。
+- en: 'Note that the `not` keyword can be used only at the beginning of a media query.
+    It is not presently legal to write something like `(color) and not (min-device-width:
+    800px)`. In such cases, the entire query block will be ignored.'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '注意`not`关键字只能在媒体查询的开头使用。目前不允许写像`(color) and not (min-device-width: 800px)`这样的语句。在这种情况下，整个查询块将被忽略。'
+- en: 'Let’s consider an example of how all this plays out:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们考虑一个例子，了解所有这些是如何发挥作用的：
+- en: '[PRE12]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: '[Figure 21-1](#mediaqueries-logical-operators) shows the result, but bear in
+    mind that, even though you may be reading this on printed paper, the actual image
+    was generated with a screen-medium browser (Firefox Nightly, as it happens) displaying
+    an HTML document with the previous CSS applied to it. So everything you see in
+    [Figure 21-1](#mediaqueries-logical-operators) was operating under a `screen`
+    medium.'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 21-1](#mediaqueries-logical-operators) 显示了结果，但请记住，即使您可能正在纸上阅读本文，实际图像是由屏幕介质浏览器生成的（例如
+    Firefox Nightly），显示了应用了前述 CSS 的 HTML 文档。因此，您在 [图 21-1](#mediaqueries-logical-operators)
+    中看到的所有内容都是在 `screen` 媒介下操作的。'
+- en: '![css5 2101](assets/css5_2101.png)'
+  id: totrans-58
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 2101](assets/css5_2101.png)'
+- en: Figure 21-1\. Logical operators in media queries
+  id: totrans-59
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 21-1\. 媒体查询中的逻辑运算符
+- en: The first line is italicized because the screen on which the file was displayed
+    had a resolution equal to or greater than 72 dots per inch. Its resolution was
+    not, however, `32767dpi` or higher, so the second media block is skipped and thus
+    the second line stays un-italicized. The third line is italicized because, being
+    a screen display, it was `not print`. The last line is italicized because it was
+    either not print or not monochrome—in this case, not monochrome.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一行被斜体化，因为显示文件的屏幕分辨率达到或超过每英寸 72 点。然而，它的分辨率并不是 `32767dpi` 或更高，因此第二个媒体块被跳过，因此第二行保持未斜体化。第三行被斜体化，因为它是屏幕显示，并非打印。最后一行被斜体化，因为它既非打印也非单色——在这种情况下，是非单色。
+- en: Another keyword, `only`, was designed to create deliberate backward incompatibility.
+    Yes, really.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个关键字 `only` 是为了创建有意的向后不兼容性。是的，真的。
+- en: '`only`'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`only`'
+- en: Used to hide a stylesheet from browsers old enough that they understand media
+    queries but not media types. (This is almost never a problem in modern usage,
+    but the capability was created and so we document it here.) In browsers that *do*
+    understand media types, the `only` keyword is ignored and the stylesheet is applied.
+    In browsers that do not understand media types, the `only` keyword creates an
+    apparent media type of `only all`, which is not valid.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于隐藏样式表，适用于那些理解媒体查询但不理解媒体类型的过时浏览器。（在现代用法中，这几乎从不是问题，但这种能力是创造出来的，所以我们在这里记录它。）在理解媒体类型的浏览器中，`only`
+    关键字会被忽略并应用样式表。在不理解媒体类型的浏览器中，`only` 关键字会创建一个名为 `only all` 的表象媒体类型，这是无效的。
+- en: Special Value Types
+  id: totrans-64
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 特殊值类型
+- en: 'Two value types were introduced by media queries. These types are used in conjunction
+    with specific media features, which are explained later in the chapter:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过媒体查询引入了两种值类型。这些类型与特定的媒体特性结合使用，后面将对其进行解释：
+- en: <*`ratio`*>
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <*`ratio`*>
+- en: Two numbers separated by a forward slash (`/`), defined in [Chapter 5](ch05.html#values_and_units).
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两个由斜杠 (`/`) 分隔的数字，在 [第 5 章](ch05.html#values_and_units) 中有定义。
+- en: <*`resolution`*>
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <*`resolution`*>
+- en: A resolution value is a positive <*`integer`*> followed by either of the unit
+    identifiers `dpi` or `dpcm`. In CSS terms, a *dot* is any display unit, the most
+    familiar of which is the pixel. As usual, whitespace is not permitted between
+    the <*`integer`*> and the identifier. Therefore, a display that has exactly 150
+    pixels (dots) per inch is matched with `150dpi`.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分辨率值是正整数 <*`integer`*>，后跟单位标识符 `dpi` 或 `dpcm`。在 CSS 术语中，*dot* 是任何显示单元，其中最常见的是像素。通常情况下，<*`integer`*>
+    和标识符之间不允许空白。因此，具有恰好 150 像素（点）每英寸的显示器匹配 `150dpi`。
+- en: Keyword Media Features
+  id: totrans-70
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 关键词媒体特性
+- en: So far you’ve seen several media features in the examples, but not a complete
+    list of the possible features and their values. Let’s fix that now!
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，您在示例中看到了几个媒体特性，但没有完整的可能特性及其值列表。现在让我们来修正这一点！
+- en: 'Note that none of the following values can be negative, and that media features
+    are always enclosed in parentheses:'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，以下值均不可为负，并且媒体特性始终用括号括起来：
+- en: 'Media feature: `any-hover`'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`any-hover`
+- en: 'Values: `none` | `hover`'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `hover`
+- en: Checks for any available input mechanism that can hover over elements (i.e.,
+    trigger a `:hover` state). The `none` value means there are no such mechanisms,
+    or no mechanisms that can do so conveniently. Compare with the `hover` media feature,
+    which restricts checking to the primary input mechanism.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查是否存在任何可用于悬停在元素上的输入机制（即触发 `:hover` 状态）。`none` 值表示没有这样的机制，或者没有方便地执行此操作的机制。与
+    `hover` 媒体特性进行比较，后者限制检查到主要输入机制。
+- en: 'Media feature: `any-pointer`'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`any-pointer`
+- en: 'Values: `none` | `coarse` | `fine`'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `coarse` | `fine`
+- en: Checks for an input mechanism that creates an onscreen pointer. The `none` values
+    indicates no such devices, `coarse` indicates at least one device with limited
+    accuracy (e.g., a finger), and `fine` indicates at least one device with high
+    accuracy (e.g., a mouse). Compare with `pointer`, which restricts checking to
+    the primary input mechanism.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查创建屏幕指针的输入机制。`none`值表示没有这样的设备，`coarse`表示至少有一台精度有限的设备（例如手指），`fine`表示至少有一台精度较高的设备（例如鼠标）。与`pointer`相比，后者限制检查到主要输入机制。
+- en: 'Media feature: `color-gamut`'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`color-gamut`
+- en: 'Values: `srgb` | `p3` | `rec2020`'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`srgb` | `p3` | `rec2020`
+- en: Tests the range of colors supported by both the browser and the output device.
+    As of late 2022, the majority of displays support the `srgb` and `p3` gamuts.
+    The `p3` value refers to the Display P3 color space, which is a superset of sRGB.
+    The `rec2020` value refers to the gamut specified by the ITU-R Recommendation
+    BT.2020 Color Space, which is a superset of P3\. The `color-gamut` media feature
+    is not supported by Firefox as of late 2022.
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 测试浏览器和输出设备支持的色彩范围。截至2022年底，大多数显示器支持`srgb`和`p3`色域。`p3`值指的是Display P3色彩空间，它是sRGB的超集。`rec2020`值指的是ITU-R推荐BT.2020色彩空间，它是P3的超集。截至2022年底，Firefox不支持`color-gamut`媒体特性。
+- en: 'Media feature: `display-mode`'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`display-mode`
+- en: 'Values: `fullscreen` | `standalone` | `minimal-ui` | `browser`'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`fullscreen` | `standalone` | `minimal-ui` | `browser`
+- en: Tests the display mode of the top-level browsing context and any child browsing
+    contexts. This corresponds to the Web Application Manifest specification’s `display`
+    member, and is commonly used to check if a progressive web application visitor
+    is browsing a website or on an installed application, but applies whether or not
+    a manifest has been defined. See [“Forced Colors, Contrast, and Display Mode”](#forced_colors_contrast_and_display_mode)
+    for details.
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '测试顶级浏览上下文及任何子浏览上下文的显示模式。这对应于Web应用程序清单规范的`display`成员，并常用于检查渐进式Web应用访客是否在浏览网站或已安装的应用程序上，但无论是否定义了清单，都适用。详细信息请参见[“强制颜色、对比度和显示模式”](#forced_colors_contrast_and_display_mode)。 '
+- en: 'Media feature: `dynamic-range`'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`dynamic-range`
+- en: 'Values: `standard` | `high`'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`standard` | `high`
+- en: Checks whether the browsing context supports a high dynamic range for visual
+    output. The `high` value means the media environment supports high peak brightness,
+    a high contrast ratio, and a 24-bit color depth or higher. There are no precisely
+    defined values for high peak brightness or color contrast, so this is left to
+    browsers to decide. Any device that matches `high` will also match `standard`.
+    The `dynamic-range` media feature achieved widespread browser support in early
+    2022.
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查浏览上下文是否支持视觉输出的高动态范围。`high` 值表示媒体环境支持高峰值亮度、高对比度比率和24位或更高的色彩深度。高峰值亮度或色彩对比度没有明确定义的值，因此由浏览器决定。任何符合
+    `high` 的设备也会符合 `standard`。`dynamic-range` 媒体特性在2022年初获得了广泛的浏览器支持。
+- en: 'Media feature: `forced-colors`'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`forced-colors`
+- en: 'Values: `none` | `active`'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `active`
+- en: Checks whether the browser is in *forced-color* mode, which forces browser-default
+    values for a set of CSS properties such as `color` and `background-color`, and
+    specific values for a handful of others, and may also trigger a `prefers-color-scheme`
+    value. See [“Forced Colors, Contrast, and Display Mode”](#forced_colors_contrast_and_display_mode)
+    for details. The `forced-colors` media feature is not supported by WebKit as of
+    late 2022.
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查浏览器是否处于*强制颜色*模式，该模式强制使用浏览器默认值一组CSS属性，如`color`和`background-color`，以及少数其他属性的特定值，并可能触发`prefers-color-scheme`值。详细信息请参见[“强制颜色、对比度和显示模式”](#forced_colors_contrast_and_display_mode)。截至2022年底，WebKit不支持`forced-colors`媒体特性。
+- en: 'Media feature: `grid`'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`grid`
+- en: 'Values: `0` | `1`'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`0` | `1`
+- en: Refers to the presence (or absence) of a grid-based output device, such as a
+    TTY terminal. This does *not* refer to CSS Grid. A grid-based device will return
+    `1`; otherwise, `0` is returned. This media feature can be used in place of the
+    old `tty` media descriptor.
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指涉基于网格的输出设备的存在（或不存在），例如TTY终端。这与CSS网格无关。基于网格的设备将返回`1`；否则，返回`0`。此媒体特性可替代旧的`tty`媒体描述符。
+- en: 'Media feature: `hover`'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`hover`
+- en: 'Values: `none` | `hover`'
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `hover`
+- en: Checks whether the user’s *primary* input mechanism can hover over elements.
+    The `none` value means the primary mechanism cannot hover, or cannot do so conveniently;
+    an example of the latter is a mobile device that pretends to hover when an inconvenient
+    tap-and-hold action is performed. The `hover` value means hovering is convenient,
+    such as with a mouse. Compare to `any-hover`, which checks whether any mechanism
+    permits hovering, not just the primary.
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查用户的主要输入机制是否能够悬停在元素上。`none` 表示主要机制无法悬停，或无法方便地悬停；例如，移动设备在执行不方便的点击并保持动作时会模拟悬停。`hover`
+    表示悬停是方便的，例如使用鼠标。与 `any-hover` 相比，后者检查任何机制是否允许悬停，而不仅仅是主要机制。
+- en: 'Media feature: `inverted-colors`'
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`inverted-colors`
+- en: 'Values: `none` | `inverted`'
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `inverted`
+- en: Checks whether colors are being inverted by the underlying operating system.
+    The `none` value means colors are being displayed normally; `inverted` means that
+    all pixels in the display area are being inverted. The `inverted-colors` media
+    feature is supported only in WebKit as of late 2022.
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查操作系统是否反转颜色。`none` 表示颜色正常显示；`inverted` 表示显示区域内的所有像素都被反转。截至 2022 年末，仅 WebKit
+    支持 `inverted-colors` 媒体特性。
+- en: 'Media feature: `orientation`'
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`orientation`
+- en: 'Values: `portrait` | `landscape`'
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`portrait` | `landscape`
+- en: Refers to the orientation of the user agent’s display area, where `portrait`
+    is returned if the media feature `height` is equal to or greater than the media
+    feature `width`. Otherwise, the result is `landscape`.
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指用户代理显示区域的方向，如果媒体特性 `height` 大于或等于媒体特性 `width`，返回 `portrait`。否则，结果为 `landscape`。
+- en: 'Media feature: `overflow-block`'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`overflow-block`
+- en: 'Values: `none` | `scroll` | `optional-paged` | `paged`'
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `scroll` | `optional-paged` | `paged`
+- en: Checks how the output device handles content that overflows along the block
+    axis. The `none` value means the overflowed content cannot be accessed; `scroll`
+    means the content can be accessed by scrolling to it in some way; `optional-paged`
+    means the user can scroll to the content, but page breaks can be manually triggered
+    using properties like `break-inside`; `paged` means overflowing content can be
+    accessed only by “paging” to see the content, as in an ebook. The `overflow-block`
+    media feature is supported only in Firefox as of late 2022.
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查输出设备如何处理沿块轴溢出的内容。`none` 表示无法访问溢出的内容；`scroll` 表示内容可以通过某种方式滚动访问；`optional-paged`
+    表示用户可以滚动内容，但可以使用像 `break-inside` 这样的属性手动触发分页；`paged` 表示溢出内容只能通过“翻页”来访问，例如电子书。截至
+    2022 年末，仅 Firefox 支持 `overflow-block` 媒体特性。
+- en: 'Media feature: `overflow-inline`'
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`overflow-inline`
+- en: 'Values: `none` | `scroll`'
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `scroll`
+- en: Checks to see how the output device handles content that overflows along the
+    inline axis. The `none` value means the overflowed content cannot be accessed;
+    `scroll` means the content can be accessed by scrolling to it in some way. The
+    `overflow-inline` media feature is supported only in Firefox as of late 2022.
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查输出设备如何处理沿内联轴溢出的内容。`none` 表示无法访问溢出的内容；`scroll` 表示内容可以通过滚动访问。截至 2022 年末，仅 Firefox
+    支持 `overflow-inline` 媒体特性。
+- en: 'Media feature: `pointer`'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`pointer`
+- en: 'Values: `none` | `coarse` | `fine`'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `coarse` | `fine`
+- en: Checks whether the *primary* input mechanism creates an onscreen pointer. The
+    `none` value means the primary input device generates no pointer, `coarse` means
+    it does but with limited accuracy, and `fine` means it does with high accuracy
+    (e.g., a mouse). Compare to `any-pointer`, which checks whether any mechanism
+    creates a pointer, not just the primary.
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查主要输入机制是否在屏幕上创建指针。`none` 表示主要输入设备不生成指针，`coarse` 表示生成指针但精度有限，`fine` 表示生成高精度指针（例如鼠标）。与
+    `any-pointer` 相比，后者检查任何机制是否生成指针，而不仅仅是主要机制。
+- en: 'Media feature: `prefers-color-scheme`'
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`prefers-color-scheme`
+- en: 'Values: `light` | `dark`'
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`light` | `dark`
+- en: 'Checks which color scheme the user has selected at the browser or operating
+    system level (i.e., Light mode or Dark mode). Thus, the author can define specific
+    color values for, say, `prefers-color-scheme: dark`. Safari adds a `no-preference`
+    value, but this has not been standardized or adopted by other browsers as of late
+    2022.'
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '检查用户在浏览器或操作系统级别选择的颜色方案（例如，亮色模式或暗色模式）。因此，作者可以为 `prefers-color-scheme: dark`
+    定义特定的颜色值。Safari 添加了 `no-preference` 值，但截至 2022 年末尚未标准化或被其他浏览器采纳。'
+- en: 'Media feature: `prefers-contrast`'
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`prefers-contrast`
+- en: 'Values: `no-preference` | `less` | `more` | `custom`'
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`no-preference` | `less` | `more` | `custom`
+- en: Checks whether the user has set a preference for high-contrast output, at either
+    the browser or operating system level (e.g., Windows High Contrast mode). See
+    [“Forced Colors, Contrast, and Display Mode”](#forced_colors_contrast_and_display_mode)
+    for details.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查用户是否在浏览器或操作系统级别（例如Windows高对比度模式）设置了对高对比度输出的偏好。详见 [“强制颜色、对比度和显示模式”](#forced_colors_contrast_and_display_mode)
+    获取详细信息。
+- en: 'Media feature: `prefers-reduced-motion`'
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`prefers-reduced-motion`
+- en: 'Values: `no-preference` | `reduce`'
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`no-preference` | `reduce`
+- en: 'Checks whether the user has set a preference regarding motion, at either the
+    browser or operating system level. The `reduce` value means the user has indicated
+    they wish motion to be reduced or eliminated, possibly because of vestibular disorders
+    that create discomfort when viewing motion onscreen. Transitions and animations
+    should most often be put into a `prefers-reduced-motion: reduce` block for accessibility
+    reasons.'
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '检查用户是否在浏览器或操作系统级别设置了关于动态的偏好。`reduce` 值表示用户表示希望减少或消除动态，可能是由于前庭障碍导致在屏幕上观看动态时感到不适。出于可访问性原因，转换和动画应经常放入
+    `prefers-reduced-motion: reduce` 块中。'
+- en: 'Media feature: `scan`'
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`scan`
+- en: 'Values: `progressive` | `interlace`'
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`progressive` | `interlace`
+- en: Refers to the scanning process used in an output device. The `interlace` value
+    is the type generally used in CRT and some plasma displays. As of late 2022, all
+    known implementations match the `progressive` value, making this media feature
+    somewhat useless.
+  id: totrans-123
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指的是输出设备中使用的扫描过程。`interlace` 值通常用于CRT和一些等离子显示器。截至2022年末，所有已知的实现都与 `progressive`
+    值匹配，使得此媒体特性有些无用。
+- en: 'Media feature: `scripting`'
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`scripting`
+- en: 'Values: `none` | `initial-only` | `enabled`'
+  id: totrans-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `initial-only` | `enabled`
+- en: Checks whether a scripting language such as JavaScript is available. The `initial-only`
+    value means scripting can be performed only at page load, but not thereafter.
+    The `scripting` media feature is not supported by any browser as of late 2022.
+  id: totrans-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查是否支持JavaScript等脚本语言。`initial-only` 值表示只能在页面加载时执行脚本，之后不能执行。截至2022年末，`scripting`
+    媒体特性尚未被任何浏览器支持。
+- en: 'Media feature: `update`'
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`update`
+- en: 'Values: `none` | `slow` | `fast`'
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`none` | `slow` | `fast`
+- en: Checks whether the content’s appearance can be changed after page load. The
+    `none` value means no updates are possible, such as in print media. The `slow`
+    value means changes are possible but cannot be animated smoothly because of device
+    or browser constraints. The `fast` value means smooth animations are possible.
+    The `update` media feature is supported only by Firefox as of late 2022.
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查页面加载后是否可以更改内容的外观。`none` 值表示不可能更新，例如在印刷媒体中。`slow` 值表示由于设备或浏览器约束，变更可能，但不能平稳动画。`fast`
+    值表示可以平滑动画。截至2022年末，`update` 媒体特性仅受Firefox支持。
+- en: 'Media feature: `video-dynamic-range`'
+  id: totrans-130
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`video-dynamic-range`
+- en: 'Values: `standard` | `high`'
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`standard` | `high`
+- en: Checks whether the browsing context supports a high dynamic range for visual
+    output on videos. This is useful because some devices render video separately
+    from other graphics, and so may support a different dynamic range for video than
+    for other content. The `high` value means the media environment supports high
+    peak brightness, a high contrast ratio, and a 24-bit color depth or higher. There
+    are no precisely defined values for high peak brightness or color contrast, so
+    this is left to browsers to decide. Any device that matches `high` will also match
+    `standard`. The `video-dynamic-range` media feature achieved widespread browser
+    support in early 2022.
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查浏览上下文是否支持视频的高动态范围视觉输出。这很有用，因为某些设备单独渲染视频与其他图形不同，因此可能支持与其他内容不同的视频动态范围。`high`
+    值表示媒体环境支持高峰值亮度、高对比度比和24位或更高的色彩深度。高峰值亮度或色彩对比度没有精确定义的值，因此由浏览器决定。与 `high` 匹配的任何设备也将匹配
+    `standard`。`video-dynamic-range` 媒体特性在2022年初获得了广泛的浏览器支持。
+- en: Forced Colors, Contrast, and Display Mode
+  id: totrans-133
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 强制颜色、对比度和显示模式
+- en: Three of the previously defined media features relate to user preference in
+    their display, and allow you to detect those preferences so you may style accordingly.
+    Two are closely intertwined, so we’ll start with them.
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中三个之前定义的媒体特性与用户显示偏好有关，并允许您检测这些偏好以便进行相应的样式设置。其中两个紧密相关，因此我们将从它们开始。
+- en: 'If a user has gone to the effort of defining a specific set of colors to be
+    used in the display of their content, such as with Windows High Contrast mode,
+    then `forced-colors: active` will be matched, as will `prefers-contrast: custom`.
+    You can use one or both of these queries to apply specific styles under such conditions.'
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果用户已经努力定义了用于显示其内容的特定颜色集合，例如Windows高对比度模式，则将匹配`forced-colors: active`，以及`prefers-contrast:
+    custom`。您可以使用其中一个或两者来在这种情况下应用特定样式。'
+- en: 'If `forced-colors: active` returns true, the following CSS properties will
+    be forced to use the browser (or operating system) default values, overriding
+    any values you may have declared:'
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果`forced-colors: active`返回true，则以下CSS属性将被强制使用浏览器（或操作系统）的默认值，覆盖您可能声明的任何值：'
+- en: '`background-color`'
+  id: totrans-137
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`background-color`'
+- en: '`border-color`'
+  id: totrans-138
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`border-color`'
+- en: '`color`'
+  id: totrans-139
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`color`'
+- en: '`column-rule-color`'
+  id: totrans-140
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`column-rule-color`'
+- en: '`outline-color`'
+  id: totrans-141
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`outline-color`'
+- en: '`text-decoration-color`'
+  id: totrans-142
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`text-decoration-color`'
+- en: '`text-emphasis-color`'
+  id: totrans-143
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`text-emphasis-color`'
+- en: '`-webkit-tap-highlight-color`'
+  id: totrans-144
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`-webkit-tap-highlight-color`'
+- en: Also, the SVG `fill` and `stroke` attributes will be ignored and set to their
+    default values.
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另外，SVG的`fill`和`stroke`属性将被忽略并设置为它们的默认值。
+- en: 'Additionally, the following property-value combinations are enforced over whatever
+    the author has declared:'
+  id: totrans-146
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，以下属性-值组合将强制使用，而不管作者声明了什么：
+- en: '`box-shadow: none`'
+  id: totrans-147
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`box-shadow: none`'
+- en: '`text-shadow: none`'
+  id: totrans-148
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`text-shadow: none`'
+- en: '`background-image: none` for values that are not URL-based (e.g., gradients)'
+  id: totrans-149
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`background-image: none` 对于非基于URL的值（例如渐变色）'
+- en: '`color-scheme: light dark`'
+  id: totrans-150
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`color-scheme: light dark`'
+- en: '`scrollbar-color: auto`'
+  id: totrans-151
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`scrollbar-color: auto`'
+- en: 'This means that, to pick one example, any element whose hover or focus styles
+    depend on changing the color of a border will fail to have an effect. Thus, you
+    could provide a change of font weight and border style (not color) instead:'
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着，举一个例子，任何依赖于改变边框颜色的悬停或焦点样式的元素将无法生效。因此，您可以改变字体粗细和边框样式（而不是颜色）：
+- en: '[PRE13]'
+  id: totrans-153
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: This is an example of the sorts of changes you should make to accommodate forced-color
+    situations, providing greater usability through small changes. You *should not*
+    use this query to set up an entire separate design for users who have forced certain
+    colors.
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个为适应强制颜色情况而进行的小改变的示例，通过这些改变提供更大的可用性。您*不应该*使用此查询为强制某些颜色的用户设置一个完全不同的设计。
+- en: 'As noted previously, if a user has set things up such that `forced-colors:
+    active` is triggered, `prefers-contrast: custom` will also be triggered. The meanings
+    of this media feature’s values are as follows:'
+  id: totrans-155
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '正如前面所述，如果用户设置了`forced-colors: active`，则会触发`prefers-contrast: custom`。这个媒体特性的值的含义如下：'
+- en: '`no-preference`'
+  id: totrans-156
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`no-preference`'
+- en: The browser and/or operating system are not aware of a user preference with
+    regards to color contrast.
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 浏览器和/或操作系统不知道用户在颜色对比方面的偏好。
+- en: '`less`'
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`less`'
+- en: The user has requested interfaces with less contrast than usual. Examples of
+    this could be users with a propensity for migraine headaches or dyslexia, as some
+    (not all) dyslexics find high-contrast text difficult to parse.
+  id: totrans-159
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户请求具有低于通常对比度的界面。例如，偏头痛或阅读障碍（并非所有的阅读障碍者都如此）的用户可能会发现高对比度的文本难以阅读。
+- en: '`more`'
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`more`'
+- en: The user has requested interfaces with more contrast than usual.
+  id: totrans-161
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户请求具有比通常更高对比度的界面。
+- en: '`custom`'
+  id: totrans-162
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`custom`'
+- en: The user has defined a specific set of colors that are not matched by either
+    `more` or `less`, such as the Windows High Contrast mode.
+  id: totrans-163
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户已经定义了一组特定的颜色，这些颜色既不匹配`more`也不匹配`less`，例如Windows高对比度模式。
+- en: 'It is possible to query for any value by not supplying a value, which is especially
+    useful in this scenario. You might cater to both low- and high-contrast users
+    as follows:'
+  id: totrans-164
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，可以通过不提供值来查询任何值，这在这种情况下尤为有用。您可以如下为低对比度和高对比度用户提供服务：
+- en: '[PRE14]'
+  id: totrans-165
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: The `display-mode` media feature is entirely different from the previous two
+    features. The `display-mode` media feature lets authors determine the kind of
+    display environment being used and act accordingly.
+  id: totrans-166
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`display-mode` 媒体特性与前两个特性完全不同。`display-mode` 媒体特性允许作者确定正在使用的显示环境，并相应地进行操作。'
+- en: 'First let’s define what the various values mean:'
+  id: totrans-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先让我们定义各个值的含义：
+- en: '`fullscreen`'
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`fullscreen`'
+- en: The application takes up the entire available display area and does not show
+    any application chrome (e.g., address bar, back button, status bar, etc.).
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序占据整个可用的显示区域，不显示任何应用程序的界面元素（例如地址栏、返回按钮、状态栏等）。
+- en: '`standalone`'
+  id: totrans-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`standalone`'
+- en: The application appears like a native standalone application. This removes application
+    chrome such as address bar, but will make operating-system-derived navigation
+    elements like back buttons available.
+  id: totrans-171
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序看起来像一个本地独立应用程序。这会去除地址栏等应用程序界面，但会使操作系统衍生的导航元素如返回按钮可用。
+- en: '`minimal-ui`'
+  id: totrans-172
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`minimal-ui`'
+- en: The application appears similar to a native standalone application, but provides
+    a way to access application chrome for things like address bars, the application’s
+    navigation controls, and so on. System-specific interface controls for things
+    like “share” or “print” may also be included.
+  id: totrans-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序看起来类似于本地独立应用程序，但提供了一种访问应用程序界面的方式，例如地址栏，应用程序的导航控制等等。还可以包括用于“分享”或“打印”等系统特定界面控件。
+- en: '`browser`'
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`浏览器`'
+- en: The application appears as normal, showing the entire application chrome including
+    things like the complete address bar with forward/back/home buttons, scrollbar
+    gutters, and so on.
+  id: totrans-175
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序正常显示，显示完整的应用程序界面，包括完整的地址栏（带有前进/后退/主页按钮）、滚动条间隙等等。
+- en: These various states can be triggered either by the user putting the browser
+    into a given mode (e.g., the user hitting F11 on Windows to enter full-screen
+    mode), or by a Web Application Manifest’s `display` member. The values are exactly
+    the same in all respects; in fact, the Web Application Manifest specification
+    just points to the values defined in the CSS Media Queries Level 5 specification.
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些各种状态可以由用户将浏览器放入特定模式（例如，用户在Windows上按下F11进入全屏模式）触发，或者由Web应用程序清单的`display`成员触发。在所有方面，这些值都完全相同；事实上，Web应用程序清单规范只是指向CSS媒体查询第5级规范中定义的这些值。
+- en: 'Thus, you can do things like define different layouts for different display
+    modes. Here’s a brief example:'
+  id: totrans-177
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，您可以定义不同显示模式的不同布局。以下是一个简短的示例：
+- en: '[PRE15]'
+  id: totrans-178
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: This can be especially useful if you intend to have your design used in multiple
+    contexts, such as in web browsers, as web apps, on kiosks, and so on.
+  id: totrans-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您计划在多个上下文中使用设计，例如在网页浏览器中，作为Web应用程序，或在信息亭等地方，这将特别有用。
+- en: Ranged Media Features
+  id: totrans-180
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 范围媒体特性
+- en: Now we turn our attention to the media features that allow ranges, and have
+    `min-` and `-max` variants in addition to accepting values like lengths or ratios.
+    They also have a more compact way of formatting value comparisons, which are discussed
+    in an upcoming section.
+  id: totrans-181
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们将注意力转向媒体特性，这些特性允许范围，并且还有`min-`和`-max`变体，除了接受像长度或比率这样的值之外。它们还有一种更紧凑的格式化值比较的方式，将在接下来的部分讨论。
+- en: 'Media features: `width`, `min-width`, `max-width`'
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`width`，`min-width`，`max-width`
+- en: 'Values: <*`length`*>'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`长度`*>
+- en: 'The width of the viewport of the user agent. In a screen-media web browser,
+    this is the width of the viewport *plus* any scrollbars. In paged media, this
+    is the width of the page box, which is the area of the page in which content is
+    rendered. Thus, `(min-width: 100rem)` applies when the viewport is greater than
+    or equal to 100 rem wide.'
+  id: totrans-184
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '用户代理视口的宽度。在屏幕媒体的Web浏览器中，这是视口的宽度*加上*任何滚动条。在分页媒体中，这是页面框的宽度，即页面中呈现内容的区域。因此，`(min-width:
+    100rem)`适用于视口宽度大于或等于100 rem的情况。'
+- en: 'Media features: `height`, `min-height`, `max-height`'
+  id: totrans-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`height`，`min-height`，`max-height`
+- en: 'Values: <*`length`*>'
+  id: totrans-186
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`长度`*>
+- en: 'The height of the viewport of the user agent. In a screen-media web browser,
+    this is the height of the viewport plus any scrollbars. In paged media, this is
+    the height of the page box. Thus, `(height: 60rem)` applies when the viewport’s
+    height is precisely 60 rems tall.'
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '用户代理视口的高度。在屏幕媒体的Web浏览器中，这是视口的高度加上任何滚动条。在分页媒体中，这是页面框的高度。因此，`(height: 60rem)`适用于视口高度正好为60
+    rems的情况。'
+- en: 'Media features: `aspect-ratio`, `min-aspect-ratio`, `max-aspect-ratio`'
+  id: totrans-188
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`aspect-ratio`，`min-aspect-ratio`，`max-aspect-ratio`
+- en: 'Values: <*`ratio`*>'
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`比率`*>
+- en: 'The ratio that results from comparing the `width` media feature to the `height`
+    media feature (see the definition of <*`ratio`*> in [“Special Value Types”](#special-value-types)).
+    Thus, `(min-aspect-ratio: 2/1)` applies to any viewport whose width-to-height
+    ratio is at least 2:1.'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '通过比较`width`媒体特性和`height`媒体特性得出的比率（请参阅[“特殊值类型”](#special-value-types)中的<*`比率`*>定义）。因此，`(min-aspect-ratio:
+    2/1)`适用于宽高比至少为2:1的任何视口。'
+- en: 'Media features: `color`, `min-color`, `max-color`'
+  id: totrans-191
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`color`，`min-color`，`max-color`
+- en: 'Values: <*`integer`*>'
+  id: totrans-192
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`整数`*>
+- en: 'The presence of color-display capability in the output device, with an *optional*
+    number value representing the number of bits used in each color component. Thus,
+    `(color)` applies to any device with any color depth at all, whereas `(min-color:
+    4)` means there must be at least 4 bits used per color component. Any device that
+    does not support color will return `0`.'
+  id: totrans-193
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '输出设备中颜色显示能力的存在，*可选* 数值表示每个颜色分量中使用的位数。因此，`(color)` 适用于任何具有任何颜色深度的设备，而 `(最小颜色:
+    4)` 意味着每个颜色分量必须至少使用4位。任何不支持颜色的设备将返回 `0`。'
+- en: 'Media features: `color-index`, `min-color-index`, `max-color-index`'
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`颜色索引`，`最小颜色索引`，`最大颜色索引`
+- en: 'Values: <*`integer`*>'
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`整数`*>
+- en: 'The total number of colors available in the output device’s color lookup table.
+    Any device that does not use a color lookup table will return `0`. Thus, `(min-color-index:
+    256)` applies to any device with a minimum of 256 colors available.'
+  id: totrans-196
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '输出设备颜色查找表中可用颜色的总数。任何不使用颜色查找表的设备将返回 `0`。因此，`(最小颜色索引: 256)` 适用于任何至少有256种颜色可用的设备。'
+- en: 'Media features: `monochrome`, `min-monochrome`, `max-monochrome`'
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`单色`，`最小单色`，`最大单色`
+- en: 'Values: <*`integer`*>'
+  id: totrans-198
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`整数`*>
+- en: 'The presence of a monochrome display, with an *optional* number of bits per
+    pixel in the output device’s frame buffer. Any device that is not monochrome will
+    return `0`. Thus, `(monochrome)` applies to any monochrome output device, whereas
+    `(min-monochrome: 2)` means any monochrome output device with a minimum of 2 bits
+    per pixel in the frame buffer.'
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '单色显示的存在，输出设备帧缓冲区中每个像素的 *可选* 位数。任何不是单色的设备将返回 `0`。因此，`(单色)` 适用于任何单色输出设备，而 `(最小单色:
+    2)` 意味着输出设备的帧缓冲区中每个像素至少有2位。'
+- en: 'Media features: `resolution`, `min-resolution`, `max-resolution`'
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`分辨率`，`最小分辨率`，`最大分辨率`
+- en: 'Values: <*`resolution`*>'
+  id: totrans-201
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`分辨率`*>
+- en: The resolution of the output device in terms of pixel density, measured in either
+    dots per inch (dpi) or dots per centimeter (dpcm); see the definition of <*`resolution`*>
+    in the next section for details. If an output device has pixels that are not square,
+    the least dense axis is used; for example, if a device is 100 dpcm along one axis
+    and 120 dpcm along the other, `100` is the value returned. Additionally, in such
+    nonsquare cases, a bare `resolution` feature query—that is, one without a value—can
+    never match (though `min-resolution` and `max-resolution` can). Note that resolution
+    values must be not only nonnegative, but also nonzero.
+  id: totrans-202
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出设备的像素密度，以每英寸点数（dpi）或每厘米点数（dpcm）测量；有关详细信息，请参阅下一节中 <*`分辨率`*> 的定义。如果输出设备具有非正方形的像素，则使用最低密度的轴；例如，如果一个设备在一个轴上是100
+    dpcm，在另一个轴上是120 dpcm，则返回`100`。此外，在这种非正方形情况下，一个裸的`分辨率`特性查询，即没有值的查询，永远不会匹配（尽管 `最小分辨率`
+    和 `最大分辨率` 可以）。请注意，分辨率值必须不仅非负，而且非零。
+- en: 'With ranged media feature values, it’s common to want to restrict rules to
+    a specific range with a maximum and minimum. For example, you might want to apply
+    a certain margin between two display widths, like so:'
+  id: totrans-203
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于带有范围的媒体特性值，通常希望通过最大值和最小值将规则限制在特定范围内。例如，您可能希望在两个显示宽度之间应用一定的边距，如下所示：
+- en: '[PRE16]'
+  id: totrans-204
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: 'Media Queries Level 4 defines a much more compact way to say the same thing,
+    using standard mathematical expressions like equals, greater than, less than,
+    and so on. Thus, the previous example could be rewritten as follows:'
+  id: totrans-205
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体查询级别4定义了一种更紧凑的方式来表达相同的内容，使用标准数学表达式如等于、大于、小于等。因此，前面的例子可以重写如下：
+- en: '[PRE17]'
+  id: totrans-206
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: In other words, “width is greater than 20 em and less than 45 em.” If you want
+    to have the rules in that media block apply at exactly 20 and 45 em of width,
+    the `<` symbols would be written as `<=` instead.
+  id: totrans-207
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 换句话说，“宽度大于20 em并且小于45 em”。如果要使媒体块中的规则恰好应用于20和45 em的宽度，则应将 `<` 符号写为 `<=`。
+- en: 'This syntax can be used to limit in only one direction, so to speak, as this
+    example illustrates:'
+  id: totrans-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此语法可以用来限制只有一个方向，就像这个例子所示：
+- en: '[PRE18]'
+  id: totrans-209
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: Any media feature that accepts a range as a value (see the preceding section)
+    can use this syntax format. This effectively does away with the need for `min-`
+    and `max-` prefixes on the feature name, as well as for complex `and` constructions.
+  id: totrans-210
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何接受值范围的媒体特性（请参阅上一节）都可以使用此语法格式。这实际上消除了在特性名称上需要 `最小-` 和 `最大-` 前缀以及复杂 `and` 结构的需要。
+- en: 'You can also do multiple ranged queries by chaining them with the `and` combinator,
+    like so:'
+  id: totrans-211
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以通过使用`and`组合符号将多个范围查询串联起来，如下所示：
+- en: '[PRE19]'
+  id: totrans-212
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: This will add an inline margin to the `<body>` element only when the width of
+    the display area is between 20 and 45 em, and the output resolution is below 600
+    dots per inch.
+  id: totrans-213
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当显示区域的宽度在20到45 em之间，并且输出分辨率低于600 dpi时，这将向`<body>`元素添加内联边距。
+- en: Warning
+  id: totrans-214
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: As of early 2023, the Chrome and Firefox browser families support the compact
+    range syntax, and Safari has it in its nightly builds. We hope this is supported
+    everywhere soon after (or even before!) this edition is published.
+  id: totrans-215
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2023年初，Chrome和Firefox浏览器系列支持紧凑范围语法，Safari在其夜间版本中也有。我们希望这在本版出版后不久（甚至之前！）在所有地方都得到支持。
+- en: Deprecated Media Features
+  id: totrans-216
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 弃用的媒体特性
+- en: The following media features have been deprecated, so browser support for them
+    could disappear at any time. We include them here since you may come across them
+    in legacy CSS, and will need to know what they were intended to do so you can
+    replace them with something more up-to-date.
+  id: totrans-217
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下列媒体特性已被弃用，因此浏览器可能随时停止支持它们。我们在这里包含它们是因为您可能在旧版CSS中遇到它们，并且需要知道它们的用途，以便将其替换为更现代的内容。
+- en: 'Media features: `device-width`, `min-device-width`, `max-device-width`'
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`device-width`，`min-device-width`，`max-device-width`
+- en: 'Best replaced by: `width`, `min-width`, `max-width`'
+  id: totrans-219
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最佳替代为：`width`，`min-width`，`max-width`
+- en: 'Values: <*`length`*>'
+  id: totrans-220
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`<length>`
+- en: 'The width of the complete rendering area of the output device. In screen media,
+    this is the width of the screen (i.e., a handheld device screen’s or desktop monitor’s
+    horizontal measurement). In paged media, this is the width of the page itself.
+    Thus, `(max-device-width: 1200px)` applies when the device’s output area is less
+    than or equal to 1,200 pixels wide.'
+  id: totrans-221
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '输出设备的完整渲染区域的宽度。在屏幕媒体中，这是屏幕的宽度（即手持设备屏幕或桌面监视器的水平测量）。在分页媒体中，这是页面本身的宽度。因此，当设备的输出区域小于或等于1200像素宽时，`(max-device-width:
+    1200px)`生效。'
+- en: 'Media features: `device-height`, `min-device-height`, `max-device-height`'
+  id: totrans-222
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`device-height`，`min-device-height`，`max-device-height`
+- en: 'Best replaced by: `height`, `min-height`, `max-height`'
+  id: totrans-223
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最佳替代为：`height`，`min-height`，`max-height`
+- en: 'Values: <*`length`*>'
+  id: totrans-224
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`<length>`
+- en: 'The height of the complete rendering area of the output device. In screen media,
+    this is the height of the screen (i.e., a handheld device screen’s or desktop
+    monitor’s vertical measurement). In paged media, this is the height of the page
+    itself. Thus, `(max-device-height: 400px)` applies when the device’s output area
+    is less than or equal to 400 pixels tall.'
+  id: totrans-225
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '输出设备的完整渲染区域的高度。在屏幕媒体中，这是屏幕的高度（即手持设备屏幕或桌面监视器的垂直测量）。在分页媒体中，这是页面本身的高度。因此，当设备的输出区域小于或等于400像素高时，`(max-device-height:
+    400px)`生效。'
+- en: 'Media features: `device-aspect-ratio`, `min-device-aspect-ratio`, `max-device-aspect-ratio`'
+  id: totrans-226
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体特性：`device-aspect-ratio`，`min-device-aspect-ratio`，`max-device-aspect-ratio`
+- en: 'Best replaced by: `aspect-ratio`, `min-aspect-ratio`, `max-aspect-ratio`'
+  id: totrans-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最佳替代为：`aspect-ratio`，`min-aspect-ratio`，`max-aspect-ratio`
+- en: 'Values: <*`ratio`*>'
+  id: totrans-228
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`<ratio>`
+- en: 'The ratio that results from comparing the `device-width` media feature to the
+    `device-height` media feature (see the definition of <*`ratio`*> in [“Special
+    Value Types”](#special-value-types)). Thus, `(device-aspect-ratio: 16/9)` applies
+    to any output device whose display area width-to-height ratio is *exactly* 16:9.'
+  id: totrans-229
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '通过比较`device-width`媒体特性和`device-height`媒体特性的比率得出的比率（请参见[“特殊值类型”](#special-value-types)中对`ratio`的定义）。因此，当输出设备的显示区域宽高比恰好为16:9时，`(device-aspect-ratio:
+    16/9)`生效。'
+- en: Responsive Styling
+  id: totrans-230
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 响应式样式
+- en: Media queries are the foundation on which the practice of *responsive web design*
+    is built. By applying different sets of rules depending on the display environment,
+    it’s possible to marry “mobile-friendly” and “desktop-friendly” styles into a
+    single stylesheet.
+  id: totrans-231
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体查询是“响应式网页设计”的基础。通过根据显示环境应用不同的规则集，可以将“手机友好”和“桌面友好”的样式融合到单个样式表中。
+- en: We put these terms in quotes because, as you may have seen in your own life,
+    the lines between what’s mobile and what’s desktop are blurred. A laptop with
+    a touch-sensitive screen that folds all the way back can act as both a tablet
+    and a laptop, for example. CSS doesn’t (yet) have a way of detecting whether a
+    hinge is open past a certain point, nor whether the device is held in hand or
+    sitting on a flat surface. Instead, inferences are drawn from aspects of the media
+    environment, like display size or display orientation.
+  id: totrans-232
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将这些术语放在引号中，因为您可能在自己的生活中已经看到移动设备和桌面设备之间的界限变得模糊。例如，具有可折叠触摸屏的笔记本电脑可以兼具平板电脑和笔记本电脑的功能。例如，CSS（尚未）无法检测到铰链是否超过某一点，也无法检测设备是手持还是放置在平面上。而是从媒体环境的各个方面进行推断，如显示大小或显示方向。
+- en: 'A fairly common pattern in responsive design is to define *breakpoints* for
+    each `@media` block. This often takes the form of certain pixel widths, like this:'
+  id: totrans-233
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在响应式设计中，一个相当常见的模式是为每个`@media`块定义*断点*。通常采用某些像这样的像素宽度：
+- en: '[PRE20]'
+  id: totrans-234
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: This makes certain assumptions about what a device can display and how it will
+    report that, however. For example, the iPhone 6 Plus had a resolution of 1,242
+    × 2,208, which it downsampled to 1,080 × 1,920\. Even at the downsampled resolution,
+    that’s enough pixels across to qualify for big-screen styles in the previous example.
+  id: totrans-235
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这使得某些设备可以显示的内容和其报告方式做出了某些假设。例如，iPhone 6 Plus 的分辨率为1,242 × 2,208，它将其降采样到1,080
+    × 1,920。即使在降采样分辨率下，这足够多的像素宽度来符合前面例子中的大屏幕样式。
+- en: But wait! The iPhone 6 Plus also maintained an internal coordinate system of
+    points that measured 414 × 736\. If it decided to use those as its definition
+    of pixels, which would be entirely valid, then it would get only the small-screen
+    styles.
+  id: totrans-236
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但等等！iPhone 6 Plus 还保持了一个内部坐标系统，测量为414 × 736。如果它决定将这些作为其像素定义，这完全是有效的，那么它将只会获得小屏幕样式。
+- en: The point here isn’t to single out the iPhone 6 Plus as uniquely bad, which
+    it wasn’t, but to illustrate the uncertainties of relying on pixel-based media
+    queries. Browser makers have gone to some effort to make their browsers behave
+    with some semblance of sanity, but never quite as much as we’d like, and you never
+    know when a new device’s assumptions will clash with your own.
+  id: totrans-237
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里的重点不是单独指出iPhone 6 Plus是唯一不好的设备，事实并非如此，而是说明依赖基于像素的媒体查询的不确定性。浏览器制造商已经尽力使他们的浏览器表现得有些让人信服，但从来没有完全如我们所愿，而且您永远不知道新设备的假设何时会与您的假设发生冲突。
+- en: 'Other methods are available, though they come with their own uncertainties.
+    Instead of pixels, you might try em-based measures, something like this:'
+  id: totrans-238
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有其他方法可用，但它们带来了自己的不确定性。与其使用像素，您可能会尝试基于em的措施，类似于这样：
+- en: '[PRE21]'
+  id: totrans-239
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: 'This ties the breakpoints to text display size rather than pixels, which is
+    more robust. This isn’t perfect either, though: it relies on a sensible approach
+    to determining the em width of, say, a smartphone. It also directly relies on
+    the actual font family and size used by the device, which varies from one device
+    to another.'
+  id: totrans-240
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将断点与文本显示大小而非像素绑定在一起，这更加健壮。不过，这也并非完美：它依赖于合理的方法来确定智能手机的em宽度。它还直接依赖于设备实际使用的字体系列和大小，这在不同设备之间有所不同。
+- en: 'Here’s another seemingly simple query set with potentially surprising results:'
+  id: totrans-241
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是另一个看似简单的查询集合，但可能会带来意外的结果：
+- en: '[PRE22]'
+  id: totrans-242
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: 'This feels like a good way to tell whether a smartphone is in use: after all,
+    most of them are taller than they are wide, and most people don’t turn them sideways
+    to read. The wrinkle is that the `orientation` feature refers to the `height`
+    and `width`; that is, `orientation` is `portrait` if `height` is equal to or larger
+    than `width`. Not `device-height` and `device-width`, but `height` and `width`,
+    which refer to the display area of the user agent.'
+  id: totrans-243
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这感觉像是判断智能手机是否正在使用的好方法：毕竟，它们大多比宽要高，大多数人不会把它们横过来阅读。但是`orientation`特性指的是`height`和`width`；也就是说，如果`height`大于或等于`width`，则`orientation`是`portrait`。而不是`device-height`和`device-width`，而是指用户代理的显示区域的`height`和`width`。
+- en: That means a desktop browser window whose display area (the part inside the
+    browser chrome) is taller than it is wide, or even perfectly square, will get
+    the portrait styles. So if you assume “portrait equals smartphone,” some of your
+    desktop users could get a surprise.
+  id: totrans-244
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着，如果假设“纵向等同于智能手机”，那么一些桌面用户可能会感到惊讶，因为他们的显示区域（浏览器边框内的部分）比宽高更高，甚至是完全正方形。
+- en: The basic point here is that responsive styling is powerful, and as with any
+    powerful tool, its use requires a fair amount of thought and care. Carefully considering
+    the implications of each combination of feature queries is the minimum requirement
+    for successful responsiveness.
+  id: totrans-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本观点在于响应式样式很强大，就像任何强大的工具一样，它的使用需要充分的思考和谨慎。仔细考虑每个特性查询组合的影响是成功响应的最低要求。
+- en: Paged Media
+  id: totrans-246
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 分页媒介
+- en: 'In CSS terms, a *paged medium* is any medium that handles a document’s presentation
+    as a series of discrete “pages.” This is different from the screen, which is a
+    *continuous medium*: documents are presented as a single, scrollable “page.” An
+    analog example of a continuous medium is a papyrus scroll. Printed material, such
+    as books, magazines, and laser printouts, are all paged media. So too are slideshows,
+    which show a series of slides one at a time. Each slide is a “page” in CSS terms.'
+  id: totrans-247
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在CSS术语中，*分页媒介*指的是以一系列离散“页面”呈现文档演示的任何媒介。这与屏幕有所不同，屏幕是*连续媒介*：文档呈现为单个可滚动的“页面”。连续媒介的模拟例子是纸莎草卷。印刷物料，如书籍、杂志和激光打印品，都是分页媒介。幻灯片演示也是分页媒介，每张幻灯片在CSS术语中都是一个“页面”。
+- en: Print Styles
+  id: totrans-248
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 打印样式
+- en: Even in the paperless future, the most commonly encountered paged medium is
+    a printout of a document—a web page, a word-processing document, a spreadsheet,
+    or something else that has been committed to the thin wafers of a dead tree. You
+    can do several things to make printouts of your documents more pleasing for the
+    user, from adjusting page breaking to creating styles meant specifically for print.
+  id: totrans-249
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使在无纸化的未来，最常见的分页媒介仍然是文档的打印品—网页、文字处理文件、电子表格或其他的已经被提交到薄薄的死树片中。您可以做一些事情，让您的文档打印品对用户更加愉悦，例如调整页面断点或创建专门用于打印的样式。
+- en: Note that print styles would also be applied to the document display in a print
+    preview mode. Thus, it’s possible in some circumstances to see print styles on
+    a monitor.
+  id: totrans-250
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，打印样式也会应用到打印预览模式中的文档显示上。因此，在某些情况下，在监视器上会看到打印样式。
+- en: Differences Between Screen and Print
+  id: totrans-251
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 屏幕和印刷之间的差异
+- en: Beyond the obvious physical differences, stylistic differences also exist between
+    screen and print design. The most basic involves font choices. Most designers
+    will tell you that sans-serif fonts are best suited for screen design, but serif
+    fonts are more readable in print. Thus, you might set up a print stylesheet that
+    uses Times instead of Verdana for the text in your document.
+  id: totrans-252
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了明显的物理差异外，屏幕设计和印刷设计之间也存在风格差异。最基本的差异在于字体选择。大多数设计师会告诉你，无衬线字体更适合屏幕设计，但印刷中使用衬线字体更易读。因此，您可能需要设置一个印刷样式表，将文档中的文本使用
+    Times 而不是 Verdana。
+- en: Another major difference involves font sizing. If you’ve spent any time at all
+    doing web design, you’ve probably heard again and again (and again) that points
+    are a horrible choice for font sizing on the web. This is basically true, especially
+    if you want your text to be consistently sized between browsers and operating
+    systems. However, print design is not web design any more than web design is print
+    design.
+  id: totrans-253
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个主要的差异涉及字体大小。如果您花费了任何时间进行网页设计，您可能一遍又一遍（再一遍）听到点阵字在网页上是一个糟糕的选择。这基本上是正确的，特别是如果您希望您的文本在各种浏览器和操作系统之间大小一致。然而，印刷设计与网页设计一样，不只是网页设计是印刷设计。
+- en: Using points, or even centimeters or picas, is perfectly OK in print design
+    because printing devices know the physical size of their output area. If a printer
+    has been loaded with 8.5 × 11 inch paper, that printer knows it has a printing
+    area that will fit within the edges of a piece of paper. It also knows how many
+    dots there are in an inch, since it knows the dpi it’s capable of generating.
+    This means that it can cope with physical-world length units like points.
+  id: totrans-254
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在印刷设计中使用点，甚至厘米或盎司，是完全可以接受的，因为打印设备知道其输出区域的物理大小。如果打印机加载了 8.5×11英寸纸张，那打印机就知道其有一个可以适应纸张边缘的打印区域。它也知道每英寸有多少点，因为它知道自己能够生成的dpi。这意味着它可以处理像点这样的物理世界长度单位。
+- en: 'Many a print stylesheet has started with this:'
+  id: totrans-255
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多印刷样式表都是从这里开始的：
+- en: '[PRE23]'
+  id: totrans-256
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: It’s so traditional, it just might bring a tear of joy to the eye of a graphic
+    artist reading over your shoulder. But make sure they understand that points are
+    acceptable only because of the nature of the print medium—they’re still not good
+    for web design.
+  id: totrans-257
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是如此传统，以至于可能会让站在你旁边的平面艺术家感动流泪。但请确保他们明白，只因为印刷媒介的特性，点阵字才被接受，但它们在网页设计中仍然不合适。
+- en: Alternatively, the lack of backgrounds in most printouts might bring a tear
+    of frustration to that designer’s eye. To save users ink, most web browsers are
+    preconfigured not to print background colors and images. If the user wants to
+    see those backgrounds in the printout, they have to change an option in the preferences.
+  id: totrans-258
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，大多数打印输出中缺少背景可能会让设计师感到沮丧。为了节省用户的墨水，大多数网页浏览器预设不打印背景颜色和图像。如果用户希望在打印输出中看到这些背景，则必须更改偏好设置中的选项。
+- en: 'CSS can’t do anything to force the printing of backgrounds. However, you can
+    use a print stylesheet to make backgrounds unnecessary. For example, you might
+    include this rule in your print stylesheet:'
+  id: totrans-259
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 无法强制打印背景。但是，您可以使用打印样式表使背景变得不必要。例如，您可以在打印样式表中包含此规则：
+- en: '[PRE24]'
+  id: totrans-260
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: This will do its utmost to ensure that all of your elements print out as black
+    text and remove any backgrounds you might have assigned in an all-medium stylesheet.
+    It also makes sure that if you have a web design that puts yellow text on a dark
+    gray background, a user with a color printer won’t get yellow text on a white
+    piece of paper.
+  id: totrans-261
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将尽最大努力确保所有元素打印为黑色文本，并删除您可能在全媒体样式表中分配的任何背景。它还确保，如果您的网页设计将黄色文本放在深灰色背景上，那么使用彩色打印机的用户将不会在白纸上看到黄色文本。
+- en: One other difference between paged media and continuous media is that multicolumn
+    layouts are even harder to use in paged media. Suppose you have an article with
+    text formatted as two columns. In a printout, the left side of each page will
+    contain the first column, and the right side the second. This would force the
+    user to read the left side of every page, then go back to the beginning of the
+    printout and read the right side of every page. This is annoying enough on the
+    web, but on paper it’s much worse.
+  id: totrans-262
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分页媒体和连续媒体之间的另一个区别是，在分页媒体中，多列布局更难使用。假设您有一篇文章，其中的文本格式为两列。在打印输出中，每页的左侧将包含第一列，右侧将包含第二列。这将强迫用户先阅读每页的左侧，然后返回打印输出的开头并阅读每页的右侧。在网络上这已经很烦人了，但在纸上更加糟糕。
+- en: 'One solution is to use CSS for laying out your two columns (by using flexbox,
+    perhaps) and then write a print stylesheet that restores the content to a single
+    column. Thus, you might write something like this for the screen stylesheet:'
+  id: totrans-263
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个解决方案是使用 CSS 来布局您的两列（例如使用 flexbox），然后编写一个打印样式表，将内容恢复为单列。因此，您可以像这样编写屏幕样式表：
+- en: '[PRE25]'
+  id: totrans-264
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: 'Then in your print stylesheet, you would write the following:'
+  id: totrans-265
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后在您的打印样式表中，您会编写以下内容：
+- en: '[PRE26]'
+  id: totrans-266
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: Alternatively, in user agents that support it, you might define actual multicolumn
+    layout for both screen and print, and trust the user agents to do the right thing.
+  id: totrans-267
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，在支持的用户代理中，您可以为屏幕和打印定义实际的多列布局，并信任用户代理执行正确的操作。
+- en: We could spend an entire chapter on the details of print design, but that really
+    isn’t the purpose of this book. Let’s start exploring the details of paged-media
+    CSS and leave the design discussions for another book.
+  id: totrans-268
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以花一个完整的章节来讨论打印设计的细节，但这并不是本书的目的。让我们开始探讨分页媒体 CSS 的细节，并将设计讨论留给另一本书。
+- en: Page Size
+  id: totrans-269
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 页面尺寸
+- en: 'In much the same way as it defines the element box, CSS defines a *page box*
+    that describes the components of a page. A page box is composed of two main regions:'
+  id: totrans-270
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与定义元素框相同的方式定义了一个*页面框*，描述了页面的组成部分。页面框由两个主要区域组成：
+- en: Page area
+  id: totrans-271
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 页面区域
+- en: The portion of the page in which the content is laid out. This is roughly analogous
+    to the content area of a normal element box, to the extent that the edges of the
+    page area act as the initial containing block for layout within a page.
+  id: totrans-272
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内容布局的页面部分。这在某种程度上类似于普通元素框的内容区域，以至于页面区域的边缘充当页面内布局的初始包含块。
+- en: Margin area
+  id: totrans-273
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 边距区域
+- en: The area that surrounds the page area.
+  id: totrans-274
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 围绕页面区域的区域。
+- en: '[Figure 21-2](#pagesize-page-box) shows the page box model.'
+  id: totrans-275
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 21-2](#pagesize-page-box) 展示了页面框模型。'
+- en: '![css5 2102](assets/css5_2102.png)'
+  id: totrans-276
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 2102](assets/css5_2102.png)'
+- en: Figure 21-2\. The page box
+  id: totrans-277
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 21-2\. 页面框
+- en: 'The `@page` block is the method by which settings are made, and the `size`
+    property is used to define the actual dimensions of the page box. Here’s a simple
+    example:'
+  id: totrans-278
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`@page` 块是进行设置的方法，`size` 属性用于定义页面框的实际尺寸。这里有一个简单的示例：'
+- en: '[PRE27]'
+  id: totrans-279
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: '`@page` is a block like `@media` is a block, and it can contain any set of
+    styles. One of them, `size`, makes sense only in the context of an `@page` block.'
+  id: totrans-280
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`@page` 就像 `@media` 一样是一个块，它可以包含任何一组样式。其中之一，`size`，只在 `@page` 块的上下文中才有意义。'
+- en: Warning
+  id: totrans-281
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: As of late 2022, only Chromium-based browsers support `size`.
+  id: totrans-282
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2022年末，只有基于Chromium的浏览器支持 `size`。
+- en: 'This descriptor defines the size of the page area. The value `landscape` is
+    meant to cause the layout to be rotated 90 degrees, whereas `portrait` is the
+    normal orientation for Western-language printing. Thus, you could cause a document
+    to be printed sideways by declaring the following, with the result shown in [Figure 21-3](#pagesize-landscape):'
+  id: totrans-283
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此描述符定义了页面区域的大小。`landscape` 的值旨在使布局旋转90度，而 `portrait` 是西方语言印刷的正常方向。因此，您可以通过声明以下内容来使文档侧向打印，结果如图[21-3](#pagesize-landscape)所示：
+- en: '[PRE28]'
+  id: totrans-284
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: '![css5 2103](assets/css5_2103.png)'
+  id: totrans-285
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 2103](assets/css5_2103.png)'
+- en: Figure 21-3\. Landscape page sizing
+  id: totrans-286
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图21-3\. 横向页面尺寸
+- en: In addition to `landscape` and `portrait`, predefined page-size keywords are
+    available. These are summarized in [Table 21-1](#page-size-keywords).
+  id: totrans-287
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了 `landscape` 和 `portrait` 外，还有预定义的页面尺寸关键字可用。这些在表[21-1](#page-size-keywords)中总结。
+- en: Table 21-1\. Page-size keywords
+  id: totrans-288
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表21-1\. 页面尺寸关键字
+- en: '| Keyword | Description |'
+  id: totrans-289
+  prefs: []
+  type: TYPE_TB
+  zh: '| 关键字 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-290
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `A5` | International Standards Organization (ISO) A5 size, 148 mm wide x
+    210 mm tall (5.83 in x 8.27 in) |'
+  id: totrans-291
+  prefs: []
+  type: TYPE_TB
+  zh: '| `A5` | 国际标准ISO A5尺寸，148毫米宽 x 210毫米高 (5.83 英寸 x 8.27 英寸) |'
+- en: '| `A4` | ISO A2 size, 210 mm x 297 mm (8.27 in x 11.69 in) |'
+  id: totrans-292
+  prefs: []
+  type: TYPE_TB
+  zh: '| `A4` | 国际标准ISO A4尺寸，210毫米 x 297毫米 (8.27 英寸 x 11.69 英寸) |'
+- en: '| `A3` | ISO A3 size, 297 mm x 420 mm (11.69 in x 16.54 in) |'
+  id: totrans-293
+  prefs: []
+  type: TYPE_TB
+  zh: '| `A3` | 国际标准ISO A3尺寸，297毫米 x 420毫米 (11.69 英寸 x 16.54 英寸) |'
+- en: '| `B5` | ISO B5 size, 176 mm x 250 mm (6.93 in x 9.84 in) |'
+  id: totrans-294
+  prefs: []
+  type: TYPE_TB
+  zh: '| `B5` | 国际标准ISO B5尺寸，176毫米 x 250毫米 (6.93 英寸 x 9.84 英寸) |'
+- en: '| `B4` | ISO B4 size, 250 mm x 353 mm (9.84 in x 13.9 in) |'
+  id: totrans-295
+  prefs: []
+  type: TYPE_TB
+  zh: '| `B4` | 国际标准ISO B4尺寸，250毫米 x 353毫米 (9.84 英寸 x 13.9 英寸) |'
+- en: '| `JIS-B5` | ISO Japanese Industrial Standards (JIS) B5 size, 182 mm x 257
+    mm (7.17 in x 10.12 in) |'
+  id: totrans-296
+  prefs: []
+  type: TYPE_TB
+  zh: '| `JIS-B5` | ISO日本工业标准（JIS）B5尺寸，182毫米 x 257毫米 (7.17 英寸 x 10.12 英寸) |'
+- en: '| `JIS-B4` | ISO JIS B4 size, 257 mm x 364 mm (10.12 in x 14.33 in) |'
+  id: totrans-297
+  prefs: []
+  type: TYPE_TB
+  zh: '| `JIS-B4` | ISO JIS B4尺寸，257毫米 x 364毫米 (10.12 英寸 x 14.33 英寸) |'
+- en: '| `letter` | North American letter size, 8.5 in x 11 in (215.9 mm x 279.4 mm)
+    |'
+  id: totrans-298
+  prefs: []
+  type: TYPE_TB
+  zh: '| `letter` | 北美信纸尺寸，8.5 英寸 x 11 英寸 (215.9 毫米 x 279.4 毫米) |'
+- en: '| `legal` | North American legal size, 8.5 in x 14 in (215.9 mm x 355.6 mm)
+    |'
+  id: totrans-299
+  prefs: []
+  type: TYPE_TB
+  zh: '| `legal` | 北美法律尺寸，8.5 英寸 x 14 英寸 (215.9 毫米 x 355.6 毫米) |'
+- en: '| `ledger` | North American ledger size, 11 in x 17 in (279.4 mm x 431.8 mm)
+    |'
+  id: totrans-300
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ledger` | 北美分类账尺寸，11 英寸 x 17 英寸 (279.4 毫米 x 431.8 毫米) |'
+- en: 'Any one of the keywords can be used to declare a page size. The following defines
+    a page to be JIS B5 size:'
+  id: totrans-301
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用任何一个关键字来声明页面尺寸。以下定义了一个JIS B5尺寸的页面：
+- en: '[PRE29]'
+  id: totrans-302
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: 'These keywords can be combined with the `landscape` and `portrait` keywords;
+    thus, to define landscape-oriented North American legal pages, the following is
+    used:'
+  id: totrans-303
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些关键字可以与 `landscape` 和 `portrait` 关键字结合使用；因此，要定义横向布局的北美法律页面，可以使用以下内容：
+- en: '[PRE30]'
+  id: totrans-304
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: 'Besides using keywords, it’s also possible to define page sizes using length
+    units. The width is given first, and then the height. Therefore, the following
+    defines a page area 8 inches wide by 10 inches tall:'
+  id: totrans-305
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了使用关键字，也可以使用长度单位定义页面尺寸。首先给出宽度，然后是高度。因此，以下定义了一个8英寸宽、10英寸高的页面区域：
+- en: '[PRE31]'
+  id: totrans-306
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: The defined area is usually centered within the physical page, with equal amounts
+    of whitespace on each side. If the defined `size` is larger than the printable
+    area of the page, the user agent has to decide what to do to resolve the situation.
+    There is no defined behavior here, so it’s really dealer’s choice.
+  id: totrans-307
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义的区域通常居中于物理页面内，四周有相等的空白区域。如果定义的 `size` 大于页面的可打印区域，用户代理程序必须决定如何解决这种情况。这里没有定义的行为，所以完全由实现者选择。
+- en: Page Margins and Padding
+  id: totrans-308
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 页面边距和内边距
+- en: 'Related to `size`, CSS includes the ability to style the margin area of the
+    page box. If you want to make sure that only a small bit at the center of every
+    8.5 × 11 inch page is used to print, you could write this:'
+  id: totrans-309
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相关于 `size`，CSS包括了对页面盒子边距区域进行样式化的功能。如果你希望确保每张8.5 × 11英寸页面只使用中心的一个小部分进行打印，可以这样写：
+- en: '[PRE32]'
+  id: totrans-310
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: This would leave a printing area 1 inch wide by 3.5 inches tall.
+  id: totrans-311
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将留下一个1英寸宽、3.5英寸高的打印区域。
+- en: It is possible to use the length units `em` and `ex` to describe either the
+    margin area or the page area, at least in theory. The size used is taken from
+    the page context’s font, which is to say, the base font size used for the content
+    displayed on the page.
+  id: totrans-312
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 理论上可以使用 `em` 和 `ex` 作为长度单位来描述边距区域或页面区域。所使用的尺寸取自页面上下文的字体，也就是页面上显示的内容的基础字体大小。
+- en: Named Page Types
+  id: totrans-313
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 命名的页面类型
+- en: 'CSS enables you to create different page types using named `@page` rules. Let’s
+    say you have a document on astronomy that is several pages long, and in the middle
+    of it, a fairly wide table contains a list of the physical characteristics of
+    all the moons of Saturn. You want to print out the text in portrait mode, but
+    the table needs to be landscape. Here’s how you’d start:'
+  id: totrans-314
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS允许您使用命名的`@page`规则创建不同的页面类型。比如，您有一份关于天文学的长文档，在其中一个地方，一个相当宽的表格包含了所有土星卫星的物理特性列表。您希望将文本打印为竖排模式，但表格需要横排模式。以下是您的起始点：
+- en: '[PRE33]'
+  id: totrans-315
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: 'Now you just need to apply these page types as needed. The table of Saturn’s
+    moons has an `id` of `moon-data`, so you write the following rules:'
+  id: totrans-316
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您只需根据需要应用这些页面类型即可。土星的卫星表具有`moon-data`的`id`，因此您可以编写以下规则：
+- en: '[PRE34]'
+  id: totrans-317
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: This causes the table to be printed in landscape orientation, but the rest of
+    the document to be in portrait orientation. The `page` propery is what makes this
+    possible.
+  id: totrans-318
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这会导致表格以横向打印，但文档的其余部分以纵向打印。`page`属性使这一操作成为可能。
+- en: As you can see from looking at the value definition, the whole reason `page`
+    exists is to let you assign named page types to various elements in your document.
+  id: totrans-319
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从值定义中可以看出，`page`的存在完全是为了让您能够将命名的页面类型分配给文档中的各种元素。
+- en: 'You can use more generic page types through special pseudo-classes. The `:first`
+    page pseudo-class lets you apply special styles to the first page in the document.
+    For example, you might want to give the first page a larger top margin than other
+    pages. Here’s how:'
+  id: totrans-320
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过特殊的伪类可以使用更通用的页面类型。`:first`页面伪类允许您在文档中的第一页应用特殊样式。例如，您可能希望给第一页的顶部边距比其他页面更大。以下是具体操作：
+- en: '[PRE35]'
+  id: totrans-321
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: This will yield a 3 cm margin on all pages, with the exception of a 6 cm top
+    margin on the first page.
+  id: totrans-322
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将在所有页面上产生3厘米的边距，除了第一页的顶部边距为6厘米。
+- en: 'In addition to styling the first page, you can also style left and right pages,
+    emulating the pages to the left and right of a book’s spine. You can style these
+    differently using `:left` and `:right`. For example:'
+  id: totrans-323
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了对第一页进行样式设置之外，还可以对左右页进行样式设置，模拟书籍书脊左右的页。您可以使用`:left`和`:right`对它们进行不同的样式设置。例如：
+- en: '[PRE36]'
+  id: totrans-324
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: These rules will have the effect of putting larger margins between the content
+    of the left and right pages, on the sides where the spine of a book would be.
+    This is a common practice when pages are to be bound together into a book of some
+    type.
+  id: totrans-325
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些规则将在左右页面的内容之间放置更大的边距，这些边距位于书脊所在的侧面。这是将页面绑定到某种类型的书籍中时的常见做法。
+- en: Warning
+  id: totrans-326
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: As of early 2023 the Firefox family doesn’t support `:first`, `:left`, or `:right`.
+  id: totrans-327
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 早在2023年初，Firefox系列就不支持`:first`，`:left`或者`:right`。
+- en: Page Breaking
+  id: totrans-328
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 分页
+- en: In a paged medium, it’s a good idea to exert some influence over the way page
+    breaks are placed. You can affect page breaking by using the properties `page-break-before`
+    and `page-break-after`, both of which accept the same set of values.
+  id: totrans-329
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在分页媒体中，通过使用`page-break-before`和`page-break-after`属性可以对页面分页的位置产生影响。这两个属性接受相同的一组值。
+- en: The default value of `auto` means that a page break is not forced to come before
+    or after an element. This is the same as any normal printout. The `always` value
+    causes a page break to be placed before (or after) the styled element.
+  id: totrans-330
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`auto`的默认值意味着在元素之前或之后不会强制插入分页符。这与普通打印一样。`always`值会导致在样式化元素之前（或之后）插入分页符。'
+- en: 'For example, say the page title is an `<h1>` element, and the section titles
+    are all `<h2>` elements. We might want a page break right before the beginning
+    of each section of a document and after the document title. This would result
+    in the following rules, illustrated in [Figure 21-4](#pagebreaking-breaks):'
+  id: totrans-331
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设页面标题是一个`<h1>`元素，而各节标题都是`<h2>`元素。我们可能希望在文档的每个部分之前和文档标题之后插入分页符。这将导致以下规则，如[图21-4](#pagebreaking-breaks)所示：
+- en: '[PRE37]'
+  id: totrans-332
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: '![css5 2104](assets/css5_2104.png)'
+  id: totrans-333
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 2104](assets/css5_2104.png)'
+- en: Figure 21-4\. Inserting page breaks
+  id: totrans-334
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图21-4\. 插入分页符
+- en: If we want the document title to be centered in its page, we’d add rules to
+    that effect. Since we don’t, we just get a straightforward rendering of each page.
+  id: totrans-335
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们希望文档标题居中显示在页面上，我们会添加相关规则。因为我们不需要这样做，所以每页都会直接呈现。
+- en: 'The values `left` and `right` operate in the same manner as always, except
+    they further define the type of page on which printing can resume. Consider the
+    following:'
+  id: totrans-336
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`left` 和 `right` 的值的操作方式与以往相同，只是它们进一步定义了可以恢复打印的页面类型。考虑以下内容：'
+- en: '[PRE38]'
+  id: totrans-337
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: This will force every `<h2>` element to be preceded by enough page breaks that
+    the `<h2>` will be printed at the top of a left page—that is, a page surface that
+    would appear to the left of a spine if the output were bound. In double-sided
+    printing, this would mean printing on the back of a piece of paper.
+  id: totrans-338
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将导致每个`<h2>`元素前都插入足够多的分页，以便将其打印在左页的顶部——即输出绑定时，看起来是书脊左侧的页面表面。在双面打印中，这意味着在一张纸的背面打印。
+- en: So let’s assume that, in printing, the element just before an `<h2>` is printed
+    on a right page. The previous rule would cause a single page break to be inserted
+    before the `<h2>`, thus pushing it to the next page. If the next `<h2>` is preceded
+    by an element on a left page, however, the `<h2>` would be preceded by two page
+    breaks, thus placing it at the top of the next left page. The right page between
+    the two would be intentionally left blank. The value `right` has the same basic
+    effect, except it forces an element to be printed at the top of a right page preceded
+    by either one or two page breaks.
+  id: totrans-339
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，假设在打印时，紧挨着一个`<h2>`的元素打印在右页上。前述规则将导致在`<h2>`之前插入一个分页，从而将其推到下一页。然而，如果下一个`<h2>`前面是左页上的元素，则`<h2>`前面将插入两个分页，从而使其位于下一个左页的顶部。两者之间的右页将被有意留空。`right`值具有相同的基本效果，只不过它会强制将元素打印在右页的顶部，并且之前可能会有一到两个分页。
+- en: 'The companion to `always` is `avoid`, which directs the user agent to do its
+    best to avoid placing a page break either before or after an element. To extend
+    the previous example, suppose you have subsections whose titles are `<h3>` elements.
+    You want to keep these titles together with the text that follows them, so you
+    want to avoid a page break following an `<h3>` whenever possible:'
+  id: totrans-340
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`always`的伴侣是`avoid`，它指示用户代理尽量避免在元素之前或之后插入分页。延续上一个例子，假设您有标题为`<h3>`元素的子节。您希望保持这些标题与其后的文本在一起，因此希望尽可能避免在`<h3>`之后插入分页：'
+- en: '[PRE39]'
+  id: totrans-341
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: 'Note, though, that the value is called `avoid`, not `never`. There is no way
+    to absolutely guarantee that a page break will never be inserted before or after
+    a given element. Consider the following:'
+  id: totrans-342
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，这里所说的值被称为`avoid`，而不是`never`。绝对不能保证在给定元素之前或之后永远不插入分页。考虑以下情况：
+- en: '[PRE40]'
+  id: totrans-343
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: 'Now, suppose further that an `<h4>` is placed between two images, and its height
+    calculates to be half an inch. Each image will have to be printed on a separate
+    page, but the `<h4>` can go only two places: at the bottom of the page holding
+    the first element, or on the page after it. If it’s placed after the first image,
+    it has to be followed by a page break, since there’s no room for the second image
+    to follow it.'
+  id: totrans-344
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，进一步假设`<h4>`标签放置在两张图片之间，并且其高度计算为半英寸。每张图片必须单独打印在一页上，但是`<h4>`标签只能放在两个地方之一：在包含第一个元素的页面底部，或者在其后的页面上。如果它放在第一张图片之后，则必须跟随分页，因为没有足够的空间让第二张图片跟随它。
+- en: On the other hand, if the `<h4>` is placed on a new page following the first
+    image, there won’t be room on that same page for the second image. So, again,
+    a page break will occur after the `<h4>`. And, in either case, at least one image,
+    if not both, will be preceded by a page break. There’s only so much the user agent
+    can do, given a situation like this one.
+  id: totrans-345
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，如果`<h4>`标签放在第一张图片后的新页面上，那么在同一页上就无法为第二张图片腾出位置。因此，再次，在`<h4>`标签后会发生分页。而且，在任何情况下，至少一张图片，如果不是两张，都会在分页之前出现。在这种情况下，用户代理能做的事情有限。
+- en: Situations such as these are rare, but they can happen—for example, in a document
+    containing nothing but tables preceded by headings. The tables could print in
+    such a way that they force a heading element to be followed by a page break, even
+    though the author requested such break placement be avoided.
+  id: totrans-346
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然这类情况很少见，但它们确实会发生——例如在只包含表格和标题之前的文档中。表格可能以一种强制要求标题元素后跟分页的方式打印，尽管作者请求避免此类分页位置。
+- en: The same sorts of issues can arise with the other page-break property, `page-break-inside`.
+    Its possible values are more limited than those of its cousins.
+  id: totrans-347
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其他`page-break-inside`属性可能出现的问题与上述类似。它的可能值比其姐妹更有限。
+- en: 'With `page-break-inside`, you pretty much have one option other than the default:
+    you can request that a user agent try to avoid placing page breaks within an element.
+    If you have a series of `aside` divisions, and you don’t want them broken across
+    two pages, then you could declare the following:'
+  id: totrans-348
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `page-break-inside`，除了默认之外，你基本上只有一个选项：请求用户代理尝试避免在元素内部放置页面断页。如果你有一系列`aside`分区，并且不希望它们跨两页分割，那么可以声明如下：
+- en: '[PRE41]'
+  id: totrans-349
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: Again, this is a suggestion more than an actual rule. If an aside turns out
+    to be longer than a page, the user agent can’t help but place a page break inside
+    the element.
+  id: totrans-350
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次强调，这只是一个建议，而不是一个实际的规则。如果一个`aside`内容超过一页，用户代理无法避免在元素内部插入页面断页。
+- en: Orphans and Widows
+  id: totrans-351
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 孤行和孤字
+- en: 'There are two properties common to both traditional print typography and desktop
+    publishing that provide influence over page breaking: `widows` and `orphans`.'
+  id: totrans-352
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传统印刷排版和桌面出版都具有影响页面断页的两个共同属性：`widows` 和 `orphans`。
+- en: 'These properties have similar aims but approach them from different angles.
+    The value of `widows` defines the minimum number of line boxes found in an element
+    that can be placed at the top of a page without forcing a page break to come before
+    the element. The `orphans` property has the reverse effect: it gives the minimum
+    number of line boxes that can appear at the bottom of a page without forcing a
+    page break before the element.'
+  id: totrans-353
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些属性有着类似的目标，但从不同角度来实现它们。`widows`的值定义了元素中可以放置在页面顶部而不强制在元素之前插入页面断页的最小行框数。`orphans`属性则具有相反的效果：它给出了可以出现在页面底部而不强制在元素之前插入页面断页的最小行框数。
+- en: 'Let’s take `widows` as an example. Suppose you declare the following:'
+  id: totrans-354
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们以 `widows` 为例。假设你声明如下：
+- en: '[PRE42]'
+  id: totrans-355
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: This means that any paragraph can have no fewer than four line boxes appear
+    at the top of a page. If the layout of the document would lead to fewer line boxes,
+    the entire paragraph is placed at the top of the page.
+  id: totrans-356
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着任何段落顶部至少会有四行框出现在页面上。如果文档布局导致行框数不足，则整个段落将置于页面顶部。
+- en: Consider the situation shown in [Figure 21-5](#widows-counting). Cover up the
+    top part of the figure with your hand so that only the second page is visible.
+    Notice that there are two line boxes there, from the end of a paragraph that started
+    on the previous page. Given the default `widows` value of `2`, this is an acceptable
+    rendering. However, if the value were `3` or higher, the entire paragraph would
+    appear at the top of the second page as a single block. This would require that
+    a page break be inserted before the paragraph in question.
+  id: totrans-357
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑 [图 21-5](#widows-counting) 中的情况。用手遮住图的顶部部分，只显示第二页。注意那里有两个行框，来自前一页开始的段落的结尾。默认的`widows`值为`2`，这是一种可以接受的渲染。但是，如果值为`3`或更高，则整个段落将作为一个单独的块出现在第二页的顶部。这将要求在相关段落之前插入页面断页。
+- en: '![css5 2105](assets/css5_2105.png)'
+  id: totrans-358
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 2105](assets/css5_2105.png)'
+- en: Figure 21-5\. Counting the widows and orphans
+  id: totrans-359
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 21-5\. 计算孤行和孤字
+- en: Refer back to [Figure 21-5](#widows-counting), and this time cover up the second
+    page with your hand. Notice the four line boxes at the bottom of the page, at
+    the beginning of the last paragraph. This is fine as long as the value of `orphans`
+    is `4` or less. If it were `5` or higher, the paragraph would again be preceded
+    by a page break and be laid out as a single block at the top of the second page.
+  id: totrans-360
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参考 [图 21-5](#widows-counting)，这次用手遮住第二页。注意页面底部的四行框，在最后一段的开头。只要`orphans`的值为`4`或更少都可以接受。如果是`5`或更高，则段落会再次在页面之间断开，并作为第二页顶部的单个块来布局。
+- en: 'One potential pitfall is that both `orphans` and `widows` must be satisfied.
+    If you declare the following, most paragraphs would be without an interior page
+    break:'
+  id: totrans-361
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个潜在的问题是必须同时满足`orphans`和`widows`。如果声明如下，则大多数段落将没有内部页面断页：
+- en: '[PRE43]'
+  id: totrans-362
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: 'It would take a pretty lengthy paragraph to allow an interior page break, given
+    those values. If the intent is to prevent interior breaking, that intent would
+    be better expressed as the follows:'
+  id: totrans-363
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给定这些值，需要一个相当长的段落才能允许内部页面断页。如果意图是防止内部分页，那么最好表达为以下形式：
+- en: '[PRE44]'
+  id: totrans-364
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: Warning
+  id: totrans-365
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: Both `widows` and `orphans` have long been supported in most browsers, except
+    for the Firefox family, which still does not seem to support them as of early
+    2023.
+  id: totrans-366
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数浏览器长期以来一直支持`widows`和`orphans`，但是到2023年初为止，Firefox 系列似乎仍然不支持它们。
+- en: Page-Breaking Behavior
+  id: totrans-367
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 页面断页行为
+- en: Because CSS allows for some odd page-breaking styles, it defines a set of behaviors
+    regarding allowed page breaks and “best” page breaks. These behaviors serve to
+    guide user agents in how they should handle page breaking in various circumstances.
+  id: totrans-368
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为 CSS 允许一些奇怪的页面断点样式，它定义了一套关于允许页面断点和“最佳”页面断点的行为。这些行为指导用户代理如何在不同情况下处理页面断点。
+- en: 'Page breaks are permitted in only two generic places. The first of these is
+    between two block-level boxes. If a page break falls between two block boxes,
+    the `margin-bottom` value of the element before the page break is reset to `0`,
+    as is the `margin-top` of the element following the page break. However, two rules
+    affect whether a page break can fall between two element boxes:'
+  id: totrans-369
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 页面断点只允许出现在两个通用位置。其中之一是在两个块级框之间。如果页面断点出现在两个块框之间，页面断点前的元素的`margin-bottom`值将被重置为`0`，并且页面断点后的元素的`margin-top`也将被重置为`0`。然而，有两条规则影响页面断点是否可以出现在两个元素框之间：
+- en: If the value of `page-break-after` for the first element—or the value of `page-break-before`
+    for the second element—is `always`, `left`, or `right`, a page break will be placed
+    between the elements. This is true regardless of the value for the other element,
+    even if it’s `avoid`. (This is a *forced* page break.)
+  id: totrans-370
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果第一个元素的`page-break-after`值或第二个元素的`page-break-before`值是`always`、`left`或`right`，则会在元素之间放置页面断点。这是无论另一个元素的值如何（即使为`avoid`），都成立的情况。（这是*强制*页面断点。）
+- en: If the value of the first element’s `page-break-after` value is `auto`, and
+    the same is true for the second element’s `page-break-before` value, and they
+    do not share an ancestor element whose `page-break-inside` value is not `avoid`,
+    then a page break may be placed between them.
+  id: totrans-371
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果第一个元素的`page-break-after`值是`auto`，并且第二个元素的`page-break-before`值也是`auto`，并且它们没有共享一个祖先元素，该祖先元素的`page-break-inside`值不是`avoid`，那么页面断点可以放置在它们之间。
+- en: '[Figure 21-6](#pagebreaking-potential) illustrates all the possible page-break
+    placements between elements in a hypothetical document. Forced page breaks are
+    represented as a filled square, whereas potential (unforced) page breaks are shown
+    as an open square.'
+  id: totrans-372
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 21-6](#pagebreaking-potential)展示了在假设文档中各元素之间可能的页面断点放置。强制页面断点显示为实心方块，而潜在（非强制）页面断点则显示为开放方块。'
+- en: 'Second, page breaks are allowed between two line boxes inside a block-level
+    box. This, too, is governed by a pair of rules:'
+  id: totrans-373
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其次，页面断点允许在块级元素框内的两个行框之间。这也受到一对规则的控制：
+- en: A page break may appear between two line boxes only if the number of line boxes
+    between the start of the element and the line box before the page break would
+    be less than the value of `orphans` for the element. Similarly, a page break can
+    be placed only where the number of line boxes between the line box after the page
+    break and the end of the element is less than the value of `widows`.
+  id: totrans-374
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 只有当从元素开始到页面断点前的行框之间的行框数量少于元素的`orphans`值时，页面断点才可能出现在两个行框之间。类似地，只有当从页面断点后的行框到元素结束之间的行框数量少于元素的`widows`值时，页面断点才可以放置。
+- en: A page break can be placed between line boxes if the value of `page-break-inside`
+    for the element is not `avoid`.
+  id: totrans-375
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果元素的`page-break-inside`值不是`avoid`，则可以在行框之间放置页面断点。
+- en: '![css5 2106](assets/css5_2106.png)'
+  id: totrans-376
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 2106](assets/css5_2106.png)'
+- en: Figure 21-6\. Potential page-break placement between block boxes
+  id: totrans-377
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 21-6\. 块框之间的潜在页面断点放置
+- en: 'In both cases, the second of the two rules controlling page-break placement
+    is ignored if no page-break placement can satisfy all the rules. Thus, if an element
+    has been given `page-break-inside: avoid` but the element is longer than a full
+    page, a page break will be permitted inside the element, between two line boxes.
+    In other words, the second rule regarding page-break placement between line boxes
+    is ignored.'
+  id: totrans-378
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在两种情况下，如果没有页面断点可以满足所有规则，则忽略控制页面断点放置的第二条规则。因此，如果一个元素已经设置了`page-break-inside:
+    avoid`，但该元素长度超过一页，页面断点将允许在该元素内的两个行框之间发生。换句话说，忽略了关于行框之间页面断点放置的第二条规则。'
+- en: If ignoring the second rule in each pair of rules still does not yield good
+    page-break placement, other rules can also be ignored. In such a situation, the
+    user agent is likely to ignore all page-break property values and proceed as if
+    they were all `auto`, although this approach is not defined (or required) by the
+    CSS specification.
+  id: totrans-379
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在每一对规则中忽略第二条规则仍不能产生良好的页面断点放置，还可以忽略其他规则。在这种情况下，用户代理可能会忽略所有页面断点属性值，并按照它们全部为`auto`的方式进行处理，尽管这种方法未在
+    CSS 规范中定义（或要求）。
+- en: 'In addition to the previously explored rules, CSS defines a set of best page-breaking
+    behaviors:'
+  id: totrans-380
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了前面探讨过的规则外，CSS 还定义了一组最佳页面断开行为：
+- en: Break as few times as possible.
+  id: totrans-381
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 尽量少断开。
+- en: Make all pages that don’t end with a forced break appear to have about the same
+    height.
+  id: totrans-382
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使所有不以强制断开结尾的页面看起来大约具有相同的高度。
+- en: Avoid breaking inside a block that has a border.
+  id: totrans-383
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 避免在具有边框的块内部断开。
+- en: Avoid breaking inside a table.
+  id: totrans-384
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 避免在表格内部断开。
+- en: Avoid breaking inside a floated element.
+  id: totrans-385
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 避免在浮动元素内部断开。
+- en: These recommendations aren’t required of user agents, but they offer logical
+    guidance that should lead to ideal page-breaking behaviors.
+  id: totrans-386
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些建议并非用户代理的强制要求，但它们提供了应该导致理想页面断开行为的逻辑指导。
+- en: Repeated Elements
+  id: totrans-387
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 重复元素
+- en: 'A very common desire in paged media is the ability to have a *running head*.
+    This is an element that appears on every page, such as the document’s title or
+    the author’s name. This is possible in CSS by using a fixed-position element:'
+  id: totrans-388
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在分页媒体中非常常见的需求是能够有 *running head* 的能力。这是出现在每页上的元素，例如文档标题或作者姓名。在 CSS 中，可以通过使用固定位置元素来实现：
+- en: '[PRE45]'
+  id: totrans-389
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: 'This will place any `<div>` with an `id` of `runhead` at the top-right corner
+    of every page box when the document is outputted to a paged medium. The same rule
+    would place the element in the top-right corner of the viewport in a continuous
+    medium, such as a web browser. Any element positioned in this way will appear
+    on every page. It is not possible to copy an element to become a repeated element.
+    Thus, given the following, the `<h1>` element will appear as a running head on
+    every page, including the first one:'
+  id: totrans-390
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当文档输出到分页媒体时，将把任何带有 `id` 为 `runhead` 的 `<div>` 放置在每个页面框的右上角。相同的规则会将该元素放置在连续媒体（如
+    Web 浏览器）的视口右上角。以这种方式定位的任何元素都会出现在每一页上。不可能复制一个元素以成为重复元素。因此，根据以下情况，`<h1>` 元素将作为 running
+    head 出现在每一页上，包括第一页：
+- en: '[PRE46]'
+  id: totrans-391
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: The drawback is that the `<h1>` element, being positioned on the first page,
+    cannot be printed as anything except the running head.
+  id: totrans-392
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 缺点是 `<h1>` 元素因位于第一页而只能打印为 running head。
+- en: 'Eventually, we will be able to add content directly into the margins of a printed
+    page with the `@page`’s margin at-rules. The following would place “table of contents”
+    in the top middle of a printed page containing an element with `page: toc` set:'
+  id: totrans-393
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '最终，我们将能够通过 `@page` 的页边规则直接向打印页面的页边添加内容。以下示例将“目录”放置在包含设置了 `page: toc` 的元素的打印页面的顶部中间位置：'
+- en: '[PRE47]'
+  id: totrans-394
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: Elements Outside the Page
+  id: totrans-395
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 页面外的元素
+- en: 'All this talk of positioning elements in a paged medium leads to an interesting
+    question: what happens if an element is positioned outside the page box? You don’t
+    even need positioning to create such a situation. Think about a `<pre>` element
+    that contains a line with 411 characters. This is likely to be wider than any
+    standard piece of paper, and so the element will be wider than the page box. What
+    will happen then?'
+  id: totrans-396
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有关于在分页媒体中定位元素的讨论引发了一个有趣的问题：如果一个元素定位在页面框之外会发生什么？甚至无需定位即可创建这种情况。考虑一个包含 411 个字符的
+    `<pre>` 元素的行。这可能比任何标准纸张都宽，因此该元素将比页面框更宽。那么会发生什么呢？
+- en: As it turns out, CSS doesn’t say exactly what user agents should do, so it’s
+    up to each one to come up with a solution. For a very wide `<pre>` element, the
+    user agent might clip the element to the page box and throw away the rest of the
+    content. It could also generate extra pages to display the leftover part of the
+    element.
+  id: totrans-397
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事实证明，CSS 并没有确切规定用户代理应该采取什么行动，因此每个用户代理都需要自行解决。对于非常宽的 `<pre>` 元素，用户代理可能会裁剪元素到页面框并丢弃其余内容。它也可以生成额外的页面来显示元素剩余的部分。
+- en: CSS has a few general recommendations for handling content outside the page
+    box, and two that are really important. First, content should be allowed to protrude
+    slightly from a page box in order to allow bleeding. This implies that no extra
+    page would be generated for the portions of such content that exceed the page
+    box but do not extend all the way off the page.
+  id: totrans-398
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 对处理超出页面框之外的内容有一些一般性建议，其中两条非常重要。首先，内容应允许略微伸出页面框以便出血。这意味着对于超出页面框但未完全延伸至页面外的内容部分，不会生成额外页面。
+- en: 'Second, user agents are cautioned not to generate large numbers of empty pages
+    for the sole purpose of honoring positioning information. Consider the following:'
+  id: totrans-399
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二，建议用户代理不要仅为了遵守定位信息而生成大量空白页面。请考虑以下内容：
+- en: '[PRE48]'
+  id: totrans-400
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: Assuming that the page boxes are 10 inches high, the user agent would have to
+    precede an `<h1>` with 150 page breaks (and thus 150 blank pages) just to honor
+    that rule. Instead, a user agent might choose to skip the blank pages and output
+    only the last one, which actually contains the `<h1>` element.
+  id: totrans-401
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设页面框高度为10英寸，则用户代理必须在`<h1>`之前添加150个页面断点（因此有150个空白页），以遵守该规则。但是，用户代理可能会选择跳过空白页，仅输出最后一个包含`<h1>`元素的页面。
+- en: The other two recommendations in the specification state that user agents should
+    not position elements in strange places just to avoid rendering them, and that
+    content placed outside a page box can be rendered in any of a number of ways.
+    (Some of the commentary in CSS is useful and intriguing, but some seems to exist
+    solely to cheerily state the obvious.)
+  id: totrans-402
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 规范中的另外两个建议指出，用户代理不应将元素定位在奇怪的位置，仅仅是为了避免渲染它们，并且放置在页面框之外的内容可以以多种方式渲染。（CSS中的一些评论是有用和引人入胜的，但有些似乎仅仅是为了愉快地陈述显而易见的事实。）
+- en: Container Queries
+  id: totrans-403
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 容器查询
+- en: As media queries are to media contexts, so container queries are to containment
+    contexts. Rather than saying you want to change the layout of a piece of your
+    design because of changes in the display size, you can have those changes come
+    from changes in their parent element’s size.
+  id: totrans-404
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像媒体查询适用于媒体上下文一样，容器查询适用于容器上下文。与其说是因为显示尺寸变化而要改变设计的某一部分布局，不如说是可以通过更改其父元素的尺寸来实现这些变化。
+- en: 'For example, you might have a page header containing a logo, some navbar links,
+    and a search box. By default, the search box is narrow, so as not to take up too
+    much space. Once it gains focus, though, it gets wider. In this situation, you
+    might want to change the layout and sizing of the logo and links, thus giving
+    way to the search box without disappearing entirely or being overlaid. Here’s
+    how you could set that up:'
+  id: totrans-405
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，您可能有一个包含标志、一些导航栏链接和搜索框的页面头部。默认情况下，搜索框较窄，以免占用太多空间。然而，一旦获得焦点，它会变得更宽。在这种情况下，您可能希望更改标志和链接的布局和大小，从而让出搜索框，而不是完全消失或被覆盖。以下是设置方法：
+- en: '[PRE49]'
+  id: totrans-406
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: '[PRE50]'
+  id: totrans-407
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: Let’s explore the new properties that container queries introduce, and then
+    dig into the query block syntax.
+  id: totrans-408
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们探索容器查询引入的新属性，然后深入查询块语法。
+- en: Warning
+  id: totrans-409
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: Container queries gained widespread browser support in mid- to late 2022, so
+    be careful when using them if you have users with browsers older than that. That
+    said, container queries are supported in all evergreen browsers.
+  id: totrans-410
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 容器查询在2022年中期到晚期获得了广泛的浏览器支持，因此如果您的用户使用早于此的浏览器，请注意使用时的情况。尽管如此，容器查询在所有主流浏览器中都受支持。
+- en: Defining Container Types
+  id: totrans-411
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定义容器类型
+- en: There are a couple of ways to define the type of container, while also setting
+    the kinds of containment (see `contain` in [Chapter 20](ch20.html#filters-compositing))
+    that are enabled for the container. It’s all managed through the `container-type`
+    property.
+  id: totrans-412
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有几种方法可以定义容器的类型，同时设置容器启用的内容（请参见`contain`中的[第20章](ch20.html#filters-compositing)）。所有这些都通过`container-type`属性进行管理。
+- en: 'When using the default value, `normal`, a container can be queried on specific
+    property-value combinations. Suppose you want to apply certain styles if a container
+    has a specific side padding value. That would look something like this:'
+  id: totrans-413
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用默认值`normal`时，可以查询容器在特定属性值组合上的情况。假设您希望在容器具有特定边距值时应用某些样式。那么看起来会像这样：
+- en: '[PRE51]'
+  id: totrans-414
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: 'Inside a `style()` function, any property and value combination can be used,
+    including those involving custom properties, and will match as long as that precise
+    combination is in effect. You could, for example, change the color of heading
+    text based on the value of a text-sizing custom property:'
+  id: totrans-415
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`style()`函数中，可以使用任何属性和值组合，包括涉及自定义属性的组合，只要该精确组合有效即可。例如，您可以根据文本大小调整自定义属性的值来更改标题文本的颜色：
+- en: '[PRE52]'
+  id: totrans-416
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: 'You can also query specific sizing values, such as `(width: 30em)`, but that
+    queries only the value of the CSS property, not the rendered size of the container.
+    If you want to perform range-based sizing queries, you’ll have to use one of the
+    other values of `container-type`: `size` or `inline-size`.'
+  id: totrans-417
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '您还可以查询特定的尺寸值，例如`(width: 30em)`，但这仅查询CSS属性的值，而不是容器的渲染大小。如果要执行基于范围的大小查询，您将需要使用`container-type`的其他值之一：`size`或`inline-size`。'
+- en: 'If you declare `container-type: size`, you’re able to query on both the inline
+    and block axes. Thus you could, for example, set up a query that relates to both
+    sizes of the container like this:'
+  id: totrans-418
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果你声明 `container-type: size`，那么你可以在内联和块轴上进行查询。因此，你可以像这样设置一个涉及容器大小的查询：'
+- en: '[PRE53]'
+  id: totrans-419
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: 'If you care about only the inline size, using `inline-size` instead might make
+    more sense, as follows:'
+  id: totrans-420
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你只关心内联尺寸，那么使用 `inline-size` 可能更合理，如下所示：
+- en: '[PRE54]'
+  id: totrans-421
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: What’s the real difference, besides one of them allowing for block-axis queries?
+    Both values set layout and style containment (see the `contain` property in [Chapter 20](ch20.html#filters-compositing)),
+    but `size` sets size containment, whereas `inline-size` sets inline-size containment.
+    This makes some sense, given their respective names. If you’re always going to
+    do only inline querying, use `inline-size` so as to keep the block direction uncontained.
+  id: totrans-422
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了其中一个允许块轴查询之外，实际区别是什么？这两个值都设置了布局和样式的包含性（参见[第20章](ch20.html#filters-compositing)中的
+    `contain` 属性），但 `size` 设置了尺寸包含性，而 `inline-size` 设置了内联尺寸包含性。考虑到它们各自的名称，这显得很合理。如果你总是只进行内联查询，使用
+    `inline-size` 可以保持块方向不受限制。
+- en: Throughout this section, we’ve been setting a container name without having
+    really talked about it, so let’s talk about it now.
+  id: totrans-423
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本节中，我们一直在设置一个容器名称，但实际上并没有真正讨论它，现在让我们来谈谈它。
+- en: Defining Container Names
+  id: totrans-424
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定义容器名称
+- en: To refer to a container, that container needs a name, and that’s what `container-name`
+    provides. It even lets you assign multiple names to the same element.
+  id: totrans-425
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要引用一个容器，该容器需要一个名称，这就是 `container-name` 提供的功能。它甚至允许你给同一个元素分配多个名称。
+- en: 'Pretty much anytime you set a container, you should set a container name—or
+    names. Both of the following rules are legal:'
+  id: totrans-426
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 几乎任何时候，你设置一个容器，都应该设置一个容器名称或者多个名称。以下两条规则都是合法的：
+- en: '[PRE55]'
+  id: totrans-427
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE55]'
+- en: 'OK, you probably shouldn’t be mixing camelCase, dash-separated, and underscore_separated
+    naming conventions, but otherwise, everything’s fine. The `<header>` elements
+    will be given the container name `pageHeader`, while `<footer>` elements will
+    be given all three container names listed. This allows you to apply different
+    container queries for different things, like so:'
+  id: totrans-428
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 好吧，你可能不应该混合使用驼峰命名、连字符分隔和下划线分隔的命名约定，但其他方面都没问题。`<header>` 元素将被赋予容器名称 `pageHeader`，而
+    `<footer>` 元素将被赋予列出的所有三个容器名称。这使你可以为不同的事物应用不同的容器查询，如下所示：
+- en: '[PRE56]'
+  id: totrans-429
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE56]'
+- en: 'We can turn this around and assign the same container name to a bunch of elements:'
+  id: totrans-430
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以反过来，给一堆元素分配相同的容器名称：
+- en: '[PRE57]'
+  id: totrans-431
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE57]'
+- en: Using Container Shorthand
+  id: totrans-432
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用容器简写
+- en: Now let’s bring these two properties together into a single shorthand, `container`.
+  id: totrans-433
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们将这两个属性合并到一个简写中，`container`。
+- en: 'If you want to define the container name and type in one handy declaration,
+    this is the property for you. As an example, the following two rules are precisely
+    equivalent:'
+  id: totrans-434
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想要在一个便捷的声明中定义容器名称和类型，这个属性就适合你。例如，以下两条规则是完全等价的：
+- en: '[PRE58]'
+  id: totrans-435
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE58]'
+- en: 'In the `container` value, the name must always be present and must always come
+    first. If a container type is defined, it must come second and follow a forward
+    slash (`/`). If no container type is given, the initial value of `normal` is used.
+    Thus, the following rules are precisely equivalent:'
+  id: totrans-436
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `container` 值中，名称必须始终存在，并且必须首先出现。如果定义了容器类型，则必须在斜杠 (`/`) 后面出现。如果没有给出容器类型，则使用
+    `normal` 的初始值。因此，以下规则是完全等价的：
+- en: '[PRE59]'
+  id: totrans-437
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE59]'
+- en: 'As with `container-name`, you can include a space-separated list of names,
+    like so:'
+  id: totrans-438
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 `container-name` 一样，你可以包含一个空格分隔的名称列表，如下所示：
+- en: '[PRE60]'
+  id: totrans-439
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE60]'
+- en: So those are the ways to set container names and types. You’ve seen that the
+    `@container` block is used to invoke these, and now it’s time to discuss exactly
+    how that works.
+  id: totrans-440
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所以这些都是设置容器名称和类型的方式。你已经看到了 `@container` 块用于调用这些内容，现在是时候讨论它的工作原理了。
+- en: Using Container At-Rules
+  id: totrans-441
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用容器规则
+- en: 'The syntax of container query blocks will seem familiar if you read the earlier
+    sections on media queries, because the syntax is nearly the same. The only real
+    difference is that container queries use an optional container name and the `style()`
+    function. Here’s the basic syntax format:'
+  id: totrans-442
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 容器查询块的语法如果你读过早期关于媒体查询的部分，那么容器查询块的语法会显得很熟悉，因为语法几乎相同。唯一的真正区别是容器查询使用可选的容器名称和 `style()`
+    函数。以下是基本的语法格式：
+- en: '[PRE61]'
+  id: totrans-443
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE61]'
+- en: You don’t have to include a container name, but if you do, it must go first.
+    (We’ll talk about what happens if you don’t in just a bit.) There must, however,
+    be a condition of some sort—some sort of query. It wouldn’t be a container query
+    without one, after all.
+  id: totrans-444
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您不必包含容器名称，但如果包含，它必须放在第一位。（我们将很快讨论如果不包含会发生什么。）但是，必须有某种条件——某种查询条件。毕竟，如果没有条件，它就不会是一个容器查询。
+- en: 'As with media queries, you can use the `and`, `not`, and `or` modifiers to
+    set up your queries. Suppose you want to match a container that does *not* have
+    a dashed border. That goes something like this:'
+  id: totrans-445
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与媒体查询类似，您可以使用`and`、`not`和`or`修饰符来设置查询。假设您想匹配一个没有虚线边框的容器。具体操作如下：
+- en: '[PRE62]'
+  id: totrans-446
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE62]'
+- en: 'Or perhaps you want to apply some rules when a container named `fullWidth`
+    is in a certain size range but also doesn’t have a dashed border:'
+  id: totrans-447
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或许你希望在名为`fullWidth`的容器处于某个大小范围内且没有虚线边框时应用某些规则：
+- en: '[PRE63]'
+  id: totrans-448
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE63]'
+- en: 'Note that you can list only one container name; there is no way to combine
+    them in a single query block, whether with commas or logical combinators like
+    `and`. As with all query blocks, though, you can nest container queries, such
+    as these:'
+  id: totrans-449
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，您可以列出仅一个容器名称；无法将它们在单个查询块中组合，无论是逗号还是逻辑组合器如`and`。尽管如此，您可以嵌套容器查询，例如以下示例：
+- en: '[PRE64]'
+  id: totrans-450
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE64]'
+- en: This will be matched, and the styles applied, to elements when they have a `fullWidth`
+    container with an inline size above 30 em and a not-dashed border style, and also
+    a `headerNav` container with an inline size above 30 em. And the same element
+    could be both containers!
+  id: totrans-451
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当元素具有具有`fullWidth`容器（其内联尺寸大于30 em且没有虚线边框样式）和具有内联尺寸大于30 em的`headerNav`容器时，将匹配并应用样式。同一个元素可能同时是这两种容器！
+- en: 'This brings us to the question of how, exactly, an element knows which containers
+    are being queried. Let’s extend an earlier example a bit and fill in the actual
+    CSS rules:'
+  id: totrans-452
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这引出了一个问题，即一个元素如何确切地知道正在查询哪些容器。让我们稍微扩展之前的例子并填写实际的CSS规则：
+- en: '[PRE65]'
+  id: totrans-453
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE65]'
+- en: 'How does a given `<nav>` element on the page know when it’s matched by a container
+    query? By looking up its ancestor tree to see if there are any containers above
+    it in the tree. If there are, and they match the name that appears in the container
+    block surrounding it, and the specified query matches the container type, then
+    the query is made. If it returns true, the styles in the container block are applied.
+    Let’s see that in action. Here’s a document skeleton:'
+  id: totrans-454
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 页面上的给定`<nav>`元素如何知道它何时被容器查询匹配？通过查找其祖先树，看看是否有任何容器位于其上方。如果有，并且它们与容器块中出现的名称匹配，并且指定的查询与容器类型匹配，则进行查询。如果返回true，则应用容器块中的样式。让我们看看它是如何运作的。这是一个文档骨架：
+- en: '[PRE66]'
+  id: totrans-455
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE66]'
+- en: 'To that markup, we’ll apply the following styles:'
+  id: totrans-456
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于这些标记，我们将应用以下样式：
+- en: '[PRE67]'
+  id: totrans-457
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE67]'
+- en: In the markup, we have three `<nav>` elements, and in the CSS we have three
+    container blocks. Let’s consider the blocks one by one.
+  id: totrans-458
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在标记中，我们有三个`<nav>`元素，在CSS中我们有三个容器块。让我们逐一考虑这些块。
+- en: 'The first container query block says to all `<nav>` elements, “If you have
+    a container with a name of `fullWidth`, and that container’s inline size is less
+    than 30 em, then you get these styles.” The header and footer `<nav>` elements
+    do have containers named `fullWidth`: the `<header>` and `<footer>` elements both
+    have that name. Their container types are also `size`, so checking the inline
+    size is valid. So they check the inline sizes of their respective containers to
+    see if the styles will be applied.'
+  id: totrans-459
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个容器查询块对所有`<nav>`元素说：“如果你有一个名为`fullWidth`的容器，并且该容器的内联尺寸小于30 em，则应用这些样式。”页眉和页脚的`<nav>`元素确实具有名为`fullWidth`的容器：`<header>`和`<footer>`元素都有这个名称。它们的容器类型也是`size`，因此检查内联尺寸是有效的。因此，它们检查其各自容器的内联尺寸，以确定是否应用样式。
+- en: Note that this happens per container. The header might be 40 em wide and the
+    footer only 25 em wide because of other layout styles (a grid template, for example).
+    In that case, the change of flex direction will be applied to the footer’s `<nav>`,
+    but not the header’s `<nav>`. As for the `<nav>` inside the `<main>` element,
+    it doesn’t have any containers labeled `fullWidth`, so it gets skipped over regardless
+    of the condition query.
+  id: totrans-460
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，这是每个容器分别进行的。页眉可能是40 em宽，页脚因为其他布局样式（例如网格模板）而只有25 em宽。在这种情况下，flex方向的更改将应用于页脚的`<nav>`，但不会应用于页眉的`<nav>`。至于`<main>`元素内的`<nav>`，因为没有任何被标记为`fullWidth`的容器，所以不管条件查询如何，都会被跳过。
+- en: The second container query block says to all `<nav>` elements, “If you have
+    a container named `headerNav`, and that container’s block size is greater than
+    25 vh, you get these styles.” The only container on the page with a container
+    name of `headerNav` is the `<header class="page">`, so its `<nav>` checks the
+    block size of the container, and applies the styles if the container’s block size
+    is above 25 vh. The other two `<nav>` elements skip this entirely, because none
+    of their containers are named `headerNav`.
+  id: totrans-461
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二个容器查询块对所有`<nav>`元素说：“如果您有一个名为`headerNav`的容器，并且该容器的块大小大于25 vh，则应用这些样式。”页面上唯一一个名为`headerNav`的容器是`<header
+    class="page">`，因此其`<nav>`检查容器的块大小，如果容器的块大小超过25 vh，则应用样式。其他两个`<nav>`元素完全跳过此查询，因为它们的容器没有命名为`headerNav`。
+- en: 'The third container query block is more vague. It says to all `<nav>` elements,
+    “If you have a container and its background is blue, then you get these styles.”
+    Note that there’s no container name, so the header `<nav>` checks its nearest-ancestor
+    container, which is `header.page`, to see if it’s set to `background-color: blue`.
+    Let’s assume it isn’t, so these styles aren’t applied.'
+  id: totrans-462
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '第三个容器查询块更加模糊。它对所有`<nav>`元素说：“如果您有一个容器且其背景为蓝色，则应用这些样式。”注意没有容器名称，所以头部`<nav>`检查其最近的祖先容器`header.page`，看它是否设置为`background-color:
+    blue`。假设它没有，因此这些样式不会应用。'
+- en: The same thing happens for the `<nav>` inside the `<main>` and the footer, as
+    well any `<a>` elements inside them. We already established that its background
+    color isn’t blue in the previous paragraph, so if `<main>` or the footer have
+    their background color set to `blue`, then their respective `<nav>` elements and
+    their links will get those styles; otherwise, they won’t.
+  id: totrans-463
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样的事情发生在`<main>`和页脚内部的`<nav>`及其中的任何`<a>`元素。我们已经在前面的段落中确定，其背景颜色不是蓝色，因此如果`<main>`或页脚的背景颜色设置为`blue`，那么它们各自的`<nav>`元素和链接将获得这些样式；否则，它们将不会获得。
+- en: 'Remember that a container query matters only if an element matches the selectors
+    inside the query block. Imagine someone writing something like this:'
+  id: totrans-464
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住，只有当元素匹配查询块内的选择器时，容器查询才会起作用。想象有人写了这样的内容：
+- en: '[PRE68]'
+  id: totrans-465
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE68]'
+- en: Only an element that matches that long and very specific selector can check
+    its containers to see if any of them are in `portrait` orientation, and even an
+    element that matches the selector won’t get the styles if it doesn’t have any
+    containers. Otherwise, the query is kind of moot. This speaks to the necessity
+    of making sure your selectors will match before you worry about querying any containers,
+    and then making sure your matched elements have containers to query.
+  id: totrans-466
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只有匹配那些长而非常具体的选择器的元素才能检查其容器，查看它们是否处于`portrait`方向，即使匹配选择器的元素如果没有任何容器也不会获得样式。否则，查询就有点没有意义。这说明在担心查询任何容器之前，确保您的选择器将匹配，并确保您匹配的元素具有可查询的容器的必要性。
+- en: Defining Container Query Features
+  id: totrans-467
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定义容器查询特性
+- en: 'You can check seven features in a container query, most of which you’ve seen
+    previously, but a couple of which we haven’t touched on. They’re summarized here:'
+  id: totrans-468
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在容器查询中检查七个特性，其中大多数您之前已经看过，但还有一些我们尚未涉及的。它们在这里总结如下：
+- en: 'Feature: `block-size`'
+  id: totrans-469
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特性：`block-size`
+- en: 'Value: <*`length`*>'
+  id: totrans-470
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`length`*>
+- en: Queries the block size of the query container’s content box.
+  id: totrans-471
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查询查询容器内容框的块大小。
+- en: 'Feature: `inline-size`'
+  id: totrans-472
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特性：`inline-size`
+- en: 'Value: <*`length`*>'
+  id: totrans-473
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`length`*>
+- en: Queries the inline size of the query container’s content box.
+  id: totrans-474
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查询查询容器内容框的内联尺寸。
+- en: 'Feature: `width`'
+  id: totrans-475
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特性：`width`
+- en: 'Value: <*`length`*>'
+  id: totrans-476
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`length`*>
+- en: Queries the physical width of the query container’s content box.
+  id: totrans-477
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查询查询容器内容框的物理宽度。
+- en: 'Feature: `height`'
+  id: totrans-478
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特性：`height`
+- en: 'Value: <*`length`*>'
+  id: totrans-479
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`length`*>
+- en: Queries the physical height of the query container’s content box.
+  id: totrans-480
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查询查询容器内容框的物理高度。
+- en: 'Feature: `aspect-ratio`'
+  id: totrans-481
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特性：`aspect-ratio`
+- en: 'Value: <*`ratio`*>'
+  id: totrans-482
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：<*`ratio`*>
+- en: Queries the ratio of the physical width as compared to the physical height of
+    the query container’s content box.
+  id: totrans-483
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查询查询容器内容框的物理宽度与高度之比。
+- en: 'Feature: `orientation`'
+  id: totrans-484
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特性：`orientation`
+- en: 'Value: `portrait` | `landscape`'
+  id: totrans-485
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值：`portrait` | `landscape`
+- en: Queries the physical width and height of the query container’s content box.
+    The container is considered to be `landscape` if its width is greater than its
+    height; otherwise, the container is considered to be `portrait`.
+  id: totrans-486
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查询查询容器内容框的物理宽度和高度。如果容器的宽度大于其高度，则认为容器是`landscape`；否则，认为容器是`portrait`。
+- en: These do not have `min-` and `max-` prefixed variants. Instead, the math-style
+    range notation we covered previously is used.
+  id: totrans-487
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些没有`min-`和`max-`前缀的变体。而是使用我们之前介绍过的数学样式范围表示法。
+- en: Setting Container Length Units
+  id: totrans-488
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置容器长度单位
+- en: 'In addition to querying containers, you can also style elements with length
+    values based on their containers’ sizes, very much like the viewport-relative
+    length units discussed in [Chapter 5](ch05.html#values_and_units). These are as
+    follows:'
+  id: totrans-489
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了查询容器之外，您还可以根据其容器的大小为元素设置基于长度的样式值，这与[第5章](ch05.html#values_and_units)中讨论的视口相关长度单位非常相似。具体如下：
+- en: '`cqb`'
+  id: totrans-490
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`cqb`'
+- en: 1% of the container’s block size
+  id: totrans-491
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 容器的块大小的1%。
+- en: '`cqi`'
+  id: totrans-492
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`cqi`'
+- en: 1% of the container’s inline size
+  id: totrans-493
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 容器的内联尺寸的1%。
+- en: '`cqh`'
+  id: totrans-494
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`cqh`'
+- en: 1% of the container’s physical height
+  id: totrans-495
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 容器的物理高度的1%。
+- en: '`cqw`'
+  id: totrans-496
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`cqw`'
+- en: 1% of the container’s physical width
+  id: totrans-497
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 容器的物理宽度的1%。
+- en: '`cqmin`'
+  id: totrans-498
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`cqmin`'
+- en: Equivalent to `cqb` or `cqi`, whichever is *smaller*
+  id: totrans-499
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 等同于`cqb`或`cqi`，以较小者为准。
+- en: '`cqmax`'
+  id: totrans-500
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`cqmax`'
+- en: Equivalent to `cqb` or `cqi`, whichever is *larger*
+  id: totrans-501
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 等同于`cqb`或`cqi`，以较大者为准。
+- en: 'Thus you could set up an element such that at smaller container sizes, its
+    children are the full width of the container, but at larger sizes they’re some
+    fraction of the container’s width. This could be done with grid tracks, for example:'
+  id: totrans-502
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，您可以设置一个元素，使得在较小的容器尺寸下，其子元素是容器的全宽度，但在较大尺寸下它们是容器宽度的某个分数。例如，可以使用网格轨道实现：
+- en: '[PRE69]'
+  id: totrans-503
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE69]'
+- en: Here, if the container is above 45 em in width, a `<ul>` that is a child of
+    `div.card` will be turned into a grid container, with columns that are sized based
+    on the container’s width. This is illustrated in [Figure 21-7](#container-query-units).
+  id: totrans-504
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，如果容器的宽度超过45 em，`div.card`的子元素 `<ul>` 将被转换为网格容器，并且列的大小基于容器的宽度。见[图 21-7](#container-query-units)。
+- en: '![css5 2107](assets/css5_2107.png)'
+  id: totrans-505
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 2107](assets/css5_2107.png)'
+- en: Figure 21-7\. Using container query units
+  id: totrans-506
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 21-7\. 使用容器查询单位
+- en: The advantage here is mostly in applications like web components, for which
+    it may be desirable to size elements based on the size of the container, even
+    though the container may appear in a wide variety of sizing conditions.
+  id: totrans-507
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里的优势主要体现在像 Web 组件这样的应用中，希望根据容器的大小调整元素大小，即使容器可能以多种尺寸条件出现。
+- en: Feature Queries (@supports)
+  id: totrans-508
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 特性查询（@supports）
+- en: CSS has the ability to apply rules when certain CSS property-value combinations
+    are supported by the user agent. These are known as *feature queries*.
+  id: totrans-509
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 具有在用户代理支持特定 CSS 属性值组合时应用规则的能力。这些被称为*特性查询*。
+- en: 'Say you want to apply color to an element only if `color` is a supported property.
+    (Which it certainly should be!) That would look like the following:'
+  id: totrans-510
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您希望仅当`color`是受支持的属性时才向元素应用颜色。 （这当然应该是！）那将看起来如下所示：
+- en: '[PRE70]'
+  id: totrans-511
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE70]'
+- en: 'This says, in effect, “If you recognize and can do something with the property-value
+    combination `color: black`, apply these styles. Otherwise, skip these styles.”
+    In user agents that don’t understand `@supports`, the entire block is skipped
+    over.'
+  id: totrans-512
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这实际上是在说，“如果您识别并能够处理属性值组合`color: black`，则应用这些样式。否则，跳过这些样式。”在不理解`@supports`的用户代理中，整个块都会被跳过。'
+- en: 'Feature queries are a perfect way to progressively enhance your styles. For
+    example, suppose you want to add some grid layout to your existing float-and-inline-block
+    layout. You can keep the old layout scheme and then later in the stylesheet include
+    a block like this:'
+  id: totrans-513
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特性查询是逐步增强您样式的完美方式。例如，假设您想要在现有的浮动和内联块布局中添加一些网格布局。您可以保留旧的布局方案，然后在样式表中稍后包含如下块：
+- en: '[PRE71]'
+  id: totrans-514
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE71]'
+- en: This block of styles will be applied in browsers that understand grid display,
+    overriding the old styles that governed page layout, and then applying the styles
+    needed to make things work in a grid-based future. Browsers too old to understand
+    grid layout are too old to understand `@supports`, so they’ll skip the whole block
+    entirely, as if it had never been there.
+  id: totrans-515
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在理解网格显示的浏览器中将应用这些样式，覆盖了管理页面布局的旧样式，并应用使事物在基于网格的未来中工作所需的样式。对于过于老旧而不理解网格布局的浏览器来说，它们将完全跳过整个块，就像它从未存在过一样。
+- en: 'Feature queries can be embedded inside each other, and indeed can be embedded
+    inside media blocks, as well as vice versa. You could write screen and print styles
+    based on flexible-box layout, and wrap those media blocks in an `@supports (display:
+    flex)` block:'
+  id: totrans-516
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '特性查询可以嵌套在彼此内部，事实上也可以嵌套在媒体块内部，反之亦然。您可以基于弹性盒布局编写屏幕和打印样式，并将这些媒体块包装在`@supports
+    (display: flex)`块中：'
+- en: '[PRE72]'
+  id: totrans-517
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE72]'
+- en: 'Conversely, you could add `@supports()` blocks inside various responsive-design
+    media query blocks:'
+  id: totrans-518
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，您可以在各种响应式设计媒体查询块内部添加 `@supports()` 块：
+- en: '[PRE73]'
+  id: totrans-519
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE73]'
+- en: The way you organize these blocks is really up to you. The same holds true for
+    container queries, which can be nested inside feature queries, or vice versa.
+    In fact, you can nest the various kinds of queries inside each other, or themselves,
+    in any combination that makes sense for your situation (and to you).
+  id: totrans-520
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如何组织这些块完全取决于您。对于容器查询也是如此，它们可以嵌套在功能查询内部，反之亦然。实际上，您可以将各种类型的查询嵌套在彼此内部，或者自己内部，以任何对您的情况（以及对您自己）有意义的组合方式。
+- en: 'As with media queries, feature queries also permit logical operators. Suppose
+    we want to apply styles only if a user agent supports both grid layout *and* CSS
+    shapes. Here’s how that might go:'
+  id: totrans-521
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与媒体查询一样，功能查询也允许逻辑运算符。假设我们只想在用户代理支持网格布局 *和* CSS 形状时应用样式。可能会是这样的：
+- en: '[PRE74]'
+  id: totrans-522
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE74]'
+- en: 'This is essentially equivalent to writing the following:'
+  id: totrans-523
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这本质上等同于编写以下内容：
+- en: '[PRE75]'
+  id: totrans-524
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE75]'
+- en: 'However, there’s more than “and” operations available. CSS Shapes (covered
+    in detail in [Chapter 20](ch20.html#filters-compositing)) are a good example of
+    why “or” is useful, because for a long time WebKit supported CSS shapes only via
+    vendor-prefixed properties. So if you want to use shapes, you can use a feature
+    query like this:'
+  id: totrans-525
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不过，并不仅限于“和”操作可用。CSS 形状（在 [第 20 章](ch20.html#filters-compositing) 中详细介绍）就是“或”非常有用的一个例子，因为长期以来
+    WebKit 仅通过供应商前缀属性支持 CSS 形状。因此，如果要使用形状，可以使用如下特性查询：
+- en: '[PRE76]'
+  id: totrans-526
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE76]'
+- en: You’d still have to make sure to use both prefixed and unprefixed versions of
+    the shape properties, but this would let you add support for those properties
+    backward in the WebKit release line while supporting other browsers that also
+    support shapes via nonprefixed properties.
+  id: totrans-527
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您仍然必须确保同时使用形状属性的前缀和无前缀版本，但这样可以在支持形状的其他浏览器中向后添加对这些属性的支持，同时支持 WebKit 发布线上的前缀版本。
+- en: 'All this is handy because at times you might want to apply different properties
+    than those you’re testing. So, to go back to grid layout for a second, you might
+    want to change the margins and so forth on your layout elements when a grid is
+    in use. Here’s a simplified version of that approach:'
+  id: totrans-528
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有这些都很方便，因为有时您可能希望应用不同于您正在测试的属性。因此，回到网格布局，您可能希望在使用网格时更改布局元素的边距等。这是该方法的简化版本：
+- en: '[PRE77]'
+  id: totrans-529
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE77]'
+- en: 'It’s possible to use negation as well. For example, you could apply the following
+    styles when grid layout is *not* supported:'
+  id: totrans-530
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也可以使用否定。例如，当不支持网格布局时，您可以应用以下样式：
+- en: '[PRE78]'
+  id: totrans-531
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE78]'
+- en: 'You can combine your logical operators into a single query, but parentheses
+    are required to keep the logic straight. Suppose we want a set of styles to be
+    applied when color is supported, and when one of either grid or flexible box layout
+    is supported. That’s written like this:'
+  id: totrans-532
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以将逻辑运算符组合成单个查询，但需要使用括号保持逻辑清晰。假设我们想要在支持颜色的同时，支持网格或弹性盒布局之一时应用一组样式。写成这样：
+- en: '[PRE79]'
+  id: totrans-533
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE79]'
+- en: 'Notice that there’s another set of parentheses around the “or” part of the
+    logic, enclosing the grid and flex tests. Those extra parentheses are required.
+    Without them, the entire expression will fail, and the styles inside the block
+    will be skipped. In other words, *don’t* do this:'
+  id: totrans-534
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在逻辑“或”部分周围还有一组额外的括号，围绕网格和弹性盒测试。这些额外的括号是必需的。如果没有它们，整个表达式将失败，并且块内的样式将被跳过。换句话说，*不要*
+    这样做：
+- en: '[PRE80]'
+  id: totrans-535
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE80]'
+- en: 'Finally, you might wonder why both a property and value are required in feature
+    query tests. After all, if you’re using shapes, all you need to test for is `shape-outside`,
+    right? It’s because a browser can easily support a property without supporting
+    all its values. Grid layout is a perfect example. Suppose you try to test for
+    grid support like this:'
+  id: totrans-536
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，您可能会想知道为什么功能查询测试中需要属性和值。毕竟，如果您正在使用形状，您只需要测试 `shape-outside`，对吧？这是因为浏览器可以轻松支持一个属性而不支持其所有值。网格布局就是一个完美的例子。假设您尝试像这样测试网格支持：
+- en: '[PRE81]'
+  id: totrans-537
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE81]'
+- en: Well, even Internet Explorer 4 supported `display`. Any browser that understands
+    `@supports` will certainly understand `display` and many of its values—but maybe
+    not `grid`. That’s why property and value are always tested in feature queries.
+  id: totrans-538
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使 Internet Explorer 4 也支持 `display`。任何理解 `@supports` 的浏览器肯定也理解 `display` 及其许多值，但可能不包括
+    `grid`。这就是为什么属性和值始终在功能查询中进行测试的原因。
+- en: Warning
+  id: totrans-539
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: Remember that these are *feature* queries, not *correctness* queries. A browser
+    can understand the feature you’re testing for, but implement it with bugs, or
+    parse it correctly without actually supporting the intended behavior. In other
+    words, you’re not getting an assurance from the browser that it supports something
+    correctly. All a positive feature-query result means is that the browser understands
+    what you’ve said.
+  id: totrans-540
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住这些是*功能*查询，而不是*正确性*查询。浏览器可以理解您测试的功能，但可能会带有错误实现或者在不实际支持预期行为的情况下正确解析它。换句话说，浏览器不能保证支持正确性。正面的功能查询结果只是表示浏览器理解您说的内容。
+- en: Other At-Rules
+  id: totrans-541
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 其他规则
+- en: 'A variety of other at-rules were covered in other parts of the book:'
+  id: totrans-542
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其他各种规则在本书的其他部分都有涵盖：
+- en: '`@counter-style` (see [Chapter 16](ch16.html#lists-and-generated-content))'
+  id: totrans-543
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`@counter-style`（参见[第 16 章](ch16.html#lists-and-generated-content)）'
+- en: '`@font-face` (see [Chapter 14](ch14.html#fonts))'
+  id: totrans-544
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`@font-face`（参见[第 14 章](ch14.html#fonts)）'
+- en: '`@font-feature-values` (see [Chapter 14](ch14.html#fonts))'
+  id: totrans-545
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`@font-feature-values`（参见[第 14 章](ch14.html#fonts)）'
+- en: '`@import` (see [Chapter 1](ch01.html#css_fundamentals))'
+  id: totrans-546
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`@import`（参见[第 1 章](ch01.html#css_fundamentals)）'
+- en: '`@layer` (see [Chapter 4](ch04.html#specificity_comma_inheritance))'
+  id: totrans-547
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`@layer`（参见[第 4 章](ch04.html#specificity_comma_inheritance)）'
+- en: Two more were not covered elsewhere, so we’ll cover them here.
+  id: totrans-548
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另外两个在其他地方未涵盖，所以我们会在这里进行讨论。
+- en: Defining a Character Set for a Stylesheet
+  id: totrans-549
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为样式表定义字符集
+- en: 'The `@charset` at-rule is a way to set a specific character set for a stylesheet.
+    For example, you may have received a stylesheet in the UTF-16 character encoding.
+    That would be marked as follows:'
+  id: totrans-550
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`@charset` 规则是为样式表设置特定字符集的一种方式。例如，您可能会收到一个使用 UTF-16 字符编码的样式表。其标记如下：'
+- en: '[PRE82]'
+  id: totrans-551
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE82]'
+- en: In a departure from the rest of CSS, the syntax here is very exacting. There
+    must be exactly one space (which must be the space defined by Unicode code point
+    U+0020) between the `@charset` and the quoted value, the value must be quoted,
+    and it can be quoted using only double quotes. In addition, you cannot have space
+    of any kind before the `@charset`; it must be the first thing on the line.
+  id: totrans-552
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 CSS 的其余部分不同，这里的语法非常严格。`@charset` 和引号的值之间必须有一个正好的空格（这个空格必须是 Unicode 代码点 U+0020
+    定义的空格），值必须用双引号引起，并且只能使用双引号引起。此外，在 `@charset` 前不能有任何空格；它必须是行的第一件事。
+- en: Furthermore, if you need to include `@charset`, it must be the very first thing
+    in the stylesheet, before any other at-rule or regular rule. If you list more
+    than one `@charset`, the first will be used, and the rest ignored.
+  id: totrans-553
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，如果需要包含 `@charset`，它必须是样式表中的第一件事，早于任何其他规则或常规规则。如果列出了多个 `@charset`，将使用第一个，其余的将被忽略。
+- en: And finally, the only acceptable values are character encodings defined in the
+    [Internet Assigned Numbers Authority (IANA) Registry](https://www.iana.org/assignments/character-sets/character-sets.xhtml).
+  id: totrans-554
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，唯一可接受的值是[互联网号码分配机构（IANA）注册表](https://www.iana.org/assignments/character-sets/character-sets.xhtml)中定义的字符编码。
+- en: Use of `@charset` is vanishingly rare, so unless explicitly declaring the encoding
+    of a specific stylesheet is absolutely required to make things work, don’t worry
+    about it.
+  id: totrans-555
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `@charset` 是非常罕见的，所以除非明确声明特定样式表的编码是必需的才能使其工作，否则不用担心它。
+- en: Defining a Namespace for Selectors
+  id: totrans-556
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为选择器定义命名空间
+- en: 'The `@namespace` at-rule allows you to use XML namespaces in your stylesheets.
+    The value of `@namespace` is the URL of a document defining the namespace, like
+    this:'
+  id: totrans-557
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`@namespace` 规则允许您在样式表中使用 XML 命名空间。`@namespace` 的值是定义命名空间的文档的 URL，例如：'
+- en: '[PRE83]'
+  id: totrans-558
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE83]'
+- en: 'Given the previous CSS, `<a>` elements in XHTML would be navy on yellow, and
+    `<a>` elements in SVG would be red on yellow. This is why selectors without namespaces
+    work across all markup languages: no namespace means no restriction.'
+  id: totrans-559
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据之前的 CSS，在 XHTML 中，`<a>` 元素将是蓝色底黄色，而在 SVG 中则是红色底黄色。这就是为什么没有命名空间的选择器可以在所有标记语言中通用的原因：没有命名空间意味着没有限制。
+- en: Any `@namespace` at-rules must come after any `@charset` or `@import` at-rules,
+    but before any other stylesheet content, whether other at-rules or normal rules.
+    The `@namespace` at-rule is rarely used outside of test pages, but if you need
+    to use it, the capability is there.
+  id: totrans-560
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何 `@namespace` 规则必须在任何 `@charset` 或 `@import` 规则之后，但在任何其他样式表内容之前，无论是其他规则还是普通规则。`@namespace`
+    规则很少在测试页面之外使用，但如果需要使用它，功能是存在的。
+- en: Summary
+  id: totrans-561
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 摘要
+- en: Thanks to the flexibility of at-rules, it is possible to provide a wide range
+    of design experiences from within a single set of styles. Whether reorganizing
+    a page to account for varying display sizes, reworking the color scheme to support
+    grayscale printing, or restyling content based on elements that contain them,
+    you have the ability to do a great deal to make your work the best it can be.
+  id: totrans-562
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于 at-rules 的灵活性，可以在单一样式集中提供多样化的设计体验。无论是重新组织页面以适应不同的显示尺寸，调整颜色方案以支持灰度打印，还是基于包含它们的元素重新设计内容，您都有能力大幅改善您的工作，使其达到最佳状态。

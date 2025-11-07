@@ -1,0 +1,1435 @@
+- en: Chapter 1\. CSS Fundamentals
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第一章。CSS基础
+- en: '*Cascading Style Sheets* (*CSS*), a powerful programming language that transforms
+    the presentation of a document or a collection of documents, has spread to nearly
+    every corner of the web as well as many ostensibly nonweb environments. For example,
+    embedded-device displays often use CSS to style their user interfaces, many RSS
+    clients let you apply CSS to feeds and feed entries, and some instant message
+    clients use CSS to format chat windows. Aspects of CSS can be found in the syntax
+    used by JavaScript (JS) frameworks and even in JS itself. It’s everywhere!'
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*层叠样式表*（*CSS*），一种强大的编程语言，可以转换文档或文档集的呈现方式，已经传播到Web的几乎每个角落，以及许多表面上非Web的环境。例如，嵌入式设备显示器通常使用CSS来设计其用户界面，许多RSS客户端允许您对提要和提要条目应用CSS，一些即时消息客户端使用CSS来格式化聊天窗口。CSS的语法甚至可以在JavaScript（JS）框架及JS本身中找到。它无处不在！'
+- en: A Brief History of (Web) Style
+  id: totrans-2
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: （Web）样式的简要历史
+- en: CSS was first proposed in 1994, just as the web was beginning to really catch
+    on. At the time, browsers gave all sorts of styling power to the user—the presentation
+    preferences in NCSA Mosaic, for example, permitted the user to define each element’s
+    font family, size, and color. None of this was available to document authors;
+    all they could do was mark a piece of content as a paragraph, as a heading of
+    some level, as preformatted text, or one of a dozen other element types. If a
+    user configured their browser to make all level-one headings tiny and pink and
+    all level-six headings huge and red, well, that was their lookout.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS最初于1994年提出，正当Web开始真正流行起来。那时，浏览器为用户提供了各种样式控制权——例如，NCSA Mosaic中的展示偏好允许用户定义每个元素的字体系列、大小和颜色。但这些对文档作者并不可用；他们只能标记内容片段为段落、某个级别的标题、预格式化文本或其他十几种元素类型之一。如果用户配置他们的浏览器，使所有一级标题变小和粉红色，而所有六级标题变大和红色，那就是他们的事情了。
+- en: It was into this milieu that CSS was introduced. Its goal was to provide a simple,
+    declarative styling language that was flexible for web page authors and, most
+    importantly, provided styling power to authors and users alike. By means of the
+    *cascade*, these styles could be combined and prioritized so that both site authors
+    and readers had a say—though readers always had the last say.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正是在这样的环境中引入了CSS。它的目标是为Web页面作者提供一种简单的声明式样式语言，既灵活又能为作者和用户提供样式化能力。通过*级联*，这些样式可以结合和优先级，以便站点作者和读者都能发言——尽管读者始终有最后的发言权。
+- en: Work quickly advanced, and by late 1996, CSS1 was finished. While the newly
+    established CSS Working Group moved forward with CSS2, browsers struggled to implement
+    CSS1 in an interoperable way. Although each piece of CSS was fairly simple on
+    its own, the combination of those pieces created some surprisingly complex behaviors.
+    Unfortunate missteps also occurred, such as the infamous discrepancy in box model
+    implementations. These problems threatened to derail CSS altogether, but fortunately
+    some clever proposals were implemented, and browsers began to harmonize. Within
+    a few years, thanks to increasing interoperability and high-profile developments
+    such as the CSS-based redesign of *Wired* magazine and the CSS Zen Garden, CSS
+    began to catch on.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 工作迅速推进，到1996年末，CSS1完成。尽管CSS的每个部分单独来看都相当简单，但这些部分的组合却产生了一些令人惊讶的复杂行为。不幸的错误也发生了，比如盒模型实现中的臭名昭著的不一致。这些问题曾经威胁要完全破坏CSS，但幸运的是一些聪明的提案得以实施，浏览器开始协调一致。几年后，由于不断增加的互操作性以及高调的开发，比如基于CSS的*Wired*杂志重设计和CSS
+    Zen Garden，CSS开始流行起来。
+- en: Before all that happened, though, the CSS Working Group had finalized the CSS2
+    specification in early 1998\. Once CSS2 was finished, work immediately began on
+    CSS3, as well as a clarified version of CSS2 called CSS2.1\. In keeping with the
+    spirit of the times, what was initially coined *CSS3* was constructed as a series
+    of (theoretically) standalone modules instead of a single monolithic specification.
+    This approach reflected the then-active XHTML specification, which was split into
+    modules for similar reasons.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在所有这些发生之前，CSS工作组在1998年初完成了CSS2规范。一旦CSS2完成，CSS3的工作立即开始，同时还有CSS2的澄清版本称为CSS2.1。符合时代精神，最初被称为*CSS3*的内容被构建为一系列（理论上）独立的模块，而不是单一的整体规范。这种方法反映了当时活跃的XHTML规范，出于类似的原因被分割为模块。
+- en: The rationale for modularizing CSS was that each module could be worked on at
+    its own pace, and particularly critical (or popular) modules could be advanced
+    along the World Wide Web Consortium’s (W3C’s) progress track without being held
+    up by others. Indeed, this has turned out to be the case. By early 2012, three
+    CSS Level 3 modules (along with CSS1 and CSS 2.1) had reached full Recommendation
+    status—CSS Color Level 3, CSS Namespaces, and Selectors Level 3\. At that same
+    time, seven modules were at Candidate Recommendation status, and several dozen
+    others were in various stages of Working Draft-ness. Under the old approach, colors,
+    selectors, and namespaces would have had to wait for every other part of the specification
+    to be done or cut before they could be part of a completed specification. Thanks
+    to modularization, they didn’t have to wait.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将 CSS 模块化的理由是，每个模块可以按照自己的节奏进行工作，特别关键（或流行）的模块可以在世界范围内的万维网联盟（W3C）进展轨迹中推进，而不会被其他模块所阻碍。事实上，情况确实如此。到2012年初，三个
+    CSS Level 3 模块（以及 CSS1 和 CSS 2.1）已经达到了完整的推荐状态——CSS Color Level 3、CSS Namespaces
+    和 Selectors Level 3。与此同时，还有七个模块处于候选推荐状态，其他几十个模块则处于不同的工作草案阶段。按照旧的方法，颜色、选择器和命名空间必须等待规范的每个其他部分完成或被删减，才能成为完成规范的一部分。多亏了模块化，它们无需等待。
+- en: So while we can’t really point to a single tome and say, “This is CSS,” we can
+    talk of features by the module name under which they are introduced. The flexibility
+    permitted by modules more than makes up for the semantic awkwardness they sometimes
+    create. (If you want something approximating a single monolithic specification,
+    the CSS Working Group publishes yearly “Snapshot” documents.)
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，虽然我们无法指出一个单一的文档并说：“这就是 CSS”，但我们可以按照它们所引入的模块名称来讨论其特性。模块的灵活性远远超过了它们有时会造成的语义尴尬。
+    （如果您想要类似单一的庞大规范，CSS 工作组每年都会发布“快照”文档。）
+- en: With that established, we’re ready to start understanding CSS. Let’s start by
+    covering the basics of what goes inside a stylesheet.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有了这个基础，我们准备开始理解 CSS。让我们从涵盖样式表中的基础知识开始。
+- en: Stylesheet Contents
+  id: totrans-10
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 样式表内容
+- en: 'Inside a stylesheet, you’ll find a number of *rules* that look a little something
+    like this:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在样式表中，您会发现许多 *规则*，看起来有点像这样：
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Styles such as these make up the bulk of any stylesheet—simple or complex, short
+    or long. But which parts are which, and what do they represent?
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些样式构成了任何样式表的主体部分——简单或复杂，短或长。但是哪些部分是什么，它们代表了什么？
+- en: Rule Structure
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 规则结构
+- en: To illustrate the concept of rules in more detail, let’s break down the structure.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了更详细地说明规则的概念，让我们来分解结构。
+- en: 'Each *rule* has two fundamental parts: the selector and the declaration block.
+    The declaration block is composed of one or more declarations, and each declaration
+    is a pairing of a property and a value. Every stylesheet is made up of a series
+    of these rules. [Figure 1-1](#the_structure_of_a_rule) shows the parts of a rule.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个 *规则* 由两个基本部分组成：选择器和声明块。声明块由一个或多个声明组成，每个声明由属性和值对组成。每个样式表由一系列这些规则组成。 [图 1-1](#the_structure_of_a_rule)
+    显示了规则的各个部分。
+- en: '![css5 0101](assets/css5_0101.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0101](assets/css5_0101.png)'
+- en: Figure 1-1\. The structure of a rule
+  id: totrans-18
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 1-1\. 规则的结构
+- en: The *selector*, shown on the left side of the rule, defines which piece of the
+    document will be selected for styling. In [Figure 1-1](#the_structure_of_a_rule),
+    `<h1>` (heading level 1) elements are selected. If the selector were `p`, then
+    all `<p>` (paragraph) elements would be selected.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*选择器* 显示在规则的左侧，定义了将被选中进行样式化的文档部分。在 [图 1-1](#the_structure_of_a_rule) 中，选中的是
+    `<h1>`（一级标题）元素。如果选择器是 `p`，那么所有 `<p>`（段落）元素都将被选中。'
+- en: The right side of the rule contains the *declaration block*, which is made up
+    of one or more declarations. Each *declaration* is a combination of a CSS *property*
+    and a *value* of that property. In [Figure 1-1](#the_structure_of_a_rule), the
+    declaration block contains two declarations. The first states that this rule will
+    cause parts of the document to have a `color` of `red`, and the second states
+    that part of the document will have a `background` of `yellow`. So, all of the
+    `<h1>` elements in the document (defined by the selector) will be styled in red
+    text with a yellow background.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 规则的右侧包含*声明块*，它由一个或多个声明组成。每个*声明*由CSS *属性*和该属性的*值*组成。在图[1-1](#the_structure_of_a_rule)中，声明块包含两个声明。第一个声明指定了该规则将使文档中的部分以`color`为`red`显示，第二个声明指定了文档的一部分将以`background`为`yellow`。因此，文档中所有的`<h1>`元素（由选择器定义）将以红色文字和黄色背景样式显示。
+- en: Vendor Prefixing
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 供应商前缀
+- en: 'Sometimes you’ll see pieces of CSS with hyphens and labels in front of them,
+    like this: `-o-border-image`. These *vendor prefixes* were a way for browser vendors
+    to mark properties, values, or other bits of CSS as being experimental or proprietary
+    (or both). As of early 2023, a few vendor prefixes are in the wild, with the most
+    common shown in [Table 1-1](#common_vendor_prefixes).'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时你会看到CSS片段的前面有连字符和标签，比如`-o-border-image`。这些*供应商前缀*是浏览器供应商标记属性、值或其他CSS部分为实验性或专有（或两者兼有）的一种方式。截至2023年初，一些供应商前缀仍在使用中，其中最常见的如表[1-1](#common_vendor_prefixes)所示。
+- en: Table 1-1\. Some common vendor prefixes
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表1-1\. 一些常见的供应商前缀
+- en: '| Prefix | Vendor |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| 前缀 | 供应商 |'
+- en: '| --- | --- |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `-epub-` | International Digital Publishing Forum ePub format |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-epub-` | 国际数字出版论坛EPUB格式 |'
+- en: '| `-moz-` | Gecko-based browsers (e.g., Mozilla Firefox) |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-moz-` | 基于Gecko的浏览器（例如Mozilla Firefox） |'
+- en: '| `-ms-` | Microsoft Internet Explorer |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-ms-` | 微软Internet Explorer |'
+- en: '| `-o-` | Opera-based browsers |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-o-` | 基于Opera的浏览器 |'
+- en: '| `-webkit-` | WebKit-based browsers (e.g., Apple Safari and Google Chrome)
+    |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-webkit-` | 基于WebKit的浏览器（例如Apple Safari和Google Chrome） |'
+- en: As [Table 1-1](#common_vendor_prefixes) indicates, the generally accepted format
+    of a vendor prefix is a hyphen, a label, and a hyphen, although a few prefixes
+    erroneously omit the first hyphen.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如表[1-1](#common_vendor_prefixes)所示，供应商前缀的通常接受格式是一个连字符、一个标签和一个连字符，尽管一些前缀错误地省略了第一个连字符。
+- en: The uses and abuses of vendor prefixes are long, tortuous, and beyond the scope
+    of this book. Suffice to say that they started out as a way for vendors to test
+    out new features, thus helping speed interoperability without worrying about being
+    locked into legacy behaviors that were incompatible with other browsers. This
+    avoided a whole class of problems that nearly strangled CSS in its infancy. Unfortunately,
+    prefixed properties were then publicly deployed by web authors and ended up causing
+    a whole new class of problems.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 供应商前缀的使用和滥用非常复杂，超出了本书的范围。简单地说，它们最初是供应商测试新功能的一种方式，有助于加速互操作性，而不必担心被锁定在与其他浏览器不兼容的遗留行为中。这避免了几乎扼杀CSS在初期阶段的整个问题类别。不幸的是，带前缀的属性随后被Web作者公开部署，最终导致了一整套新问题。
+- en: 'As of early 2023, vendor-prefixed CSS features are nearly nonexistent, with
+    old prefixed properties and values being slowly but steadily removed from browser
+    implementations. You’ll quite likely never write prefixed CSS, but you may encounter
+    it in the wild or inherit it in a legacy codebase. Here’s an example:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2023年初，供应商前缀的CSS特性几乎不存在，旧的带前缀的属性和值正在被浏览器逐步移除。你很可能永远不会编写带前缀的CSS，但你可能会在现有代码库中遇到它或者继承它。这里有一个例子：
+- en: '[PRE1]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'That’s saying the same thing four times: once each for the WebKit, Gecko (Firefox),
+    and Opera browser lines, and then finally the CSS-standard way. Again, this is
+    no longer necessary. We’re including it here only to give you an idea of what
+    it might look like, should you come across this in the future.'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这句话重复了四次：分别针对 WebKit、Gecko（Firefox）和Opera浏览器行，最后是CSS标准的方式。再次强调，这已经不再必要。我们在这里只是为了让你对将来可能遇到的情况有所了解。
+- en: Whitespace Handling
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 空白处理
+- en: CSS is basically insensitive to whitespace between rules, and largely insensitive
+    to whitespace within rules, although a few exceptions exist.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 基本上不敏感于规则之间的空白，而且在规则内部的空白也大多不敏感，尽管存在一些例外。
+- en: 'In general, CSS treats whitespace just like HTML does: any sequence of whitespace
+    characters is collapsed to a single space for parsing purposes. Thus, you can
+    format this hypothetical `rainbow` rule in the following ways,'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，CSS 对待空白符的方式与 HTML 相同：任何空白字符序列都会被解析为单个空格。因此，你可以按以下方式格式化这个假设的 `rainbow`
+    规则，
+- en: '[PRE2]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'as well as any other separation patterns you can think up. The only restriction
+    is that the separating characters be whitespace: an empty space, a tab, or a newline,
+    alone or in combination, as many as you like.'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以及你可以想象到的任何其他分隔模式。唯一的限制是分隔字符必须是空白符：一个空格，一个制表符或一个换行符，单独或组合，任意数量。
+- en: 'Similarly, you can format series of rules with whitespace in any fashion you
+    like. These are just five examples out of an effectively infinite number of possibilities:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，你可以以任何喜欢的方式使用空白符格式化一系列规则。这只是无数可能性中的五个示例之一：
+- en: '[PRE3]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: As you can see from the first rule, whitespace can be largely omitted. Indeed,
+    this is usually the case with *minified* CSS, which is CSS that’s had every last
+    possible bit of extraneous whitespace removed, usually by an automated server-side
+    script of some sort. The rules after the first two use progressively more extravagant
+    amounts of whitespace until, in the last rule, pretty much everything that can
+    be separated onto its own line has been.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如你从第一条规则中看到的，空白符可以大大省略。事实上，在*最小化*的 CSS 中通常都是这种情况，即通过某种自动化的服务器端脚本删除了每一个可能多余的空白。在前两条规则之后的规则中，使用越来越多的空白，直到在最后一条规则中，几乎所有可以分离到自己一行的内容都已经这样做。
+- en: All of these approaches are valid, so you should pick the formatting that makes
+    the most sense—that is, is easiest to read—in your eyes, and stick with it.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有这些方法都是有效的，因此你应该选择最合乎逻辑——即在你看来最容易阅读的格式，并坚持使用它。
+- en: CSS Comments
+  id: totrans-45
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: CSS 注释
+- en: 'CSS does allow for comments. These are very similar to C/C++ comments in that
+    they are surrounded by /`*` and `*`/:'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 允许注释。这些与 C/C++ 中的注释非常相似，因为它们被 /`*` 和 `*`/ 包围：
+- en: '[PRE4]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Comments can span multiple lines, just as in C++:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注释可以跨多行，就像在 C++ 中一样：
+- en: '[PRE5]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'It’s important to remember that CSS comments cannot be nested. So, for example,
+    this would *not* be correct:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重要的是要记住，CSS 注释不能嵌套。因此，例如，这种方式是*不正确*的：
+- en: '[PRE6]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Warning
+  id: totrans-52
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: One way to create “nested” comments accidentally is to temporarily comment out
+    a large block of a stylesheet that already contains a comment. Since CSS doesn’t
+    permit nested comments, the “outside” comment will end where the “inside” comment
+    ends.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在样式表中临时注释掉一个已包含注释的大块样式表，就可能意外创建“嵌套”注释。由于 CSS 不允许嵌套注释，“外部”注释将在“内部”注释结束处结束。
+- en: 'Unfortunately, there is no “rest of the line” comment pattern such as `//`
+    or `#` (the latter of which is reserved for ID selectors anyway). The only comment
+    pattern in CSS is /`*` `*`/. Therefore, if you wish to place comments on the same
+    line as markup, you need to be careful about how you place them. For example,
+    this is the correct way to do it:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不幸的是，CSS 中没有像 `//` 或 `#`（后者保留给 ID 选择器）那样的“行末注释”模式。CSS 中唯一的注释模式是 /`*` `*`/。因此，如果你希望在标记的同一行上放置注释，你需要小心如何放置它们。例如，这是正确的方式：
+- en: '[PRE7]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Given this example, if each line isn’t marked off, most of the stylesheet will
+    become part of the comment and thus will not work:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据此示例，如果每行都没有被标记，样式表的大部分将成为注释的一部分，因此将无法起作用：
+- en: '[PRE8]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'In this example, only the first rule (`h1 {color: gray;}`) will be applied
+    to the document. The rest of the rules, as part of the comment, are ignored by
+    the browser’s rendering engine.'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在这个示例中，只有第一条规则（`h1 {color: gray;}`）将应用于文档。其余的规则作为注释的一部分将被浏览器的渲染引擎忽略。'
+- en: Note
+  id: totrans-59
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: CSS comments are treated by the CSS parser as if they do not exist at all, and
+    so do not count as whitespace for parsing purposes. This means you can put them
+    into the middle of rules—even right inside declarations!
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 解析器将 CSS 注释视为根本不存在，因此在解析目的上不计入空白符。这意味着你可以将它们放在规则的中间——甚至直接放在声明内部！
+- en: Markup
+  id: totrans-61
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 标记
+- en: '*There is no markup in stylesheets*. This might seem obvious, but you’d be
+    surprised. The one exception is HTML comment markup, which is permitted inside
+    `<style>` elements for historical reasons:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*在样式表中没有标记*。这似乎是显而易见的，但你可能会感到惊讶。唯一的例外是 HTML 注释标记，出于历史原因允许在 `<style>` 元素内部使用：'
+- en: '[PRE9]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: That’s it, and even that isn’t recommended anymore; the browsers that needed
+    it have faded into near oblivion.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就是这样，甚至这样也不再推荐；那些需要它的浏览器已经几乎消失了。
+- en: Speaking of markup, it’s time to take a very slight detour to talk about the
+    elements that our CSS will be used to style, and how those can be affected by
+    CSS in the most fundamental ways.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 谈到标记，现在是时候稍微偏离一下，讨论我们的CSS将用于样式化的元素，以及这些元素如何受CSS在最基本的方式影响。
+- en: Elements
+  id: totrans-66
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 元素
+- en: '*Elements* are the basis of document structure. In HTML, the most common elements
+    are easily recognizable, such as `<p>`, `<table>`, `<span>`, `<a>`, and `<article>`.
+    Every single element in a document plays a part in its presentation.'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*元素* 是文档结构的基础。在HTML中，最常见的元素很容易识别，例如 `<p>`、`<table>`、`<span>`、`<a>` 和 `<article>`。文档中的每个元素都在其呈现中发挥作用。'
+- en: Replaced and Nonreplaced Elements
+  id: totrans-68
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 替换元素和非替换元素
+- en: 'Although CSS depends on elements, not all elements are created equal. For example,
+    images and paragraphs are not the same type of element. In CSS, elements generally
+    take two forms: replaced and nonreplaced.'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管CSS依赖于元素，但并非所有元素都是平等的。例如，图片和段落不是同一类型的元素。在CSS中，元素通常有两种形式：替换和非替换。
+- en: Replaced elements
+  id: totrans-70
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 替换元素
+- en: '*Replaced elements* are used to indicate content that is to be replaced by
+    something not directly represented in the document. Probably the most familiar
+    HTML example is the `<img>` element, which is replaced by an image file external
+    to the document itself. In fact, `<img>` has no actual content, as you can see
+    in this simple example:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*替换元素* 用于指示将由文档本身不直接表示的内容替换的内容。可能最常见的HTML示例是 `<img>` 元素，它将替换为文档本身外部的图像文件。事实上，
+    `<img>` 没有实际的内容，正如您可以在这个简单的示例中看到的：'
+- en: '[PRE10]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: This markup fragment contains only an element name and an attribute. The element
+    presents nothing unless you point it to external content (in this case, an image
+    file whose location is given by the `src` attribute). If you point to a valid
+    image file, the image will be placed in the document. If not, the browser will
+    either display nothing or will show a “broken image” placeholder.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此标记片段仅包含一个元素名称和一个属性。除非您将其指向外部内容（在本例中，由`src`属性给出位置的图像文件），否则该元素不显示任何内容。如果指向有效的图像文件，则图像将显示在文档中。如果不是，则浏览器将显示空白或显示“损坏图像”占位符。
+- en: Similarly, the `input` element can also be replaced—by a radio button, checkbox,
+    text input box, or other, depending on its type.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，`input`元素也可以被替换—可以是单选按钮、复选框、文本输入框或其他，具体取决于其类型。
+- en: Nonreplaced elements
+  id: totrans-75
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 非替换元素
+- en: The majority of HTML elements are *nonreplaced elements*. Their content is presented
+    by the user agent (generally a browser) inside a box generated by the element
+    itself. For example, `<span>hi there</span>` is a nonreplaced element, and the
+    text “hi there” will be displayed by the user agent. This is true of paragraphs,
+    headings, table cells, lists, and almost everything else in HTML.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数HTML元素都是*非替换元素*。它们的内容由用户代理（通常是浏览器）在元素本身生成的框内呈现。例如，`<span>hi there</span>`是一个非替换元素，文本“hi
+    there”将由用户代理显示。这适用于段落、标题、表格单元、列表和几乎HTML中的所有其他元素。
+- en: Element Display Roles
+  id: totrans-77
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 元素显示角色
+- en: 'CSS has two basic display roles: *block formatting context* and *inline formatting
+    context*. Many more display types exist, but these are the most basic, and the
+    types to which most, if not all, other display types refer. The block and inline
+    contexts will be familiar to authors who have spent time with HTML markup and
+    its display in web browsers. The display roles are illustrated in [Figure 1-2](#block-_and_inline-level_elements_in_an).'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS有两种基本的显示角色：*块格式化上下文* 和 *行内格式化上下文*。还有许多其他显示类型存在，但这些是最基本的，大多数情况下，其他显示类型都与它们相关。块和行内上下文对于那些熟悉HTML标记及其在Web浏览器中显示的作者来说应该是很熟悉的。显示角色在[图 1-2](#block-_and_inline-level_elements_in_an)中有所说明。
+- en: '![css5 0102](assets/css5_0102.png)'
+  id: totrans-79
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0102](assets/css5_0102.png)'
+- en: Figure 1-2\. Block- and inline-level elements in an HTML document
+  id: totrans-80
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 1-2\. HTML文档中的块级和行内级元素
+- en: Block-level elements
+  id: totrans-81
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 块级元素
+- en: By default, *block-level elements* generate an element box that (by default)
+    fills its parent element’s content area and cannot have other elements at its
+    sides. In other words, it generates “breaks” before and after the element box.
+    The most familiar block elements from HTML are `<p>` and `<div>`. Replaced elements
+    can be block-level elements, but usually they are not.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，*块级元素*生成一个元素框，（默认情况下）填充其父元素的内容区域，并且不能在其两侧有其他元素。换句话说，在元素框前后会生成“断点”。来自HTML的最常见的块级元素是
+    `<p>` 和 `<div>`。替换元素可以是块级元素，但通常不是。
+- en: In CSS, this is referred to as an element generating a *block formatting context*.
+    It also means that the element generates a block *outer display type*. The parts
+    inside the element may have different display types.
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在CSS中，这被称为元素生成一个*块级格式化上下文*。这也意味着该元素生成一个块级*外部显示类型*。元素内部的部分可能具有不同的显示类型。
+- en: Inline-level elements
+  id: totrans-84
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 内联级别元素
+- en: By default, *inline-level elements* generate an element box within a line of
+    text and do not break up the flow of that line. The best inline element example
+    is the `<a>` element in HTML. Other candidates are `<strong>` and `<em>`. These
+    elements do not generate a “break” before or after themselves, so they can appear
+    within the content of another element without disrupting its display.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，*内联级别元素*在文本行中生成一个元素框，并且不会打断该行的流程。最佳的内联元素示例是HTML中的`<a>`元素。其他候选元素包括`<strong>`和`<em>`。这些元素在自身之前或之后不生成“断行”，因此它们可以出现在另一个元素的内容中，而不会破坏其显示。
+- en: In CSS, this is referred to as an element generating an *inline formatting context*.
+    It also means that the element generates an *inline outer display* type. The parts
+    inside the element may have different display types. (In CSS, there is no restriction
+    on how display roles can be nested within each other.)
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在CSS中，这被称为元素生成一个*内联格式化上下文*。这也意味着该元素生成一个*内联外部显示*类型。元素内部的部分可能具有不同的显示类型。（在CSS中，对于显示角色如何嵌套在彼此中没有限制。）
+- en: To see how this works, let’s consider the CSS property `display`.
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了看看它是如何工作的，让我们考虑CSS属性`display`。
+- en: 'You may have noticed that there are a *lot* of values here, only two of which
+    we’ve mentioned: `block` and `inline`. Most of these values are dealt with elsewhere
+    in the book; for example, `grid` and `inline-grid` are covered in [Chapter 12](ch12.html#grid-layout),
+    and the table-related values are all covered in [Chapter 13](ch13.html#title-table-layout-in-css).'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能已经注意到这里有*很多*值，其中只提到了两个：`block`和`inline`。这些值中的大多数在本书的其他地方有详细介绍；例如，`grid`和`inline-grid`在[第12章](ch12.html#grid-layout)中有讲述，而与表格相关的值则都在[第13章](ch13.html#title-table-layout-in-css)中有详细介绍。
+- en: 'For now, let’s concentrate on `block` and `inline`. Consider the following
+    markup:'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，让我们集中讨论`block`和`inline`。考虑以下标记：
+- en: '[PRE11]'
+  id: totrans-90
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Here we have two elements (`<body>` and `<p>`) that are generating block formatting
+    contexts, and one element (`<em>`) with an inline formatting context. According
+    to the HTML specification, `<em>` can descend from `<p>`, but the reverse is not
+    true. Typically, the HTML hierarchy works out so that inlines descend from blocks,
+    but not the other way around.
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里我们有两个元素（`<body>`和`<p>`），它们生成块级格式化上下文，还有一个元素（`<em>`）生成内联格式化上下文。根据HTML规范，`<em>`可以是`<p>`的后代，但反过来不成立。通常，HTML层次结构使内联元素从块级元素派生，但反之则不然。
+- en: 'CSS, on the other hand, has no such restrictions. You can leave the markup
+    as it is but change the display roles of the two elements like this:'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，CSS则没有这样的限制。您可以保留标记不变，但更改两个元素的显示角色如下：
+- en: '[PRE12]'
+  id: totrans-93
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: This causes the elements to generate a block box inside an inline box. This
+    is perfectly legal and violates no part of CSS.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这导致元素在内联框内生成一个块框。这是完全合法的，不违反CSS的任何部分。
+- en: 'While changing the display roles of elements can be useful in HTML documents,
+    it becomes downright critical for XML documents. An XML document is unlikely to
+    have any inherent display roles, so it’s up to the author to define them. For
+    example, you might wonder how to lay out the following snippet of XML:'
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然改变元素的显示角色在HTML文档中可能很有用，但对于XML文档而言，这变得非常关键。XML文档不太可能具有任何固有的显示角色，因此由作者定义这些角色。例如，您可能想知道如何布置以下XML片段：
+- en: '[PRE13]'
+  id: totrans-96
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Since the default value of `display` is `inline`, the content would be rendered
+    as inline text by default, as illustrated in [Figure 1-3](#default_display_of_an_xml_document).
+    This isn’t a terribly useful display.
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于`display`的默认值是`inline`，因此内容将按默认情况下呈现为内联文本，如[图1-3](#default_display_of_an_xml_document)所示。这并不是一个非常有用的显示。
+- en: '![css5 0103](assets/css5_0103.png)'
+  id: totrans-98
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0103](assets/css5_0103.png)'
+- en: Figure 1-3\. Default display of an XML document
+  id: totrans-99
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图1-3\. XML文档的默认显示
+- en: 'You can define the basics of the layout with `display`:'
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过`display`来定义布局的基础：
+- en: '[PRE14]'
+  id: totrans-101
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: We’ve now set five of the seven elements to be block and two to be inline. This
+    means each of the block elements will generate its own block formatting context,
+    and the two inlines will generate their own inline formatting contexts.
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们将七个元素中的五个设置为块级，两个设置为内联。这意味着每个块级元素将生成自己的块级格式化上下文，而两个内联元素将生成自己的内联格式化上下文。
+- en: We could take the preceding rules as a starting point, add a few other styles
+    for greater visual impact, and get the result shown in [Figure 1-4](#styled_display_of_an_xml_document).
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以将前述规则作为起点，添加一些其他样式以获得更大的视觉冲击，并得到 [图 1-4](#styled_display_of_an_xml_document)
+    中显示的结果。
+- en: '![css5 0104](assets/css5_0104.png)'
+  id: totrans-104
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0104](assets/css5_0104.png)'
+- en: Figure 1-4\. Styled display of an XML document
+  id: totrans-105
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 1-4\. XML 文档的样式化显示
+- en: That said, before learning how to write CSS in detail, we need to look at how
+    to associate CSS with a document. After all, without tying the two together, there’s
+    no way for the CSS to affect the document. We’ll explore this in an HTML setting
+    since it’s the most familiar.
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 话虽如此，在详细学习如何编写 CSS 之前，我们需要看看如何将 CSS 与文档关联起来。毕竟，如果没有将两者联系起来，CSS 就无法影响文档。我们将在
+    HTML 设置中探讨这一点，因为这是最熟悉的。
+- en: Bringing CSS and HTML Together
+  id: totrans-107
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 将 CSS 和 HTML 结合起来
+- en: 'We’ve mentioned that HTML documents have an inherent structure, and that’s
+    a point worth repeating. In fact, that’s part of the problem with web pages of
+    old: too many of us forgot that documents are supposed to have an internal structure,
+    which is altogether different from a visual structure. In our rush to create the
+    coolest-looking pages on the web, we bent, warped, and generally ignored the idea
+    that pages should contain information with some structural meaning.'
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经提到 HTML 文档具有固有的结构，这是值得重申的一点。事实上，这也是旧网页的问题之一：我们中的许多人忘记了文档应该具有内部结构，这与视觉结构完全不同。在我们急于创建网上最酷的页面时，我们扭曲了和忽视了页面应该包含带有某些结构含义的信息的概念。
+- en: 'That structure is an inherent part of the relationship between HTML and CSS;
+    without it, there couldn’t be a relationship at all. To understand it better,
+    let’s look at an example HTML document and break it down by pieces:'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种结构是 HTML 和 CSS 之间关系的固有部分；如果没有它，就根本不可能有关系。为了更好地理解它，让我们看一个例子 HTML 文档，并逐步分解它：
+- en: '[PRE15]'
+  id: totrans-110
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: '[Figure 1-5](#a_simple_document) shows the result of this markup and the applied
+    styles.'
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 1-5](#a_simple_document) 显示了此标记的结果和应用的样式。'
+- en: '![css5 0105](assets/css5_0105.png)'
+  id: totrans-112
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0105](assets/css5_0105.png)'
+- en: Figure 1-5\. A simple document
+  id: totrans-113
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 1-5\. 一个简单的文档
+- en: Now, let’s examine the various ways this document connects to CSS.
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，让我们来看看这个文档连接到 CSS 的各种方式。
+- en: The <link> Tag
+  id: totrans-115
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`<link>` 标签'
+- en: 'First, consider the use of the `<link>` tag:'
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，考虑 `<link>` 标签的使用：
+- en: '[PRE16]'
+  id: totrans-117
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: The `<link>` tag’s basic purpose is to allow HTML authors to associate other
+    documents with the document containing the `<link>` tag. CSS uses it to link stylesheets
+    to the document.
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<link>` 标签的基本目的是允许 HTML 作者将其他文档与包含 `<link>` 标签的文档关联起来。CSS 使用它将样式表链接到文档中。'
+- en: These stylesheets, which are not part of the HTML document but are still used
+    by it, are referred to as *external stylesheets*. This is because they’re stylesheets
+    that are external to the HTML document. (Go figure.)
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些样式表不是 HTML 文档的一部分，但仍然被其使用，称为 *外部样式表*。这是因为它们是外部于 HTML 文档的样式表。（看看这个。）
+- en: To successfully load an external stylesheet, `<link>` should be placed inside
+    the `<head>` element, though it can also appear inside the `<body>` element. This
+    will cause the web browser to locate and load the stylesheet and use whatever
+    styles it contains to render the HTML document; [Figure 1-6](#a_representation_of_how_external_style)
+    depicts the stylesheet called *sheet1.css* being linked to the document.
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要成功加载外部样式表，应将 `<link>` 放置在 `<head>` 元素内，尽管它也可以出现在 `<body>` 元素内。这将导致 Web 浏览器定位并加载样式表，并使用它包含的任何样式来呈现
+    HTML 文档；[图 1-6](#a_representation_of_how_external_style) 描述了称为 *sheet1.css* 的样式表链接到文档的情况。
+- en: Also shown in [Figure 1-6](#a_representation_of_how_external_style) is the loading
+    of the external *sheet2.css* via an `@import` declaration. Imports must be placed
+    at the beginning of the stylesheet that contains them.
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同时在 [图 1-6](#a_representation_of_how_external_style) 中显示了通过 `@import` 声明加载外部样式表
+    *sheet2.css*。导入必须放在包含它们的样式表的开头。
+- en: '![css5 0106](assets/css5_0106.png)'
+  id: totrans-122
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0106](assets/css5_0106.png)'
+- en: Figure 1-6\. A representation of how external stylesheets are applied to documents
+  id: totrans-123
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 1-6\. 外部样式表如何应用于文档的表示
+- en: 'And what is the format of an external stylesheet? It’s a list of rules, just
+    like those you saw in the previous section and in the example HTML document; but
+    in this case, the rules are saved into their own file. Just remember that no HTML
+    or any other markup language can be included in the stylesheet—only style rules.
+    Here are the contents of an external stylesheet:'
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 外部样式表的格式是什么？它是一系列规则的列表，就像你在前一节和示例HTML文档中看到的那样；但在这种情况下，这些规则保存在它们自己的文件中。只要记住在样式表中不能包含任何HTML或其他标记语言，只能包含样式规则。以下是一个外部样式表的内容：
+- en: '[PRE17]'
+  id: totrans-125
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: That’s all there is to it—no HTML markup or comments at all, just plain-and-simple
+    style declarations. These are saved into a plain-text file and are usually given
+    an extension of *.css*, as in *sheet1.css*.
+  id: totrans-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就是这样——没有任何HTML标记或注释，只有简单明了的样式声明。这些保存在一个纯文本文件中，通常扩展名为*.css*，例如*sheet1.css*。
+- en: Warning
+  id: totrans-127
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: An external stylesheet cannot contain any document markup at all, only CSS rules
+    and CSS comments. The presence of markup in an external stylesheet can cause some
+    or all of it to be ignored.
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 外部样式表根本不能包含任何文档标记，只能包含CSS规则和CSS注释。在外部样式表中包含标记可能会导致其中的某些或所有内容被忽略。
+- en: Attributes
+  id: totrans-129
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 属性
+- en: For the rest of the `<link>` tag, the attributes and values are fairly straightforward.
+    The `rel` attribute stands for *relation*, and in this case, the relation is `stylesheet`.
+    Note that the `rel` attribute is *required*. CSS has an optional `type` attribute
+    whose default value is `text/css`, so you can include `type="text/css"` or leave
+    it out, whichever you prefer.
+  id: totrans-130
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于余下的`<link>`标签，属性和值都相当简单明了。`rel`属性代表*关系*，在这种情况下，关系是`stylesheet`。请注意，`rel`属性是*必需*的。CSS有一个可选的`type`属性，默认值为`text/css`，因此您可以包含`type="text/css"`或者将其省略，取决于您的喜好。
+- en: These attribute values describe the relationship and type of data that will
+    be loaded using the `<link>` tag. That way, the web browser knows that the stylesheet
+    is a CSS stylesheet, a fact that will determine how the browser will deal with
+    the data it imports. (Other style languages may be used in the future. In such
+    a future, if you are using a different style language, the `type` attribute will
+    need to be declared.)
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些属性值描述了使用`<link>`标签加载数据的关系和数据类型。这样，Web浏览器知道样式表是CSS样式表，这一事实将决定浏览器如何处理导入的数据。（将来可能会使用其他样式语言。在这样的未来，如果您使用不同的样式语言，将需要声明`type`属性。）
+- en: Next, we find the `href` attribute. The value of this attribute is the URL of
+    your stylesheet. This URL can be either absolute or relative—that is, either relative
+    to the URL of the document containing the URL, or else a complete URL that points
+    to a unique location on the web. In our example, the URL is relative. It could
+    have been something absolute, like *[*http://example.com/sheet1.css*](http://example.com/sheet1.css)*.
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，我们找到`href`属性。此属性的值是您样式表的URL。此URL可以是绝对的，也可以是相对的，即相对于包含该URL的文档的URL，或者是一个指向网络上唯一位置的完整URL。在我们的示例中，URL是相对的。它也可以是绝对的，比如*[*http://example.com/sheet1.css*](http://example.com/sheet1.css)*。
+- en: 'Finally, we have a `media` attribute. The value of this attribute is one or
+    more *media descriptors*, which are rules regarding media types and the features
+    of those media, with each rule separated by a comma. Thus, for example, you can
+    use a linked stylesheet in both screen and print media:'
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，我们有一个`media`属性。此属性的值是一个或多个*媒体描述符*，这些描述符是关于媒体类型及其特性的规则，每个规则用逗号分隔。因此，例如，您可以在屏幕和打印媒体中使用链接样式表：
+- en: '[PRE18]'
+  id: totrans-134
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: Media descriptors can get quite complicated and are explained in detail in [Chapter 21](ch21.html#css-at-rules).
+    For now, we’ll stick with the basic media types shown. The default value is `all`,
+    which means the CSS will be applied in all media.
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 媒体描述符可能会变得非常复杂，在[第21章](ch21.html#css-at-rules)中有详细解释。目前，我们将坚持显示的基本媒体类型。默认值是`all`，这意味着CSS将应用于所有媒体。
+- en: 'Note that more than one linked stylesheet can be associated with a document.
+    In these cases, only those `<link>` tags with a `rel` of `stylesheet` will be
+    used in the initial display of the document. Thus, if you wanted to link two stylesheets
+    named *basic.css* and *splash.css*, it would look like this:'
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，一个文档可以关联多个链接样式表。在这些情况下，只有`rel`为`stylesheet`的`<link>`标签会在文档的初始显示中使用。因此，如果您想要链接两个名为*basic.css*和*splash.css*的样式表，它会像这样：
+- en: '[PRE19]'
+  id: totrans-137
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: 'This will cause the browser to load both stylesheets, combine the rules from
+    each, and apply them all to the document in all media types (because the `media`
+    attribute is omitted, its default value `all` is used). For example:'
+  id: totrans-138
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将导致浏览器加载两个样式表，合并每个样式表中的规则，并将所有规则应用于所有媒体类型的文档（因为省略了`media`属性，将使用其默认值`all`）。例如：
+- en: '[PRE20]'
+  id: totrans-139
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: The one attribute that isn’t in this example markup, but could be, is `title`.
+    This attribute is not often used but could become important in the future and,
+    if used improperly, can have unexpected effects. Why? We’ll explore that in the
+    next section.
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例标记中缺少的一个属性是`title`。这个属性并不经常使用，但在未来可能变得重要，并且如果使用不当可能会产生意外的影响。为什么？我们将在下一节探讨这个问题。
+- en: Alternate stylesheets
+  id: totrans-141
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 备用样式表
+- en: It’s possible to define *alternate stylesheets* that users can select in some
+    browsers. These are defined by making the value of the `rel` attribute `alternate
+    stylesheet`, and they are used in document presentation only if selected by the
+    user.
+  id: totrans-142
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以在某些浏览器中定义*备用样式表*，用户可以选择。这些样式表的定义是通过将`rel`属性的值设置为`alternate stylesheet`，仅在用户选择时才用于文档呈现。
+- en: 'Should a browser be able to use alternate stylesheets, it will use the values
+    of the `<link>` element’s `title` attributes to generate a list of style alternatives.
+    So you could write the following:'
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果浏览器能够使用备用样式表，它将使用`<link>`元素的`title`属性值生成样式替代列表。因此，你可以写出以下内容：
+- en: '[PRE21]'
+  id: totrans-144
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: Users could then pick the style they want to use, and the browser would switch
+    from the first one, labeled `Default` in this case, to whichever the user picked.
+    [Figure 1-7](#a_browser_offering_alternate_style) shows one way in which this
+    selection mechanism might be accomplished (and in fact was, early in the resurgence
+    of CSS).
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户可以选择他们想要使用的样式，浏览器会从第一个样式表切换到用户选择的样式表，本例中标记为`Default`。 [图 1-7](#a_browser_offering_alternate_style)
+    显示了实现这种选择机制的一种方式（实际上在 CSS 复兴早期就是这样）。
+- en: '![css5 0107](assets/css5_0107.png)'
+  id: totrans-146
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0107](assets/css5_0107.png)'
+- en: Figure 1-7\. A browser offering alternate stylesheet selection
+  id: totrans-147
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 1-7\. 提供备用样式表选择的浏览器
+- en: Note
+  id: totrans-148
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: As of early 2023, alternate stylesheets are supported in most Gecko-based browsers
+    like Firefox. The Chromium and WebKit families do not support selecting alternate
+    stylesheets. Compare this to the build date of the browser shown in [Figure 1-7](#a_browser_offering_alternate_style),
+    which is late 2002.
+  id: totrans-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 早在2023年初，大多数基于Gecko的浏览器（如Firefox）都支持备用样式表的选择。而Chromium和WebKit家族则不支持选择备用样式表。与[图 1-7](#a_browser_offering_alternate_style)中显示的浏览器构建日期（2002年末）相比较。
+- en: 'It’s also possible to group alternate stylesheets together by giving them the
+    same `title` value. Thus, you make it possible for the user to pick a different
+    presentation for your site in both screen and print media:'
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还可以通过给它们相同的`title`值来将备用样式表分组在一起。因此，用户可以在屏幕和打印媒体上选择不同的站点呈现方式：
+- en: '[PRE22]'
+  id: totrans-151
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: If a user selects Big Text from the alternate stylesheet selection mechanism
+    in a conforming user agent, *bigtext.css* will be used to style the document in
+    the screen medium, and *print-bigtext.css* will be used in the print medium. Neither
+    *sheet1.css* nor *print-sheet1.css* will be used in any medium.
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果用户在符合条件的用户代理中从备用样式表选择机制中选择了大文本，*bigtext.css*将用于在屏幕媒体中为文档设置样式，而*print-bigtext.css*将用于打印媒体。*sheet1.css*和*print-sheet1.css*将不会在任何媒体中使用。
+- en: Why is that? Because if you give a `<link>` with a `rel` of `stylesheet` a title,
+    you are designating that stylesheet as a *preferred stylesheet*. Its use is preferred
+    to alternate stylesheets, and it will be used when the document is first displayed.
+    Once you select an alternate stylesheet, however, the preferred stylesheet will
+    *not* be used.
+  id: totrans-153
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为什么会这样？因为如果给一个具有`rel`为`stylesheet`的`<link>`元素设置了标题，那么你就将这个样式表指定为*首选样式表*。在文档首次显示时，首选样式表会被优先使用。但是一旦选择了备用样式表，首选样式表将*不会*被使用。
+- en: 'Furthermore, if you designate a number of stylesheets as preferred, all but
+    one of them will be ignored. Consider the following code example:'
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，如果将多个样式表指定为首选样式表，则除一个之外的所有样式表都将被忽略。考虑以下代码示例：
+- en: '[PRE23]'
+  id: totrans-155
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: All three `<link>` elements now refer to preferred stylesheets, thanks to the
+    presence of a `title` attribute on all three, but only one of them will actually
+    be used in that manner. The other two will be ignored completely. Which two? There’s
+    no way to be certain, as HTML doesn’t provide a method of determining which preferred
+    stylesheets should be ignored and which should be used.
+  id: totrans-156
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，所有三个`<link>`元素都指向首选样式表，这要归功于所有三个元素上存在的`title`属性，但实际上只有一个元素会以这种方式被使用。其余两个将完全被忽略。哪两个会被忽略？无法确定，因为HTML没有提供一种方法来确定哪些首选样式表应该被忽略，哪些应该被使用。
+- en: If you don’t give a stylesheet a title, it becomes a *persistent stylesheet*
+    and is always used in the display of the document. Often, this is exactly what
+    an author wants, especially since alternate stylesheets are not widely supported
+    and are almost completely unknown to users.
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果未给样式表添加标题，它将成为*持久样式表*，始终在文档显示中使用。通常情况下，这正是作者想要的，尤其是因为备用样式表得不到广泛支持，几乎所有用户都不知晓其存在。
+- en: The <style> Element
+  id: totrans-158
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`<style>`元素'
+- en: 'The `<style>` element is one way to include a stylesheet, and it appears in
+    the document itself:'
+  id: totrans-159
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<style>`元素是包含样式表的一种方式，它出现在文档本身中：'
+- en: '[PRE24]'
+  id: totrans-160
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: The styles between the opening and closing `<style>` tags are referred to as
+    the *document stylesheet* or the *embedded stylesheet* (because this kind of stylesheet
+    is embedded within the document). It contains styles that apply to the document,
+    but it can also contain multiple links to external stylesheets via the `@import`
+    directive, discussed in the next section.
+  id: totrans-161
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在开放和闭合的`<style>`标签之间的样式称为*文档样式表*或*嵌入样式表*（因为这种样式表嵌入在文档中）。它包含适用于文档的样式，但也可以通过`@import`指令包含多个外部样式表的链接，这在下一节中讨论。
+- en: 'You can give `<style>` elements a `media` attribute, which functions in the
+    same manner as it does on linked stylesheets. This, for example, will restrict
+    an embedded stylesheet’s rules to be applied in print media only:'
+  id: totrans-162
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以给`<style>`元素添加一个`media`属性，其功能与链接样式表上的方式相同。例如，以下示例将限制嵌入样式表的规则仅在打印媒体中应用：
+- en: '[PRE25]'
+  id: totrans-163
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: You can also label an embedded stylesheet with a `<title>` element, in the same
+    manner and for the same reasons discussed in the previous section on alternate
+    stylesheets.
+  id: totrans-164
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以使用`<title>`元素为嵌入样式表添加标签，方式与上一节关于备用样式表的讨论相同，出于同样的原因。
+- en: As with the `<link>` element, the `<style>` element can use the attribute `type`;
+    in the case of a CSS document, the correct value is `"text/css"`. The `type` attribute
+    is optional in HTML as long as you’re loading CSS, because the default value for
+    the `type` attribute on the `<style>` element is `text/css`. It would be necessary
+    to explicitly declare a `type` value only if you were using some other styling
+    language, perhaps in a future where such a thing is supported. For the time being,
+    though, the attribute remains wholly optional.
+  id: totrans-165
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`<link>`元素类似，`<style>`元素可以使用`type`属性；对于CSS文档，正确的值是`"text/css"`。在HTML中，`type`属性是可选的，只要加载CSS即可，因为`<style>`元素的`type`属性的默认值是`text/css`。只有在使用其他样式语言时才需要显式声明`type`值，或许在未来支持这样一种语言时。不过，目前该属性仍然是完全可选的。
+- en: The @import Directive
+  id: totrans-166
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`@import`指令'
+- en: 'Now we’ll discuss the stuff that is found inside the `<style>` tag. First,
+    we have something very similar to `<link>`, the `@import` directive:'
+  id: totrans-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们将讨论位于`<style>`标签内部的内容。首先，我们有与`<link>`非常相似的东西，即`@import`指令：
+- en: '[PRE26]'
+  id: totrans-168
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: 'Just like `<link>`, `@import` can be used to direct the web browser to load
+    an external stylesheet and use its styles in the rendering of the HTML document.
+    The only major difference is in the syntax and placement of the command. As you
+    can see, `@import` is found inside the `<style>` element. It must be placed first,
+    before the other CSS rules, or it won’t work at all. Consider this example:'
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`<link>`一样，`@import`可用于指示Web浏览器加载外部样式表，并在HTML文档的渲染中使用其样式。唯一的主要区别在于命令的语法和放置位置。正如您所见，`@import`位于`<style>`元素内部。它必须放在其他CSS规则之前，否则将完全不起作用。考虑以下示例：
+- en: '[PRE27]'
+  id: totrans-170
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: 'As with `<link>`, a document can have more than one `@import` statement. Unlike
+    `<link>`, however, the stylesheets of every `@import` directive will be loaded
+    and used; there is no way to designate alternate stylesheets with `@import`. So,
+    given the following markup:'
+  id: totrans-171
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`<link>`类似，文档可以有多个`@import`语句。但不同的是，每个`@import`指令的样式表都会被加载和使用；没有办法指定备用样式表来使用`@import`。所以，考虑以下标记：
+- en: '[PRE28]'
+  id: totrans-172
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: …all three external stylesheets will be loaded, and all of their style rules
+    will be used in the display of the document.
+  id: totrans-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: …所有三个外部样式表都将被加载，并且它们的所有样式规则将在文档的显示中使用。
+- en: 'As with `<link>`, you can restrict imported stylesheets to one or more media
+    by providing media descriptors after the stylesheet’s URL:'
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 `<link>` 类似，您可以通过在样式表的 URL 后提供媒体描述符来限制导入的样式表到一个或多个媒体：
+- en: '[PRE29]'
+  id: totrans-175
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: As noted in [“The <link> Tag”](#the_link_tag), media descriptors can get quite
+    complicated and are explained in detail in [Chapter 21](ch21.html#css-at-rules).
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如 [“The <link> Tag”](#the_link_tag) 中所述，媒体描述符可能会变得非常复杂，并且在 [第 21 章](ch21.html#css-at-rules)
+    中详细解释。
+- en: 'The `@import` directive can be highly useful if you have an external stylesheet
+    that needs to use the styles found in other external stylesheets. Since external
+    stylesheets cannot contain any document markup, the `<link>` element can’t be
+    used—but `@import` can. Therefore, you might have an external stylesheet that
+    contains the following:'
+  id: totrans-177
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有一个需要使用其他外部样式表中的样式的外部样式表，则 `@import` 指令可能会非常有用。由于外部样式表不能包含任何文档标记，因此无法使用 `<link>`
+    元素，但可以使用 `@import`。因此，您可能会有一个包含以下内容的外部样式表：
+- en: '[PRE30]'
+  id: totrans-178
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: Well, maybe not those exact styles, but hopefully you get the idea. Note the
+    use of both absolute and relative URLs in the previous example. Either URL form
+    can be used, just as with `<link>`.
+  id: totrans-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 嗯，也许不是那些确切的样式，但希望你能理解。请注意前面示例中绝对和相对 URL 的使用。可以使用任一 URL 形式，就像 `<link>` 一样。
+- en: 'Note also that the `@import` directives appear at the beginning of the stylesheet,
+    as they did in the example document. As we said previously, CSS requires the `@import`
+    directives to come before any rules in a stylesheet, though they can be preceded
+    by `@charset` and `@layer` declarations. An `@import` that comes after other rules
+    (e.g., `body {color`: `red;}`) will be ignored by conforming user agents.'
+  id: totrans-180
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '还请注意，`@import` 指令出现在样式表的开头，就像示例文档中的情况一样。正如我们之前所说，CSS 要求 `@import` 指令必须在样式表中的任何规则之前出现，尽管它们可以被
+    `@charset` 和 `@layer` 声明所先于。如果 `@import` 出现在其他规则之后（例如，`body {color`: `red;}`），则符合规范的用户代理将忽略它。'
+- en: Warning
+  id: totrans-181
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: Some versions of Internet Explorer for Windows did not ignore any `@import`
+    directive, even those that come after other rules, but all modern browsers do
+    ignore improperly placed `@import` directives.
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 某些版本的 Windows Internet Explorer 并不会忽略任何 `@import` 指令，即使它们出现在其他规则之后，但所有现代浏览器都会忽略放置不正确的
+    `@import` 指令。
+- en: 'Another descriptor that can be added to an `@import` directive is a *cascade
+    layer* identifier. This assigns all of the styles in the imported stylesheet to
+    a cascade layer, which is a concept we’ll explore in [Chapter 4](ch04.html#specificity_comma_inheritance).
+    It looks like this:'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以添加到 `@import` 指令的另一个描述符是 *级联层* 标识符。这会将导入样式表中的所有样式分配给级联层，这是我们将在 [第 4 章](ch04.html#specificity_comma_inheritance)
+    中探讨的概念。它看起来像这样：
+- en: '[PRE31]'
+  id: totrans-184
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: 'That assigns the styles from *basic-text.css* to the `basic` cascade layer.
+    If you want to assign the styles to an unnamed layer, use `layer` without the
+    parenthetical naming, like so:'
+  id: totrans-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将 *basic-text.css* 的样式分配给 `basic` 级联层。如果要将样式分配给未命名的层，则使用 `layer` 而不是括号内的命名，如下所示：
+- en: '[PRE32]'
+  id: totrans-186
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: Note that this ability is a difference between `@import` and `<link>`, as the
+    latter cannot be labeled with a cascade layer.
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，这是 `@import` 和 `<link>` 之间的一个区别，因为后者不能用级联层标记。
+- en: HTTP Linking
+  id: totrans-188
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: HTTP 链接
+- en: In another, far more obscure way to associate CSS with a document, you can link
+    the two via HTTP headers.
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过 HTTP 头文件的另一种，远不常见的方法将 CSS 与文档关联起来。
+- en: 'Under Apache HTTP Server, this can be accomplished by adding a reference to
+    the CSS file in a *.htaccess* file. For example:'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 Apache HTTP 服务器下，可以通过在 *.htaccess* 文件中添加对 CSS 文件的引用来实现。例如：
+- en: '[PRE33]'
+  id: totrans-191
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: 'This will cause supporting browsers to associate the referenced stylesheet
+    with any documents served from under that *.htaccess* file. The browser will then
+    treat it as if it were a linked stylesheet. Alternatively, and probably more efficiently,
+    you can add an equivalent rule to the server’s *httpd.conf* file:'
+  id: totrans-192
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将导致支持的浏览器将引用的样式表与任何从该 *.htaccess* 文件下提供的文档关联起来。然后，浏览器将其视为链接的样式表。或者，而且可能更有效的是，您可以将等效规则添加到服务器的
+    *httpd.conf* 文件中：
+- en: '[PRE34]'
+  id: totrans-193
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: The effect is exactly the same in supporting browsers. The only difference is
+    in where you declare the linking.
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在支持的浏览器中效果完全相同。唯一的区别在于声明链接的位置不同。
+- en: You probably noticed the use of the term “supporting browsers.” As of late 2022,
+    the widely used browsers that support HTTP linking of stylesheets are the Firefox
+    family and Opera. That restricts this technique mostly to development environments
+    based on one of those browsers. In such a situation, you can use HTTP linking
+    on the test server to mark when you’re on the development site as opposed to the
+    public site. It’s also an interesting way to hide styles from Chromium browsers,
+    assuming you have a reason to do so.
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能注意到了术语“支持浏览器”的使用。截至2022年底，支持HTTP链接样式表的常用浏览器包括Firefox系列和Opera。这限制了该技术主要适用于基于这些浏览器之一的开发环境。在这种情况下，您可以在测试服务器上使用HTTP链接来标记您是否在开发站点而不是公共站点上。这也是一个隐藏Chromium浏览器样式的有趣方式，假设您有这样的需求。
+- en: Note
+  id: totrans-196
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: 'Equivalents to this linking technique are used in common scripting languages
+    such as PHP and IIS, both of which allow the author to emit HTTP headers. It’s
+    also possible to use such languages to explicitly write `link` elements into the
+    document based on the server offering up the document. This is a more robust approach
+    in terms of browser support: every browser supports the `link` element.'
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与此链接技术等效的技术在PHP和IIS等常见脚本语言中使用，这两者都允许作者发出HTTP标头。还可以使用这些语言根据服务器提供文档来显式地编写`link`元素。从浏览器支持的角度来看，这是一种更为健壮的方法：每个浏览器都支持`link`元素。
+- en: Inline Styles
+  id: totrans-198
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内联样式
+- en: 'If you want to just assign a few styles to one individual element, without
+    the need for embedded or external stylesheets, you can employ the HTML attribute
+    `style`:'
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你只想为单个元素分配一些样式，而不需要嵌入或外部样式表，你可以使用HTML属性`style`：
+- en: '[PRE35]'
+  id: totrans-200
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: The `style` attribute can be associated with any HTML tag whatsoever, even tags
+    found outside of `<body>` (`<head>` or `<title>`, for instance).
+  id: totrans-201
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`style`属性可以与任何HTML标签关联，甚至可以是在`<body>`之外找到的标签（例如`<head>`或`<title>`）。'
+- en: 'The syntax of a `style` attribute is fairly ordinary. In fact, it looks very
+    much like the declarations found in the `<style>` container, except here the curly
+    braces are replaced by double quotation marks. So `<p style="color`: `maroon;
+    background`: `yellow;">` will set the text color to be maroon and the background
+    to be yellow *for that paragraph only*. No other part of the document will be
+    affected by this declaration.'
+  id: totrans-202
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`style`属性的语法非常普通。事实上，它看起来非常像在`<style>`容器中找到的声明，只是这里用双引号代替了大括号。因此，`<p style="color:
+    maroon; background: yellow;">`会将段落的文字颜色设置为栗色，背景设置为黄色，*仅适用于该段落*。文档的其他部分不会受此声明的影响。'
+- en: Note that you can place only a declaration block, not an entire stylesheet,
+    inside an inline `style` attribute. Therefore, you can’t put an `@import` into
+    a `style` attribute, nor can you include any complete rules. The only thing you
+    can put into the value of a `style` attribute is what might go between the curly
+    braces of a rule.
+  id: totrans-203
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，您只能在内联`style`属性中放置声明块，而不能放置整个样式表。因此，您不能将`@import`放入`style`属性中，也不能包含任何完整的规则。您可以将`style`属性的值放入大括号之间的内容。
+- en: Use of the `style` attribute is discouraged. Many of the primary advantages
+    of CSS—the ability to organize centralized styles that control an entire document’s
+    appearance or the appearance of all documents on a web server—are negated when
+    you place styles into a `style` attribute. In many ways, inline styles are not
+    much better than the ancient `<font>` tag, even if they do have a good deal more
+    flexibility in terms of which visual effects they can apply.
+  id: totrans-204
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不鼓励使用`style`属性。将样式放入`style`属性中时，CSS的许多主要优势——如能够组织集中的样式以控制整个文档的外观或所有文档在Web服务器上的外观——都会被抵消。在许多方面，内联样式与古老的`<font>`标签并没有多大区别，即使它们在应用哪些视觉效果方面具有更大的灵活性。
+- en: Summary
+  id: totrans-205
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 总结
+- en: With CSS, you can completely change the way elements are presented by a user
+    agent. You can do this at a basic level with the `display` property, and in a
+    different way by associating stylesheets with a document. The user will never
+    know whether this is done via an external or embedded stylesheet, or even with
+    an inline style. The real importance of external stylesheets is the way in which
+    they allow you to put all of a site’s presentation information in one place, and
+    point all of the documents to that place. This not only makes site updates and
+    maintenance a breeze, but also helps to save bandwidth, since all of the presentation
+    is removed from documents.
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用CSS，您可以通过用户代理完全改变元素呈现的方式。您可以通过`display`属性在基本层面上进行这样的操作，也可以通过将样式表与文档关联的不同方式进行操作。用户永远不会知道是通过外部样式表、嵌入样式表还是内联样式来完成的。外部样式表的真正重要性在于它们允许您将所有站点的展示信息放在一个地方，并指向所有文档的那个地方。这不仅使得站点的更新和维护变得轻而易举，而且有助于节省带宽，因为所有的展示内容都从文档中移除了。
+- en: To make the most of the power of CSS, you need to know how to associate a set
+    of styles with the elements in a document. To fully understand how CSS can do
+    all of this, you need a firm grasp of the way CSS selects pieces of a document
+    for styling, which is the subject of the next few chapters.
+  id: totrans-207
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要充分利用CSS的强大功能，您需要知道如何将一组样式与文档中的元素关联起来。要完全理解CSS的所有功能，您需要牢牢掌握CSS选择文档部分进行样式化的方式，这是接下来几章的主题。

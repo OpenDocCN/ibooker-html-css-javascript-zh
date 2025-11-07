@@ -1,0 +1,2694 @@
+- en: Chapter 9\. Gradients
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 第九章 渐变
+- en: 'Three image types defined by CSS are described entirely with CSS: linear gradients,
+    radial gradients, and conic gradients. Each type has two subtypes: repeating and
+    nonrepeating. Gradients are most often used in backgrounds, though they can be
+    used in any context where an image is permitted—as in `list-style-image` and `border-image`,
+    for example.'
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CSS 定义的三种图像类型完全由 CSS 描述：线性渐变、径向渐变和锥形渐变。每种类型有两种子类型：重复和非重复。渐变通常用于背景中，尽管它们可以用在允许图像的任何上下文中，例如
+    `list-style-image` 和 `border-image`。
+- en: A *gradient* is a visual transition from one color to another. A gradient from
+    yellow to red will start yellow, run through successively less yellow, redder
+    shades of orange, and eventually arrive at a full red. How gradual or abrupt the
+    transition is depends on the amount of space the gradient has and the way you
+    define color stops and progression color hints. If you run from white to black
+    over 100 pixels, each pixel along the gradient’s default progression will be another
+    1% darker gray, as shown in [Figure 9-1](#cab_fig61).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*渐变* 是从一种颜色到另一种颜色的视觉过渡。从黄色到红色的渐变将从黄色开始，经过逐渐减少的黄色、更红的橙色阴影，最终到达完全的红色。过渡的平缓程度取决于渐变的空间量以及定义颜色停止点和进度颜色提示的方式。如果你在
+    100 像素上从白色渐变到黑色，那么默认渐变过程中每个像素将变为更黑的灰色，如图 [9-1](#cab_fig61) 所示。'
+- en: '![css5 0901](assets/css5_0901.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0901](assets/css5_0901.png)'
+- en: Figure 9-1\. The progression of a simple gradient
+  id: totrans-4
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-1。简单渐变的过程
+- en: 'As we go through the process of exploring gradients, always keep this in mind:
+    *gradients are images*. It doesn’t matter that you describe them by typing CSS—they
+    are every bit as much images as SVGs, PNGs, JPEGs, and so on—but gradients have
+    excellent rendering performance, don’t require an extra HTTP request to load,
+    and are infinitely scalable.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当我们探索渐变的过程时，始终牢记一点：*渐变是图像*。不管你是通过键入 CSS 描述它们，它们与 SVG、PNG、JPEG 等图像一样——但渐变具有出色的渲染性能，无需额外的
+    HTTP 请求加载，并且可以无限缩放。
+- en: What’s interesting about gradients is that they have no intrinsic dimensions.
+    If the `background-size` property’s value `auto` is used, it is treated as if
+    it were `100%`. Thus, if you don’t define a `background-size` for a background
+    gradient, it will be set to the default value of `auto`, which is the same as
+    declaring `100% 100%`. So, by default, background gradients fill the entire background
+    positioning area. Just note that if you offset the gradient’s background position
+    with a length (not percentage) value, by default it will tile.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 渐变的有趣之处在于它们没有固有的尺寸。如果使用 `background-size` 属性值 `auto`，它将被视为 `100%`。因此，如果你未为背景渐变定义
+    `background-size`，它将设置为默认值 `auto`，这与声明 `100% 100%` 相同。因此，默认情况下，背景渐变填充整个背景定位区域。只需注意，如果使用长度（而不是百分比）值偏移渐变的背景位置，默认情况下它将平铺。
+- en: Linear Gradients
+  id: totrans-7
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 线性渐变
+- en: '*Linear gradients* are gradient fills that proceed along a linear vector, referred
+    to as the *gradient line*. Here are a few relatively simple gradients, with the
+    results shown in [Figure 9-2](#cab_fig62):'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*线性渐变* 是沿线性向量进行的渐变填充，称为 *渐变线*。这里是几个相对简单的渐变示例，结果显示在图 [9-2](#cab_fig62) 中：'
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '![css5 0902](assets/css5_0902.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0902](assets/css5_0902.png)'
+- en: Figure 9-2\. Simple linear gradients
+  id: totrans-11
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-2。简单线性渐变
+- en: 'The first of these is the most basic that a gradient can be: two colors. This
+    causes a gradient from the first color at the top of the background painting area
+    to the second color at the bottom of the background painting area.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是最基本的渐变形式：两种颜色。这导致了从背景绘制区域顶部的第一种颜色到底部的第二种颜色的渐变。
+- en: By default, a gradient runs from top to bottom because the default direction
+    for gradients is `to bottom`, which is the same as `180deg` and its various equivalents
+    (for example, `0.5turn`). If you’d like to go in a different direction, you can
+    start the gradient value with a direction. That’s what we did for all the other
+    gradients shown in [Figure 9-2](#cab_fig62).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，渐变从顶部到底部，因为渐变的默认方向是 `to bottom`，这等同于 `180deg` 和其各种等效方式（例如 `0.5turn`）。如果你想沿不同方向进行渐变，可以在渐变值前加上一个方向。这就是我们在图
+    [9-2](#cab_fig62) 中展示的所有其他渐变所做的。
+- en: 'A gradient must have, at minimum, two color stops. They can be the same color,
+    though. If you want to have a solid color behind only part of your content, a
+    gradient with the same color declared twice, along with a background size and
+    a no-repeat, enables that, as shown in [Figure 9-3](#linear-gradients-solid-color-sized):'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 渐变必须至少有两个颜色停止点。它们可以是相同的颜色。如果你只想在内容的部分区域背后使用单一颜色，可以使用同一颜色声明两次的渐变，以及背景大小和不重复，如[图 9-3](#linear-gradients-solid-color-sized)所示：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '![css5 0903](assets/css5_0903.png)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0903](assets/css5_0903.png)'
+- en: Figure 9-3\. Solid-color gradients
+  id: totrans-17
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-3\. 单一颜色渐变
+- en: 'The basic syntax of a linear gradient is shown here:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 线性渐变的基本语法如下所示：
+- en: '[PRE2]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: We’ll explore both color stop lists and color hints soon. For now, the basic
+    pattern to keep in mind is an optional direction at the start, a list of color
+    stops and/or color hints, and a color stop at the end. As shown earlier, a `linear-gradient()`
+    value must have a minimum of two color stops.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将很快探讨颜色停止列表和颜色提示。现在，请记住的基本模式是在开头可选的方向，一系列颜色停止点和/或颜色提示，以及一个结束的颜色停止点。如前所示，`linear-gradient()`值必须至少有两个颜色停止点。
+- en: While you use the `to` keyword only if you’re describing a side or quadrant
+    with keywords like `top` and `right`, the direction you give *always* describes
+    the direction in which the gradient line points. In other words, `linear-gradient(0deg,red,green)`
+    will have red at the bottom and green at the top because the gradient line points
+    toward 0 degrees (the top of the element) and thus ends with green. While it is
+    indeed “going toward 0 degrees,” remember to omit the `to` if you’re using an
+    angle value, because something like `to 45deg` is invalid and will be ignored.
+    Degrees increase clockwise from 0 at the top.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你只描述使用诸如`top`和`right`这样的关键字的一侧或象限时，你只使用`to`关键字，而你给出的方向总是描述渐变线条指向的方向。换句话说，`linear-gradient(0deg,red,green)`会使红色在底部，绿色在顶部，因为渐变线条指向0度（元素的顶部），因此以绿色结束。虽然它确实“朝向0度”，但如果你使用角度值，记得忽略`to`关键字，因为像`to
+    45deg`这样的内容是无效的，并且会被忽略。度数从顶部顺时针增加。
+- en: 'The important point is that while `0deg` is the same as `to top`, 45% is *not*
+    the same as `to top right`. This is explained in [“Understanding Gradient Lines:
+    The Gory Details”](#gradient-lines-the-gory-details). Equally important to remember
+    is that when using angles, whether it’s degrees, radians, or turns, the unit type
+    is *required*. A `0` value is not valid and will prevent any gradient from being
+    created, while `0deg` is valid.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重要的一点是，虽然`0deg`等同于`to top`，但`45%`并不等同于`to top right`。这在[“理解渐变线条：详细信息”](#gradient-lines-the-gory-details)中有解释。同样重要的是要记住，使用角度时，无论是度数、弧度还是圈数，单位类型是*必需*的。`0`值是无效的，并将阻止创建任何渐变，而`0deg`是有效的。
+- en: Setting Gradient Colors
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置渐变颜色
+- en: 'You can use any color value you like in gradients, including alpha-channel
+    values such as `rgba()` and keywords like `transparent`. Thus it’s entirely possible
+    to fade out pieces of your gradient by blending to (or from) a color with zero
+    opacity. Consider the following rules, which are depicted in [Figure 9-4](#cab_fig63):'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在渐变中可以使用任何你喜欢的颜色值，包括像`rgba()`这样的alpha通道值和像`transparent`这样的关键字。因此，通过与透明度为零的颜色混合，完全可以使渐变中的部分逐渐消失或出现。考虑以下规则，这些规则在[图 9-4](#cab_fig63)中有所描述：
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '![css5 0904](assets/css5_0904.png)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0904](assets/css5_0904.png)'
+- en: Figure 9-4\. Fading to white versus fading to transparent
+  id: totrans-27
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-4\. 淡出至白色与淡出至透明
+- en: The first example fades from light gray to white, whereas the second example
+    fades the same light gray from opaque to transparent, thus allowing the parent
+    element’s yellow background to show through.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个示例从浅灰色渐变至白色，而第二个示例将相同的浅灰色从不透明渐变至透明，因此允许父元素的黄色背景显示出来。
+- en: 'You’re not restricted to two colors, either. While that is the minimum number
+    of colors allowed, you’re free to add as many colors as you can stand. Consider
+    the following gradient:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不仅限于两种颜色。尽管这是允许的最少颜色数，但你可以添加尽可能多的颜色。考虑以下渐变：
+- en: '[PRE4]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The gradient line points toward 90 degrees, which is the right side. There are
+    14 color stops in all, one for each of the comma-separated color names, and they
+    are, by default, distributed evenly along the gradient line, with the first at
+    the beginning of the line and the last at the end. Between the color stops, by
+    default the colors are blended as smoothly as possible from one color to the other.
+    This is shown in [Figure 9-5](#cab_fig64), with extra labels indicating how far
+    along the gradient line the color stops are placed.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 渐变线指向90度，即右侧。总共有14个颜色停止点，每个逗号分隔的颜色名称对应一个，它们默认均匀分布在渐变线上，第一个位于线的起始处，最后一个位于末尾。默认情况下，在颜色停止点之间，颜色会尽可能平滑地混合。这在[图9-5](#cab_fig64)中显示，额外的标签指示了颜色停止点在渐变线上的位置。
+- en: '![css5 0905](assets/css5_0905.png)'
+  id: totrans-32
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0905](assets/css5_0905.png)'
+- en: Figure 9-5\. The distribution of color stops along the gradient line
+  id: totrans-33
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-5\. 沿着渐变线的颜色停止点分布
+- en: So, without any indication of where the color stops should be positioned, they’re
+    evenly distributed. Fortunately, we can give each color up to two positions, and
+    can even use color hints for more control over gradient progression, hopefully
+    improving the visual effect.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，如果没有指示颜色停止点应该放置在何处，它们将均匀分布。幸运的是，我们可以为每种颜色提供最多两个位置，并且可以使用颜色提示来更好地控制渐变的进展，从而改善视觉效果。
+- en: Positioning Color Stops
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定位颜色停止点
+- en: 'The full syntax of a <*`color-stop`*> is as follows:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <*`color-stop`*> 的完整语法如下：
+- en: '[PRE5]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: After every color value, you can (but don’t have to) supply a position value
+    or two. This gives you the ability to distort the default evenly distributed progression
+    of color stops into something else.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在每个颜色值之后，您可以（但不一定要）提供一个或两个位置值。这使您能够将颜色停止点的默认均匀分布进度扭曲为其他形式。
+- en: 'We’ll start with lengths, since they’re pretty simple. Let’s take a rainbow
+    progression (only a single rainbow this time) and have each color of the rainbow
+    occur every 25 pixels, as shown in [Figure 9-6](#cab_fig65):'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将从长度开始，因为它们非常简单。让我们以彩虹的形式进行进展（这次只有一个彩虹），并且每25像素出现一种彩虹颜色，如[图9-6](#cab_fig65)所示：
+- en: '[PRE6]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '![css5 0906](assets/css5_0906.png)'
+  id: totrans-41
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0906](assets/css5_0906.png)'
+- en: Figure 9-6\. Placing color stops every 25 pixels
+  id: totrans-42
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-6\. 每25像素放置一个颜色停止点
+- en: 'This worked out just fine, but notice what happens after 150 pixels—the violet
+    just continues on to the end of the gradient line. That’s what happens if you
+    set up the color stops so they don’t make it to the end of a basic gradient line:
+    the last color is just carried onward.'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个处理得很好，但请注意在150像素后会发生什么—紫罗兰色会持续到渐变线的末端。如果设置颜色停止点使其无法达到基本渐变线的末端，就会发生这种情况：最后一个颜色会持续向前。
+- en: 'Conversely, if your color stops go beyond the end of a basic gradient line,
+    the gradient will appear to stop at whatever point it manages to reach when it
+    gets to the end of the visible part of the gradient line. This is illustrated
+    in [Figure 9-7](#cab_fig66), created with the following code:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，如果您的颜色停止点超出了基本渐变线的末端，渐变将似乎在它达到渐变线可见部分末端时停止。这在[图9-7](#cab_fig66)中有所说明，由以下代码创建：
+- en: '[PRE7]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '![css5 0907](assets/css5_0907.png)'
+  id: totrans-46
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0907](assets/css5_0907.png)'
+- en: Figure 9-7\. Gradient clipping when color stops go too far
+  id: totrans-47
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-7\. 当颜色停止点超出范围时的渐变剪切
+- en: Since the last color stop is at 1,200 pixels but the background size isn’t nearly
+    that wide, the visible part of the gradient stops right around the color `blue`.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于最后一个颜色停止点在1200像素处，但背景大小远远不及这么宽，渐变的可见部分在大约蓝色处停止。
+- en: Note that in the preceding two examples and figures, the first color (`red`)
+    doesn’t have a length value. If the first color has no position, it’s assumed
+    to be the beginning of the gradient line, as if `0%` (or other zero value, like
+    `0px`) had been declared. Similarly, if you leave a position off the last color
+    stop, it’s assumed to be the end of the gradient line. (But note that this is
+    not true for repeating gradients, which we’ll cover in [“Repeating Linear Gradients”](#repeating-linear-gradients).)
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上述两个示例和图中，请注意第一个颜色（`red`）没有长度值。如果第一个颜色没有位置，则假定它是渐变线的起始点，就好像声明了`0%`（或其他零值，如`0px`）。同样，如果最后一个颜色停止点没有指定位置，则假定它是渐变线的末尾。（但请注意，对于重复渐变来说并非如此，我们将在[“重复线性渐变”](#repeating-linear-gradients)中讨论。）
+- en: 'You can use any length value you like, not just pixels—ems, viewport units,
+    you name it. You can even mix different units into the same gradient, although
+    this is not generally recommended for reasons we’ll get to in a little bit. You
+    can also have negative length values if you want; doing so will place a color
+    stop before the beginning of the gradient line, all the color transitions will
+    happen as expected, and clipping will occur in the same manner as it happens at
+    the end of the line. The following code, for example, results in [Figure 9-8](#cab_fig67):'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用任何长度值，不仅限于像素，还有 em、视口单位等。您甚至可以在同一个渐变中混合不同的单位，尽管通常不建议这样做，原因稍后我们将详细讨论。如果需要，还可以使用负长度值；这将在渐变线的开始之前放置一个颜色停止点，所有的颜色过渡将按预期进行，并且剪切方式与发生在线末端的剪切方式相同。例如，以下代码的结果是
+    [图 9-8](#cab_fig67)：
+- en: '[PRE8]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '![css5 0908](assets/css5_0908.png)'
+  id: totrans-52
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0908](assets/css5_0908.png)'
+- en: Figure 9-8\. Gradient clipping when color stops have negative positions
+  id: totrans-53
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-8\. 当颜色停止点具有负位置时的渐变裁剪
+- en: 'As for percentages, they’re calculated with respect to the total length of
+    the gradient line. A color stop at `50%` will be at the midpoint of the gradient
+    line. Let’s return to our rainbow example, and instead of having a color stop
+    every 25 pixels, we’ll have one every 10% of the gradient line’s length. This
+    would look like the following, which has the result shown in [Figure 9-9](#cab_fig68):'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 至于百分比，它们是相对于渐变线总长度计算的。在渐变线的中点处放置的颜色停止点为 `50%`。让我们回到我们的彩虹示例，不再每 25 像素设置一个颜色停止点，而是每个渐变线长度的
+    10% 设置一个。这将看起来像以下示例，并在 [图 9-9](#cab_fig68) 中显示结果：
+- en: '[PRE9]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '![css5 0909](assets/css5_0909.png)'
+  id: totrans-56
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0909](assets/css5_0909.png)'
+- en: Figure 9-9\. Placing color stops every 10%
+  id: totrans-57
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-9\. 每 10% 放置颜色停止
+- en: As you saw previously, since the last color stop comes before the end of the
+    gradient line, its color (`violet`) is carried through to the end of the gradient.
+    These stops are more spread out than in the earlier 25-pixel example, but otherwise
+    things happen in more or less the same way.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你之前所见，由于最后的颜色停止位于渐变线的末尾之前，其颜色（`violet`）将一直延续到渐变的末端。这些停止点比之前 25 像素的示例更分散，但除此之外，其他事情基本上是一样的。
+- en: 'If some color stops have position values and others don’t, the stops without
+    positions are evenly distributed between the ones that do. The following are equivalent:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果某些颜色停止点具有位置值，而其他颜色停止点没有，则没有位置值的停止点将在具有位置值的停止点之间均匀分布。以下是等效的：
+- en: '[PRE10]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Because `red` and `violet` don’t have specified position values, they’re taken
+    to be `0%` and `100%`, respectively. This means that `orange`, `green`, and `blue`
+    will be evenly distributed between the explicitly defined positions to either
+    side of them.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为 `red` 和 `violet` 没有指定的位置值，它们分别被认为是 `0%` 和 `100%`。这意味着 `orange`、`green` 和
+    `blue` 将均匀分布在它们两侧明确定义的位置之间。
+- en: For `orange`, that means the point midway between `red 0%` and `yellow 50%`,
+    which is 25%. For `green` and `blue`, these need to be arranged between `yellow
+    50%` and `indigo 95%`. That’s a 45% difference, which is divided in three, because
+    there are three intervals between the four values. That means 65% and 80%.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于 `orange`，这意味着位于 `red 0%` 和 `yellow 50%` 中间的点，即 25%。对于 `green` 和 `blue`，它们需要排列在
+    `yellow 50%` 和 `indigo 95%` 之间。这是一个 45% 的差距，被分成三段，因为四个值之间有三个间隔。这意味着 65% 和 80%。
+- en: 'You might wonder what happens if you put two color stops at exactly the same
+    point, like this:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能会想知道，如果将两个颜色停止点放在完全相同的位置，会发生什么，如下所示：
+- en: '[PRE11]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: All that happens is the two color stops are put on top of each other. [Figure 9-10](#cab_fig70)
+    shows the result.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有发生的就是两个颜色停止点被放在一起。[图 9-10](#cab_fig70) 显示了结果。
+- en: '![css5 0910](assets/css5_0910.png)'
+  id: totrans-66
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0910](assets/css5_0910.png)'
+- en: Figure 9-10\. The effect of coincident, or “hard,” color stops
+  id: totrans-67
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-10\. 重合或“硬”颜色停止的效果
+- en: The gradient blends as usual all along the gradient line, but at the 50% point,
+    it instantly blends from yellow to green over zero length, creating what’s often
+    called a *hard* color stop. So the gradient blends from orange at the 25% point
+    (halfway between 0% to 50%) to yellow at the 50% point, then blends from yellow
+    to green over zero length, then blends from green at 50% over to blue at 66.67%
+    (one-third of the way between 50% and 100%).
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 渐变线在整个渐变线上像往常一样混合，但在 50% 的位置，它立即在零长度内从黄色到绿色混合，创建了通常称为*硬*颜色停止的效果。因此，渐变从 25% 处的橙色（0%
+    到 50% 之间的一半）到 50% 处的黄色混合，然后在零长度内从黄色到绿色混合，然后在 50% 处从绿色到蓝色混合到 66.67% 处（50% 到 100%
+    之间的三分之一）。
+- en: 'This hard-stop effect can be useful if you want to create a striped effect.
+    The following code results in the stripes shown in [Figure 9-11](#cab_fig71):'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想创建条纹效果，这种硬停止效果可能会很有用。以下代码会产生[图9-11](#cab_fig71)中显示的条纹效果：
+- en: '[PRE12]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: '![css5 0911](assets/css5_0911.png)'
+  id: totrans-71
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0911](assets/css5_0911.png)'
+- en: Figure 9-11\. Hard-stop stripes
+  id: totrans-72
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-11\. 硬停止条纹
+- en: 'That said, there’s an easier and more readable way to do that kind of thing,
+    which is to give each color a starting and ending stop position. Here’s how to
+    do that, with exactly the same result as shown in [Figure 9-11](#cab_fig71):'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也可以通过更简单和更易读的方式来实现这种效果，即为每种颜色指定起始和结束停止位置。以下是如何做到这一点，与[图9-11](#cab_fig71)中显示的完全相同的结果：
+- en: '[PRE13]'
+  id: totrans-74
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Note that the `0%` and `100%` could have been left out, and they’d be inferred
+    by the browser. So you can leave them in for clarity or take them out for efficiency,
+    as suits you.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`0%`和`100%`可以被省略，浏览器会自动推断。因此，你可以保留它们以便清晰，或者根据需要删除以提高效率。
+- en: 'It’s also fine to mix two-stop stripes and one-stop color points in a single
+    gradient. If you want to have the first and last quarter of the gradient be solid
+    gray stripes and transition through transparency between them, it could look like
+    this:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在单个渐变中混合两个停止条纹和一个停止颜色点也是可以的。如果你想让渐变的第一和最后一个四分之一是实心灰色条纹，并在它们之间通过透明度过渡，可能会看起来像这样：
+- en: '[PRE14]'
+  id: totrans-77
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'OK, so that’s what happens if you put color stops right on top of each other,
+    but what happens if you put one *before* the other? Something like this, say:'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 好的，所以如果你把颜色停止点放在一起会发生什么，但如果你把一个*放在*另一个之前会发生什么呢？就像这样：
+- en: '[PRE15]'
+  id: totrans-79
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: The offending color stop (blue, in this case) is set to the largest specified
+    value of a preceding color stop. Here, it is set to `50%`, since the stop before
+    it has that position. This creates a hard stop, and we get the same effect we
+    saw earlier, when the green and blue color stops were placed on top of each other.
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有问题的颜色停止点（在本例中为蓝色）设置为前一个颜色停止点的最大指定值。在这里，它设置为`50%`，因为它之前的停止点具有该位置。这会创建一个硬停止，我们得到了之前看到的效果，当绿色和蓝色的颜色停止点放在一起时。
+- en: 'The key point here is that the color stop is set to the largest *specified*
+    position of the stop that precedes it. Thus, the following two gradients are visually
+    the same, as the `indigo` color stop in the first gets set to `50%`:'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里的关键点是颜色停止点设置为其前一个停止点的最大*指定*位置。因此，以下两个渐变在视觉上是相同的，因为第一个中的`靛蓝`颜色停止点被设置为`50%`：
+- en: '[PRE16]'
+  id: totrans-82
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: In this case, the largest specified position before the indigo stop is the `50%`
+    specified at the yellow stop. Thus, the gradient fades from red to orange to yellow,
+    then has a hard switch to indigo before fading from indigo to violet. The green
+    and blue aren’t skipped; rather, the gradients transition from yellow to green
+    to blue to indigo over zero distance. See [Figure 9-12](#cab_fig72) for the results.
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，靛蓝停止点之前的最大指定位置是黄色停止点处的`50%`。因此，渐变从红色渐变到橙色再到黄色，然后在渐变从靛蓝到紫色之前有一个硬切换。绿色和蓝色并没有被跳过；相反，渐变在零距离内从黄色过渡到绿色再到蓝色再到靛蓝。查看[图9-12](#cab_fig72)以查看结果。
+- en: '![css5 0912](assets/css5_0912.png)'
+  id: totrans-84
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0912](assets/css5_0912.png)'
+- en: Figure 9-12\. Handling color stops that are out of place
+  id: totrans-85
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-12\. 处理位置不正确的颜色停止点
+- en: This behavior is the reason mixing units within a single gradient is generally
+    discouraged. If you mix `rem` units and percentages, for example, your color stop
+    positioned with percentages might end up before an earlier color stop positioned
+    with rems.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种行为是单个渐变中混合单位通常不鼓励的原因。例如，如果你混合`rem`单位和百分比，那么使用百分比定位的颜色停止点可能会在使用rem定位的较早颜色停止点之前。
+- en: Setting Color Hints
+  id: totrans-87
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置颜色提示
+- en: 'Thus far, we’ve worked with color stops, but you may remember that the syntax
+    for linear gradients permits color hints after each color stop:'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们已经使用了颜色停止点，但你可能还记得线性渐变的语法允许在每个颜色停止点之后添加颜色提示：
+- en: '[PRE17]'
+  id: totrans-89
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: 'A <*`color-hint`*> is a way of modifying the blend between the two color stops
+    to either side. By default, the blend from one color stop to the next is linear,
+    with the midpoint of the blend at the halfway mark between two color stops, or
+    50%. It doesn’t have to be that simple. The following two gradients are the same
+    and have the result shown in [Figure 9-13](#cbag_css4_gradient-color-hints-default):'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <*`颜色提示`*>是一种修改两侧颜色停止点之间混合的方式。默认情况下，从一个颜色停止点到下一个的混合是线性的，混合的中点位于两个颜色停止点之间的中间位置，即50%。它不一定那么简单。以下两个渐变是相同的，并且具有[图9-13](#cbag_css4_gradient-color-hints-default)中显示的结果：
+- en: '[PRE18]'
+  id: totrans-91
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: '![css5 0913](assets/css5_0913.png)'
+  id: totrans-92
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0913](assets/css5_0913.png)'
+- en: Figure 9-13\. Linear blending from one color stop to the next
+  id: totrans-93
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-13\. 从一个颜色停止点线性混合到下一个
+- en: 'With color hints, we can change the midpoint of the progression. Instead of
+    reaching `rgb(45% 45% 45%)` at the halfway point, it can be set for any point
+    between the two stops. Thus, the following CSS leads to the result seen in [Figure 9-14](#cbag_css4_gradient-color-hints-various):'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用颜色提示，我们可以改变进度的中点。不再在中途点达到`rgb(45% 45% 45%)`，而是可以设置为两个停止点之间的任何点。因此，以下CSS导致了[图9-14](#cbag_css4_gradient-color-hints-various)中看到的结果：
+- en: '[PRE19]'
+  id: totrans-95
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: '![css5 0914](assets/css5_0914.png)'
+  id: totrans-96
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0914](assets/css5_0914.png)'
+- en: Figure 9-14\. Black to gray with differing midpoint hints
+  id: totrans-97
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-14\. 从黑色到灰色，具有不同中点提示的情况
+- en: In all five examples, the first color stop is at the 25% mark and the last at
+    the 75% mark, but each has a different midpoint for the gradient. In the first
+    case (`#ex01`), the default linear progression is used, with the middle color
+    (45% black) occurring at the midpoint between the two color stops.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在所有五个示例中，第一个颜色停止点位于25%标记处，最后一个位于75%标记处，但每个渐变的中点不同。在第一种情况（`#ex01`）中，使用了默认的线性进度，中间颜色（45%黑色）出现在两个颜色停止点之间的中点处。
+- en: In the second case (`#ex02`), the middle color happens at the 33% point of the
+    gradient line. So the first color stop is at the 25% point on the line, the middle
+    color happens at 33%, and the second color stop happens at 75%.
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第二种情况（`#ex02`）中，中间颜色发生在渐变线的33%点。因此，第一个颜色停止点位于线的25%点处，中间颜色发生在33%处，第二个颜色停止点位于75%处。
+- en: In the third example (`#ex03`), the midpoint is at the 67% point of the gradient
+    line; thus, the color fades from black at 25% to the middle color at 67%, and
+    then from that middle color at 67% to light gray at 75%.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第三个示例（`#ex03`）中，中点位于渐变线的67%处；因此，颜色从25%处的黑色淡出到67%处的中间颜色，然后从67%处的中间颜色淡出到75%处的浅灰色。
+- en: 'The fourth and fifth examples show what happens when you put a color hint’s
+    distance right on top of one of the color stops: you get a hard stop.'
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第四个和第五个示例展示了当将颜色提示的距离放置在其中一个颜色停止点上时会发生什么：会得到一个硬停止。
+- en: 'The interesting point about color hinting is that the progression from color
+    stop to color hint to color stop is not just a set of two linear progressions.
+    Instead, the progression has some “curving,” in order to ease from one side of
+    the color hint to the other. (The exact curve is logarithmic and based on the
+    gradient-progression equation used by Photoshop.) This is easiest to see by comparing
+    what would seem to be, but actually is not, two gradients that do the same thing.
+    As you can see in [Figure 9-15](#cbag_css4_gradient-color-hints-curve), the result
+    is rather different for these two examples:'
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于颜色提示的有趣之处在于，从颜色停止点到颜色提示再到颜色停止点的进度不仅仅是两个线性进度的集合。相反，进度中有一些“弯曲”，以便从颜色提示的一侧到另一侧缓解。（确切的曲线是对数曲线，并基于Photoshop使用的渐变进度方程。）通过比较看起来应该是但实际上不是的两个渐变，这一点最容易看出来。正如您可以在[图9-15](#cbag_css4_gradient-color-hints-curve)中看到的那样，这两个示例的结果非常不同：
+- en: '[PRE20]'
+  id: totrans-103
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: '![css5 0915](assets/css5_0915.png)'
+  id: totrans-104
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0915](assets/css5_0915.png)'
+- en: Figure 9-15\. Comparing two linear gradients to one hinted transition
+  id: totrans-105
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-15\. 比较两个线性渐变和一个带有提示的过渡
+- en: Notice how the gray progression differs in the two examples. The first shows
+    a linear progression from black to `rgb(45%,45%,45%)`, and then another linear
+    progression from there to `rgb(90%,90%,90%)`. The second progresses from black
+    to light gray over the same distance, and the color-hint point is at the 67% mark,
+    but the gradient is altered to attempt a smoother overall progression. The colors
+    at 25%, 67%, and 75% are the same in both examples, but all the other shades along
+    the way are different because of the (somewhat complicated) easing algorithm defined
+    in the CSS specifications.
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意灰色渐变在这两个示例中的差异。第一个示例显示了从黑色线性渐变到`rgb(45%,45%,45%)`，然后从那里线性渐变到`rgb(90%,90%,90%)`。第二个示例在相同的距离上从黑色渐变到浅灰色，渐变的颜色提示点位于67%处，但是为了尝试更平滑的总体渐变而进行了修改。在两个示例中，25%、67%和75%处的颜色相同，但是因为CSS规范中定义的（有些复杂的）缓解算法，沿途的所有其他色调都不同。
+- en: Warning
+  id: totrans-107
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: If you’re familiar with animations, you might think to put easing functions
+    (such as `ease-in`) into a color hint, in order to exert more control over the
+    way the colors are blended. While the browser does this to some extent, as illustrated
+    in [Figure 9-15](#cbag_css4_gradient-color-hints-curve), this isn’t something
+    developers can control as of late 2022 (though that capability is under serious
+    discussion by the CSS Working Group at this time).
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你熟悉动画，你可能会考虑将缓动函数（如`ease-in`）放入颜色提示中，以更好地控制颜色的混合方式。虽然浏览器在某种程度上确实这样做了，正如[图 9-15](#cbag_css4_gradient-color-hints-curve)所示，但截至2022年末，开发者目前无法控制这一点（尽管CSS工作组正在认真讨论这一能力）。
+- en: 'Understanding Gradient Lines: The Gory Details'
+  id: totrans-109
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解梯度线：详细内容
+- en: 'Now that you have a grasp of the basics of placing color stops, let’s look
+    closely at how gradient lines are constructed, and thus how they create the effects
+    that they do. First, let’s set up a simple gradient so we can then dissect how
+    it works:'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你已经掌握了放置颜色停止的基础知识，让我们仔细看看梯度线是如何构建的，以及它们如何产生它们的效果。首先，让我们设置一个简单的梯度，然后解析它的工作原理：
+- en: '[PRE21]'
+  id: totrans-111
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: Now, how does this one-dimensional construct—a line at 55 degrees on the compass—create
+    a two-dimensional gradient fill? First, the gradient line is placed and its start
+    and ending points determined. This is diagrammed in [Figure 9-16](#cab_fig73),
+    with the final gradient shown next to it.
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，这个在罗盘上55度处的一维构造如何创建二维渐变填充？首先，放置梯度线并确定其起点和终点。这在[图 9-16](#cab_fig73)中有示意图，并且旁边展示了最终的梯度。
+- en: '![css5 0916](assets/css5_0916.png)'
+  id: totrans-113
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0916](assets/css5_0916.png)'
+- en: Figure 9-16\. The placement and sizing of the gradient line
+  id: totrans-114
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-16\. 梯度线的放置和大小
+- en: The first point to make very clear is that the box seen here is not an element—it’s
+    the linear-gradient image itself. (Remember, we’re creating images here.) The
+    size and shape of that image can depend on a lot of factors, whether it’s the
+    size of the element’s background or the application of properties like `background-size`,
+    which is a topic we’ll cover in a bit. For now, we’re just concentrating on the
+    image itself.
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先要明确的一点是，这里看到的框不是一个元素——它本身就是线性渐变图像。（记住，我们在这里创建的是图像。）该图像的大小和形状可能取决于很多因素，无论是元素背景的大小还是如`background-size`属性的应用，这是我们稍后会讨论的话题。现在，我们只集中在图像本身上。
+- en: So, in [Figure 9-16](#cab_fig73), you can see that the gradient line goes straight
+    through the center of the image. The gradient line *always* goes through the center
+    of the gradient image, and in this case, the gradient image is centered in the
+    background area. (Using `background-position` to shift placement of a gradient
+    image can, in some cases, make it appear that the center of the gradient is not
+    centered in the image, but it is.) This gradient is set to a 55-degree angle,
+    so it’s pointing at 55 degrees on the compass. What’s interesting is the start
+    and ending points of the gradient line, which are actually outside the image.
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所以，在[图 9-16](#cab_fig73)中，你可以看到梯度线直接穿过图像的中心。梯度线*总是*穿过梯度图像的中心，在这种情况下，梯度图像位于背景区域的中心。（使用`background-position`来移动梯度图像的位置可能会使看起来梯度的中心不在图像中心，但实际上是在中心。）这个梯度设置为55度角，因此指向罗盘上的55度。有趣的是梯度线的起点和终点实际上在图像外部。
+- en: Let’s talk about the starting point first. It’s the point on the gradient line
+    where a line perpendicular to the gradient line intersects with the corner of
+    the image farthest away from the gradient line’s direction (`55deg`). Conversely,
+    the gradient line’s ending point is the point on the gradient line where a perpendicular
+    line intersects the corner of the image nearest to the gradient line’s direction.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们先谈谈起点。这是在梯度线上的一个点，与梯度线垂直相交于离梯度线方向（`55deg`）最远的图像角落处。相反，梯度线的终点是在梯度线上的一个点，与离梯度线方向最近的图像角落相交的点。
+- en: Bear in mind that the terms “starting point” and “ending point” are a little
+    bit misleading—the gradient line doesn’t actually stop at either point. The gradient
+    line is, in fact, infinite. However, the starting point is where the first color
+    stop will be placed by default, as it corresponds to position value `0%`. Similarly,
+    the ending point corresponds to the position value `100%`.
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，“起点”和“终点”这些术语有些误导——梯度线实际上并不在任何一个点停止。事实上，梯度线是无限的。然而，“起点”是默认情况下第一个颜色停止的位置，对应于位置值`0%`。类似地，“终点”对应于位置值`100%`。
+- en: 'Therefore, let’s consider the gradient we defined before:'
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，让我们考虑之前定义的渐变：
+- en: '[PRE22]'
+  id: totrans-120
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: The color at the starting point will be `#4097FF`, the color at the midpoint
+    (which is also the center of the gradient image) will be `#FFBE00`, and the color
+    at the ending point will be `#4097FF`, with smooth blending in between. This is
+    illustrated in [Figure 9-17](#cab_fig74).
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 起始点的颜色将为`#4097FF`，中点的颜色（也是渐变图像的中心）将为`#FFBE00`，结束点的颜色将为`#4097FF`，在它们之间进行平滑混合。这在[图9-17](#cab_fig74)中有所说明。
+- en: '![css5 0917](assets/css5_0917.png)'
+  id: totrans-122
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0917](assets/css5_0917.png)'
+- en: Figure 9-17\. The calculation of color along the gradient line
+  id: totrans-123
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-17\. 沿着渐变线计算颜色
+- en: All right, fine so far. But, you may wonder, how do the bottom-left and top-right
+    corners of the image get set to the same blue that’s calculated for the starting
+    and ending points, if those points are outside the image? Because the color at
+    each point along the gradient line is extended out perpendicularly from the gradient
+    line. This is partially shown in [Figure 9-18](#cab_fig75) by extending perpendicular
+    lines at the starting and ending points, as well as every 5% of the gradient line
+    between them. Note that each line perpendicular to the gradient line is a solid
+    color.
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止一切都很好。但是，你可能会想知道，如果这些点在图像之外，底部左侧和顶部右侧的角是如何设置为与起始点和结束点计算出的相同的蓝色的？因为沿着渐变线的每个点的颜色都是从渐变线垂直延伸出来的。这在[图9-18](#cab_fig75)中部分显示，通过在起始点和结束点以及它们之间每5%的渐变线处延伸垂直线来展示。请注意，垂直于渐变线的每条线都是单色的。
+- en: '![css5 0918](assets/css5_0918.png)'
+  id: totrans-125
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0918](assets/css5_0918.png)'
+- en: Figure 9-18\. The extension of selected colors along the gradient line
+  id: totrans-126
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-18\. 沿着渐变线延伸的选定颜色
+- en: Hopefully, that should be enough to let you mentally fill in the rest, so let’s
+    consider what happens to the gradient image in various other settings. We’ll use
+    the same gradient definition as before, but this time apply it to wide, square,
+    and tall images. These are shown in [Figure 9-19](#cab_fig76). Note that the starting-point
+    and ending-point colors always make their way into the corners of the gradient
+    image.
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 希望这足以让你在脑海中填补其余部分，所以让我们考虑在各种其他设置中渐变图像会发生什么。我们将使用与之前相同的渐变定义，但这次应用于宽、正方形和高图像。这些显示在[图9-19](#cab_fig76)中。请注意，起始点和结束点的颜色始终会进入渐变图像的角落。
+- en: '![css5 0919](assets/css5_0919.png)'
+  id: totrans-128
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0919](assets/css5_0919.png)'
+- en: Figure 9-19\. How gradients are constructed for various images
+  id: totrans-129
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-19\. 如何为各种图像构建渐变
+- en: 'Note that we very carefully said “the starting-point and ending-point colors,”
+    and did *not* say “the starting and ending colors.” That’s because, as you saw
+    earlier, color stops can be placed before the starting point and after the ending
+    point, like so:'
+  id: totrans-130
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，我们非常仔细地说“起始点和结束点的颜色”，而没有说“起始和结束颜色”。这是因为，正如您之前看到的，颜色停止点可以放在起始点之前和结束点之后，如下所示：
+- en: '[PRE23]'
+  id: totrans-131
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: The placement of these color stops, the starting and ending points, the way
+    the colors are calculated along the gradient line, and the final gradient are
+    all shown in [Figure 9-20](#cab_fig77).
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些颜色停止点的放置，起始点和结束点，沿着渐变线计算颜色的方式以及最终渐变都显示在[图9-20](#cab_fig77)中。
+- en: '![css5 0920](assets/css5_0920.png)'
+  id: totrans-133
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0920](assets/css5_0920.png)'
+- en: Figure 9-20\. A gradient with stops beyond the starting and ending points
+  id: totrans-134
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-20\. 具有超出起始点和结束点的停止点的渐变
+- en: Once again, we see that the colors in the bottom-left and top-right corners
+    match the starting-point and ending-point colors. It’s just that in this case,
+    since the first color stop comes before the starting point, the actual color at
+    the starting point is a blend of the first and second color stops. Likewise for
+    the ending point, which is a blend of the second and third color stops.
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次看到，底部左侧和顶部右侧的颜色与起始点和结束点的颜色相匹配。只是在这种情况下，由于第一个颜色停止点在起始点之前，起始点的实际颜色是第一个和第二个颜色停止点的混合。同样适用于结束点，它是第二个和第三个颜色停止点的混合。
+- en: 'Now here’s where things get a little bit wacky. Remember how you can use directional
+    keywords, like `top` and `right`, to indicate the direction of the gradient line?
+    Suppose you want the gradient line to go toward the top right, so you create a
+    gradient image like this:'
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在事情有点疯狂了。记得你可以使用方向关键字，比如`top`和`right`，来指示渐变线的方向吗？假设你希望渐变线朝右上方，那么你可以创建一个如下的渐变图像：
+- en: '[PRE24]'
+  id: totrans-137
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: This does *not* cause the gradient line to intersect with the top-right corner.
+    If only that were so! Instead, what happens is a good deal stranger. First, let’s
+    diagram it in [Figure 9-21](#cab_fig78) so that we have something to refer to.
+  id: totrans-138
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这并*不*会导致渐变线与右上角相交。如果只是这样该多好！相反，发生的事情要复杂得多。首先，让我们在图9-21（#cab_fig78）中画出来，这样我们就有东西可以参考了。
+- en: '![css5 0921](assets/css5_0921.png)'
+  id: totrans-139
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0921](assets/css5_0921.png)'
+- en: Figure 9-21\. A gradient headed toward the top right
+  id: totrans-140
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-21。朝右上方向的渐变
+- en: 'Your eyes do not deceive you: the gradient line is way off from the top-right
+    corner. It *is* headed into the top-right quadrant of the image, though. That’s
+    what `to top right` really means: head into the top-right quadrant of the image,
+    not into the top-right corner.'
+  id: totrans-141
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你的眼睛没有被欺骗：渐变线远离了右上角。不过，它确实是朝着图像的右上象限前进。这才是`to top right`真正的意思：朝着图像的右上象限前进，而不是朝向右上角。
+- en: 'As [Figure 9-21](#cab_fig78) shows, the way to find out exactly what that means
+    is to do the following:'
+  id: totrans-142
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如图9-21（#cab_fig78）所示，要确切了解这意味着什么，需要做以下事情：
+- en: Draw a line from the midpoint of the image into the corners adjacent to the
+    corner in the quadrant that’s been declared. Thus, for the top-right quadrant,
+    the adjacent corners are the top left and bottom right.
+  id: totrans-143
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从图像的中点向已声明的象限中的相邻角绘制一条线。因此，对于右上象限，相邻的角是左上角和右下角。
+- en: Find the center point of that line, which is the center point of the image,
+    and draw the gradient line perpendicular to that line, through the center point,
+    pointing into the declared quadrant.
+  id: totrans-144
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 找到该线的中心点，即图像的中心点，并通过该线的垂直线绘制渐变线，通过中心点指向已声明的象限。
+- en: Construct the gradient—that is, determine the starting and ending points, place
+    or distribute the color stops along the gradient line, and then calculate the
+    entire gradient image, as per usual.
+  id: totrans-145
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 构建渐变——即确定起点和终点、放置或分布沿渐变线的颜色停止点，然后按照通常的方式计算整个渐变图像。
+- en: 'This process has a few interesting side effects. First, the color at the midpoint
+    will always stretch from one quadrant-adjacent corner to the other. Second, if
+    the image’s shape changes—that is, if its aspect ratio changes—the gradient line
+    will also reset its direction, reorienting slightly to fit the new aspect ratio.
+    So watch out for that if you have flexible elements. Third, a perfectly square
+    gradient image will have a gradient line that intersects with a corner. [Figure 9-22](#cab_fig79)
+    depicts examples of these three side effects, using the following gradient definition
+    in all three cases:'
+  id: totrans-146
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个过程有一些有趣的副作用。首先，中点处的颜色将始终从一个象限相邻的角延伸到另一个象限相邻的角。其次，如果图像的形状发生变化，即其纵横比发生变化，则渐变线也将重置其方向，稍微重新定位以适应新的纵横比。因此，如果你有可变元素，请注意这一点。第三，一个完全正方形的渐变图像将具有与角相交的渐变线。图9-22（#cab_fig79）展示了这三种副作用的示例，使用以下渐变定义：
+- en: '[PRE25]'
+  id: totrans-147
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: '![css5 0922](assets/css5_0922.png)'
+  id: totrans-148
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0922](assets/css5_0922.png)'
+- en: Figure 9-22\. Examples of the side effects of a quadrant-directed gradient
+  id: totrans-149
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-22。象限定向渐变的副作用示例
+- en: Sadly, there is no way to say “point the gradient line into the corner of a
+    nonsquare image,” short of calculating the necessary degree heading yourself and
+    declaring it explicitly, a process that will most likely require JavaScript unless
+    you know the image will always be an exact size in all cases, forever. (Or use
+    the `aspect-ratio` property; see [Chapter 6](ch06.html#basic-visual-formatting)
+    for details.)
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 遗憾的是，没有办法说“将渐变线指向非正方形图像的角”，除非自己计算所需的度数，并明确声明，这个过程很可能需要使用JavaScript，除非你知道图像在所有情况下将永远是精确的尺寸。（或使用`aspect-ratio`属性；详见[第6章](ch06.html#basic-visual-formatting)）
+- en: While linear gradients follow a gradient line in the direction set forth by
+    the angle, it is possible to create a mirrored gradient; for that, oddly enough,
+    see [“Radial Gradients”](#radial-gradients).
+  id: totrans-151
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管线性渐变沿着由角度设定的渐变线方向进行渐变，但也可以创建镜像渐变；关于这一点，很奇怪地，请参阅[“径向渐变”](#radial-gradients)。
+- en: Repeating Linear Gradients
+  id: totrans-152
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 重复线性渐变
+- en: Regular gradients are autosized by default, matching the size of the background
+    area to which they are applied. In other words, by default a gradient image takes
+    up all the available background space and does not repeat.
+  id: totrans-153
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，常规渐变是自动调整大小的，与其应用的背景区域的大小匹配。换句话说，默认情况下，渐变图像占据了所有可用的背景空间，并且不重复。
+- en: 'Intentionally setting a background size and tiling images, especially with
+    hard color stops, can create interesting effects. By declaring two linear-gradient
+    background images using hard color stops, with perpendicular gradient lines, and
+    different background colors, you can create picnic tablecloth effects for any
+    place setting by setting up some gradient images, tiling them, and then putting
+    a color underneath, as illustrated in [Figure 9-23](#linear-gradients-tablecloth-regular):'
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 故意设置背景大小和平铺图像，特别是使用硬颜色停止，可以产生有趣的效果。通过声明两个线性渐变背景图像，使用硬颜色停止，垂直渐变线，并不同的背景颜色，你可以通过设置一些渐变图像、平铺它们，然后在下面放置一种颜色，为任何摆设创造野餐桌布效果，如
+    [图 9-23](#linear-gradients-tablecloth-regular) 所示：
+- en: '[PRE26]'
+  id: totrans-155
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: '![css5 0923](assets/css5_0923.png)'
+  id: totrans-156
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0923](assets/css5_0923.png)'
+- en: Figure 9-23\. Papayawhip-, palegoldenrod-, and salmon- colored table cloths
+  id: totrans-157
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-23\. Papayawhip、palegoldenrod 和 salmon 颜色的桌布
+- en: 'Instead of defining a gradient size with `background-size` and tiling it with
+    `background-repeat`, we can use repeating linear gradient syntax. By adding `repeating`
+    in front of the linear gradients, they are made infinitely repeating within the
+    size of the gradient. In other words, the declared color stops and color hints
+    are repeated on a loop along the gradient line, over and over again, because the
+    size of a gradient line when using `repeating-linear-gradient` is the size of
+    the last color stop position less the first color stop position (in this case,
+    `2vw`). Thus, we can remove the sizing and repetition properties, as in the following,
+    and get the same result shown in [Figure 9-23](#linear-gradients-tablecloth-regular):'
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 而不是用 `background-size` 定义渐变大小并使用 `background-repeat` 平铺它，我们可以使用重复线性渐变语法。通过在线性渐变前添加
+    `repeating`，它们将在渐变的尺寸内无限重复。换句话说，因为使用 `repeating-linear-gradient` 时渐变线的大小是最后一个颜色停止位置减去第一个颜色停止位置（在本例中为
+    `2vw`），所以我们可以移除尺寸和重复属性，如下所示，得到与 [图 9-23](#linear-gradients-tablecloth-regular)
+    中显示的相同结果：
+- en: '[PRE27]'
+  id: totrans-159
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: 'This is nice for simple patterns like these tablecloths, but it comes in really
+    handy for more complex situations. For example, if you declare the following nonrepeating
+    gradient, you end up with discontinuity where the image repeats, as shown in [Figure 9-24](#cab_fig96):'
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于像这些桌布这样的简单图案来说很好用，但对于更复杂的情况来说尤为方便。例如，如果你声明以下不重复的渐变，你会在图像重复的地方出现不连续，如图 [9-24](#cab_fig96)
+    所示：
+- en: '[PRE28]'
+  id: totrans-161
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: '![css5 0924](assets/css5_0924.png)'
+  id: totrans-162
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0924](assets/css5_0924.png)'
+- en: Figure 9-24\. Tiling gradient images with a repeating background image
+  id: totrans-163
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-24\. 使用重复背景图像平铺渐变图像
+- en: 'You *could* try to nail down the exact sizes of the element and gradient image
+    and then mess with the construction of the gradient image to try to make the sides
+    line up, but it would be a lot easier to do the following, with the result shown
+    in [Figure 9-25](#cab_fig97):'
+  id: totrans-164
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你*可以*尝试准确地锁定元素和渐变图像的大小，然后搞乱渐变图像的构造，试图使边缘对齐，但使用以下方法会更容易些，其结果如 [图 9-25](#cab_fig97)
+    所示：
+- en: '[PRE29]'
+  id: totrans-165
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: '![css5 0925](assets/css5_0925.png)'
+  id: totrans-166
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0925](assets/css5_0925.png)'
+- en: Figure 9-25\. A repeating gradient image
+  id: totrans-167
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-25\. 重复渐变图像
+- en: Note that the last color stop ends with an explicit length (`50px`). This is
+    important to do with repeating gradients, because the length value(s) of the last
+    color stop defines the overall length of the pattern. If you leave off an ending
+    stop, it will default to 100%, which is the end of the gradient line.
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，最后一个颜色停止以显式长度 (`50px`) 结束。这对于重复渐变非常重要，因为最后一个颜色停止的长度值定义了图案的总长度。如果你省略了结束停止，它将默认为
+    100%，即渐变线的末端。
+- en: 'If you’re using smoother transitions, you need to be careful that the color
+    value at the last color stop matches the color value at the first color stop.
+    Consider this:'
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你正在使用更平滑的过渡效果，你需要注意最后一个颜色停止处的颜色值要与第一个颜色停止处的颜色值匹配。考虑以下情况：
+- en: '[PRE30]'
+  id: totrans-170
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: 'This will produce a smooth gradient from purple to gold at 50 pixels, and then
+    a hard switch back to purple and another 50-pixel purple-to-gold blend. By adding
+    one more color stop with the same color as the first color stop, the gradient
+    can be smoothed out to avoid hard-stop lines:'
+  id: totrans-171
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将在 50 像素处产生从紫色到金色的平滑渐变，然后在另外 50 像素处回到紫色，并再次进行紫色到金色的混合。通过添加一个与第一个颜色停止处相同颜色的额外颜色停止，可以使渐变平滑，避免硬停止线：
+- en: '[PRE31]'
+  id: totrans-172
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: See [Figure 9-26](#cab_fig98) for a comparison of the two approaches.
+  id: totrans-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看 [图 9-26](#cab_fig98) 对比这两种方法。
+- en: '![css5 0926](assets/css5_0926.png)'
+  id: totrans-174
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0926](assets/css5_0926.png)'
+- en: Figure 9-26\. Dealing with hard resets in repeating-gradient images
+  id: totrans-175
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-26\. 处理重复渐变图像中的硬重置
+- en: You may have noticed that none of the repeating gradients so far have a defined
+    size. That means the images are defaulting in size to the full background positioning
+    area of the element to which they’re applied, per the default behavior for images
+    that have no intrinsic height and width.
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能已经注意到，到目前为止，所有重复渐变都没有定义大小。这意味着图像默认大小为应用到它们的元素的完整背景定位区域，默认行为适用于没有固有高度和宽度的图像。
+- en: If you resize a repeating-gradient image by using `background-size`, the gradient
+    would repeat only within the bounds of the gradient image. If you then repeated
+    that image using `background-repeat`, you could easily be back to having discontinuities
+    in your background.
+  id: totrans-177
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你使用`background-size`来调整重复渐变图片的大小，那么渐变将仅在渐变图片的边界内重复。然后，如果你使用`background-repeat`重复该图片，你可能会再次出现背景中的不连续性。
+- en: If you use percentages in your repeating linear gradients, they’ll be placed
+    the same as if the gradient wasn’t of the repeating variety. Then again, this
+    would mean that all of the gradients defined by those color stops would be seen
+    and none of the repetitions would be visible, so percentages tend to be kind of
+    pointless with repeating linear gradients.
+  id: totrans-178
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你在重复线性渐变中使用百分比，它们将会被放置在与非重复渐变相同的位置。然而，这意味着所有由这些颜色停止定义的渐变都将被看到，并且没有重复将是可见的，因此百分比往往是有点无意义的，特别是对于重复线性渐变。
+- en: Radial Gradients
+  id: totrans-179
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 径向渐变
+- en: 'Linear gradients are pretty awesome, but at times you really want a circular
+    gradient. You can use such a gradient to create a spotlight effect, a circular
+    shadow, a rounded glow, or any number of other effects, including a reflected
+    gradient. The syntax used is similar to that for linear gradients, but some interesting
+    differences exist:'
+  id: totrans-180
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 线性渐变非常棒，但有时您确实需要一个圆形渐变。您可以使用这样的渐变来创建聚光灯效果，圆形阴影，圆角发光或任何其他效果，包括反射渐变。使用的语法与线性渐变的语法类似，但也存在一些有趣的差异：
+- en: '[PRE32]'
+  id: totrans-181
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: What this boils down to is you can optionally declare a shape and size, optionally
+    declare where the center of the gradient is positioned, and then declare two or
+    more color stops with optional color hints between the stops. Interesting options
+    are available in the shape and size bits, so let’s build up to those.
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这归结为您可以选择声明形状和大小，选择声明渐变中心的位置，然后声明两个或更多颜色停止，以及停止之间的可选颜色提示。在形状和大小部分提供了一些有趣的选项，因此让我们逐步构建这些选项。
+- en: 'First, let’s look at a simple radial gradient—the simplest possible, in fact—presented
+    in a variety of differently shaped elements ([Figure 9-27](#cab_fig80)):'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，让我们看一个简单的径向渐变——事实上是可能的最简单的——呈现在各种不同形状的元素中（[图 9-27](#cab_fig80)）：
+- en: '[PRE33]'
+  id: totrans-184
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: '![css5 0927](assets/css5_0927.png)'
+  id: totrans-185
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0927](assets/css5_0927.png)'
+- en: Figure 9-27\. A simple radial gradient in multiple settings
+  id: totrans-186
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-27\. 多种设置中的简单径向渐变
+- en: In all of these cases, because no position is declared, the default of `center`
+    is used, and the default ellipse has the same aspect ratio as the image size.
+    Because no shape is declared, the shape is an ellipse for all cases but the square
+    element; in that case, the shape is a circle. Finally, because no color-stop or
+    color-hint positions are declared, the first is placed at the beginning of the
+    gradient ray, and the last at the end, with a linear blend from one to the other.
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在所有这些情况下，因为没有声明位置，所以使用了`center`的默认值，并且默认椭圆的纵横比与图像大小相同。因为没有声明形状，所以对于所有情况，除了正方形元素，形状都是椭圆。最后，因为没有声明颜色停止或颜色提示位置，所以第一个位于渐变光线的起始位置，最后一个位于结束位置，两者之间线性混合。
+- en: 'That’s right: the *gradient ray* is the radial equivalent of the gradient line
+    in linear gradients. It extends outward from the center of the gradient directly
+    to the right, and the rest of the gradient is constructed from it. (We’ll get
+    to the details in just a bit.)'
+  id: totrans-188
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 没错：*渐变光线* 是径向渐变中与线性渐变中的渐变线相对应的部分。它从渐变的中心向外延伸，直接到右侧，渐变的其余部分则根据它构建。（我们稍后会详细介绍细节。）
+- en: Setting Shape and Size
+  id: totrans-189
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置形状和大小
+- en: 'First off, a radial gradient has exactly two possible shape values (and thus
+    two possible shapes): `circle` and `ellipse`. The shape of a gradient can be declared
+    explicitly or can be implied by the way you size the gradient image.'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，径向渐变确实有两种可能的形状值（因此有两种可能的形状）：`circle` 和 `ellipse`。渐变的形状可以明确声明，也可以通过渐变图片的大小来暗示。
+- en: 'So, on to sizing. As always, the simplest way to size a radial gradient is
+    with either one nonnegative length (if you’re sizing a circle) or two nonnegative
+    lengths (if it’s an ellipse). Say you have this radial gradient:'
+  id: totrans-191
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，关于大小的问题。通常，调整径向渐变大小的最简单方法是使用一个非负长度（如果调整的是圆形）或两个非负长度（如果调整的是椭圆形）。比如，你有这样一个径向渐变：
+- en: '[PRE34]'
+  id: totrans-192
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: 'This creates a circular radial gradient that fades from purple at the center
+    to gold at a distance of 50 pixels from the center. If we add another length,
+    the shape becomes an ellipse that’s as wide as the first length and as tall as
+    the second length:'
+  id: totrans-193
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这会创建一个从中心渐变为50像素距离处的金色渐变的圆形径向渐变。如果我们增加另一个长度，形状将变成一个宽度与第一个长度相同、高度与第二个长度相同的椭圆：
+- en: '[PRE35]'
+  id: totrans-194
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: '[Figure 9-28](#cab_fig81) shows these two gradients.'
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[图 9-28](#cab_fig81)展示了这两种渐变效果。'
+- en: '![css5 0928](assets/css5_0928.png)'
+  id: totrans-196
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0928](assets/css5_0928.png)'
+- en: Figure 9-28\. Simple radial gradients
+  id: totrans-197
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-28\. 简单的径向渐变
+- en: Notice that the shape of the gradients has nothing to do with the overall size
+    and shape of the images in which they appear. If you make a gradient a circle,
+    it will be a circle, even if it’s inside a rectangular gradient image. So too
+    will an ellipse always be an ellipse, even when inside a square gradient image.
+  id: totrans-198
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，渐变的形状与其出现图像的整体大小和形状无关。如果你使渐变成圆形，它就是一个圆形，即使它在一个矩形渐变图像内部。同样，椭圆形始终保持椭圆形，即使它在一个正方形渐变图像内部。
+- en: You can also use percentage values for the size, but *only* for ellipses. Circles
+    cannot be given percentage sizes because there’s no way to indicate the axis to
+    which that percentage refers. (Imagine an image 100 pixels tall by 500 wide. Should
+    `10%` mean 10 pixels or 50 pixels?) If you try to provide percentage values for
+    a circle, the entire declaration will fail because of the invalid value.
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你也可以使用百分比值来表示大小，但**仅限于**椭圆。圆形不能使用百分比大小，因为无法指示百分比所应用的轴线。（想象一个高500像素宽100像素的图像。`10%`应该是10像素还是50像素？）如果你尝试为圆形提供百分比值，整个声明都会因为无效值而失败。
+- en: 'If you do supply percentages to an ellipse, then as usual, the first refers
+    to the horizontal axis and the second to the vertical. The following gradient
+    is shown in various settings in [Figure 9-29](#cab_fig82):'
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你给椭圆形提供百分比值，那么和往常一样，第一个值指的是水平轴，第二个值指的是垂直轴。下面的渐变在[图 9-29](#cab_fig82)中展示了各种设置：
+- en: '[PRE36]'
+  id: totrans-201
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: '![css5 0929](assets/css5_0929.png)'
+  id: totrans-202
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0929](assets/css5_0929.png)'
+- en: Figure 9-29\. Percentage-sized elliptical gradients
+  id: totrans-203
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-29\. 百分比大小的椭圆形渐变
+- en: 'When it comes to ellipses, you’re also able to mix lengths and percentages,
+    with the usual caveat to be careful. So if you’re feeling confident, you can absolutely
+    make an elliptical radial gradient 10 pixels tall and half the element width,
+    like so:'
+  id: totrans-204
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当涉及到椭圆形时，你还可以混合使用长度和百分比，只需注意小心。因此，如果你感到有信心，完全可以创建一个椭圆形径向渐变，高10像素，宽度为元素宽度的一半，如下所示：
+- en: '[PRE37]'
+  id: totrans-205
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: 'As it happens, lengths and percentages aren’t the only way to size radial gradients.
+    In addition to those value types, four keywords are available for sizing radial
+    gradients, the effects of which are summarized here:'
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 恰巧地，长度和百分比不是调整径向渐变大小的唯一方法。除了这些值类型外，还有四个关键词可供调整径向渐变的大小，其效果在此总结：
+- en: '`closest-side`'
+  id: totrans-207
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`closest-side`'
+- en: If the radial gradient’s shape is a circle, the gradient is sized so that the
+    end of the gradient ray exactly touches the edge of the gradient image that is
+    closest to the center point of the radial gradient. If the shape is an ellipse,
+    the end of the gradient ray exactly touches the closest edge in each of the horizontal
+    and vertical axes.
+  id: totrans-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果径向渐变的形状是圆形，渐变会被调整大小，使渐变射线的末端正好触及最接近径向渐变中心点的渐变图像边缘。如果形状是椭圆，渐变射线的末端会分别触及水平和垂直轴上最接近的边缘。
+- en: '`farthest-side`'
+  id: totrans-209
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`farthest-side`'
+- en: If the radial gradient’s shape is a circle, the gradient is sized so that the
+    end of the gradient ray exactly touches the edge of the gradient image that is
+    farthest from the center point of the radial gradient. If the shape is an ellipse,
+    the end of the gradient ray exactly touches the farthest edge in each of the horizontal
+    and vertical axes.
+  id: totrans-210
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果径向渐变的形状是圆形，渐变会被调整大小，使渐变射线的末端正好触及离径向渐变中心点最远的渐变图像边缘。如果形状是椭圆，渐变射线的末端会分别触及水平和垂直轴上的最远边缘。
+- en: '`closest-corner`'
+  id: totrans-211
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`closest-corner`'
+- en: If the radial gradient’s shape is a circle, the gradient is sized so that the
+    end of the gradient ray exactly touches the corner of the gradient image that
+    is closest to the center point of the radial gradient. If the shape is an ellipse,
+    the end of the gradient ray still touches the corner closest to the center, *and*
+    the ellipse has the same aspect ratio that it would have had if `closest-side`
+    had been specified.
+  id: totrans-212
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果径向渐变的形状是圆形，则渐变被调整大小，使得渐变射线的端点恰好触及离径向渐变中心点最近的渐变图像角落。如果形状是椭圆，则渐变射线的端点仍然触及离中心最近的角落，并且椭圆具有与指定`closest-side`时相同的长宽比。
+- en: '`farthest-corner` (default)'
+  id: totrans-213
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`farthest-corner`（默认）'
+- en: 'If the radial gradient’s shape is a circle, the gradient is sized so that the
+    end of the gradient ray exactly touches the corner of the gradient image that
+    is farthest from the center point of the radial gradient. If the shape is an ellipse,
+    the end of the gradient ray still touches the corner farthest from the center,
+    *and* the ellipse has the same aspect ratio that it would have had if `farthest-side`
+    had been specified. Note: this is the default size value for a radial gradient
+    and so is used if no size values are declared.'
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果径向渐变的形状是圆形，则渐变被调整大小，使得渐变射线的端点恰好触及离中心点最远的渐变图像角落。如果形状是椭圆，则渐变射线的端点仍然触及离中心最远的角落，并且椭圆具有与指定`farthest-side`时相同的长宽比。注意：这是径向渐变的默认大小值，因此在未声明任何大小值时使用。
+- en: To better visualize the results of each keyword, see [Figure 9-30](#cab_fig83),
+    which depicts each keyword applied as both a circle and an ellipse.
+  id: totrans-215
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要更好地可视化每个关键字的结果，请参见[图 9-30](#cab_fig83)，它展示了每个关键字作为圆形和椭圆应用的效果。
+- en: '![css5 0930](assets/css5_0930.png)'
+  id: totrans-216
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0930](assets/css5_0930.png)'
+- en: Figure 9-30\. The effects of radial-gradient sizing keywords (positioned `at
+    33% 66%`)
+  id: totrans-217
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-30\. 径向渐变大小关键字的效果（位于`at 33% 66%`位置）
+- en: These keywords cannot be mixed with lengths or percentages in elliptical radial
+    gradients; thus, `closest-side 25px` is invalid and will be ignored.
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些关键字不能与椭圆形径向渐变中的长度或百分比混合使用；因此，`closest-side 25px`是无效的，会被忽略。
+- en: Something you might have noticed in [Figure 9-30](#cab_fig83) is that the gradients
+    didn’t start at the center of the image. That’s because they were positioned elsewhere,
+    which is the topic of the next section.
+  id: totrans-219
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能在[图 9-30](#cab_fig83)中注意到的一点是渐变不是从图像的中心开始的。这是因为它们被放置在其他地方，这是下一节的主题。
+- en: Positioning Radial Gradients
+  id: totrans-220
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定位径向渐变
+- en: If you want to shift the center of a radial gradient away from the default of
+    `center`, you can do so using any position value that would be valid for `background-position`.
+    We’re not going to reproduce that rather complicated syntax here; flip back to
+    [“Positioning Background Images”](ch08.html#background-positioning) if you need
+    a refresher.
+  id: totrans-221
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想将径向渐变的中心位置偏离`center`的默认位置，可以使用任何对于`background-position`有效的位置值。我们不会在这里复制这种相当复杂的语法；如果需要恢复记忆，请回到[“定位背景图像”](ch08.html#background-positioning)。
+- en: 'When we say “any position value that would be valid,” that means any permitted
+    combination of lengths, percentages, keywords, and so on. It also means that if
+    you leave off one of the two position values, it will be inferred just the same
+    as for `background-position`. So, just for one example, `center` is equivalent
+    to `center center`. The one major difference between radial gradient positions
+    and background positions is the default: for radial gradients, the default position
+    is `center`, not `0% 0%`.'
+  id: totrans-222
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当我们说“任何有效的位置值”时，这意味着任何允许的长度、百分比、关键字等的组合。这还意味着，如果省略其中一个位置值，它将被推断为`background-position`的相同方式。因此，举一个例子，`center`等同于`center
+    center`。径向渐变位置和背景位置之间唯一的主要差异是默认值：对于径向渐变， 默认位置是`center`，而不是`0% 0%`。
+- en: 'To give an idea of the possibilities, consider the following rules, illustrated
+    in [Figure 9-31](#cab_fig84):'
+  id: totrans-223
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了让您对可能性有所了解，请考虑以下规则，这些规则在[图 9-31](#cab_fig84)中进行了说明：
+- en: '[PRE38]'
+  id: totrans-224
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: '![css5 0931](assets/css5_0931.png)'
+  id: totrans-225
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0931](assets/css5_0931.png)'
+- en: Figure 9-31\. Changing the center position of radial gradients
+  id: totrans-226
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-31\. 更改径向渐变的中心位置
+- en: 'None of those positioned radial gradients are explicitly sized, so they all
+    default to `farthest-corner`. That’s a reasonable guess at the intended default
+    behavior, but it’s not the only possibility. Let’s mix some sizes into these gradients
+    and find out how that changes things (as depicted in [Figure 9-32](#cab_fig85)):'
+  id: totrans-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那些定位的径向渐变都没有明确的尺寸，因此它们都默认为`farthest-corner`。这是对预期默认行为的合理猜测，但并不是唯一的可能性。让我们将一些尺寸混入这些渐变中，看看这如何改变事物（如[图9-32](#cab_fig85)所示）：
+- en: '[PRE39]'
+  id: totrans-228
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: '![css5 0932](assets/css5_0932.png)'
+  id: totrans-229
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0932](assets/css5_0932.png)'
+- en: Figure 9-32\. Changing the center position of explicitly sized radial gradients
+  id: totrans-230
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-32\. 改变明确定义大小的径向渐变的中心位置
+- en: Nifty. Now, suppose we want something a little more complicated than a fade
+    from one color to another. Next stop, color stops!
+  id: totrans-231
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 很巧妙。现在，假设我们想要比一个颜色到另一个颜色的渐变更复杂的东西。接下来是颜色停止点！
+- en: Using Radial Color Stops and the Gradient Ray
+  id: totrans-232
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用径向颜色停止和渐变光线
+- en: 'Color stops for radial gradients have the same syntax as, and work in a similar
+    fashion to, linear gradients. Let’s return to the simplest possible radial gradient
+    and follow it with a more explicit equivalent:'
+  id: totrans-233
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 径向渐变的颜色停止点与线性渐变具有相同的语法并且类似地工作。让我们回到最简单的可能径向渐变，并跟随一个更明确的等价版本：
+- en: '[PRE40]'
+  id: totrans-234
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: So the gradient ray extends out from the center point. At 0% (the start point,
+    and also the center of the gradient), the ray will be purple. At 100% (the ending
+    point), the ray will be gold. Between the two stops is a smooth blend from purple
+    to gold; beyond the ending point is solid gold.
+  id: totrans-235
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，渐变光线从中心点向外延伸。在0%（起始点，也是渐变的中心）处，光线为紫色。在100%（结束点）处，光线为金色。在两个停止点之间是从紫色平滑过渡到金色；超过结束点则是纯金色。
+- en: 'If we add a stop between purple and gold, but don’t give it a position, the
+    stop will be placed midway between the two colors, and the blending will be altered
+    accordingly, as shown in [Figure 9-33](#cab_fig86):'
+  id: totrans-236
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们在紫色和金色之间添加一个停止点，但不给它一个位置，那么停止点将被放置在两种颜色之间的中间位置，并且混合效果将相应地改变，如[图9-33](#cab_fig86)所示：
+- en: '[PRE41]'
+  id: totrans-237
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: '![css5 0933](assets/css5_0933.png)'
+  id: totrans-238
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0933](assets/css5_0933.png)'
+- en: Figure 9-33\. Adding a color stop
+  id: totrans-239
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-33\. 添加一个颜色停止点
+- en: We’d have gotten the same result if we’d added `green 50%` there, but you get
+    the idea. The gradient ray’s color goes smoothly from purple to green to gold,
+    and then is solid gold beyond that point on the ray.
+  id: totrans-240
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们在那里添加`green 50%`，我们会得到相同的结果，但你明白我的意思。渐变光线的颜色平滑地从紫色过渡到绿色，然后到金色，在光线的那一点之后是纯金色。
+- en: 'This illustrates one difference between gradient lines (for linear gradients)
+    and gradient rays: a linear gradient is derived by extending the color perpendicularly
+    at each point along the gradient line. A similar behavior occurs with a radial
+    gradient, except instead of the lines that come off the gradient ray, ellipses
+    are created; these are scaled-up or scaled-down versions of the ellipse at the
+    ending point. [Figure 9-34](#cab_fig87) illustrates a gradient ray and the ellipses
+    that are drawn at various points along it.'
+  id: totrans-241
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这说明了渐变线（用于线性渐变）与渐变光线之间的一个区别：线性渐变是通过沿着每个点垂直延伸颜色来推导的。径向渐变也有类似的行为，不同的是，不是从渐变线上产生的线条，而是创建椭圆；这些椭圆是结束点的椭圆的放大或缩小版本。[图9-34](#cab_fig87)展示了一个渐变光线以及沿其各点绘制的椭圆。
+- en: '![css5 0934](assets/css5_0934.png)'
+  id: totrans-242
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0934](assets/css5_0934.png)'
+- en: Figure 9-34\. The gradient ray and some of the ellipses it spawns
+  id: totrans-243
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-34\. 渐变光线及其生成的部分椭圆
+- en: 'That brings up an interesting question: how is the ending point (the `100%`
+    point, if you like) determined for each gradient ray? It’s the point where the
+    gradient ray intersects with the shape described by the size. For a circle, that’s
+    easy: the gradient ray’s ending point is however far from the center that the
+    size value indicates. So for a `25px circle` gradient, the ending point of the
+    ray is 25 pixels from the center.'
+  id: totrans-244
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这提出了一个有趣的问题：每个渐变光线的结束点（如果你愿意，可以是100%点）如何确定？这是渐变光线与尺寸描述的形状相交的点。对于圆形，这很容易：渐变光线的结束点是尺寸值指示的距离中心的位置。因此，对于`25px
+    圆形`渐变，光线的结束点是距离中心25像素的位置。
+- en: For an ellipse, it’s essentially the same operation, except that the distance
+    from the center is dependent on the horizontal axis of the ellipse. Given a radial
+    gradient that’s a `40px 20px ellipse`, the ending point will be 40 pixels from
+    the center and directly to its right. [Figure 9-35](#cab_fig88) shows this in
+    some detail.
+  id: totrans-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于椭圆，基本上是同样的操作，只是距离中心的距离取决于椭圆的水平轴。给定一个是`40px 20px 椭圆`的径向渐变，结束点将从中心向右直接移动40像素。[图9-35](#cab_fig88)详细展示了这一点。
+- en: '![css5 0935](assets/css5_0935.png)'
+  id: totrans-246
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0935](assets/css5_0935.png)'
+- en: Figure 9-35\. Setting the gradient ray’s ending point
+  id: totrans-247
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-35\. 设置渐变射线的结束点
+- en: Another difference between linear gradient lines and radial gradient rays is
+    that you can see beyond the ending point. As you may recall, a linear gradient
+    line is always drawn so that you can see the colors at the 0% and 100% points,
+    but nothing beyond them; the gradient line can never be any smaller than the longest
+    axis of the gradient image and will frequently be longer than that. With a radial
+    gradient, on the other hand, you can size the radial shape to be smaller than
+    the total gradient image. In that case, the color at the last color stop is extended
+    outward from the ending point. (You’ve already seen this in several previous figures.)
+  id: totrans-248
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 线性渐变线和径向渐变射线之间的另一个区别是您可以看到超出结束点的内容。您可能会记得，线性渐变线始终是这样绘制的，以便您可以看到0%和100%点的颜色，但在它们之外什么也看不到；渐变线永远不能小于渐变图像的最长轴，并且通常会比该轴长。另一方面，对于径向渐变，您可以将径向形状大小调整为小于总渐变图像的大小。在这种情况下，最后一个颜色停止点的颜色将从结束点向外延伸。（在几个先前的图像中，您已经看到了这一点。）
+- en: 'Conversely, if you set a color stop that’s beyond the ending point of a ray,
+    you might get to see the color out to that stop. Consider the following gradient,
+    illustrated in [Figure 9-36](#cab_fig89):'
+  id: totrans-249
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，如果设置的颜色停止点超出了射线的结束点，您可能会看到到该停止点的颜色。请参考以下渐变，[图 9-36](#cab_fig89)所示：
+- en: '[PRE42]'
+  id: totrans-250
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: '![css5 0936](assets/css5_0936.png)'
+  id: totrans-251
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0936](assets/css5_0936.png)'
+- en: Figure 9-36\. Color stops beyond the ending point
+  id: totrans-252
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-36\. 超出结束点的颜色停止点
+- en: The first color stop has no position, so it’s set to `0%`, which is the center
+    point. The last color stop is set to `80px`, so it will be 80 pixels away from
+    the center in all directions. The middle color stop, `green`, is placed midway
+    between the two (40 pixels from the center). So we get a gradient that goes out
+    to gold at 80 pixels and then continues gold beyond that point.
+  id: totrans-253
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个颜色停止点没有位置，因此将其设置为`0%`，即为中心点。最后一个颜色停止点设置为`80px`，因此它将在所有方向上距中心点80像素。中间的颜色停止点`green`放置在两者之间（距离中心40像素）。因此，我们得到一个渐变，到80像素处变成金色，然后在那一点之外继续保持金色。
+- en: 'This happens even though the circle is explicitly set to be 50 pixels large.
+    It still is 50 pixels in radius; it’s just that the positioning of the last color
+    stop makes that fact vaguely irrelevant. Visually, we might as well have declared
+    this:'
+  id: totrans-254
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使圆明确设置为50像素，这种情况仍然会发生。它仍然是50像素的半径；只是最后一个颜色停止点的定位使得这一事实变得不太相关。从视觉上讲，我们可以认为声明了这个：
+- en: '[PRE43]'
+  id: totrans-255
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: 'Or, more simply, just this:'
+  id: totrans-256
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者更简单地，只是这样：
+- en: '[PRE44]'
+  id: totrans-257
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: 'The same behaviors apply if you use percentages for your color stops. These
+    are equivalent to the previous examples, and to each other, visually speaking:'
+  id: totrans-258
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您使用百分比来设置颜色停止点，则相同的行为也适用。从视觉上讲，这些与之前的示例以及彼此等效：
+- en: '[PRE45]'
+  id: totrans-259
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: 'Now, what if you set a negative position for a color stop? The result is pretty
+    much the same as for linear gradient lines: the negative color stop is used to
+    figure out the color at the starting point but is otherwise unseen. Thus, the
+    following gradient will have the result shown in [Figure 9-37](#cab_fig90):'
+  id: totrans-260
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么，如果您为颜色停止点设置一个负位置会发生什么呢？结果与线性渐变线的情况几乎相同：负颜色停止点用于计算起始点的颜色，但在其他情况下不可见。因此，以下渐变将产生[图 9-37](#cab_fig90)所示的结果：
+- en: '[PRE46]'
+  id: totrans-261
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: '![css5 0937](assets/css5_0937.png)'
+  id: totrans-262
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0937](assets/css5_0937.png)'
+- en: Figure 9-37\. Handling a negative color-stop position
+  id: totrans-263
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-37\. 处理负色停止位置
+- en: 'Given these color-stop positions, the first color stop is at `-40px`, the last
+    is at `80px` (because, given its lack of an explicit position, it defaults to
+    the ending point), and the middle is placed midway between them. The result is
+    the same as if we’d explicitly used this:'
+  id: totrans-264
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 鉴于这些颜色停止位置，第一个颜色停止点位于`-40px`，最后一个位于`80px`（因为，由于缺乏显式位置，它默认为结束点），而中间位置则位于它们之间的中间位置。结果与我们明确使用此相同：
+- en: '[PRE47]'
+  id: totrans-265
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: 'That’s why the color at the center of the gradient is a green-purple: it’s
+    a blend of one-third purple, two-thirds green. From there, it blends the rest
+    of the way to green, and then on to gold. The rest of the purple-green blend,
+    the part that sits on the “negative space” of the gradient ray, is invisible.'
+  id: totrans-266
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这就是为什么渐变中心的颜色是绿紫色的原因：它是三分之一紫色，两分之一绿色的混合。从那里，它继续向绿色混合，然后转向金色。紫绿混合的其余部分，即位于渐变射线的“负空间”上的部分，是不可见的。
+- en: Handling Degenerate Cases
+  id: totrans-267
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理退化情况
+- en: 'Given that we can declare size and position for a radial gradient, the question
+    arises: what if a circular gradient has zero radius, or an elliptical gradient
+    has zero height or width? These conditions aren’t quite as hard to create as you
+    might think. Besides explicitly declaring that a radial gradient has zero size
+    using `0px` or `0%`, you could also do something like this:'
+  id: totrans-268
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 既然我们可以声明径向渐变的大小和位置，问题来了：如果一个圆形渐变的半径为零，或者一个椭圆形渐变的高度或宽度为零会怎样？这些条件并不像你想象的那么难以实现。除了明确声明径向渐变的大小为
+    `0px` 或 `0%`，你还可以像这样做：
+- en: '[PRE48]'
+  id: totrans-269
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: The gradient’s size is set to `closest-corner`, and the center has been moved
+    into the `top right` corner, so the closest corner is 0 pixels away from the center.
+    Now what?
+  id: totrans-270
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 渐变的大小设置为 `closest-corner`，并且中心已移动到右上角，所以最近的角离中心0像素远。现在怎么办？
+- en: In this case, the specification explicitly says that the gradient should be
+    rendered as if it’s “a circle whose radius [is] an arbitrary very small number
+    greater than zero.” So that might mean as if it had a radius of one-one-billionth
+    of a pixel, or a picometer, or heck, the Planck length. The interesting thing
+    is that it means the gradient is still a circle. It’s just a very, very, very
+    small circle. Probably, it will be too small to render anything visible. If so,
+    you’ll just get a solid-color fill that corresponds to the color of the last color
+    stop instead.
+  id: totrans-271
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，规范明确指出渐变应该渲染为“一个半径[为]任意大于零的极小数”。这可能意味着它的半径相当于一个十亿分之一像素，或者皮米，甚至普朗克长度。有趣的是，这意味着渐变仍然是一个圆。只不过是一个非常非常非常小的圆。可能它太小以至于渲染不出可见的东西。如果是这样的话，你将只会得到一个填充为最后一个颜色停止点颜色的纯色填充。
+- en: 'Ellipses with zero-length dimensions have fascinatingly different defined behaviors.
+    Let’s assume the following:'
+  id: totrans-272
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 长度为零的椭圆形在定义行为上有着迷人的不同。让我们假设以下情况：
+- en: '[PRE49]'
+  id: totrans-273
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: The specification states that any ellipse with a zero width is rendered as if
+    it’s “an ellipse whose height [is] an arbitrary very large number and whose width
+    [is] an arbitrary very small number greater than zero.” In other words, render
+    it as though it’s a linear gradient mirrored around the vertical axis running
+    through the center of the ellipse. The specification also says that in such a
+    case, any color stops with percentage positions resolve to `0px`. This will usually
+    result in a solid color matching the color defined for the last color stop.
+  id: totrans-274
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 规范指出，任何宽度为零的椭圆形渲染为“一个宽度[为]任意大的数，高度[为]任意大于零的数”的椭圆形。换句话说，将其渲染为围绕通过椭圆形中心的垂直轴镜像的线性渐变。规范还说，在这种情况下，任何百分比位置的颜色停止点将解析为
+    `0px`。这通常会导致一个与最后一个颜色停止点定义的颜色匹配的纯色。
+- en: 'On the other hand, if you use lengths to position the color stops, you can
+    get a vertically mirrored horizontal linear gradient for free. Consider the following
+    gradient, illustrated in [Figure 9-38](#cab_fig91):'
+  id: totrans-275
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，如果使用长度来定位颜色停止点，你可以免费获得一个在垂直方向镜像的水平线性渐变。考虑下面的渐变，如图 [9-38](#cab_fig91) 所示：
+- en: '[PRE50]'
+  id: totrans-276
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: '![css5 0938](assets/css5_0938.png)'
+  id: totrans-277
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0938](assets/css5_0938.png)'
+- en: Figure 9-38\. The effects of a zero-width ellipse
+  id: totrans-278
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-38\. 零宽度椭圆的效果
+- en: How did this happen? First, remember that the specification says that the `0px`
+    horizontal width is treated as if it’s a tiny nonzero number. For the sake of
+    illustration, let’s suppose that’s one-one-thousandth of a pixel (0.001 px). That
+    means the ellipse shape is a thousandth of a pixel wide by half the height of
+    the image. Again for the sake of illustration, let’s suppose that’s a height of
+    100 pixels. That means the first ellipse shape is a thousandth of a pixel wide
+    by 100 pixels tall, which is an aspect ratio of 0.001:100, or 1:100,000.
+  id: totrans-279
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是怎么发生的呢？首先要记住，规范说 `0px` 的水平宽度被视为一个微小的非零数。为了举例说明，假设是千分之一像素（0.001 px）。这意味着椭圆形的形状是千分之一像素宽，图像高度的一半。再举例说明，假设高度是100像素。这意味着第一个椭圆形的形状是千分之一像素宽，100像素高，其宽高比为0.001:100，或者1:100,000。
+- en: OK, so every ellipse drawn along the gradient ray has a 1:100,000 aspect ratio.
+    That means the ellipse at half a pixel along the gradient ray is 1 pixel wide
+    and 100,000 pixels tall. At 1 pixel, it’s 2 pixels wide and 200,000 pixels tall.
+    At 5 pixels, the ellipse is 10 pixels by a million pixels. At 50 pixels along
+    the gradient ray, the ellipse is 100 pixels wide and 10 million tall. And so on.
+    This is diagrammed in [Figure 9-39](#cab_fig92).
+  id: totrans-280
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 好了，所以沿着渐变射线绘制的每个椭圆都具有1:100,000的宽高比。这意味着在渐变射线的半像素处，椭圆宽度为1像素，高度为100,000像素。在1像素时，宽度为2像素，高度为200,000像素。在5像素时，椭圆为10像素宽，一百万像素高。在渐变射线的50像素处，椭圆宽度为100像素，高度为1000万像素。等等。这在[图9-39](#cab_fig92)中有图示。
+- en: '![css5 0939](assets/css5_0939.png)'
+  id: totrans-281
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0939](assets/css5_0939.png)'
+- en: Figure 9-39\. Very, very tall ellipses
+  id: totrans-282
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-39。非常非常高的椭圆
+- en: So you can see why the visual effect is of a mirrored linear gradient. These
+    ellipses are effectively drawing vertical lines. Technically they aren’t, but
+    in practical terms they are. The result is as if you have a vertically mirrored
+    horizontal gradient, because each ellipse is centered on the center of the gradient,
+    and both sides of it get drawn. While this may be a radial gradient, we can’t
+    see its radial nature.
+  id: totrans-283
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，你可以看到为什么视觉效果是镜像的线性渐变。这些椭圆实际上在绘制垂直线。从技术上讲，它们并不是，但在实际操作中它们是。结果就像你有一个垂直镜像的水平渐变，因为每个椭圆都集中在渐变的中心，并且它的两侧都会被绘制。虽然这可能是一个径向渐变，但我们看不到它的径向特性。
+- en: 'On the other hand, if the ellipse has width but not height, the results are
+    quite different. You’d think the result would be a vertical linear gradient mirrored
+    around the horizontal axis, but not so! Instead, the result is a solid color equal
+    to the last color stop (unless it’s a repeating gradient, a subject we’ll turn
+    to shortly, in which case it should be a solid color equal to the average color
+    of the gradient). So, given either of the following, you’ll get a solid gold:'
+  id: totrans-284
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，如果椭圆有宽度但没有高度，结果会大不相同。你可能认为结果将是沿水平轴镜像的垂直线性渐变，但事实并非如此！相反，结果是一个与最后一个颜色停止点相同的纯色（除非它是重复渐变，这是我们马上要讨论的一个主题，那么它应该是渐变的平均颜色）。因此，根据以下任何一种情况，你将得到一个纯金色：
+- en: '[PRE51]'
+  id: totrans-285
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: Why the difference? It goes back to the way radial gradients are constructed
+    from the gradient ray. Again, remember that, per the specification, a zero distance
+    here is treated as a very small nonzero number. As before, we’ll assume that `0px`
+    is reassigned to `0.001px`, and that the `50%` evaluates to 100 pixels. That’s
+    an aspect ratio of 100:0.001, or 100,000:1.
+  id: totrans-286
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为什么会有这样的差异呢？这要追溯到径向渐变是如何根据渐变射线构建的。再次记住，根据规范，这里的零距离被视为一个非常小的非零数。与以前一样，我们假设`0px`被重新分配为`0.001px`，而`50%`评估为100像素。这是一个宽高比为100:0.001，即100,000:1。
+- en: So, to get an ellipse that’s 1 pixel tall, the width of that ellipse must be
+    100,000 pixels. But our last color stop is at only 100 pixels! At that point,
+    the ellipse that’s drawn is 100 pixels wide and a thousandth of a pixel tall.
+    All of the purple-to-gold transition that happens along the gradient ray has to
+    happen in that thousandth of a pixel. Everything after that is gold, as per the
+    final color stop. Thus, we can see only the gold.
+  id: totrans-287
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所以，为了得到一个高度为1像素的椭圆，该椭圆的宽度必须为100,000像素。但我们的最后一个颜色停止点只在100像素处！在那一点上，绘制的椭圆宽度为100像素，高度为千分之一像素。整个紫色到金色的过渡必须发生在那千分之一像素的范围内。之后的所有部分都是金色，如最后一个颜色停止点所示。因此，我们只能看到金色。
+- en: You might think that if you increased the position value of the last color stop
+    to `100000px`, you’d see a thin sliver of purplish color running horizontally
+    across the image. And you’d be right, *if* the browser treats `0px` as `0.001px`
+    in these cases. If it assumes `0.00000001px` instead, you’d have to increase the
+    color stop’s position a *lot* further in order to see anything. And that’s assuming
+    the browser was actually calculating and drawing all those ellipses, instead of
+    just hardcoding the special cases. The latter is a lot more likely, honestly.
+    It’s what we’d do if we were in charge of a browser’s gradient-rendering code.
+  id: totrans-288
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能会认为，如果你将最后一个颜色停止点的位置增加到`100000px`，你会看到一个薄薄的紫色条纹横穿图像。你是对的，*如果*浏览器在这些情况下将`0px`视为`0.001px`的话。如果它假设的是`0.00000001px`，那么你必须进一步增加颜色停止点的位置才能看到任何东西。这假设浏览器实际上在计算和绘制所有这些椭圆，而不是只是硬编码特殊情况。老实说，后者更有可能。如果我们掌管浏览器的渐变渲染代码，我们会这样做。
+- en: And what if an ellipse has zero width *and* zero height? In that case, the specification
+    is written such that the zero-width behavior is used; thus, you’ll get the mirrored-linear-gradient
+    behavior.
+  id: totrans-289
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果椭圆的宽度和高度都为零怎么办？在这种情况下，规范写明将使用零宽度行为；因此，您将获得镜像线性渐变行为。
+- en: Note
+  id: totrans-290
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 注意
+- en: As of late 2022, browser support for the defined behavior in these edge cases
+    is unstable, at best. Some browsers use the last color-stop’s color in all cases,
+    and others refuse to draw a gradient at all in some cases.
+  id: totrans-291
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2022年底，浏览器对这些边缘情况的定义行为的支持稳定性堪忧。在某些情况下，一些浏览器在所有情况下都使用最后一个颜色停止的颜色，而在其他情况下则拒绝绘制渐变。
+- en: Repeating Radial Gradients
+  id: totrans-292
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 重复径向渐变
+- en: 'While percentages in repeating linear gradients could turn them into nonrepeating
+    gradients, percentages can be very useful if the size of the circle or ellipse
+    is defined, percentage positions along the gradient ray are defined, and you can
+    see beyond the endpoint of the gradient ray. For example, assume the following:'
+  id: totrans-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然百分比在重复线性渐变中可以使其成为非重复渐变，但是如果定义了圆形或椭圆的大小、定义了沿渐变射线的百分比位置，并且您可以看到渐变射线的端点之外，百分比可能非常有用。例如，假设以下情况：
+- en: '[PRE52]'
+  id: totrans-294
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: As there are five color stops and the size is 100px, a color stop will occur
+    every 20 pixels, with the colors repeating in the declared pattern. Because the
+    first and last color stops have the same color value, there is no hard color switch.
+    The ripples just spread out forever, or at least until they’re beyond the edges
+    of the gradient image. See [Figure 9-40](#cab_fig100) for an example.
+  id: totrans-295
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于有五个颜色停止和大小为100px，每20像素就会出现一个颜色停止，颜色按照声明的模式重复。因为第一个和最后一个颜色停止具有相同的颜色值，所以没有明显的颜色切换。涟漪会无限扩展，或者至少直到超出渐变图像的边缘。请参见[图9-40](#cab_fig100)作为示例。
+- en: '![css5 0940](assets/css5_0940.png)'
+  id: totrans-296
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0940](assets/css5_0940.png)'
+- en: Figure 9-40\. Repeating radial gradients
+  id: totrans-297
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-40\. 重复径向渐变
+- en: Just imagine what that would look like with a repeating radial gradient of a
+    rainbow!
+  id: totrans-298
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 想象一下，如果用一个彩虹的重复径向渐变会是什么样子！
+- en: '[PRE53]'
+  id: totrans-299
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: 'Keep these two points in mind when creating repeating radial gradients:'
+  id: totrans-300
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在创建重复径向渐变时，请记住以下两点：
+- en: If you don’t declare size dimensions for a radial, it will default to an ellipse
+    that has the same height-to-width ratio as the overall gradient image; *and*,
+    if you don’t declare a size for the image with `background-size`, the gradient
+    image will default to the height and width of the element background where it’s
+    being applied (or, if being used as a list-style bullet, the size that the browser
+    gives it).
+  id: totrans-301
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果未为径向渐变声明尺寸维度，则默认为一个椭圆，其高度与宽度比例与整个渐变图像相同；*而且*，如果未为背景图像使用`background-size`声明尺寸，则渐变图像将默认为应用于其背景的元素的高度和宽度（或者，如果作为列表样式符号使用，则为浏览器赋予的尺寸）。
+- en: The default radial size value is `farthest-corner`. This will put the endpoint
+    of the gradient ray far enough to the right that its ellipse intersects with the
+    corner of the gradient image that’s farthest from the center point of the radial
+    gradient.
+  id: totrans-302
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 默认的径向尺寸值是`farthest-corner`。这将使渐变射线的端点远离中心点的椭圆，使其与渐变图像的最远角相交。
+- en: These are reiterated here to remind you that if you stick to the defaults, there’s
+    not really any point to having a repeating gradient, since you’ll be able to see
+    only the first iteration of the repeat. It’s only when you restrict the initial
+    size of the gradient that the repeats become visible.
+  id: totrans-303
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些再次强调，提醒您，如果您坚持使用默认值，那么拥有重复渐变实际上没有什么意义，因为您只能看到重复的第一次迭代。只有当您限制渐变的初始尺寸时，重复才会变得可见。
+- en: Conic Gradients
+  id: totrans-304
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 锥形渐变
+- en: Radial gradients are fun, but what if you want a gradient that wraps around
+    a central point, similar to a color hue wheel? That’s what CSS calls a *conic
+    gradient*, which can be thought of as a concentric series of linear gradients
+    that are bent into circles. Looked at another way, at any distance from the center,
+    there’s a circle whose outer rim could be straightened out into a linear gradient
+    with the color stop specified.
+  id: totrans-305
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 径向渐变很有趣，但是如果您想要一个环绕中心点的渐变，类似于颜色色调轮，那就是CSS称之为*锥形渐变*，可以看作是一系列同心的线性渐变，弯曲成圆形。从另一个角度看，从中心点到任意距离，都存在一个圆，其外边缘可以用指定的颜色停止的线性渐变来展开。
+- en: 'Conic gradients are more easily shown than described, so consider the following
+    CSS, which is illustrated in [Figure 9-41](#conic-gradient-simple) along with
+    a linear diagram to show how the stops wrap around the conical space:'
+  id: totrans-306
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 锥形渐变比描述更容易展示，因此考虑以下CSS，它在[图9-41](#conic-gradient-simple)中有所说明，同时还有一个线性图示，展示了各个停止点如何环绕锥形空间：
+- en: '[PRE54]'
+  id: totrans-307
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: '![css5 0941](assets/css5_0941.png)'
+  id: totrans-308
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0941](assets/css5_0941.png)'
+- en: Figure 9-41\. A simple conic gradient and its linear equivalent
+  id: totrans-309
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-41\. 简单的锥形渐变及其线性等效图
+- en: 'Note how each of the color stops is labeled on the linear gradient: the circled
+    numbers listed there are repeated in the conic gradient, to show where each color
+    stop falls. At 60 degrees around the conic gradient, there is a `gray` color stop.
+    At 180 degrees, a `white` color stop. At the top of the conic gradient, the `0deg`
+    and `360deg` points meet, so `black` and `gray` sit next to each other.'
+  id: totrans-310
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意线性渐变上每个颜色停止点的标签：那里列出的带圈数字在锥形渐变中重复出现，以显示每个颜色停止点的位置。在锥形渐变的60度处，有一个`gray`颜色停止点。在180度处，有一个`white`颜色停止点。在锥形渐变的顶部，`0deg`和`360deg`点相遇，所以`black`和`gray`相邻。
+- en: 'By default, conic gradients start at 0 degrees, using the same compass degree
+    system that transforms and other parts of CSS use, so `0deg` is at the top. If
+    you want to start from a different angle and wrap around the circle back to that
+    point, it’s as straightforward as adding `from` and an angle value to the front
+    of the `conic-gradient` value, which rotates the entire gradient by the declared
+    angle. The following would all have the same result:'
+  id: totrans-311
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，锥形渐变从0度开始，使用与转换和CSS的其他部分相同的罗盘度系统，因此`0deg`在顶部。如果想从不同的角度开始并环绕圆圈回到该点，只需在`conic-gradient`值的前面添加`from`和角度值即可。以下示例都会产生相同的结果：
+- en: '[PRE55]'
+  id: totrans-312
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE55]'
+- en: 'If the conic gradient is given a different start angle, such as `from 45deg`,
+    it acts as a rotation of the entire conic gradient. Consider the following two
+    examples, with the results depicted in [Figure 9-42](#conic-gradients-different-start-angles):'
+  id: totrans-313
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果锥形渐变给定了不同的起始角度，比如`from 45deg`，它就会作为整个锥形渐变的旋转。考虑以下两个例子，其结果在[图9-42](#conic-gradients-different-start-angles)中显示：
+- en: '[PRE56]'
+  id: totrans-314
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE56]'
+- en: '![css5 0942](assets/css5_0942.png)'
+  id: totrans-315
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0942](assets/css5_0942.png)'
+- en: Figure 9-42\. Conic gradients with angled color stops and different start angles
+  id: totrans-316
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-42\. 带有角度颜色停止点和不同起始角度的锥形渐变
+- en: Not only is the starting point rotated 45 degrees, but all the other color stops
+    are as well. Thus, even though the first color stop has an angle of `90deg`, it
+    actually occurs at the 135-degree mark, that being 90 degrees with a 45-degree
+    rotation added.
+  id: totrans-317
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不仅起始点旋转了45度，所有其他颜色停止点也旋转了。因此，即使第一个颜色停止点的角度是`90deg`，它实际上出现在135度标记处，即90度再加上45度的旋转。
+- en: 'It’s also possible to change the location of the gradient’s center point within
+    the image, just as with radial gradients. The syntax is quite similar, as you
+    can see in this code block (illustrated in [Figure 9-43](#conic-gradients-rotated-and-offset)):'
+  id: totrans-318
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样可以像径向渐变一样更改渐变图像中心点的位置。语法非常类似，如下面的代码块所示（在[图9-43](#conic-gradients-rotated-and-offset)中有说明）：
+- en: '[PRE57]'
+  id: totrans-319
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE57]'
+- en: '![css5 0943](assets/css5_0943.png)'
+  id: totrans-320
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0943](assets/css5_0943.png)'
+- en: Figure 9-43\. Rotated and offset conic gradients
+  id: totrans-321
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-43\. 旋转和偏移的锥形渐变
+- en: In the first of the three examples, the center of the conic gradient is placed
+    `3em` to the right of the top-left corner, and `6em` down from that same corner.
+    Similarly, the second example shows the center point `67%` of the way across the
+    conic-gradient image, and `25%` down from the top.
+  id: totrans-322
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这三个示例中的第一个示例中，锥形渐变的中心点位于从左上角向右`3em`，向下`6em`处。类似地，第二个示例显示了锥形渐变图像中心点位于横向的`67%`处，垂直向下`25%`处。
+- en: 'The third example shows what happens when the center point of a conic gradient
+    is placed along one edge of the image: we see only half (at most) of the gradient.
+    In this case, the top half is visible—that is, the colors from 270 degrees through
+    90 degrees.'
+  id: totrans-323
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三个例子展示了当锥形渐变的中心点放置在图像的一条边上时会发生什么情况：我们只能看到半个（最多）渐变。在这种情况下，可见的是顶部一半——也就是从270度到90度的颜色。
+- en: 'So all together, the syntax for a conic gradient is as follows:'
+  id: totrans-324
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所以总体而言，锥形渐变的语法如下所示：
+- en: '[PRE58]'
+  id: totrans-325
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE58]'
+- en: If the `from` angle is not given, it defaults to `0deg`. If no `at` position
+    is given, it defaults to `50% 50%` (that is, the center of the conic-gradient
+    image).
+  id: totrans-326
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果没有给定`from`角度，它默认为`0deg`。如果没有给定`at`位置，它默认为`50% 50%`（即锥形渐变图像的中心）。
+- en: Much as with radial and linear gradients, color stop distances can be specified
+    by a percentage value; in this case, it resolves to an angle value. Thus, for
+    a conic gradient starting at 0 degrees, the color stop distance `25%` would resolve
+    to 90 degrees, as 90 is 25% of 360\. Conic color stops can also be specified as
+    a degree value, as shown previously.
+  id: totrans-327
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像径向渐变和线性渐变一样，颜色停止点的距离可以用百分比值来指定；在这种情况下，它解析为角度值。因此，对于从0度开始的锥形渐变，颜色停止点距离为`25%`将解析为90度，因为90度是360的25%。锥形颜色停止点也可以指定为角度值，如前所示。
+- en: You *cannot* specify a length value for a conic gradient’s color stop’s distance.
+    Only percentages and angles are acceptable, and they can be mixed.
+  id: totrans-328
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你*不能*为锥形渐变的颜色停止点距离指定长度值。只有百分比和角度是可接受的，并且它们可以混合使用。
+- en: Creating Conic Color Stops
+  id: totrans-329
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建锥形颜色停止点
+- en: 'If you want a conic gradient to blend smoothly from color to color all the
+    way around the circle, it is necessary to make the last color stop match the first
+    color stop. Otherwise, you’ll see the kinds of hard transitions shown in earlier
+    examples. If you want to create a color hue wheel, for example, you need to declare
+    it like so:'
+  id: totrans-330
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你希望锥形渐变在整个圆周从颜色到颜色平滑混合，必须使最后的颜色停止点与第一个颜色停止点匹配。否则，你将会看到早期示例中显示的那种硬过渡效果。如果你想创建一个颜色色调环，例如，你需要像这样声明：
+- en: '[PRE59]'
+  id: totrans-331
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE59]'
+- en: 'Except that’s not actually a wheel, since the conic-gradient image fills the
+    entire background area, and background areas in CSS are (thus far) rectangular
+    by default. To make the color wheel actually look like a color wheel, you’d need
+    to either use a circular clipping path (see [Chapter 20](ch20.html#filters-compositing))
+    or round the corners on a square element (see [Chapter 7](ch07.html#padding-borders-outlines-and-margins)).
+    For example, the following will have the result shown in [Figure 9-44](#conic-gradients-hue-wheels):'
+  id: totrans-332
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但事实上这并不是一个真正的圆轮，因为锥形渐变图像填充整个背景区域，而CSS中的背景区域（到目前为止）默认是矩形的。要使颜色轮看起来像一个真正的颜色轮，你需要使用圆形剪裁路径（参见[第20章](ch20.html#filters-compositing)）或者在方形元素上圆角处理（参见[第7章](ch07.html#padding-borders-outlines-and-margins)）。例如，以下代码将产生[图9-44](#conic-gradients-hue-wheels)所示的结果：
+- en: '[PRE60]'
+  id: totrans-333
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE60]'
+- en: '[PRE61]'
+  id: totrans-334
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE61]'
+- en: '![css5 0944](assets/css5_0944.png)'
+  id: totrans-335
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0944](assets/css5_0944.png)'
+- en: Figure 9-44\. Hue-wheel conic gradients with and without corner rounding
+  id: totrans-336
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-44\. 具有和不具有圆角处理的色调轮锥形渐变
+- en: This emphasizes that while it’s easy to think of conic gradients as circles,
+    the end result is a rectangle, absent any clipping or other effort to make the
+    element’s background area nonrectangular. So if you’re thinking about using conic
+    gradients to make, say, a pie chart, you’ll have to do more than just define a
+    conic gradient with hard stops.
+  id: totrans-337
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 强调的是，虽然我们很容易将锥形渐变想象成圆形，但最终结果是一个矩形，没有任何剪切或其他使元素背景区域非矩形化的努力。所以，如果你打算用锥形渐变来制作比如说饼图，你必须做的不仅仅是定义一个带有硬停的锥形渐变。
+- en: 'Just as we used two length-percentage values to create hard stops in linear
+    gradients, we can use two hard stops in conic gradients. For example:'
+  id: totrans-338
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像我们在线性渐变中使用两个长度百分比值来创建硬停一样，我们可以在锥形渐变中使用两个硬停。例如：
+- en: '[PRE62]'
+  id: totrans-339
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE62]'
+- en: In this syntax, a given color stop can be written as <*`color`*> <*`beginning`*>
+    <*`ending`*>, where <*`beginning`*> and <*`ending`*> are percentage or angle values.
+  id: totrans-340
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种语法中，给定的颜色停止点可以写为<*`color`*> <*`beginning`*> <*`ending`*>，其中<*`beginning`*>和<*`ending`*>是百分比或角度值。
+- en: 'If you want to create smoother transitions between colors but still have them
+    be mostly solid, the <*`color`*> <*`beginning`*> <*`ending`*> syntax can help
+    a lot. For example, the following conic gradient eases the transitions between
+    green, yellow, and red without making the overall gradient too “smeared”:'
+  id: totrans-341
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想在颜色之间创建更平滑的过渡但仍然保持它们大部分是实心的，那么<*`color`*> <*`beginning`*> <*`ending`*> 的语法可以帮助很多。例如，以下锥形渐变使绿色、黄色和红色之间的过渡更加柔和，而不会使整体渐变过于“涂抹”：
+- en: '[PRE63]'
+  id: totrans-342
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE63]'
+- en: This runs a solid wedge of green from 0 to 126 degrees (35%), then transitions
+    smoothly from green to yellow between 126 degrees and 144 degrees (40%), past
+    which there is a solid wedge of yellow spanning from 144 degrees to 216 degrees
+    (60%). Similarly, a smoothed transition occurs from yellow to red between 216
+    degrees and 234 degrees (65%), and beyond that, a solid red wedge running to 360
+    degrees.
+  id: totrans-343
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这段代码从0到126度（35%）渲染了一块绿色的实心楔形，然后在126度到144度（40%）之间平滑过渡从绿色到黄色，之后从144度到216度（60%）有一块黄色的实心楔形。类似地，在216度到234度（65%）之间发生了从黄色到红色的平滑过渡，超过这个范围，有一块红色的实心楔形延续到360度。
+- en: All this is illustrated in [Figure 9-45](#conic-gradients-smoothed-triple),
+    with extra annotations to mark where the calculated angles land.
+  id: totrans-344
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有这些都在[图9-45](#conic-gradients-smoothed-triple)中有所体现，额外的注释标记了计算角度的位置。
+- en: '![css5 0945](assets/css5_0945.png)'
+  id: totrans-345
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0945](assets/css5_0945.png)'
+- en: Figure 9-45\. Conic gradients with solid-color wedges and smooth transitions
+  id: totrans-346
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-45\. 具有单色楔形和平滑过渡的锥形渐变
+- en: 'And, as it happens, that syntax makes it relatively easy to re-create those
+    picnic tablecloths discussed earlier in the chapter by using a conic gradient:'
+  id: totrans-347
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如之前章节中讨论过的野餐桌布那样，这种语法使得使用锥形渐变相对容易重新创建：
+- en: '[PRE64]'
+  id: totrans-348
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE64]'
+- en: This creates, in a single gradient image, a set of four squares in the pattern.
+    That image is then sized and repeated. It’s not more efficient or elegant than
+    using repeating linear gradients, but it does embody a certain cleverness that
+    appeals to us.
+  id: totrans-349
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这在单个渐变图像中创建了一个四方形的图案集合。然后对该图像进行大小调整和重复。虽然与使用重复线性渐变相比，这并不更有效或更优雅，但它确实体现了一定的巧思，这让我们感到满意。
+- en: Repeating Conic Gradients
+  id: totrans-350
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 重复的锥形渐变
+- en: 'And now we come to repeating conic gradients, which are highly useful if you
+    want to create a starburst pattern or even something simple like a checkerboard
+    pattern. For example:'
+  id: totrans-351
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们来讲一下重复的锥形渐变，如果你想要创建星芒图案或者像棋盘一样的简单图案，这是非常有用的。例如：
+- en: '[PRE65]'
+  id: totrans-352
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE65]'
+- en: 'This sets up a checkerboard pattern with four color stops but only two colors.
+    We can restate that using `repeating-conic-gradient` like so, with new colors
+    to make the pattern a little clearer:'
+  id: totrans-353
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这样就设置了一个有四个颜色停止但只有两种颜色的棋盘图案。我们可以使用`repeating-conic-gradient`重新表达这一点，使用新的颜色使图案更加清晰：
+- en: '[PRE66]'
+  id: totrans-354
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE66]'
+- en: All that was necessary in this simple repeating case was to set up the first
+    two color stops. After that, the stops are repeated until the full 360 degrees
+    of the conic gradient are filled, as shown in [Figure 9-46](#repeating-conic-checkerboard).
+  id: totrans-355
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种简单的重复情况中，唯一需要设置的是前两个颜色停止点。之后，这些停止点将重复直到填满锥形渐变的完整360度，如[图9-46](#repeating-conic-checkerboard)所示。
+- en: '![css5 0946](assets/css5_0946.png)'
+  id: totrans-356
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0946](assets/css5_0946.png)'
+- en: Figure 9-46\. A repeating conic gradient
+  id: totrans-357
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-46\. 重复的锥形渐变
+- en: 'This means we can create wedges of any size, with any transition, and repeat
+    them all the way around the conic circle. Here are just three examples, rendered
+    in [Figure 9-47](#repeating-conic-starbursts):'
+  id: totrans-358
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着我们可以创建任何大小的楔形，具有任何过渡，并在整个锥形圆周上重复它们。这里仅展示了三个示例，渲染在[图9-47](#repeating-conic-starbursts)中：
+- en: '[PRE67]'
+  id: totrans-359
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE67]'
+- en: '![css5 0947](assets/css5_0947.png)'
+  id: totrans-360
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0947](assets/css5_0947.png)'
+- en: Figure 9-47\. Three variants on a repeating conic gradient
+  id: totrans-361
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图9-47\. 重复的锥形渐变的三个变体
+- en: 'Notice that the first (leftmost) example’s smoothed transitions hold true even
+    at the top of the image: the transition from `#117` at 350 degrees to `#ABE` at
+    5 degrees is handled like all of the other transitions. Repeated conic gradients
+    are unique in this way, since both linear and radial gradients never “wrap around” to
+    have the end meet the beginning. This is also seen in the third (rightmost) example
+    in [Figure 9-47](#repeating-conic-starbursts).'
+  id: totrans-362
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，第一个（最左侧）示例中的平滑过渡即使在图像顶部也是成立的：从350度的`#117`到5度的`#ABE`的过渡与所有其他过渡处理方式相同。重复的锥形渐变在这种方式上是独特的，因为线性和径向渐变从不“环绕”，即末端不与起始点相接。这也可以在[图9-47](#repeating-conic-starbursts)中的第三个（最右侧）示例中看到。
+- en: 'It’s possible to break this special behavior, though, as the second (center)
+    example illustrates: note the narrower wedge from 355 degrees through 360 degrees.
+    This happens because the first color stop in the pattern explicitly runs from
+    0 degrees through 5 degrees. Thus, there is no way to transition from 355 degrees
+    through to 5 degrees, which leads to a hard transition at 360/0 degrees.'
+  id: totrans-363
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以通过第二个（中心）示例来打破这种特殊行为：请注意从355度到360度的较窄楔形部分。这是因为图案中的第一个颜色停止明确地从0度到5度。因此，无法从355度过渡到5度，这导致在360/0度处出现了硬性过渡。
+- en: Manipulating Gradient Images
+  id: totrans-364
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 操控渐变图像
+- en: As we have previously emphasized (possibly to excess), gradients are images.
+    That means you can size, position, repeat, and otherwise affect them with the
+    various background properties, just as you would any PNG or SVG.
+  id: totrans-365
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如我们之前强调过的（可能有些过度），渐变是图像。这意味着您可以像处理任何PNG或SVG图像一样，使用各种背景属性对其进行大小、位置、重复和其他影响。
+- en: 'One way this can be leveraged is to repeat simple gradients. (Repeating in
+    more complex ways is the subject of the next section.) For example, you could
+    use a hard-stop radial gradient to give your background a dotted look, as shown
+    in [Figure 9-48](#cab_fig93):'
+  id: totrans-366
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这可以通过重复简单的渐变来实现（更复杂的重复方法将在下一节讨论）。例如，您可以使用硬停止径向渐变来使背景呈现点状外观，如 [图 9-48](#cab_fig93)
+    所示：
+- en: '[PRE68]'
+  id: totrans-367
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE68]'
+- en: '![css5 0948](assets/css5_0948.png)'
+  id: totrans-368
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0948](assets/css5_0948.png)'
+- en: Figure 9-48\. Tiled radial gradient images
+  id: totrans-369
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-48\. 平铺径向渐变图像
+- en: 'Yes, this is visually pretty much the same as tiling a PNG that has a mostly
+    transparent dark circle 10 pixels in diameter. Using a gradient in this case has
+    three advantages:'
+  id: totrans-370
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是的，这在视觉上几乎与平铺具有直径为 10 像素的透明深色圆圈的 PNG 图像相同。在这种情况下使用渐变有三个优点：
+- en: The CSS is almost certainly smaller in bytes than the PNG would be.
+  id: totrans-371
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: CSS 文件的大小几乎肯定比相同 PNG 文件小。
+- en: Even more importantly, the PNG requires an extra hit on the server. This slows
+    both page and server performance. A CSS gradient is part of the stylesheet and
+    so eliminates the extra server hit.
+  id: totrans-372
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 更重要的是，PNG 图像需要额外的服务器访问，这会减慢页面和服务器的性能。CSS 渐变是样式表的一部分，因此可以消除额外的服务器访问。
+- en: Changing the gradient is a lot simpler, so experimenting to find exactly the
+    right size, shape, and darkness is much easier.
+  id: totrans-373
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 更改渐变要简单得多，因此，通过实验找到确切的大小、形状和暗度变得更加容易。
+- en: Creating Special Effects
+  id: totrans-374
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建特殊效果
+- en: Gradients can’t do everything a raster or vector image can, so it’s not as though
+    you’ll be giving up external images completely now that gradients are a thing.
+    You can still pull off some pretty impressive effects with gradients, though.
+    Consider the background effect shown in [Figure 9-49](#cab_fig94).
+  id: totrans-375
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 渐变不能像光栅图像或矢量图像那样完成所有事情，因此并不意味着现在有了渐变就可以完全放弃外部图像。不过，您仍然可以通过渐变实现一些令人印象深刻的效果。考虑
+    [图 9-49](#cab_fig94) 中显示的背景效果。
+- en: '![css5 0949](assets/css5_0949.png)'
+  id: totrans-376
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0949](assets/css5_0949.png)'
+- en: Figure 9-49\. It’s time to play the music…
+  id: totrans-377
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-49\. 是时候播放音乐了…
+- en: 'That curtain effect is accomplished with just two linear gradients repeated
+    at differing intervals, plus a third to create a “glow” effect along the bottom
+    of the background. Here’s the code that accomplishes it:'
+  id: totrans-378
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那种帘子效果只需两个线性渐变，以不同的间隔重复，再加上第三个渐变在背景底部创建一个“发光”效果。以下是实现这一效果的代码：
+- en: '[PRE69]'
+  id: totrans-379
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE69]'
+- en: The first (and therefore topmost) gradient is just a fade from a 75%-transparent
+    light red up to full transparency at the 75% point of the gradient line. Then
+    two “fold” images are created. [Figure 9-50](#cab_fig95) shows each separately.
+  id: totrans-380
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个（因此是顶部）渐变只是从 75% 透明的浅红色向上到渐变线的 75% 点处完全透明。然后创建两个“折叠”图像。[图 9-50](#cab_fig95)
+    分别显示了每个图像。
+- en: With those images defined, they are repeated along the x-axis and given different
+    sizes. The first, which is the “glow” effect, is given `auto` size to let it cover
+    the entire element background. The second is given a width of `300px` and a height
+    of `100%`; thus, it will be as tall as the element background and 300 pixels wide.
+    This means it will be tiled every 300 pixels along the x-axis. The same is true
+    of the third image, except it tiles every 109 pixels. The end result looks like
+    an irregular stage curtain.
+  id: totrans-381
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义了这些图像后，它们沿 x 轴重复并给予不同的尺寸。第一个“发光”效果被赋予 `auto` 尺寸，以覆盖整个元素背景。第二个被赋予 `300px` 的宽度和
+    `100%` 的高度；因此，它将与元素背景一样高，宽度为 300 像素。这意味着它将沿 x 轴每 300 像素平铺一次。第三个图像也是如此，只是每 109
+    像素平铺一次。最终的效果看起来像是一个不规则的舞台幕布。
+- en: '![css5 0950](assets/css5_0950.png)'
+  id: totrans-382
+  prefs: []
+  type: TYPE_IMG
+  zh: '![css5 0950](assets/css5_0950.png)'
+- en: Figure 9-50\. The two “fold” gradients
+  id: totrans-383
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 图 9-50\. 两个“折叠”渐变
+- en: The beauty of this is that adjusting the tiling intervals is just a matter of
+    editing the stylesheet. Changing the color-stop positions or the colors is less
+    trivial, but not too difficult if you know the effect you’re after. And adding
+    a third set of repeating folds is no more difficult than just adding another gradient
+    to the stack.
+  id: totrans-384
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法的美妙之处在于，调整平铺间隔只是编辑样式表的一件小事。如果您知道想要的效果，调整颜色停止位置或颜色就不那么复杂了。而且，如果您只需添加另一个渐变到堆栈中，添加第三组重复折叠也并不比较困难。
+- en: Triggering Average Gradient Colors
+  id: totrans-385
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 触发平均渐变颜色
+- en: 'It’s worth asking what happens if a repeating gradient’s first and last color
+    stops somehow end up being in the same place. For example, suppose your fingers
+    miss the 5 key and you accidentally declare the following:'
+  id: totrans-386
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值得问一下，如果重复渐变的第一个和最后一个颜色停止恰好处于同一位置会发生什么。例如，假设您的手指误按了 5 键，不小心声明如下内容：
+- en: '[PRE70]'
+  id: totrans-387
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE70]'
+- en: The first and last color stops are 0 pixels apart, but the gradient is supposed
+    to repeat ad infinitum along the gradient line. Now what?
+  id: totrans-388
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个和最后一个颜色停止之间的距离为0像素，但渐变应该沿着渐变线无限重复。现在怎么办？
+- en: In such a case, the browser finds the *average gradient color* and fills it
+    in throughout the entire gradient image. In our simple case in the preceding code,
+    that will be a 50/50 blend of purple and `gold` (which will be about `#C06C40`
+    or `rgb(75%,42%,25%)`). Thus, the resulting gradient image should be a solid orangey-brown,
+    which doesn’t really look much like a gradient.
+  id: totrans-389
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，浏览器找到*平均渐变颜色*，并在整个渐变图像中填充它。在我们先前代码中的简单情况下，这将是紫色和`gold`（大约是`#C06C40`或`rgb(75%,42%,25%)`）的50/50混合。因此，生成的渐变图像应该是一种纯橙褐色，看起来并不像是一个真正的渐变。
+- en: This condition can also be triggered when the browser rounds the color-stop
+    positions to 0, or when the distance between the first and last color stops is
+    so small as compared to the output resolution that nothing useful can be rendered.
+    This could happen if, for example, a repeating radial gradient used all percentages
+    for the color-stop positions and was sized using `closest-side`, but was accidentally
+    placed into a corner.
+  id: totrans-390
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当浏览器将颜色停止位置四舍五入到0时，或者当第一个和最后一个颜色停止之间的距离与输出分辨率相比非常小而无法渲染任何有用的内容时，也可能会触发此条件。例如，如果重复的径向渐变使用了所有百分比的颜色停止位置，并且使用了`closest-side`来定义大小，但意外地放置在角落中，这种情况可能发生。
+- en: Warning
+  id: totrans-391
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+  zh: 警告
+- en: As of late 2022, no browsers really do average colors correctly. Some of the
+    correct behaviors can be triggered under very limited conditions, but in most
+    cases, browsers either just use the last color stop as a fill color, or else try
+    really hard to draw subpixel repeating patterns.
+  id: totrans-392
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 截至2022年底，几乎没有浏览器能正确显示平均颜色。在非常有限的条件下可能会触发一些正确的行为，但在大多数情况下，浏览器要么只使用最后一个颜色停止作为填充颜色，要么试图非常努力地绘制亚像素重复的图案。
+- en: Summary
+  id: totrans-393
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 摘要
+- en: Gradients are a fascinating image type, being constructed entirely with CSS
+    values instead of with raster data or vector elements. With the three types of
+    gradients available, you can create almost any pattern or visual effect.
+  id: totrans-394
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 渐变是一种非常有趣的图像类型，完全由CSS值构成，而不是由光栅数据或矢量元素构成。有了三种可用的渐变类型，您几乎可以创建任何图案或视觉效果。
