@@ -1,0 +1,7 @@
+# 下一代 JavaScript 编程入门指南
+
+> 原文：Get Programming with JavaScript Next
+> 
+> 译者：[飞龙](https://github.com/wizardforcel)
+> 
+> 协议：[CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)
